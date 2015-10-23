@@ -1,12 +1,9 @@
 <?php
 namespace History\RequestsGatherer;
 
-use DateTime;
 use History\Entities\Models\Request;
-use History\Entities\Models\User;
 use History\Entities\Models\Vote;
 use Illuminate\Contracts\Cache\Repository;
-use Illuminate\Support\Str;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -76,149 +73,33 @@ class RequestsGatherer
      */
     public function createRequest($link)
     {
-        $crawler = $this->getPageCrawler($link);
-        $name    = $this->getRequestName($crawler);
-        if (!$name) {
+        $crawler   = $this->getPageCrawler($link);
+        $extractor = new InformationsExtractor($crawler);
+
+        $informations = $extractor->getRequestInformations();
+        if (!$informations['name']) {
             return;
         }
 
-        // Extract additional informations
-        $votingConditions = $this->cleanWhitespace($this->getVotingConditions($crawler));
-        $timestamp        = $this->getRequestTimestamp($crawler);
+        // Retrieve or create the request
+        $request = Request::firstOrNew(['link' => $link]);
 
-        $request = Request::firstOrNew([
-            'name'       => $name,
-            'condition'  => $votingConditions,
-            'link'       => $link,
-        ]);
-
-        $request->created_at = $timestamp;
-        $request->updated_at = $timestamp;
+        // Update timestamps
+        $request->name       = $informations['name'];
+        $request->condition  = $informations['condition'];
+        $request->created_at = $informations['timestamp'];
+        $request->updated_at = $informations['timestamp'];
         $request->save();
 
-        $this->saveRequestVotes($request, $crawler);
-    }
+        // Insert RFC votes
+        $votes = array_map(function ($vote) use ($request) {
+            $vote['request_id'] = $request->id;
 
-    /**
-     * @param \History\Entities\Models\Request $request
-     * @param Crawler                          $crawler
-     *
-     * @return array
-     */
-    protected function saveRequestVotes(Request $request, Crawler $crawler)
-    {
-        $votes   = [];
-        $choices = $crawler->filter('table tr.row1 td')->each(function ($choice) {
-            return $choice->text();
-        });
+            return $vote;
+        }, $informations['votes']);
 
-        $crawler
-            ->filter('table.inline tr')
-            ->reduce(function ($vote) {
-                return $vote->filter('td.rightalign a')->count() > 0;
-            })->each(function ($vote) use ($request, &$votes, $choices) {
-                $user  = $vote->filter('td.rightalign a')->text();
-                $voted = !$vote->filter('td:last-child img')->count();
-
-                // Create user
-                $user = User::firstOrCreate([
-                    'name' => $user,
-                ]);
-
-                // Save vote for this request
-                $votes[] = [
-                    'request_id' => $request->id,
-                    'user_id'    => $user->id,
-                    'vote'       => $voted,
-                    'created_at' => new DateTime(),
-                    'updated_at' => new DateTime(),
-                ];
-            });
-
-        // Purge and recreate votes
         $request->votes()->delete();
         Vote::insert($votes);
-    }
-
-    //////////////////////////////////////////////////////////////////////
-    ////////////////////////////// HELPERS ///////////////////////////////
-    //////////////////////////////////////////////////////////////////////
-
-    /**
-     * Extract the name of a request.
-     *
-     * @param Crawler $crawler
-     *
-     * @return string
-     */
-    protected function getRequestName(Crawler $crawler)
-    {
-        $title = $crawler->filter('h1');
-        if (!$title->count()) {
-            return;
-        }
-
-        // Remove some tags from title
-        $title = $title->text();
-        $title = str_replace('PHP RFC:', '', $title);
-        $title = str_replace('RFC:', '', $title);
-        $title = str_replace('Request for Comments:', '', $title);
-
-        return trim($title);
-    }
-
-    /**
-     * Get the creation/update date of a request
-     *
-     * @param Crawler $crawler
-     *
-     * @return DateTime
-     */
-    protected function getRequestTimestamp(Crawler $crawler)
-    {
-        $timestamp = null;
-        $crawler->filter('.level1 li')->each(function ($information) use (&$timestamp) {
-            $text = $information->text();
-            if (strpos($text, 'Date') !== false) {
-                $timestamp = str_replace('Date:', '', $text);
-                $timestamp = trim($timestamp);
-            }
-        });
-
-        return DateTime::createFromFormat('Y-m-d', $timestamp);
-    }
-
-    // Get voting conditions
-    /**
-     * @param $requestCrawler
-     *
-     * @return mixed
-     */
-    protected function getVotingConditions(Crawler $requestCrawler)
-    {
-        $condition = $requestCrawler->filter('#proposed_voting_choices + div');
-        if ($condition->count()) {
-            return $condition->text();
-        }
-
-        $condition = $requestCrawler->filter('#vote + div p');
-        if ($condition->count()) {
-            return $condition->text();
-        }
-    }
-
-    /**
-     * @param $information
-     *
-     * @return string
-     */
-    protected function cleanWhitespace($information)
-    {
-        $information = Str::ascii($information);
-        $information = preg_replace("/\s+/", ' ', $information);
-        $information = trim($information);
-
-        return $information;
     }
 
     /**

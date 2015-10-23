@@ -55,6 +55,10 @@ trait HasVotes
      */
     public function getHivemind()
     {
+        if (!$this->votes->count()) {
+            return 0;
+        }
+
         $hivemind = [];
         foreach ($this->votes as $vote) {
             $passed     = (bool) $vote->request->passed;
