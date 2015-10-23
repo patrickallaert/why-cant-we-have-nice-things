@@ -13,6 +13,11 @@ class User extends Model
      */
     protected $fillable = [
         'name',
+        'yes_votes',
+        'no_votes',
+        'total_votes',
+        'approval',
+        'hivemind',
     ];
 
     //////////////////////////////////////////////////////////////////////
@@ -22,7 +27,7 @@ class User extends Model
     /**
      * @return float
      */
-    public function getHivemindAttribute()
+    public function computeHivemind()
     {
         $hivemind = [];
         foreach ($this->votes as $vote) {

@@ -24,6 +24,11 @@ class CreateUsersTable extends AbstractMigration
     {
         $this->table('users')
              ->addColumn('name', 'string')
+             ->addColumn('yes_votes', 'integer')
+             ->addColumn('no_votes', 'integer')
+             ->addColumn('total_votes', 'integer')
+             ->addColumn('approval', 'float')
+             ->addColumn('hivemind', 'float')
              ->addColumn('created_at', 'datetime')
              ->addColumn('updated_at', 'datetime')
              ->save();

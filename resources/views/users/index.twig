@@ -11,8 +11,8 @@
         <thead>
         <tr>
             <th>User</th>
-            <th>Voted yes</th>
-            <th>Voted no</th>
+            <th>Voted YES</th>
+            <th>Voted NO</th>
             <th># of votes</th>
             <th>Approval %</th>
             <th>Hivemind %</th>
@@ -24,9 +24,9 @@
                 <td>
                     <a href="/users/{{ user.name }}">{{ user.name }}</a>
                 </td>
-                <td>{{ user.yesVotes.count() }}</td>
-                <td>{{ user.noVotes.count() }}</td>
-                <td>{{ user.votes.count() }}</td>
+                <td>{{ user.yes_votes }}</td>
+                <td>{{ user.no_votes }}</td>
+                <td>{{ user.total_votes }}</td>
                 <td>{{ user.approval * 100 }}%</td>
                 <td>{{ user.hivemind * 100 }}%</td>
             </tr>
