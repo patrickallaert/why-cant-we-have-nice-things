@@ -33,7 +33,7 @@ class ConsoleServiceProvider extends ServiceProvider
 
             // Register commands
             $app->command('tinker', [$this, 'tinker']);
-            $app->command('refresh', [$this, 'refresh']);
+            $app->command('refresh [--scratch]', [$this, 'refresh']);
             $app->command('refresh:stats', [$this, 'refreshStatistics']);
 
             return $app;
@@ -56,13 +56,16 @@ class ConsoleServiceProvider extends ServiceProvider
     /**
      * Refresh the requests and comments.
      *
+     * @param boolean         $scratch
      * @param OutputInterface $output
      */
-    public function refresh(OutputInterface $output)
+    public function refresh($scratch, OutputInterface $output)
     {
         // Empty cache
-        $cache = $this->container->get(Repository::class);
-        $cache->flush();
+        if ($scratch) {
+            $cache = $this->container->get(Repository::class);
+            $cache->flush();
+        }
 
         // Refresh requests
         $gatherer = $this->container->get(RequestsGatherer::class);

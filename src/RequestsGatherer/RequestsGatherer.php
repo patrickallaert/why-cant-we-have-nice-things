@@ -1,8 +1,10 @@
 <?php
 namespace History\RequestsGatherer;
 
+use DateTime;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
+use History\Entities\Models\Vote;
 use Illuminate\Contracts\Cache\Repository;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\NullOutput;
@@ -109,7 +111,7 @@ class RequestsGatherer
             ->reduce(function ($vote) {
                 return $vote->filter('td.rightalign a')->count() > 0;
             })->each(function ($vote) use ($request, &$votes, $choices) {
-                $user = $vote->filter('td.rightalign a')->text();
+                $user  = $vote->filter('td.rightalign a')->text();
                 $voted = !$vote->filter('td:last-child img')->count();
 
                 // Create user
@@ -122,11 +124,14 @@ class RequestsGatherer
                     'request_id' => $request->id,
                     'user_id'    => $user->id,
                     'vote'       => $voted,
+                    'created_at' => new DateTime(),
+                    'updated_at' => new DateTime(),
                 ];
             });
 
-        $request->votes()->sync([]);
-        $request->votes()->saveMany($votes);
+        // Purge and recreate votes
+        $request->votes()->delete();
+        Vote::insert($votes);
     }
 
     //////////////////////////////////////////////////////////////////////
