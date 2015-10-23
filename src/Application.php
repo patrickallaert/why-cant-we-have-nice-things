@@ -6,6 +6,7 @@ use History\Providers\CacheServiceProvider;
 use History\Providers\ConsoleServiceProvider;
 use History\Providers\DatabaseServiceProvider;
 use History\Providers\DebugbarServiceProvider;
+use History\Providers\ErrorsServiceProvider;
 use History\Providers\PathsServiceProvider;
 use History\Providers\RoutingServiceProvider;
 use History\Providers\TwigServiceProvider;
@@ -16,6 +17,7 @@ use League\Route\Dispatcher;
 use League\Route\RouteCollection;
 use Silly\Application as Console;
 use Symfony\Component\HttpFoundation\Request;
+use Whoops\Run;
 
 class Application
 {
@@ -41,6 +43,7 @@ class Application
         DatabaseServiceProvider::class,
         ConsoleServiceProvider::class,
         DebugbarServiceProvider::class,
+        ErrorsServiceProvider::class,
     ];
 
     /**
@@ -61,8 +64,9 @@ class Application
             $this->container->addServiceProvider($provider);
         }
 
-        // Boot database
+        // Boot database and Whoops
         $this->container->get(Manager::class);
+        $this->container->get(Run::class);
     }
 
     /**
