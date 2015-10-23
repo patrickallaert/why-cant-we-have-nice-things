@@ -15,8 +15,19 @@ class RequestsController extends AbstractController
             return $request->votes->count();
         });
 
+        // Compute % of passed RFCs
+        $voted = $requests->filter(function (Request $request) {
+           return $request->votes->count();
+        });
+
+        $passed = $voted->filter(function (Request $request) {
+            return $request->passed;
+        });
+
         return $this->views->render('requests/index.twig', [
             'requests' => $requests,
+            'voted' => $voted,
+            'passed'   => $passed->count() / $voted->count(),
         ]);
     }
 }

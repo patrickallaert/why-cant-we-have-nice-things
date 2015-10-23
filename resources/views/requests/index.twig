@@ -2,6 +2,11 @@
 {% set title = 'RFCs' %}
 
 {% block content %}
+    <p class="lead text-center">
+        A total of <strong>{{ requests.count() }}</strong> RFCs have been created, <strong>{{ voted.count() }}</strong> have been voted on.<br>
+        In total, <strong>{{ (passed * 100)|number_format(precision) }}%</strong> have passed.
+    </p>
+
     <table class="table table-striped table-condensed table-hover">
         <thead>
         <tr>
