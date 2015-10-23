@@ -14,4 +14,26 @@ class User extends Model
     protected $fillable = [
         'name',
     ];
+
+    //////////////////////////////////////////////////////////////////////
+    ///////////////////////////// ATTRIBUTES /////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+
+    /**
+     * @return float
+     */
+    public function getHivemindAttribute()
+    {
+        $hivemind = [];
+        foreach ($this->votes as $vote) {
+            $majority   = $vote->request->approval > 0.5;
+            $user       = (bool) $vote->vote;
+            $hivemind[] = $user === $majority;
+        }
+
+        $hivemind = count(array_filter($hivemind)) / count($hivemind);
+        $hivemind = round($hivemind, 3);
+
+        return $hivemind;
+    }
 }

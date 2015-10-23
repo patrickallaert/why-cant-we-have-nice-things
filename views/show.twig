@@ -1,5 +1,5 @@
-{% set title = user.name %}
 {% extends 'layout.twig' %}
+{% set title = user.name %}
 
 {% block content %}
     <table class="table table-sm table-hover table-striped">
@@ -7,12 +7,14 @@
             <tr>
                 <th>RFC</th>
                 <th>Voted</th>
+                <th>Approval %</th>
             </tr>
         </thead>
-        {% for rfc, vote in user.votes %}
+        {% for vote in user.votes %}
             <tr>
-                <td><a target="_blank" href="{{ rfc }}">{{ rfc }}</a></td>
-                <td>{{ vote ? 'Yes' : 'No' }}</td>
+                <td><a target="_blank" href="{{ vote.request.link }}">{{ vote.request.name }}</a></td>
+                <td>{{ vote.vote ? 'Yes' : 'No' }}</td>
+                <td>{{ vote.request.approval * 100 }}%</td>
             </tr>
         {% endfor %}
     </table>

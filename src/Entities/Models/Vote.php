@@ -13,4 +13,12 @@ class Vote extends Model
         'request_id',
         'vote',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function request()
+    {
+        return $this->belongsTo(Request::class);
+    }
 }

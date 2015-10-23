@@ -3,6 +3,7 @@ namespace History\Providers;
 
 use League\Container\ServiceProvider;
 use Twig_Environment;
+use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;
 
 class TwigServiceProvider extends ServiceProvider
@@ -25,12 +26,15 @@ class TwigServiceProvider extends ServiceProvider
     {
         $this->container->singleton(Twig_Environment::class, function () {
             $loader = new Twig_Loader_Filesystem(__DIR__.'/../../views');
-
-            return new Twig_Environment($loader, [
+            $twig = new Twig_Environment($loader, [
                 'auto_reload'      => true,
                 'strict_variables' => false,
                 'cache'            => __DIR__.'/../../cache',
             ]);
+
+            $twig->addExtension(new Twig_Extension_Debug());
+
+            return $twig;
         });
     }
 }

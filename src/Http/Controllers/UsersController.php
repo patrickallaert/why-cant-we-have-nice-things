@@ -2,8 +2,6 @@
 namespace History\Http\Controllers;
 
 use History\Entities\Models\User;
-use History\RequestsGatherer\RequestsGatherer;
-use Illuminate\Database\Capsule\Manager;
 use Twig_Environment;
 
 class UsersController
@@ -12,19 +10,13 @@ class UsersController
      * @var Twig_Environment
      */
     protected $views;
-    /**
-     * @var RequestsGatherer
-     */
-    private $requestsGatherer;
 
     /**
      * @param Twig_Environment $views
-     * @param RequestsGatherer $requestsGatherer
      */
-    public function __construct(Twig_Environment $views, RequestsGatherer $requestsGatherer)
+    public function __construct(Twig_Environment $views)
     {
-        $this->views            = $views;
-        $this->requestsGatherer = $requestsGatherer;
+        $this->views = $views;
     }
 
     /**
@@ -32,7 +24,7 @@ class UsersController
      */
     public function index()
     {
-        $users = User::with('votes')->get();
+        $users = User::with('votes.request.votes')->get();
         $users = $users->filter(function (User $user) {
             return $user->votes->count() > 5;
         })->sortByDesc(function (User $user) {
@@ -51,8 +43,9 @@ class UsersController
      */
     public function show($user)
     {
-        $users = $this->requestsGatherer->getUserVotes();
-        $user  = $users->get($user);
+        $user = User::with('votes.request.votes')
+            ->whereName($user)
+            ->firstOrFail();
 
         return $this->views->render('show.twig', [
             'user' => $user,
