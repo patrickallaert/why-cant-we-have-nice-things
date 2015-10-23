@@ -41,4 +41,21 @@ class User extends Model
 
         return $hivemind;
     }
+
+    /**
+     * Recompute the user statistics
+     */
+    public function computeStatistics()
+    {
+        $yesVotes   = $this->votes()->where('vote', true)->count();
+        $totalVotes = $this->votes()->count();
+
+        $this->update([
+            'yes_votes'   => $yesVotes,
+            'no_votes'    => $this->votes()->where('vote', false)->count(),
+            'total_votes' => $totalVotes,
+            'aproval'     => $totalVotes ? $yesVotes / $totalVotes : 0,
+            'hivemind'    => $this->computeHivemind(),
+        ]);
+    }
 }

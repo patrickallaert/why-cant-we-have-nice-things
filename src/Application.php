@@ -3,6 +3,7 @@ namespace History;
 
 use Dotenv\Dotenv;
 use History\Providers\CacheServiceProvider;
+use History\Providers\ConsoleServiceProvider;
 use History\Providers\DatabaseServiceProvider;
 use History\Providers\DebugbarServiceProvider;
 use History\Providers\RoutingServiceProvider;
@@ -13,6 +14,7 @@ use Illuminate\Database\Capsule\Manager;
 use League\Container\ContainerInterface;
 use League\Route\Dispatcher;
 use League\Route\RouteCollection;
+use Silly\Application as Console;
 use Symfony\Component\HttpFoundation\Request;
 
 class Application
@@ -31,6 +33,7 @@ class Application
         RoutingServiceProvider::class,
         TwigServiceProvider::class,
         DatabaseServiceProvider::class,
+        ConsoleServiceProvider::class,
         DebugbarServiceProvider::class,
     ];
 
@@ -69,5 +72,13 @@ class Application
         $response   = $dispatcher->dispatch($request->getMethod(), $request->getPathInfo());
 
         return $response->send();
+    }
+
+    /**
+     * Run the CLI application
+     */
+    public function runConsole()
+    {
+        $this->container->get(Console::class)->run();
     }
 }
