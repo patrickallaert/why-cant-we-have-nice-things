@@ -1,7 +1,7 @@
 <?php
 namespace History\Http\Controllers;
 
-use History\Entities\User;
+use History\Entities\Models\User;
 use History\RequestsGatherer\RequestsGatherer;
 use Twig_Environment;
 

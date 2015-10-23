@@ -1,8 +1,8 @@
 <?php
 namespace History\RequestsGatherer;
 
-use History\Entities\Request;
-use History\Entities\User;
+use History\Entities\Models\Request;
+use History\Entities\Models\User;
 use Illuminate\Contracts\Cache\Repository;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -54,10 +54,12 @@ class RequestsGatherer
     }
 
     /**
-     * @param Request $request
-     * @param Crawler $crawler
-     *
-     * @return array
+     * @param \History\Entities\Models\Request $request
+     * @param Crawler                          $crawler
+
+
+*
+*@return array
      */
     protected function saveRequestVotes(Request $request, Crawler $crawler)
     {
@@ -103,6 +105,7 @@ class RequestsGatherer
         // Remove some tags from title
         $title = $title->text();
         $title = str_replace('PHP RFC:', '', $title);
+        $title = str_replace('RFC:', '', $title);
         $title = str_replace('Request for Comments:', '', $title);
 
         return trim($title);

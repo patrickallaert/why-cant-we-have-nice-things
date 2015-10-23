@@ -1,5 +1,5 @@
 <?php
-namespace History\Entities;
+namespace History\Entities\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
