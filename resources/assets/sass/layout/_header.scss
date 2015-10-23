@@ -1,0 +1,11 @@
+.layout-header {
+    a {
+        color: $color-text;
+        transition: color 0.3s;
+
+        &:hover {
+            color: $color-green;
+            text-decoration: none;
+        }
+    }
+}

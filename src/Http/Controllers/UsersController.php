@@ -28,7 +28,7 @@ class UsersController
         $users = $users->filter(function (User $user) {
             return $user->votes->count() > 5;
         })->sortByDesc(function (User $user) {
-            return $user->approval;
+            return $user->hivemind * -1;
         });
 
         return $this->views->render('index.twig', [

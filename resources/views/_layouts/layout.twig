@@ -9,12 +9,20 @@
 </head>
 <body>
     <main class="container">
-        <header class="page-header">
-            <h1>{{ title }}</h1>
+        <header class="page-header text-center">
+            <h1 class="layout-header">
+                <a href="/">Why can't we have nice things</a>
+            </h1>
+
+            {% if subtitle %}
+                <h2>{{ subtitle }}</h2>
+            {% endif %}
         </header>
 
         {% block content %}{% endblock %}
     </main>
+
+    {% include '_layouts/partials/footer.twig' %}
 
     <script src="/builds/main.js"></script>
 </body>

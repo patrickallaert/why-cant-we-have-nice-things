@@ -1,0 +1,36 @@
+.table {
+    color: $color-text;
+
+    a:not(.btn) {
+        text-decoration: none;
+    }
+
+    thead {
+        background-color: $color-green;
+        color: white;
+
+        th:focus {
+            outline: 0;
+        }
+
+        th.tablesorter-headerAsc,
+        th.tablesorter-headerDesc {
+            background-color: lighten($color-green, 5);
+
+            &:before {
+                margin-right: 0.5em;
+            }
+
+            &:before, div {
+                display: inline-block;
+            }
+        }
+
+        th.tablesorter-headerDesc:before {
+            content: '▲';
+        }
+        th.tablesorter-headerAsc:before {
+            content: '▼';
+        }
+    }
+}

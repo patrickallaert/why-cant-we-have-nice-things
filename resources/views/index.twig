@@ -1,7 +1,11 @@
-{% extends 'layout.twig' %}
+{% extends '_layouts/layout.twig' %}
 
 {% block content %}
-    <p>Only users who voted more than 5 times are taken into account.</p>
+    <ul class="explanations list-unstyled">
+        <li>Only users who voted more than 5 times are taken into account.</li>
+        <li>The <strong>Approval %</strong> is how many RFCs an user has approved of.</li>
+        <li>The <strong>Hivemind %</strong> is how many RFCs an user has approved of that other users also approved of in their majority.</li>
+    </ul>
 
     <table class="table table-striped table-condensed table-hover">
         <thead>

@@ -1,3 +1,6 @@
-body {
-    padding: 2rem;
-}
+@import 'utils/variables';
+@import 'base/body';
+@import 'components/explanations';
+@import 'components/tables';
+@import 'layout/header';
+@import 'layout/footer';

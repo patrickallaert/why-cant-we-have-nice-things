@@ -1,20 +1,21 @@
-{% extends 'layout.twig' %}
+{% extends '_layouts/layout.twig' %}
 {% set title = user.name %}
+{% set subtitle = user.name %}
 
 {% block content %}
     <table class="table table-condensed table-hover table-striped">
         <thead>
             <tr>
                 <th>RFC</th>
-                <th>Voted</th>
-                <th>Approval %</th>
+                <th class="text-right">Voted</th>
+                <th class="text-right">Approval %</th>
             </tr>
         </thead>
         {% for vote in user.votes %}
             <tr>
                 <td><a target="_blank" href="{{ vote.request.link }}">{{ vote.request.name }}</a></td>
-                <td>{{ vote.vote ? 'Yes' : 'No' }}</td>
-                <td>{{ vote.request.approval * 100 }}%</td>
+                <td class="text-right">{{ vote.vote ? 'Yes' : 'No' }}</td>
+                <td class="text-right">{{ vote.request.approval * 100 }}%</td>
             </tr>
         {% endfor %}
     </table>
