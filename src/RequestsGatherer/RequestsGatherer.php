@@ -6,6 +6,7 @@ use History\Entities\Models\Request;
 use History\Entities\Models\User;
 use History\Entities\Models\Vote;
 use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Support\Str;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -82,13 +83,18 @@ class RequestsGatherer
         }
 
         // Extract additional informations
-        $votingConditions = trim($this->getVotingConditions($crawler));
+        $votingConditions = $this->cleanWhitespace($this->getVotingConditions($crawler));
+        $timestamp        = $this->getRequestTimestamp($crawler);
 
-        $request = Request::firstOrCreate([
-            'name'      => $name,
-            'condition' => $votingConditions,
-            'link'      => $link,
+        $request = Request::firstOrNew([
+            'name'       => $name,
+            'condition'  => $votingConditions,
+            'link'       => $link,
         ]);
+
+        $request->created_at = $timestamp;
+        $request->updated_at = $timestamp;
+        $request->save();
 
         $this->saveRequestVotes($request, $crawler);
     }
@@ -161,6 +167,27 @@ class RequestsGatherer
         return trim($title);
     }
 
+    /**
+     * Get the creation/update date of a request
+     *
+     * @param Crawler $crawler
+     *
+     * @return DateTime
+     */
+    protected function getRequestTimestamp(Crawler $crawler)
+    {
+        $timestamp = null;
+        $crawler->filter('.level1 li')->each(function ($information) use (&$timestamp) {
+            $text = $information->text();
+            if (strpos($text, 'Date') !== false) {
+                $timestamp = str_replace('Date:', '', $text);
+                $timestamp = trim($timestamp);
+            }
+        });
+
+        return DateTime::createFromFormat('Y-m-d', $timestamp);
+    }
+
     // Get voting conditions
     /**
      * @param $requestCrawler
@@ -178,6 +205,20 @@ class RequestsGatherer
         if ($condition->count()) {
             return $condition->text();
         }
+    }
+
+    /**
+     * @param $information
+     *
+     * @return string
+     */
+    protected function cleanWhitespace($information)
+    {
+        $information = Str::ascii($information);
+        $information = preg_replace("/\s+/", ' ', $information);
+        $information = trim($information);
+
+        return $information;
     }
 
     /**
