@@ -8,6 +8,7 @@
             <th>Name</th>
             <th class="text-right"># of votes</th>
             <th class="text-right">Approval %</th>
+            <th class="text-right">Passed?</th>
         </tr>
         </thead>
         <tbody>
@@ -18,6 +19,7 @@
                 </td>
                 <td class="text-right">{{ request.votes.count() }}</td>
                 <td class="text-right">{{ (request.approval * 100)|number_format(precision) }}%</td>
+                <td class="text-right">{{ request.votes.count() ? (request.passed ? 'Yes' : 'No') : 'N/A' }}</td>
             </tr>
         {% endfor %}
         </tbody>
