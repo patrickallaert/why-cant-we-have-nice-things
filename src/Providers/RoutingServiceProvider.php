@@ -38,7 +38,10 @@ class RoutingServiceProvider extends ServiceProvider
             $routes->addRoute('GET', '/', UsersController::class.'::index');
             $routes->addRoute('GET', '/users', UsersController::class.'::index');
             $routes->addRoute('GET', '/users/{user}', UsersController::class.'::show');
+
             $routes->addRoute('GET', '/requests', RequestsController::class.'::index');
+            $routes->addRoute('GET', '/requests/{request}', RequestsController::class.'::show');
+
             $routes->addRoute('GET', '/about', PagesController::class.'::about');
 
             return $routes;

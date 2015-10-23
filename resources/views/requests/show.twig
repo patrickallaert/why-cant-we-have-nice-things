@@ -1,0 +1,31 @@
+{% extends '_layouts/layout.twig' %}
+{% set title = request.name %}
+{% set subtitle = request.name %}
+
+{% block content %}
+    <p class="lead text-center">
+        This RFC is currently approved at <strong>{{ percentage(request.approval) }}%</strong>.<br>
+        <a href="{{ request.link }}" target="_blank">View this RFC on the PHP wiki</a>
+    </p>
+
+    <div class="table-responsive">
+        <table class="table table-condensed table-striped table-hover">
+            <thead>
+            <tr>
+                <th>User</th>
+                <th class="text-center">Vote</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for vote in request.votes %}
+                <tr>
+                    <td>
+                        <a href="/users/{{ vote.user.name }}">{{ vote.user.name }}</a>
+                    </td>
+                    <td class="text-center {{ vote.vote ? 'success' : 'danger' }}">{{ vote.vote ? 'Yes' : 'No' }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
