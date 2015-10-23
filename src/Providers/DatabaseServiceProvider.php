@@ -7,6 +7,13 @@ use League\Container\ServiceProvider;
 class DatabaseServiceProvider extends ServiceProvider
 {
     /**
+     * @var array
+     */
+    protected $provides = [
+        Manager::class,
+    ];
+
+    /**
      * Use the register method to register items with the container via the
      * protected $this->container property or the `getContainer` method
      * from the ContainerAwareTrait.
@@ -28,6 +35,7 @@ class DatabaseServiceProvider extends ServiceProvider
                 'prefix'    => '',
             ]);
 
+            $capsule->setAsGlobal();
             $capsule->bootEloquent();
 
             return $capsule;

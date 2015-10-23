@@ -19,4 +19,30 @@ class User extends Model
     {
         return $this->hasMany(Vote::class);
     }
+
+    /**
+     * @return integer
+     */
+    public function getVotedYesAttribute()
+    {
+        return $this->votes->filter('voted')->count();
+    }
+
+    /**
+     * @return integer
+     */
+    public function getVotedNoAttribute()
+    {
+        return $this->votes->filter(function (Vote $vote) {
+            return !$vote->voted;
+        })->count();
+    }
+
+    /**
+     * @return float
+     */
+    public function getApprovalAttribute()
+    {
+        return round($this->voted_yes / $this->votes->count(), 3);
+    }
 }

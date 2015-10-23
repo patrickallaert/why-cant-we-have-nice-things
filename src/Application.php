@@ -3,10 +3,12 @@ namespace History;
 
 use Dotenv\Dotenv;
 use History\Providers\CacheServiceProvider;
+use History\Providers\DatabaseServiceProvider;
 use History\Providers\RoutingServiceProvider;
 use History\Providers\TwigServiceProvider;
 use History\RequestsGatherer\RequestsGatherer;
 use History\RequestsGatherer\RequestsGathererServiceProvider;
+use Illuminate\Database\Capsule\Manager;
 use League\Container\ContainerInterface;
 use League\Route\Dispatcher;
 use League\Route\RouteCollection;
@@ -27,6 +29,7 @@ class Application
         RequestsGathererServiceProvider::class,
         RoutingServiceProvider::class,
         TwigServiceProvider::class,
+        DatabaseServiceProvider::class,
     ];
 
     /**
@@ -46,6 +49,9 @@ class Application
         foreach ($this->providers as $provider) {
             $this->container->addServiceProvider($provider);
         }
+
+        // Boot database
+        $this->container->get(Manager::class);
     }
 
     /**

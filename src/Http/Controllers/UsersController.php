@@ -31,6 +31,7 @@ class UsersController
      */
     public function index()
     {
+        dump(User::all()); exit;
         $users = $this->requestsGatherer->getUserVotes();
         $users = $users->filter(function (User $user) {
             return $user->total > 5;
