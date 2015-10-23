@@ -11,11 +11,11 @@
         <thead>
         <tr>
             <th>User</th>
-            <th>Voted YES</th>
-            <th>Voted NO</th>
-            <th># of votes</th>
-            <th>Approval %</th>
-            <th>Hivemind %</th>
+            <th class="text-right">Voted YES</th>
+            <th class="text-right">Voted NO</th>
+            <th class="text-right"># of votes</th>
+            <th class="text-right">Approval %</th>
+            <th class="text-right">Hivemind %</th>
         </tr>
         </thead>
         <tbody>
@@ -24,11 +24,11 @@
                 <td>
                     <a href="/users/{{ user.name }}">{{ user.name }}</a>
                 </td>
-                <td>{{ user.yes_votes }}</td>
-                <td>{{ user.no_votes }}</td>
-                <td>{{ user.total_votes }}</td>
-                <td>{{ user.approval * 100 }}%</td>
-                <td>{{ user.hivemind * 100 }}%</td>
+                <td class="text-right">{{ user.yes_votes }}</td>
+                <td class="text-right">{{ user.no_votes }}</td>
+                <td class="text-right">{{ user.total_votes }}</td>
+                <td class="text-right">{{ (user.approval * 100)|number_format(1) }}%</td>
+                <td class="text-right">{{ (user.hivemind * 100)|number_format(1) }}%</td>
             </tr>
         {% endfor %}
         </tbody>

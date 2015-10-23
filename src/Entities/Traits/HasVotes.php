@@ -12,4 +12,59 @@ trait HasVotes
     {
         return $this->hasMany(Vote::class);
     }
+
+    //////////////////////////////////////////////////////////////////////
+    ///////////////////////////// STATISTICS /////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+
+    /**
+     * @return Collection
+     */
+    public function getYesVotes()
+    {
+        return $this->votes->filter(function (Vote $vote) {
+            return $vote->vote;
+        });
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getNoVotes()
+    {
+        return $this->votes->filter(function (Vote $vote) {
+            return !$vote->vote;
+        });
+    }
+
+    /**
+     * @return float
+     */
+    public function getApproval()
+    {
+        $totalVotes = $this->votes->count();
+        if (!$totalVotes) {
+            return 0;
+        }
+
+        return $this->getYesVotes()->count() / $totalVotes;
+    }
+
+    /**
+     * @return float
+     */
+    public function getHivemind()
+    {
+        $hivemind = [];
+        foreach ($this->votes as $vote) {
+            $majority   = $vote->request->approval > 0.5;
+            $user       = (bool) $vote->vote;
+            $hivemind[] = $user === $majority;
+        }
+
+        $hivemind = count(array_filter($hivemind)) / count($hivemind);
+        $hivemind = round($hivemind, 3);
+
+        return $hivemind;
+    }
 }

@@ -25,6 +25,7 @@ class CreateRequestsTable extends AbstractMigration
         $this->table('requests')
              ->addColumn('name', 'string')
              ->addColumn('link', 'string')
+             ->addColumn('approval', 'float')
              ->addColumn('created_at', 'datetime')
              ->addColumn('updated_at', 'datetime')
              ->save();

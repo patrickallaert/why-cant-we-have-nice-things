@@ -14,5 +14,13 @@ class Request extends Model
     protected $fillable = [
         'name',
         'link',
+        'approval',
     ];
+
+    public function computeStatistics()
+    {
+        $this->update([
+            'approval' => $this->getApproval(),
+        ]);
+    }
 }

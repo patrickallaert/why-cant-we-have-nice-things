@@ -15,7 +15,7 @@
             <tr>
                 <td><a target="_blank" href="{{ vote.request.link }}">{{ vote.request.name }}</a></td>
                 <td class="text-right">{{ vote.vote ? 'Yes' : 'No' }}</td>
-                <td class="text-right">{{ vote.request.approval * 100 }}%</td>
+                <td class="text-right">{{ (vote.request.approval * 100)|number_format(1) }}%</td>
             </tr>
         {% endfor %}
     </table>
