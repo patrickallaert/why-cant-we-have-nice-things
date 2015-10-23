@@ -34,10 +34,19 @@ class TwigServiceProvider extends ServiceProvider
             $request = $this->container->get(Request::class);
             $twig->addGlobal('current_uri', $request->getPathInfo());
             $twig->addGlobal('precision', 1);
+            $twig->addGlobal('assets', $this->getWebpackAssets());
 
             $twig->addExtension(new Twig_Extension_Debug());
 
             return $twig;
         });
+    }
+
+    private function getWebpackAssets()
+    {
+        $assets = file_get_contents(__DIR__.'/../../public/builds/manifest.json');
+        $assets = json_decode($assets, true);
+
+        return $assets;
     }
 }

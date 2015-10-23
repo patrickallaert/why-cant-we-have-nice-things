@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
-    <link rel="stylesheet" href="/builds/main.css">
+    <link rel="stylesheet" href="{{ assets.main.css }}">
 </head>
 <body>
     {% include '_layouts/partials/navbar.twig' %}
@@ -26,6 +26,6 @@
 
     {% include '_layouts/partials/footer.twig' %}
 
-    <script src="/builds/main.js"></script>
+    <script src="{{ assets.main.js }}"></script>
 </body>
 </html>
