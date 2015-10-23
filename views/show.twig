@@ -1,0 +1,19 @@
+{% set title = user.name %}
+{% extends 'layout.twig' %}
+
+{% block content %}
+    <table class="table table-sm table-hover table-striped">
+        <thead>
+            <tr>
+                <th>RFC</th>
+                <th>Voted</th>
+            </tr>
+        </thead>
+        {% for rfc, vote in user.votes %}
+            <tr>
+                <td><a target="_blank" href="{{ rfc }}">{{ rfc }}</a></td>
+                <td>{{ vote ? 'Yes' : 'No' }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
