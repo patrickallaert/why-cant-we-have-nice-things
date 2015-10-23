@@ -3,7 +3,6 @@ namespace History\Providers;
 
 use Illuminate\Container\Container;
 use Illuminate\Database\Capsule\Manager;
-use Illuminate\Events\Dispatcher;
 use League\Container\ServiceProvider;
 
 class DatabaseServiceProvider extends ServiceProvider
@@ -19,8 +18,6 @@ class DatabaseServiceProvider extends ServiceProvider
      * Use the register method to register items with the container via the
      * protected $this->container property or the `getContainer` method
      * from the ContainerAwareTrait.
-     *
-     * @return void
      */
     public function register()
     {

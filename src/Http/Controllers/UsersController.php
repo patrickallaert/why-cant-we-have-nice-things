@@ -2,7 +2,6 @@
 namespace History\Http\Controllers;
 
 use History\Entities\Models\User;
-use Illuminate\Database\Capsule\Manager;
 
 class UsersController extends AbstractController
 {

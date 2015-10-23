@@ -28,7 +28,7 @@ class User extends Model
         foreach ($this->votes as $vote) {
             $majority   = $vote->request->approval > 0.5;
             $user       = (bool) $vote->vote;
-            $hivemind[] = $user == $majority;
+            $hivemind[] = $user === $majority;
         }
 
         $hivemind = count(array_filter($hivemind)) / count($hivemind);

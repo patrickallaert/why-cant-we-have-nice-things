@@ -19,14 +19,12 @@ class TwigServiceProvider extends ServiceProvider
      * Use the register method to register items with the container via the
      * protected $this->container property or the `getContainer` method
      * from the ContainerAwareTrait.
-     *
-     * @return void
      */
     public function register()
     {
         $this->container->singleton(Twig_Environment::class, function () {
             $loader = new Twig_Loader_Filesystem(__DIR__.'/../../resources/views');
-            $twig   = new Twig_Environment($loader, [
+            $twig = new Twig_Environment($loader, [
                 'auto_reload'      => getenv('APP_ENV') === 'local',
                 'strict_variables' => false,
                 'cache'            => __DIR__.'/../../cache',

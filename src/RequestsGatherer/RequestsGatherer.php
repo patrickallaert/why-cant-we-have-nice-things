@@ -9,7 +9,7 @@ use Symfony\Component\DomCrawler\Crawler;
 class RequestsGatherer
 {
     /**
-     * @type string
+     * @var string
      */
     const DOMAIN = 'https://wiki.php.net/';
 
@@ -29,7 +29,7 @@ class RequestsGatherer
     }
 
     /**
-     * Get all the requests
+     * Get all the requests.
      */
     public function createRequests()
     {
@@ -39,9 +39,9 @@ class RequestsGatherer
 
         $crawler = $this->getPageCrawler(static::DOMAIN.'/rfc');
         $crawler->filter('li.level1 a.wikilink1')->each(function ($request) {
-            $link           = static::DOMAIN.$request->attr('href');
+            $link = static::DOMAIN.$request->attr('href');
             $requestCrawler = $this->getPageCrawler($link);
-            $name           = $this->getRequestName($requestCrawler);
+            $name = $this->getRequestName($requestCrawler);
             if (!$name) {
                 return;
             }
@@ -68,7 +68,7 @@ class RequestsGatherer
             ->reduce(function ($vote) {
                 return $vote->filter('td.rightalign a')->count() > 0;
             })->each(function ($vote) use ($request) {
-                $user  = $vote->filter('td.rightalign a')->text();
+                $user = $vote->filter('td.rightalign a')->text();
                 $voted = $vote->filter('td:nth-child(2) img')->count() ? true : false;
 
                 // Create user
@@ -89,7 +89,7 @@ class RequestsGatherer
     //////////////////////////////////////////////////////////////////////
 
     /**
-     * Extract the name of a request
+     * Extract the name of a request.
      *
      * @param Crawler $crawler
      *

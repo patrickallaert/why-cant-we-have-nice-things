@@ -36,7 +36,7 @@ trait HasVotes
      */
     public function getNoVotesAttribute()
     {
-        return $this->votes->filter(function(Vote $vote) {
+        return $this->votes->filter(function (Vote $vote) {
             return !$vote->vote;
         });
     }
