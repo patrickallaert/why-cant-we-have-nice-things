@@ -10,7 +10,7 @@ return Config::create()
              ->fixers([
                  'align_double_arrow',
                  'align_equals',
-                 
+
                  'ereg_to_preg',
                  'multiline_spaces_before_semicolon',
                  'newline_after_open_tag',
