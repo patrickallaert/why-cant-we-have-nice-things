@@ -31,10 +31,9 @@ class UsersController
      */
     public function index()
     {
-        dump(User::all()); exit;
-        $users = $this->requestsGatherer->getUserVotes();
+        $users = User::with('votes')->get();
         $users = $users->filter(function (User $user) {
-            return $user->total > 5;
+            return $user->votes->count() > 5;
         })->sortByDesc(function (User $user) {
             return $user->approval;
         });

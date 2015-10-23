@@ -4,7 +4,6 @@ namespace History\RequestsGatherer;
 use History\Entities\Request;
 use History\Entities\User;
 use Illuminate\Contracts\Cache\Repository;
-use Illuminate\Support\Collection;
 use Symfony\Component\DomCrawler\Crawler;
 
 class RequestsGatherer
@@ -30,67 +29,27 @@ class RequestsGatherer
     }
 
     /**
-     * Get the votes from all users
-     *
-     * @return Collection
-     */
-    public function getUserVotes()
-    {
-        // Gather users votes
-        $users    = [];
-        $requests = $this->createRequests();
-        foreach ($requests as $request) {
-            foreach ($request->votes as $vote) {
-                $user = $vote['user'];
-                if (!isset($users[$user])) {
-                    $users[$user] = [];
-                }
-
-                $users[$user][$request->link] = $vote['voted'];
-            }
-        }
-
-        // Compute totals
-        $users = new Collection($users);
-        foreach ($users as $user => $votes) {
-            $votedYes   = count(array_filter($votes));
-            $totalVotes = count($votes);
-
-            $users[$user] = new User([
-                'name'      => $user,
-                'votes'     => $votes,
-                'voted_yes' => $votedYes,
-                'voted_no'  => $totalVotes - $votedYes,
-                'approval'  => round($votedYes / $totalVotes, 3),
-                'total'     => $totalVotes,
-            ]);
-        }
-
-        return $users;
-    }
-
-    /**
      * Get all the requests
      */
     public function createRequests()
     {
-        return $this->cache->rememberForever('requests-votes', function () {
-            $crawler = $this->getPageCrawler(static::DOMAIN.'/rfc');
-            $users   = [];
+        $crawler = $this->getPageCrawler(static::DOMAIN.'/rfc');
+        $users   = [];
 
-            return $crawler->filter('li.level1 a.wikilink1')->each(function ($request) use ($users) {
-                $link           = static::DOMAIN.$request->attr('href');
-                $requestCrawler = $this->getPageCrawler($link);
+        return $crawler->filter('li.level1 a.wikilink1')->each(function ($request) use ($users) {
+            $link           = static::DOMAIN.$request->attr('href');
+            $requestCrawler = $this->getPageCrawler($link);
+            $name           = $this->getRequestName($requestCrawler);
+            if (!$name) {
+                return;
+            }
 
-                $request = Request::firstOrCreate([
-                    'name' => $requestCrawler->filter('h1')->text(),
-                    'link' => $link,
-                ]);
+            $request = Request::firstOrCreate([
+                'name' => $name,
+                'link' => $link,
+            ]);
 
-                $this->saveRequestVotes($request, $requestCrawler);
-
-                return $request;
-            });
+            $this->saveRequestVotes($request, $requestCrawler);
         });
     }
 
@@ -121,6 +80,32 @@ class RequestsGatherer
                     'vote'    => $voted,
                 ]);
             });
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    ////////////////////////////// HELPERS ///////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+
+    /**
+     * Extract the name of a request
+     *
+     * @param Crawler $crawler
+     *
+     * @return string
+     */
+    protected function getRequestName(Crawler $crawler)
+    {
+        $title = $crawler->filter('h1');
+        if (!$title->count()) {
+            return;
+        }
+
+        // Remove some tags from title
+        $title = $title->text();
+        $title = str_replace('PHP RFC:', '', $title);
+        $title = str_replace('Request for Comments:', '', $title);
+
+        return trim($title);
     }
 
     /**
