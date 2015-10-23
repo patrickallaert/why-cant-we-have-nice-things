@@ -6,8 +6,8 @@
         <thead>
         <tr>
             <th>Name</th>
-            <th># of votes</th>
-            <th>Approval %</th>
+            <th class="text-right"># of votes</th>
+            <th class="text-right">Approval %</th>
         </tr>
         </thead>
         <tbody>
@@ -16,8 +16,8 @@
                 <td>
                     <a href="{{ request.link }}">{{ request.name }}</a>
                 </td>
-                <td>{{ request.votes.count() }}</td>
-                <td>{{ request.approval * 100 }}%</td>
+                <td class="text-right">{{ request.votes.count() }}</td>
+                <td class="text-right">{{ (request.approval * 100)|number_format(precision) }}%</td>
             </tr>
         {% endfor %}
         </tbody>

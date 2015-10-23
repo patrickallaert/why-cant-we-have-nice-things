@@ -2,6 +2,7 @@
 namespace History\Providers;
 
 use League\Container\ServiceProvider;
+use Symfony\Component\HttpFoundation\Request;
 use Twig_Environment;
 use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;
@@ -29,6 +30,10 @@ class TwigServiceProvider extends ServiceProvider
                 'strict_variables' => false,
                 'cache'            => __DIR__.'/../../cache',
             ]);
+
+            $request = $this->container->get(Request::class);
+            $twig->addGlobal('current_uri', $request->getPathInfo());
+            $twig->addGlobal('precision', 1);
 
             $twig->addExtension(new Twig_Extension_Debug());
 
