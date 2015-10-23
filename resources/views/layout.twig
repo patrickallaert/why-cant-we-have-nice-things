@@ -1,0 +1,21 @@
+{% set title = title ? "#{title} - Why can't we have nice things" : "Why can't we have nice things" %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="/builds/main.css">
+</head>
+<body>
+    <main class="container">
+        <header class="page-header">
+            <h1>{{ title }}</h1>
+        </header>
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="/builds/main.js"></script>
+</body>
+</html>

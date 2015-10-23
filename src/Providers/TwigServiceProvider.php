@@ -25,8 +25,8 @@ class TwigServiceProvider extends ServiceProvider
     public function register()
     {
         $this->container->singleton(Twig_Environment::class, function () {
-            $loader = new Twig_Loader_Filesystem(__DIR__.'/../../views');
-            $twig = new Twig_Environment($loader, [
+            $loader = new Twig_Loader_Filesystem(__DIR__.'/../../resources/views');
+            $twig   = new Twig_Environment($loader, [
                 'auto_reload'      => true,
                 'strict_variables' => false,
                 'cache'            => __DIR__.'/../../cache',
