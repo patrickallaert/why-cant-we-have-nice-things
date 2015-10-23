@@ -1,6 +1,7 @@
 <?php
 namespace History;
 
+use Dotenv\Dotenv;
 use History\Providers\CacheServiceProvider;
 use History\Providers\RoutingServiceProvider;
 use History\Providers\TwigServiceProvider;
@@ -37,6 +38,11 @@ class Application
     {
         $this->container = $container;
 
+        // Load dotenv file
+        $dotenv = new Dotenv(__DIR__.'/..');
+        $dotenv->load();
+
+        // Boot up providers
         foreach ($this->providers as $provider) {
             $this->container->addServiceProvider($provider);
         }

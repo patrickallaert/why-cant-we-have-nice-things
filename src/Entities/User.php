@@ -1,9 +1,14 @@
 <?php
 namespace History\Entities;
 
-use Illuminate\Support\Fluent;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Fluent
+class User extends Model
 {
-
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+    ];
 }

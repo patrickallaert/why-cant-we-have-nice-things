@@ -1,9 +1,9 @@
 <?php
 namespace History\Entities;
 
-use Illuminate\Support\Fluent;
+use Illuminate\Database\Eloquent\Model;
 
-class Request extends Fluent
+class Request extends Model
 {
 
 }

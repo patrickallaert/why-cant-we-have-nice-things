@@ -74,7 +74,7 @@ class RequestsGatherer
      */
     public function getRequests()
     {
-        return $this->cache->rememberForever('requests-votes2', function () {
+        return $this->cache->rememberForever('requests-votes', function () {
             $crawler = $this->getPageCrawler(static::DOMAIN.'/rfc');
             $users   = [];
 
