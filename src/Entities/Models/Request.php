@@ -33,7 +33,7 @@ class Request extends Model
     public function getPassedAttribute()
     {
         $majority = 0.5;
-        if (strpos($this->condition, '2/3')) {
+        if (strpos($this->condition, '2/3') !== false) {
             $majority = 2/3;
         }
 
