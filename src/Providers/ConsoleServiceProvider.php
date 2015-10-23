@@ -25,8 +25,6 @@ class ConsoleServiceProvider extends ServiceProvider
      * Use the register method to register items with the container via the
      * protected $this->container property or the `getContainer` method
      * from the ContainerAwareTrait.
-     *
-     * @return void
      */
     public function register()
     {
@@ -43,7 +41,7 @@ class ConsoleServiceProvider extends ServiceProvider
     }
 
     /**
-     * Tinker with the application
+     * Tinker with the application.
      */
     public function tinker()
     {
@@ -56,7 +54,7 @@ class ConsoleServiceProvider extends ServiceProvider
     }
 
     /**
-     * Refresh the requests and comments
+     * Refresh the requests and comments.
      *
      * @param OutputInterface $output
      */
@@ -76,7 +74,7 @@ class ConsoleServiceProvider extends ServiceProvider
     }
 
     /**
-     * Refresh all statistics
+     * Refresh all statistics.
      *
      * @param OutputInterface $output
      */

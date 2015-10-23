@@ -67,7 +67,7 @@ class RequestsGatherer
     }
 
     /**
-     * Create a request from an RFC link
+     * Create a request from an RFC link.
      *
      * @param string $link
      */
@@ -109,7 +109,7 @@ class RequestsGatherer
             ->reduce(function ($vote) {
                 return $vote->filter('td.rightalign a')->count() > 0;
             })->each(function ($vote) use ($request, &$votes, $choices) {
-                $user  = $vote->filter('td.rightalign a')->text();
+                $user = $vote->filter('td.rightalign a')->text();
                 $voted = !$vote->filter('td:last-child img')->count();
 
                 // Create user

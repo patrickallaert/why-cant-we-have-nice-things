@@ -34,7 +34,7 @@ class Request extends Model
     {
         $majority = 0.5;
         if (strpos($this->condition, '2/3') !== false) {
-            $majority = 2/3;
+            $majority = 2 / 3;
         }
 
         return $this->approval > $majority;

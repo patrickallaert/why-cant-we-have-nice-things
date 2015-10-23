@@ -25,7 +25,7 @@ class User extends Model
     //////////////////////////////////////////////////////////////////////
 
     /**
-     * Recompute the user statistics
+     * Recompute the user statistics.
      */
     public function computeStatistics()
     {

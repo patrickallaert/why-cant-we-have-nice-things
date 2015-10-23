@@ -9,7 +9,6 @@ use History\Providers\DebugbarServiceProvider;
 use History\Providers\PathsServiceProvider;
 use History\Providers\RoutingServiceProvider;
 use History\Providers\TwigServiceProvider;
-use History\RequestsGatherer\RequestsGatherer;
 use History\RequestsGatherer\RequestsGathererServiceProvider;
 use Illuminate\Database\Capsule\Manager;
 use League\Container\ContainerInterface;
@@ -81,7 +80,7 @@ class Application
     }
 
     /**
-     * Run the CLI application
+     * Run the CLI application.
      */
     public function runConsole()
     {

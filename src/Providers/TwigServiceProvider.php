@@ -28,8 +28,8 @@ class TwigServiceProvider extends ServiceProvider
     {
         $this->container->singleton(Twig_Environment::class, function () {
             $loader = new Twig_Loader_Filesystem($this->container->get('paths.views'));
-            $debug  = getenv('APP_ENV') === 'local';
-            $twig   = new Twig_Environment($loader, [
+            $debug = getenv('APP_ENV') === 'local';
+            $twig = new Twig_Environment($loader, [
                 'debug'            => $debug,
                 'auto_reload'      => $debug,
                 'strict_variables' => false,
@@ -39,7 +39,7 @@ class TwigServiceProvider extends ServiceProvider
             // Configure Twig
             $this->registerGlobalVariables($twig);
             $twig->addExtension(new Twig_Extension_Debug());
-            $twig->addFunction(new Twig_SimpleFunction('percentage', function($number) {
+            $twig->addFunction(new Twig_SimpleFunction('percentage', function ($number) {
                 return round($number * 100, self::PRECISION);
             }));
 
@@ -48,7 +48,7 @@ class TwigServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register global variables with Twig
+     * Register global variables with Twig.
      *
      * @param Twig_Environment $twig
      */
@@ -69,7 +69,7 @@ class TwigServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bind the path to the Webpack assets to the views
+     * Bind the path to the Webpack assets to the views.
      *
      * @return array
      */

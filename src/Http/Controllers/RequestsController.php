@@ -32,7 +32,7 @@ class RequestsController extends AbstractController
     }
 
     /**
-     * @param integer $request
+     * @param int $request
      *
      * @return string
      */
