@@ -6,9 +6,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Twig_Environment;
 use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;
+use Twig_SimpleFunction;
 
 class TwigServiceProvider extends ServiceProvider
 {
+    const PRECISION = 1;
     /**
      * @var array
      */
@@ -25,8 +27,10 @@ class TwigServiceProvider extends ServiceProvider
     {
         $this->container->singleton(Twig_Environment::class, function () {
             $loader = new Twig_Loader_Filesystem($this->container->get('paths.views'));
+            $debug  = getenv('APP_ENV') === 'local';
             $twig   = new Twig_Environment($loader, [
-                'auto_reload'      => getenv('APP_ENV') === 'local',
+                'debug'            => $debug,
+                'auto_reload'      => $debug,
                 'strict_variables' => false,
                 'cache'            => $this->container->get('paths.cache'),
             ]);
@@ -34,6 +38,9 @@ class TwigServiceProvider extends ServiceProvider
             // Configure Twig
             $this->registerGlobalVariables($twig);
             $twig->addExtension(new Twig_Extension_Debug());
+            $twig->addFunction(new Twig_SimpleFunction('percentage', function($number) {
+                return round($number * 100, self::PRECISION);
+            }));
 
             return $twig;
         });
@@ -48,7 +55,7 @@ class TwigServiceProvider extends ServiceProvider
     {
         $request = $this->container->get(Request::class);
         $twig->addGlobal('current_uri', $request->getPathInfo());
-        $twig->addGlobal('precision', 1);
+        $twig->addGlobal('precision', self::PRECISION);
         $twig->addGlobal('assets', $this->getWebpackAssets());
 
         $twig->addGlobal('navigation', [

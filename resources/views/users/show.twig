@@ -4,7 +4,7 @@
 
 {% block content %}
     <p class="lead text-center">
-        This user has voted <strong>{{ user.total_votes }}</strong> times, and has been correct <strong>{{ (user.hivemind * 100)|number_format(precision) }}%</strong> of the time.
+        This user has voted <strong>{{ user.total_votes }}</strong> times, and has been correct <strong>{{ percentage(user.hivemind) }}%</strong> of the time.
     </p>
 
     <table class="table table-condensed table-hover table-striped">
@@ -18,9 +18,9 @@
         </thead>
         {% for vote in user.votes %}
             <tr>
-                <td><a target="_blank" href="{{ vote.request.link }}">{{ vote.request.name }}</a></td>
+                <td><a href="/requests/{{ vote.request.id }}">{{ vote.request.name }}</a></td>
                 <td class="text-right">{{ vote.vote ? 'Yes' : 'No' }}</td>
-                <td class="text-right">{{ (vote.request.approval * 100)|number_format(precision) }}%</td>
+                <td class="text-right">{{ percentage(vote.request.approval) }}%</td>
                 <td class="text-right">{{ vote.request.passed == vote.vote ? 'Yes' : 'No' }}</td>
             </tr>
         {% endfor %}

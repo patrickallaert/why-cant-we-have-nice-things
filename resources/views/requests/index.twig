@@ -4,7 +4,7 @@
 {% block content %}
     <p class="lead text-center">
         A total of <strong>{{ requests.count() }}</strong> RFCs have been created, <strong>{{ voted.count() }}</strong> have been voted on.<br>
-        In total, <strong>{{ (passed * 100)|number_format(precision) }}%</strong> have passed.
+        In total, <strong>{{ percentage(passed) }}%</strong> have passed.
     </p>
 
     {% include '_partials/search.twig' %}
@@ -26,7 +26,7 @@
                         <a href="{{ request.link }}">{{ request.name }}</a>
                     </td>
                     <td class="text-right">{{ request.votes.count() }}</td>
-                    <td class="text-right">{{ (request.approval * 100)|number_format(precision) }}%</td>
+                    <td class="text-right">{{ percentage(request.approval }}%</td>
                     <td class="text-right">{{ request.votes.count() ? (request.passed ? 'Yes' : 'No') : 'N/A' }}</td>
                 </tr>
             {% endfor %}
