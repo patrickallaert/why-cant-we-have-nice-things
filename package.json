@@ -1,15 +1,15 @@
 {
   "name": "why-cant-we-have-nice-things",
   "private": true,
-  "devDependencies": {
-    "madewithlove-webpack-config": "^1.1.0",
-    "webpack": "^1.12.2"
-  },
   "dependencies": {
     "babel-runtime": "^5.8.25",
     "bootstrap": "^3.3.5",
     "bootswatch": "^3.3.5",
     "jquery": "^2.1.4",
     "tablesorter": "^2.23.5"
+  },
+  "devDependencies": {
+    "madewithlove-webpack-config": "^1.1.0",
+    "webpack": "^1.12.2"
   }
 }

@@ -1,5 +1,3 @@
-var config = require('madewithlove-webpack-config')({
+module.exports = require('madewithlove-webpack-config')({
     react: false,
 });
-
-module.exports = config;
