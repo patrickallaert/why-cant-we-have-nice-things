@@ -45,6 +45,10 @@ class RequestsGatherer
         $this->output = $output;
     }
 
+    //////////////////////////////////////////////////////////////////////
+    ///////////////////////////// EXTRACTION /////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+
     /**
      * Get all the requests.
      */
@@ -55,25 +59,36 @@ class RequestsGatherer
 
         $progress = new ProgressBar($this->output, $requests->count());
         $requests->each(function ($request) use ($progress) {
+            $this->createRequest(static::DOMAIN.$request->attr('href'));
             $progress->advance();
-
-            $link           = static::DOMAIN.$request->attr('href');
-            $requestCrawler = $this->getPageCrawler($link);
-            $name           = $this->getRequestName($requestCrawler);
-            if (!$name) {
-                return;
-            }
-
-            $request = Request::firstOrCreate([
-                'name'      => $name,
-                'condition' => trim($this->getVotingConditions($requestCrawler)),
-                'link'      => $link,
-            ]);
-
-            $this->saveRequestVotes($request, $requestCrawler);
         });
 
         $progress->finish();
+    }
+
+    /**
+     * Create a request from an RFC link
+     *
+     * @param string $link
+     */
+    public function createRequest($link)
+    {
+        $crawler = $this->getPageCrawler($link);
+        $name    = $this->getRequestName($crawler);
+        if (!$name) {
+            return;
+        }
+
+        // Extract additional informations
+        $votingConditions = trim($this->getVotingConditions($crawler));
+
+        $request = Request::firstOrCreate([
+            'name'      => $name,
+            'condition' => $votingConditions,
+            'link'      => $link,
+        ]);
+
+        $this->saveRequestVotes($request, $crawler);
     }
 
     /**
@@ -84,15 +99,18 @@ class RequestsGatherer
      */
     protected function saveRequestVotes(Request $request, Crawler $crawler)
     {
-        $votes = [];
+        $votes   = [];
+        $choices = $crawler->filter('table tr.row1 td')->each(function ($choice) {
+            return $choice->text();
+        });
 
         $crawler
             ->filter('table.inline tr')
             ->reduce(function ($vote) {
                 return $vote->filter('td.rightalign a')->count() > 0;
-            })->each(function ($vote) use ($request, $votes) {
+            })->each(function ($vote) use ($request, &$votes, $choices) {
                 $user  = $vote->filter('td.rightalign a')->text();
-                $voted = $vote->filter('td:nth-child(2) img')->count() ? true : false;
+                $voted = !$vote->filter('td:last-child img')->count();
 
                 // Create user
                 $user = User::firstOrCreate([
