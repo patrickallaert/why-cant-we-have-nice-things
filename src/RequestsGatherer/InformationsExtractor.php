@@ -1,9 +1,9 @@
 <?php
 namespace History\RequestsGatherer;
 
+use DateTime;
 use History\Entities\Models\User;
 use Illuminate\Support\Str;
-use DateTime;
 use Symfony\Component\DomCrawler\Crawler;
 
 class InformationsExtractor
@@ -33,13 +33,13 @@ class InformationsExtractor
         $name               = $this->getRequestName();
         $majorityConditions = $this->cleanWhitespace($this->getMajorityConditions());
         $timestamp          = $this->getRequestTimestamp();
-        $votes              = $this->getVotes();
+        $questions          = $this->getQuestions();
 
         return [
             'name'      => $name,
             'condition' => $majorityConditions,
             'timestamp' => $timestamp,
-            'votes'     => $votes,
+            'questions' => $questions,
         ];
     }
 
@@ -111,19 +111,39 @@ class InformationsExtractor
     }
 
     /**
-     * Get the votes on this RFC
+     * Get the questions asked on this RFC
      *
      * @return array
      */
-    protected function getVotes()
+    protected function getQuestions()
+    {
+        return $this->crawler->filter('table.inline')->each(function ($question) {
+            $name = $question->filter('tr:first-child')->text();
+            $name = $this->cleanWhitespace($name);
+
+            return [
+                'name'  => $name,
+                'votes' => $this->getVotes($question),
+            ];
+        });
+    }
+
+    /**
+     * Get the votes for a question
+     *
+     * @param $question
+     *
+     * @return array
+     */
+    protected function getVotes(Crawler $question)
     {
         $votes   = [];
-        $choices = $this->crawler->filter('table tr.row1 td')->each(function ($choice) {
+        $choices = $question->filter('tr.row1 td')->each(function ($choice) {
             return $choice->text();
         });
 
-        $this->crawler
-            ->filter('table.inline tr')
+        $question
+            ->filter('tr')
             ->reduce(function ($vote) {
                 return $vote->filter('td.rightalign a')->count() > 0;
             })->each(function ($vote) use (&$votes, $choices) {

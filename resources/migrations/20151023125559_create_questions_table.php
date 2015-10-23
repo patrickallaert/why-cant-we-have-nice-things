@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class CreateVotesTable extends AbstractMigration
+class CreateQuestionsTable extends AbstractMigration
 {
     /**
      * Change Method.
@@ -22,14 +22,13 @@ class CreateVotesTable extends AbstractMigration
      */
     public function change()
     {
-        $this->table('votes')
-             ->addColumn('vote', 'boolean')
-             ->addColumn('question_id', 'integer')
-             ->addColumn('user_id', 'integer')
+        $this->table('questions')
+             ->addColumn('name', 'string')
+             ->addColumn('approval', 'float')
+             ->addColumn('request_id', 'integer')
              ->addColumn('created_at', 'datetime')
              ->addColumn('updated_at', 'datetime')
-             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE'])
-             ->addForeignKey('question_id', 'questions', 'id', ['delete' => 'CASCADE'])
+             ->addForeignKey('request_id', 'requests', 'id', ['delete' => 'CASCADE'])
              ->save();
     }
 }

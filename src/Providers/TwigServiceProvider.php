@@ -2,16 +2,22 @@
 namespace History\Providers;
 
 use History\Application;
+use Illuminate\Support\Str;
 use League\Container\ServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Twig_Environment;
 use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;
+use Twig_SimpleFilter;
 use Twig_SimpleFunction;
 
 class TwigServiceProvider extends ServiceProvider
 {
+    /**
+     * @var integer
+     */
     const PRECISION = 1;
+
     /**
      * @var array
      */

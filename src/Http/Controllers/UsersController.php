@@ -29,7 +29,7 @@ class UsersController extends AbstractController
      */
     public function show($user)
     {
-        $user = User::with('votes.request.votes')
+        $user = User::with('votes.question.request')
                     ->whereName($user)
                     ->firstOrFail();
 

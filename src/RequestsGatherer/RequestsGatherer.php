@@ -1,6 +1,7 @@
 <?php
 namespace History\RequestsGatherer;
 
+use History\Entities\Models\Question;
 use History\Entities\Models\Request;
 use History\Entities\Models\Vote;
 use Illuminate\Contracts\Cache\Repository;
@@ -91,15 +92,23 @@ class RequestsGatherer
         $request->updated_at = $informations['timestamp'];
         $request->save();
 
-        // Insert RFC votes
-        $votes = array_map(function ($vote) use ($request) {
-            $vote['request_id'] = $request->id;
+        foreach ($informations['questions'] as $question) {
+            $votes = $question['votes'];
+            $question = Question::firstOrCreate([
+                'name'       => $question['name'],
+                'request_id' => $request->id,
+            ]);
 
-            return $vote;
-        }, $informations['votes']);
+            // Insert question votes
+            $votes = array_map(function ($vote) use ($question) {
+                $vote['question_id'] = $question->id;
 
-        $request->votes()->delete();
-        Vote::insert($votes);
+                return $vote;
+            }, $votes);
+
+            $question->votes()->delete();
+            Vote::insert($votes);
+        }
     }
 
     /**

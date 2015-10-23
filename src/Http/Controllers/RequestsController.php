@@ -10,7 +10,7 @@ class RequestsController extends AbstractController
      */
     public function index()
     {
-        $requests = Request::with('votes')->get();
+        $requests = Request::with('questions.votes')->get();
         $requests = $requests->sortByDesc(function (Request $request) {
             return $request->created_at;
         });
@@ -38,7 +38,7 @@ class RequestsController extends AbstractController
      */
     public function show($request)
     {
-        $request = Request::with('votes.user')->findOrFail($request);
+        $request = Request::with('questions.votes.user')->findOrFail($request);
 
         return $this->views->render('requests/show.twig', [
             'request' => $request,

@@ -2,6 +2,7 @@
 namespace History\Providers;
 
 use History\Console\Commands\Tinker;
+use History\Entities\Models\Question;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
 use History\RequestsGatherer\RequestsGatherer;
@@ -83,11 +84,16 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     public function refreshStats(OutputInterface $output)
     {
-        $users    = User::with('votes')->get();
-        $requests = Request::with('votes')->get();
+        $users     = User::with('votes')->get();
+        $questions = Question::with('votes')->get();
+        $requests  = Request::with('questions.votes')->get();
 
         $this->progressIterator($output, $users, function (User $user) {
             $user->computeStatistics();
+        });
+
+        $this->progressIterator($output, $questions, function (Question $question) {
+            $question->computeStatistics();
         });
 
         $this->progressIterator($output, $requests, function (Request $request) {

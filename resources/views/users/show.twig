@@ -11,6 +11,7 @@
         <thead>
             <tr>
                 <th>RFC</th>
+                <th>Question</th>
                 <th class="text-right">Voted</th>
                 <th class="text-right">Approval %</th>
                 <th class="text-right">Correct?</th>
@@ -18,10 +19,13 @@
         </thead>
         {% for vote in user.votes %}
             <tr>
-                <td><a href="/requests/{{ vote.request.id }}">{{ vote.request.name }}</a></td>
+                <td>
+                    <a href="/requests/{{ vote.question.request.id }}">{{ vote.question.request.name }}</a>
+                </td>
+                <td>{{ vote.question.name }}</td>
                 <td class="text-right">{{ vote.vote ? 'Yes' : 'No' }}</td>
-                <td class="text-right">{{ percentage(vote.request.approval) }}%</td>
-                <td class="text-right">{{ vote.request.passed == vote.vote ? 'Yes' : 'No' }}</td>
+                <td class="text-right">{{ percentage(vote.question.approval) }}%</td>
+                <td class="text-right">{{ vote.question.passed == vote.vote ? 'Yes' : 'No' }}</td>
             </tr>
         {% endfor %}
     </table>

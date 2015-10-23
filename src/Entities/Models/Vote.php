@@ -10,16 +10,24 @@ class Vote extends Model
      */
     protected $fillable = [
         'user_id',
-        'request_id',
+        'question_id',
         'vote',
     ];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+    public function question()
+    {
+        return $this->belongsTo(Question::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function request()
     {
-        return $this->belongsTo(Request::class);
+        return $this->question->request();
     }
 
     /**

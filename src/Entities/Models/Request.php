@@ -1,12 +1,13 @@
 <?php
 namespace History\Entities\Models;
 
+use History\Entities\Traits\CanPass;
 use History\Entities\Traits\HasVotes;
 use Illuminate\Database\Eloquent\Model;
 
 class Request extends Model
 {
-    use HasVotes;
+    use CanPass;
 
     /**
      * @var array
@@ -18,25 +19,27 @@ class Request extends Model
         'approval',
     ];
 
-    public function computeStatistics()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function questions()
     {
-        $this->update([
-            'approval' => $this->getApproval(),
-        ]);
+        return $this->hasMany(Question::class);
     }
 
     /**
-     * Did an RFC pass?
-     *
-     * @return bool
+     * Compute the RFC's statistics
      */
-    public function getPassedAttribute()
+    public function computeStatistics()
     {
-        $majority = 0.5;
-        if (strpos($this->condition, '2/3') !== false) {
-            $majority = 2 / 3;
-        }
+        $approvals = $this->questions->map(function (Question $question) {
+            return $question->getApproval();
+        })->all();
 
-        return $this->approval > $majority;
+        $approval = $approvals ? array_sum($approvals) / count($approvals) : 0;
+
+        $this->update([
+            'approval' => $approval,
+        ]);
     }
 }
