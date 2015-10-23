@@ -33,10 +33,12 @@ class RequestsGatherer
      */
     public function createRequests()
     {
-        $crawler = $this->getPageCrawler(static::DOMAIN.'/rfc');
-        $users   = [];
+        if (Request::count()) {
+            return;
+        }
 
-        return $crawler->filter('li.level1 a.wikilink1')->each(function ($request) use ($users) {
+        $crawler = $this->getPageCrawler(static::DOMAIN.'/rfc');
+        $crawler->filter('li.level1 a.wikilink1')->each(function ($request) {
             $link           = static::DOMAIN.$request->attr('href');
             $requestCrawler = $this->getPageCrawler($link);
             $name           = $this->getRequestName($requestCrawler);
@@ -56,10 +58,8 @@ class RequestsGatherer
     /**
      * @param \History\Entities\Models\Request $request
      * @param Crawler                          $crawler
-
-
-*
-*@return array
+     *
+     * @return array
      */
     protected function saveRequestVotes(Request $request, Crawler $crawler)
     {
@@ -77,7 +77,7 @@ class RequestsGatherer
                 ]);
 
                 // Save his vote on this request
-                $request->votes()->create([
+                $request->votes()->firstOrCreate([
                     'user_id' => $user->id,
                     'vote'    => $voted,
                 ]);

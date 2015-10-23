@@ -11,6 +11,7 @@
             padding: 2rem;
         }
     </style>
+    {{ debugbar.head|raw }}
 </head>
 <body>
     <main class="container">
@@ -26,5 +27,6 @@
     <script>
         $('table').tablesorter();
     </script>
+    {{ debugbar.scripts|raw }}
 </body>
 </html>

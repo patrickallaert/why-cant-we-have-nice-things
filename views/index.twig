@@ -17,11 +17,11 @@
         {% for user in users %}
             <tr>
                 <td>
-                    <a target="_blank" href="https://people.php.net/user.php?username={{ user.name }}">{{ user.name }}</a>
+                    <a href="/users/{{ user.name }}">{{ user.name }}</a>
                 </td>
-                <td>{{ user.voted_yes }}</td>
-                <td>{{ user.voted_no }}</td>
-                <td>{{ user.total }}</td>
+                <td>{{ user.yesVotes.count() }}</td>
+                <td>{{ user.noVotes.count() }}</td>
+                <td>{{ user.votes.count() }}</td>
                 <td>{{ user.approval * 100 }}%</td>
             </tr>
         {% endfor %}

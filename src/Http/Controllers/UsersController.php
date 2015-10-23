@@ -3,6 +3,7 @@ namespace History\Http\Controllers;
 
 use History\Entities\Models\User;
 use History\RequestsGatherer\RequestsGatherer;
+use Illuminate\Database\Capsule\Manager;
 use Twig_Environment;
 
 class UsersController

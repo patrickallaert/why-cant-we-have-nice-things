@@ -1,9 +1,11 @@
 <?php
 namespace History;
 
+use DebugBar\StandardDebugBar;
 use Dotenv\Dotenv;
 use History\Providers\CacheServiceProvider;
 use History\Providers\DatabaseServiceProvider;
+use History\Providers\DebugbarServiceProvider;
 use History\Providers\RoutingServiceProvider;
 use History\Providers\TwigServiceProvider;
 use History\RequestsGatherer\RequestsGatherer;
@@ -13,6 +15,7 @@ use League\Container\ContainerInterface;
 use League\Route\Dispatcher;
 use League\Route\RouteCollection;
 use Symfony\Component\HttpFoundation\Request;
+use Twig_Environment;
 
 class Application
 {
@@ -30,6 +33,7 @@ class Application
         RoutingServiceProvider::class,
         TwigServiceProvider::class,
         DatabaseServiceProvider::class,
+        DebugbarServiceProvider::class,
     ];
 
     /**

@@ -27,8 +27,9 @@ class TwigServiceProvider extends ServiceProvider
             $loader = new Twig_Loader_Filesystem(__DIR__.'/../../views');
 
             return new Twig_Environment($loader, [
-                'auto_reload' => true,
-                'cache'       => __DIR__.'/../../cache',
+                'auto_reload'      => true,
+                'strict_variables' => false,
+                'cache'            => __DIR__.'/../../cache',
             ]);
         });
     }

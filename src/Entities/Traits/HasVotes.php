@@ -17,25 +17,29 @@ trait HasVotes
         return $this->hasMany(Vote::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function yesVotes()
-    {
-        return $this->votes()->where('voted', true);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function noVotes()
-    {
-        return $this->votes()->where('voted', false);
-    }
-
     //////////////////////////////////////////////////////////////////////
     ///////////////////////////// ATTRIBUTES /////////////////////////////
     //////////////////////////////////////////////////////////////////////
+
+    /**
+     * @return Collection
+     */
+    public function getYesVotesAttribute()
+    {
+        return $this->votes->filter(function (Vote $vote) {
+            return $vote->vote;
+        });
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getNoVotesAttribute()
+    {
+        return $this->votes->filter(function(Vote $vote) {
+            return !$vote->vote;
+        });
+    }
 
     /**
      * @return float
