@@ -46,6 +46,10 @@ trait HasVotes
      */
     public function getApprovalAttribute()
     {
+        if (!$this->votes->count()) {
+            return 0;
+        }
+
         return round($this->yesVotes->count() / $this->votes->count(), 3);
     }
 }

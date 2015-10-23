@@ -1,7 +1,6 @@
 <?php
 namespace History;
 
-use DebugBar\StandardDebugBar;
 use Dotenv\Dotenv;
 use History\Providers\CacheServiceProvider;
 use History\Providers\DatabaseServiceProvider;
@@ -15,7 +14,6 @@ use League\Container\ContainerInterface;
 use League\Route\Dispatcher;
 use League\Route\RouteCollection;
 use Symfony\Component\HttpFoundation\Request;
-use Twig_Environment;
 
 class Application
 {

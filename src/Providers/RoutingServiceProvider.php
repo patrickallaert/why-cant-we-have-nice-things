@@ -1,6 +1,7 @@
 <?php
 namespace History\Providers;
 
+use History\Http\Controllers\RequestsController;
 use History\Http\Controllers\UsersController;
 use League\Container\ServiceProvider;
 use League\Route\RouteCollection;
@@ -37,6 +38,7 @@ class RoutingServiceProvider extends ServiceProvider
             // Register routes
             $routes->addRoute('GET', '/', UsersController::class.'::index');
             $routes->addRoute('GET', '/users/{user}', UsersController::class.'::show');
+            $routes->addRoute('GET', '/requests', RequestsController::class.'::index');
 
             return $routes;
         });

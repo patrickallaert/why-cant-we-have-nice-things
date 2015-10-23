@@ -4,21 +4,8 @@ namespace History\Http\Controllers;
 use History\Entities\Models\User;
 use Twig_Environment;
 
-class UsersController
+class UsersController extends AbstractController
 {
-    /**
-     * @var Twig_Environment
-     */
-    protected $views;
-
-    /**
-     * @param Twig_Environment $views
-     */
-    public function __construct(Twig_Environment $views)
-    {
-        $this->views = $views;
-    }
-
     /**
      * @return string
      */
@@ -31,7 +18,7 @@ class UsersController
             return $user->hivemind * -1;
         });
 
-        return $this->views->render('index.twig', [
+        return $this->views->render('users/index.twig', [
             'users' => $users,
         ]);
     }
@@ -47,7 +34,7 @@ class UsersController
             ->whereName($user)
             ->firstOrFail();
 
-        return $this->views->render('show.twig', [
+        return $this->views->render('users/show.twig', [
             'user' => $user,
         ]);
     }
