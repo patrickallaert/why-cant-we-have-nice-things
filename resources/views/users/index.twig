@@ -9,30 +9,32 @@
 
     {% include '_partials/search.twig' %}
 
-    <table class="table table-striped table-condensed table-hover">
-        <thead>
-        <tr>
-            <th>User</th>
-            <th class="text-right">Voted YES</th>
-            <th class="text-right">Voted NO</th>
-            <th class="text-right"># of votes</th>
-            <th class="text-right">Approval %</th>
-            <th class="text-right">Hivemind %</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
+    <div class="table-responsive">
+        <table class="table table-striped table-condensed table-hover">
+            <thead>
             <tr>
-                <td>
-                    <a href="/users/{{ user.name }}">{{ user.name }}</a>
-                </td>
-                <td class="text-right">{{ user.yes_votes }}</td>
-                <td class="text-right">{{ user.no_votes }}</td>
-                <td class="text-right">{{ user.total_votes }}</td>
-                <td class="text-right">{{ (user.approval * 100)|number_format(precision) }}%</td>
-                <td class="text-right">{{ (user.hivemind * 100)|number_format(precision) }}%</td>
+                <th>User</th>
+                <th class="text-right">Voted YES</th>
+                <th class="text-right">Voted NO</th>
+                <th class="text-right"># of votes</th>
+                <th class="text-right">Approval %</th>
+                <th class="text-right">Hivemind %</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>
+                        <a href="/users/{{ user.name }}">{{ user.name }}</a>
+                    </td>
+                    <td class="text-right">{{ user.yes_votes }}</td>
+                    <td class="text-right">{{ user.no_votes }}</td>
+                    <td class="text-right">{{ user.total_votes }}</td>
+                    <td class="text-right">{{ (user.approval * 100)|number_format(precision) }}%</td>
+                    <td class="text-right">{{ (user.hivemind * 100)|number_format(precision) }}%</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

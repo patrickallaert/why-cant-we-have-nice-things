@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import 'tablesorter';
 import 'tablesorter/dist/js/widgets/widget-filter.min';
+import 'bootstrap/js/collapse';
 
 import 'bootswatch/flatly/bootstrap.css';
 import '../sass/styles.scss';
