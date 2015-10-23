@@ -27,7 +27,7 @@ class TwigServiceProvider extends ServiceProvider
         $this->container->singleton(Twig_Environment::class, function () {
             $loader = new Twig_Loader_Filesystem(__DIR__.'/../../resources/views');
             $twig   = new Twig_Environment($loader, [
-                'auto_reload'      => true,
+                'auto_reload'      => getenv('APP_ENV') === 'local',
                 'strict_variables' => false,
                 'cache'            => __DIR__.'/../../cache',
             ]);

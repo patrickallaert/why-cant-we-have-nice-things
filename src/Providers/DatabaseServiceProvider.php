@@ -1,7 +1,9 @@
 <?php
 namespace History\Providers;
 
+use Illuminate\Container\Container;
 use Illuminate\Database\Capsule\Manager;
+use Illuminate\Events\Dispatcher;
 use League\Container\ServiceProvider;
 
 class DatabaseServiceProvider extends ServiceProvider
@@ -37,6 +39,10 @@ class DatabaseServiceProvider extends ServiceProvider
 
             $capsule->setAsGlobal();
             $capsule->bootEloquent();
+
+            if (getenv('APP_ENV') === 'local') {
+                $capsule->connection()->enableQueryLog();
+            }
 
             return $capsule;
         });

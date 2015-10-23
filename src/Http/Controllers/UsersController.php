@@ -2,7 +2,7 @@
 namespace History\Http\Controllers;
 
 use History\Entities\Models\User;
-use Twig_Environment;
+use Illuminate\Database\Capsule\Manager;
 
 class UsersController extends AbstractController
 {
@@ -11,7 +11,7 @@ class UsersController extends AbstractController
      */
     public function index()
     {
-        $users = User::with('votes.request.votes')->get();
+        $users = User::with('votes.request')->get();
         $users = $users->filter(function (User $user) {
             return $user->votes->count() > 5;
         })->sortByDesc(function (User $user) {
@@ -31,8 +31,8 @@ class UsersController extends AbstractController
     public function show($user)
     {
         $user = User::with('votes.request.votes')
-            ->whereName($user)
-            ->firstOrFail();
+                    ->whereName($user)
+                    ->firstOrFail();
 
         return $this->views->render('users/show.twig', [
             'user' => $user,
