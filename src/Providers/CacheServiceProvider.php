@@ -24,7 +24,7 @@ class CacheServiceProvider extends ServiceProvider
     public function register()
     {
         $this->container->singleton(Repository::class, function () {
-            $store = new FileStore(new Filesystem(), __DIR__.'/../../cache');
+            $store = new FileStore(new Filesystem(), $this->container->get('paths.cache'));
 
             return new IlluminateCache($store);
         });

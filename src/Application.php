@@ -6,6 +6,7 @@ use History\Providers\CacheServiceProvider;
 use History\Providers\ConsoleServiceProvider;
 use History\Providers\DatabaseServiceProvider;
 use History\Providers\DebugbarServiceProvider;
+use History\Providers\PathsServiceProvider;
 use History\Providers\RoutingServiceProvider;
 use History\Providers\TwigServiceProvider;
 use History\RequestsGatherer\RequestsGatherer;
@@ -28,6 +29,7 @@ class Application
      * @var array
      */
     protected $providers = [
+        PathsServiceProvider::class,
         CacheServiceProvider::class,
         RequestsGathererServiceProvider::class,
         RoutingServiceProvider::class,

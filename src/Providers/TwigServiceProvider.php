@@ -24,11 +24,11 @@ class TwigServiceProvider extends ServiceProvider
     public function register()
     {
         $this->container->singleton(Twig_Environment::class, function () {
-            $loader = new Twig_Loader_Filesystem(__DIR__.'/../../resources/views');
+            $loader = new Twig_Loader_Filesystem($this->container->get('paths.views'));
             $twig   = new Twig_Environment($loader, [
                 'auto_reload'      => getenv('APP_ENV') === 'local',
                 'strict_variables' => false,
-                'cache'            => __DIR__.'/../../cache',
+                'cache'            => $this->container->get('paths.cache'),
             ]);
 
             // Configure Twig
@@ -65,7 +65,8 @@ class TwigServiceProvider extends ServiceProvider
      */
     private function getWebpackAssets()
     {
-        $assets = file_get_contents(__DIR__.'/../../public/builds/manifest.json');
+        $assets = $this->container->get('paths.builds').'/manifest.json';
+        $assets = file_get_contents($assets);
         $assets = json_decode($assets, true);
 
         return $assets;
