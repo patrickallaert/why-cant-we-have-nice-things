@@ -23,4 +23,14 @@ class Request extends Model
             'approval' => $this->getApproval(),
         ]);
     }
+
+    /**
+     * Did an RFC pass?
+     *
+     * @return bool
+     */
+    public function getPassedAttribute()
+    {
+        return $this->approval > (2 / 3);
+    }
 }
