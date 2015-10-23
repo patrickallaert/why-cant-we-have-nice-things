@@ -21,6 +21,11 @@ use Symfony\Component\HttpFoundation\Request;
 class Application
 {
     /**
+     * @var string
+     */
+    const NAME = "Why can't we have nice things";
+
+    /**
      * @var ContainerInterface
      */
     protected $container;

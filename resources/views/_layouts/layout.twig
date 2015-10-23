@@ -1,4 +1,4 @@
-{% set title = title ? "#{title} - Why can't we have nice things" : "Why can't we have nice things" %}
+{% set title = title ? "#{title} - #{app_name}" : "#{app_name}" %}
 
 <!doctype html>
 <html lang="en">
@@ -13,7 +13,7 @@
     <main class="container">
         <header class="page-header text-center">
             <h1 class="layout-header">
-                <a href="/">Why can't we have nice things</a>
+                <a href="/">{{ app_name }}</a>
             </h1>
 
             {% if subtitle %}

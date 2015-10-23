@@ -1,6 +1,7 @@
 <?php
 namespace History\Providers;
 
+use History\Application;
 use League\Container\ServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Twig_Environment;
@@ -53,6 +54,8 @@ class TwigServiceProvider extends ServiceProvider
      */
     private function registerGlobalVariables(Twig_Environment $twig)
     {
+        $twig->addGlobal('app_name', Application::NAME);
+
         $request = $this->container->get(Request::class);
         $twig->addGlobal('current_uri', $request->getPathInfo());
         $twig->addGlobal('precision', self::PRECISION);
