@@ -38,7 +38,7 @@ class RequestsGatherer
     {
         // Gather users votes
         $users    = [];
-        $requests = $this->getRequests();
+        $requests = $this->createRequests();
         foreach ($requests as $request) {
             foreach ($request->votes as $vote) {
                 $user = $vote['user'];
@@ -72,7 +72,7 @@ class RequestsGatherer
     /**
      * Get all the requests
      */
-    public function getRequests()
+    public function createRequests()
     {
         return $this->cache->rememberForever('requests-votes', function () {
             $crawler = $this->getPageCrawler(static::DOMAIN.'/rfc');
@@ -82,34 +82,44 @@ class RequestsGatherer
                 $link           = static::DOMAIN.$request->attr('href');
                 $requestCrawler = $this->getPageCrawler($link);
 
-                return new Request([
-                    'name'  => $requestCrawler->filter('h1')->text(),
-                    'link'  => $link,
-                    'votes' => $this->getRequestVotes($requestCrawler),
+                $request = Request::firstOrCreate([
+                    'name' => $requestCrawler->filter('h1')->text(),
+                    'link' => $link,
                 ]);
+
+                $this->saveRequestVotes($request, $requestCrawler);
+
+                return $request;
             });
         });
     }
 
     /**
+     * @param Request $request
      * @param Crawler $crawler
      *
      * @return array
      */
-    protected function getRequestVotes(Crawler $crawler)
+    protected function saveRequestVotes(Request $request, Crawler $crawler)
     {
         return $crawler
             ->filter('table.inline tr')
             ->reduce(function ($vote) {
                 return $vote->filter('td.rightalign a')->count() > 0;
-            })->each(function ($vote) {
+            })->each(function ($vote) use ($request) {
                 $user  = $vote->filter('td.rightalign a')->text();
                 $voted = $vote->filter('td:nth-child(2) img')->count() ? true : false;
 
-                return [
-                    'user'  => $user,
-                    'voted' => $voted,
-                ];
+                // Create user
+                $user = User::firstOrCreate([
+                    'name' => $user,
+                ]);
+
+                // Save his vote on this request
+                $request->votes()->create([
+                    'user_id' => $user->id,
+                    'vote'    => $voted,
+                ]);
             });
     }
 

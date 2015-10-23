@@ -25,6 +25,7 @@ class CreateVotesTable extends AbstractMigration
         $this->table('votes')
              ->addColumn('request_id', 'integer')
              ->addColumn('user_id', 'integer')
+             ->addColumn('vote', 'boolean')
              ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE'])
              ->addForeignKey('request_id', 'requests', 'id', ['delete' => 'CASCADE'])
              ->save();

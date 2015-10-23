@@ -11,4 +11,12 @@ class User extends Model
     protected $fillable = [
         'name',
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function votes()
+    {
+        return $this->hasMany(Vote::class);
+    }
 }
