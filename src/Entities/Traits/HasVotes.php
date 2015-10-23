@@ -57,9 +57,10 @@ trait HasVotes
     {
         $hivemind = [];
         foreach ($this->votes as $vote) {
-            $majority   = $vote->request->approval > 0.5;
+            // Consider an RFC passed on 2/3 majority
+            $passed     = $vote->request->approval > (2 / 3);
             $user       = (bool) $vote->vote;
-            $hivemind[] = $user === $majority;
+            $hivemind[] = $user === $passed;
         }
 
         $hivemind = count(array_filter($hivemind)) / count($hivemind);
