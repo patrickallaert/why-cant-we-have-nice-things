@@ -17,6 +17,7 @@
                 <th class="text-right"># of votes</th>
                 <th class="text-right">Approval %</th>
                 <th class="text-right">Passed?</th>
+                <th>Last update</th>
             </tr>
             </thead>
             <tbody>
@@ -26,8 +27,9 @@
                         <a href="{{ request.link }}">{{ request.name }}</a>
                     </td>
                     <td class="text-right">{{ request.votes.count() }}</td>
-                    <td class="text-right">{{ percentage(request.approval }}%</td>
+                    <td class="text-right">{{ percentage(request.approval) }}%</td>
                     <td class="text-right">{{ request.votes.count() ? (request.passed ? 'Yes' : 'No') : 'N/A' }}</td>
+                    <td>{{ request.created_at.toDateString() }}</td>
                 </tr>
             {% endfor %}
             </tbody>
