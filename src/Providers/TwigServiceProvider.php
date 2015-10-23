@@ -25,23 +25,44 @@ class TwigServiceProvider extends ServiceProvider
     {
         $this->container->singleton(Twig_Environment::class, function () {
             $loader = new Twig_Loader_Filesystem(__DIR__.'/../../resources/views');
-            $twig = new Twig_Environment($loader, [
+            $twig   = new Twig_Environment($loader, [
                 'auto_reload'      => getenv('APP_ENV') === 'local',
                 'strict_variables' => false,
                 'cache'            => __DIR__.'/../../cache',
             ]);
 
-            $request = $this->container->get(Request::class);
-            $twig->addGlobal('current_uri', $request->getPathInfo());
-            $twig->addGlobal('precision', 1);
-            $twig->addGlobal('assets', $this->getWebpackAssets());
-
+            // Configure Twig
+            $this->registerGlobalVariables($twig);
             $twig->addExtension(new Twig_Extension_Debug());
 
             return $twig;
         });
     }
 
+    /**
+     * Register global variables with Twig
+     *
+     * @param Twig_Environment $twig
+     */
+    private function registerGlobalVariables(Twig_Environment $twig)
+    {
+        $request = $this->container->get(Request::class);
+        $twig->addGlobal('current_uri', $request->getPathInfo());
+        $twig->addGlobal('precision', 1);
+        $twig->addGlobal('assets', $this->getWebpackAssets());
+
+        $twig->addGlobal('navigation', [
+            ['uri' => '/users', 'label' => 'Users'],
+            ['uri' => '/requests', 'label' => 'RFCs'],
+            ['uri' => '/about', 'label' => 'About'],
+        ]);
+    }
+
+    /**
+     * Bind the path to the Webpack assets to the views
+     *
+     * @return array
+     */
     private function getWebpackAssets()
     {
         $assets = file_get_contents(__DIR__.'/../../public/builds/manifest.json');

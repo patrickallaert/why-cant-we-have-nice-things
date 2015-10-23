@@ -2,13 +2,16 @@
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">Why can't we have nice things</a>
+            <a class="navbar-brand" href="/">Why can't we have nice things</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li {% if current_uri == '/' %}class="active"{% endif %}><a href="/">Users</a></li>
-                <li {% if current_uri == '/requests' %}class="active"{% endif %}><a href="/requests">RFCs</a></li>
+                {% for link in navigation %}
+                    <li {% if current_uri starts with link.uri %}class="active"{% endif %}>
+                        <a href="{{ link.uri }}">{{ link.label }}</a>
+                    </li>
+                {% endfor %}
             </ul>
         </div>
     </div>
