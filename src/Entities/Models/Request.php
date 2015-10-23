@@ -13,6 +13,7 @@ class Request extends Model
      */
     protected $fillable = [
         'name',
+        'condition',
         'link',
         'approval',
     ];
@@ -31,6 +32,11 @@ class Request extends Model
      */
     public function getPassedAttribute()
     {
-        return $this->approval > (2 / 3);
+        $majority = 0.5;
+        if (strpos($this->condition, '2/3')) {
+            $majority = 2/3;
+        }
+
+        return $this->approval > $majority;
     }
 }

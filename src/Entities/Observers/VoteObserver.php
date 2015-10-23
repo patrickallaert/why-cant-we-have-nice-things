@@ -11,8 +11,6 @@ class VoteObserver
     public function saved(Vote $vote)
     {
         $vote->user->computeStatistics();
-        $vote->request->update([
-           'approval' => $vote->request->getApp
-        ]);
+        $vote->request->computeStatistics();
     }
 }

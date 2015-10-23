@@ -24,6 +24,7 @@ class CreateRequestsTable extends AbstractMigration
     {
         $this->table('requests')
              ->addColumn('name', 'string')
+             ->addColumn('condition', 'string', ['null' => true])
              ->addColumn('link', 'string')
              ->addColumn('approval', 'float')
              ->addColumn('created_at', 'datetime')

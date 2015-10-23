@@ -39,16 +39,17 @@ class RequestsGatherer
 
         $crawler = $this->getPageCrawler(static::DOMAIN.'/rfc');
         $crawler->filter('li.level1 a.wikilink1')->each(function ($request) {
-            $link = static::DOMAIN.$request->attr('href');
+            $link           = static::DOMAIN.$request->attr('href');
             $requestCrawler = $this->getPageCrawler($link);
-            $name = $this->getRequestName($requestCrawler);
+            $name           = $this->getRequestName($requestCrawler);
             if (!$name) {
                 return;
             }
 
             $request = Request::firstOrCreate([
-                'name' => $name,
-                'link' => $link,
+                'name'      => $name,
+                'condition' => trim($this->getVotingConditions($requestCrawler)),
+                'link'      => $link,
             ]);
 
             $this->saveRequestVotes($request, $requestCrawler);
@@ -68,7 +69,7 @@ class RequestsGatherer
             ->reduce(function ($vote) {
                 return $vote->filter('td.rightalign a')->count() > 0;
             })->each(function ($vote) use ($request) {
-                $user = $vote->filter('td.rightalign a')->text();
+                $user  = $vote->filter('td.rightalign a')->text();
                 $voted = $vote->filter('td:nth-child(2) img')->count() ? true : false;
 
                 // Create user
@@ -109,6 +110,25 @@ class RequestsGatherer
         $title = str_replace('Request for Comments:', '', $title);
 
         return trim($title);
+    }
+
+    // Get voting conditions
+    /**
+     * @param $requestCrawler
+     *
+     * @return mixed
+     */
+    protected function getVotingConditions(Crawler $requestCrawler)
+    {
+        $condition = $requestCrawler->filter('#proposed_voting_choices + div');
+        if ($condition->count()) {
+            return $condition->text();
+        }
+
+        $condition = $requestCrawler->filter('#vote + div p');
+        if ($condition->count()) {
+            return $condition->text();
+        }
     }
 
     /**
