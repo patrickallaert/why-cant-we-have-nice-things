@@ -107,6 +107,7 @@ class RequestsGatherer
                 ];
             });
 
+        $request->votes()->sync([]);
         $request->votes()->saveMany($votes);
     }
 
