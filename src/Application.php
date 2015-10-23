@@ -55,9 +55,8 @@ class Application
             $this->container->addServiceProvider($provider);
         }
 
-        // Boot database and seed it
+        // Boot database
         $this->container->get(Manager::class);
-        $this->container->get(RequestsGatherer::class)->createRequests();
     }
 
     /**

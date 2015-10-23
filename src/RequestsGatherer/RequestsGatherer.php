@@ -4,6 +4,9 @@ namespace History\RequestsGatherer;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
 use Illuminate\Contracts\Cache\Repository;
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DomCrawler\Crawler;
 
 class RequestsGatherer
@@ -19,13 +22,27 @@ class RequestsGatherer
     protected $cache;
 
     /**
+     * @var OutputInterface
+     */
+    protected $output;
+
+    /**
      * RequestsGatherer constructor.
      *
      * @param Repository $cache
      */
     public function __construct(Repository $cache)
     {
-        $this->cache = $cache;
+        $this->cache  = $cache;
+        $this->output = new NullOutput();
+    }
+
+    /**
+     * @param OutputInterface $output
+     */
+    public function setOutput(OutputInterface $output)
+    {
+        $this->output = $output;
     }
 
     /**
@@ -33,12 +50,13 @@ class RequestsGatherer
      */
     public function createRequests()
     {
-        if (Request::count()) {
-            return;
-        }
+        $crawler  = $this->getPageCrawler(static::DOMAIN.'/rfc');
+        $requests = $crawler->filter('li.level1 a.wikilink1');
 
-        $crawler = $this->getPageCrawler(static::DOMAIN.'/rfc');
-        $crawler->filter('li.level1 a.wikilink1')->each(function ($request) {
+        $progress = new ProgressBar($this->output, $requests->count());
+        $requests->each(function ($request) use ($progress) {
+            $progress->advance();
+
             $link           = static::DOMAIN.$request->attr('href');
             $requestCrawler = $this->getPageCrawler($link);
             $name           = $this->getRequestName($requestCrawler);
@@ -54,6 +72,8 @@ class RequestsGatherer
 
             $this->saveRequestVotes($request, $requestCrawler);
         });
+
+        $progress->finish();
     }
 
     /**
@@ -64,11 +84,13 @@ class RequestsGatherer
      */
     protected function saveRequestVotes(Request $request, Crawler $crawler)
     {
-        return $crawler
+        $votes = [];
+
+        $crawler
             ->filter('table.inline tr')
             ->reduce(function ($vote) {
                 return $vote->filter('td.rightalign a')->count() > 0;
-            })->each(function ($vote) use ($request) {
+            })->each(function ($vote) use ($request, $votes) {
                 $user  = $vote->filter('td.rightalign a')->text();
                 $voted = $vote->filter('td:nth-child(2) img')->count() ? true : false;
 
@@ -77,12 +99,15 @@ class RequestsGatherer
                     'name' => $user,
                 ]);
 
-                // Save his vote on this request
-                $request->votes()->firstOrCreate([
-                    'user_id' => $user->id,
-                    'vote'    => $voted,
-                ]);
+                // Save vote for this request
+                $votes[] = [
+                    'request_id' => $request->id,
+                    'user_id'    => $user->id,
+                    'vote'       => $voted,
+                ];
             });
+
+        $request->votes()->saveMany($votes);
     }
 
     //////////////////////////////////////////////////////////////////////

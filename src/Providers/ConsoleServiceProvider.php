@@ -4,6 +4,8 @@ namespace History\Providers;
 use History\Console\Commands\Tinker;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
+use History\RequestsGatherer\RequestsGatherer;
+use Illuminate\Contracts\Cache\Repository;
 use League\Container\ServiceProvider;
 use Psy\Shell;
 use Silly\Application;
@@ -34,6 +36,7 @@ class ConsoleServiceProvider extends ServiceProvider
             // Register commands
             $app->command('tinker', [$this, 'tinker']);
             $app->command('refresh', [$this, 'refresh']);
+            $app->command('refresh:stats', [$this, 'refreshStatistics']);
 
             return $app;
         });
@@ -53,11 +56,31 @@ class ConsoleServiceProvider extends ServiceProvider
     }
 
     /**
-     * Refresh all statistics
+     * Refresh the requests and comments
      *
      * @param OutputInterface $output
      */
     public function refresh(OutputInterface $output)
+    {
+        // Empty cache
+        $cache = $this->container->get(Repository::class);
+        $cache->flush();
+
+        // Refresh requests
+        $gatherer = $this->container->get(RequestsGatherer::class);
+        $gatherer->setOutput($output);
+        $gatherer->createRequests();
+
+        // Refresh statistics
+        $this->refreshStats($output);
+    }
+
+    /**
+     * Refresh all statistics
+     *
+     * @param OutputInterface $output
+     */
+    public function refreshStats(OutputInterface $output)
     {
         $users    = User::with('votes')->get();
         $requests = Request::with('votes')->get();
