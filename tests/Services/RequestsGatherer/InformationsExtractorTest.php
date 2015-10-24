@@ -2,6 +2,7 @@
 namespace History\Services\RequestsGatherer;
 
 use DateTime;
+use DateTimeZone;
 use History\TestCase;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -11,6 +12,7 @@ class InformationsExtractorTest extends TestCase
     {
         $html         = file_get_contents(__DIR__.'/../../rfc.html');
         $informations = $this->getInformationsFromHtml($html);
+        $timezone = new DateTimeZone('UTC');
 
         $this->assertEquals([
             'name'      => 'Support Class Constant Visibility',
@@ -24,14 +26,14 @@ class InformationsExtractorTest extends TestCase
                         [
                             'user_id'    => 1,
                             'choice'     => 2,
-                            'created_at' => $informations['questions'][0]['votes'][0]['created_at'],
-                            'updated_at' => $informations['questions'][0]['votes'][0]['updated_at'],
+                            'created_at' => DateTime::createFromFormat('Y-m-d H:i', '2015-10-22 22:30', $timezone),
+                            'updated_at' => DateTime::createFromFormat('Y-m-d H:i', '2015-10-22 22:30', $timezone),
                         ],
                         [
                             'user_id'    => 1,
                             'choice'     => 1,
-                            'created_at' => $informations['questions'][0]['votes'][1]['created_at'],
-                            'updated_at' => $informations['questions'][0]['votes'][1]['updated_at'],
+                            'created_at' => DateTime::createFromFormat('Y-m-d H:i', '2015-10-22 22:30', $timezone),
+                            'updated_at' => DateTime::createFromFormat('Y-m-d H:i', '2015-10-22 22:30', $timezone),
                         ],
                     ],
                 ],

@@ -2,6 +2,7 @@
 namespace History\Services\RequestsGatherer;
 
 use DateTime;
+use DateTimeZone;
 use History\Entities\Models\User;
 use Illuminate\Support\Str;
 use Symfony\Component\DomCrawler\Crawler;
@@ -118,8 +119,8 @@ class InformationsExtractor
     protected function getQuestions()
     {
         return $this->crawler->filter('table.inline')->each(function ($question) {
-            $name = $question->filter('tr:first-child')->text();
-            $name = $this->cleanWhitespace($name);
+            $name    = $question->filter('tr:first-child')->text();
+            $name    = $this->cleanWhitespace($name);
             $choices = $this->getChoices($question);
 
             return [
@@ -165,9 +166,14 @@ class InformationsExtractor
 
                 // Get which choice the user picked
                 $voted = 0;
-                $vote->filter('td')->each(function ($choice, $key) use (&$voted) {
-                    if ($choice->filter('img')->count()) {
+                $time  = new DateTime();
+                $vote->filter('td')->each(function ($choice, $key) use (&$voted, &$time) {
+                    $image = $choice->filter('img');
+                    if ($image->count()) {
+                        $timestamp = $image->attr('title');
+
                         $voted = $key;
+                        $time  = DateTime::createFromFormat('Y/m/d H:i', $timestamp, new DateTimeZone('UTC'));
                     }
                 });
 
@@ -180,8 +186,8 @@ class InformationsExtractor
                 $votes[] = [
                     'user_id'    => $user->id,
                     'choice'     => $voted,
-                    'created_at' => new DateTime(),
-                    'updated_at' => new DateTime(),
+                    'created_at' => $time,
+                    'updated_at' => $time,
                 ];
             });
 
