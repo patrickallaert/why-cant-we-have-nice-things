@@ -1,5 +1,5 @@
 <?php
-namespace History\RequestsGatherer;
+namespace History\Services\RequestsGatherer;
 
 use DateTime;
 use History\Entities\Models\User;

@@ -10,7 +10,7 @@ use History\Providers\ErrorsServiceProvider;
 use History\Providers\PathsServiceProvider;
 use History\Providers\RoutingServiceProvider;
 use History\Providers\TwigServiceProvider;
-use History\RequestsGatherer\RequestsGathererServiceProvider;
+use History\Services\RequestsGatherer\RequestsGathererServiceProvider;
 use Illuminate\Database\Capsule\Manager;
 use League\Container\ContainerInterface;
 use League\Route\Dispatcher;

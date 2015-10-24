@@ -1,5 +1,5 @@
 <?php
-namespace History\RequestsGatherer;
+namespace History\Services\RequestsGatherer;
 
 use History\Entities\Models\Question;
 use History\Entities\Models\Request;

@@ -1,5 +1,5 @@
 <?php
-namespace History\StatisticsComputer;
+namespace History\Services\StatisticsComputer;
 
 use History\Entities\Models\Question;
 use History\Entities\Models\Request;

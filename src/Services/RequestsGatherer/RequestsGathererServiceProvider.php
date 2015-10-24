@@ -1,5 +1,5 @@
 <?php
-namespace History\RequestsGatherer;
+namespace History\Services\RequestsGatherer;
 
 use Illuminate\Contracts\Cache\Repository;
 use League\Container\ServiceProvider;
