@@ -80,11 +80,8 @@ class TwigServiceProvider extends ServiceProvider
      */
     private function registerGlobalVariables(Twig_Environment $twig)
     {
-        $gravatar = new Gravatar();
-        $gravatar->setAvatarSize(250);
-
         $twig->addGlobal('app_name', Application::NAME);
-        $twig->addGlobal('gravatar', $gravatar);
+        $twig->addGlobal('gravatar', $this->container->get(Gravatar::class));
 
         $request = $this->container->get(Request::class);
         $twig->addGlobal('current_uri', $request->getPathInfo());

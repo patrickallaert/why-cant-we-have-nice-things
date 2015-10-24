@@ -7,6 +7,7 @@ use History\Providers\ConsoleServiceProvider;
 use History\Providers\DatabaseServiceProvider;
 use History\Providers\DebugbarServiceProvider;
 use History\Providers\ErrorsServiceProvider;
+use History\Providers\GravatarServiceProvider;
 use History\Providers\PathsServiceProvider;
 use History\Providers\RoutingServiceProvider;
 use History\Providers\TwigServiceProvider;
@@ -46,6 +47,7 @@ class Application
         ConsoleServiceProvider::class,
         DebugbarServiceProvider::class,
         ErrorsServiceProvider::class,
+        GravatarServiceProvider::class,
     ];
 
     /**
