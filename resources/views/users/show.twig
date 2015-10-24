@@ -11,11 +11,23 @@
 {% endblock %}
 
 {% block content %}
-    <p class="lead text-center">
-        This user created <strong>{{ user.requests.count() }}</strong> RFCs.<br>
-        He/She also voted <strong>{{ user.total_votes }}</strong> times, and has been correct <strong>{{ percentage(user.hivemind) }}</strong> of the time.<br>
-        <a target="_blank" href="http://people.php.net/{{ user.name }}">View his profile on phppeople</a>
-    </p>
+    <ul class="list-unstyled lead text-center">
+        <li>This user created <strong>{{ user.requests.count() }}</strong> RFCs.</li>
+        <li>
+            This user voted <strong>{{ user.total_votes }}</strong> times, and has been correct
+            <strong>{{ percentage(user.hivemind) }}</strong> of the time.
+        </li>
+        <li>
+            {% if user.negativeness >= 0.5 %}
+                This user has voted <strong>No</strong> on <strong>{{ percentage(user.negativeness) }}</strong> of the matters he voted on.
+            {% else %}
+                This user has voted <strong>Yes</strong> on <strong>{{ percentage(1 - user.negativeness) }}</strong> of the matters he voted on.
+            {% endif %}
+        </li>
+        <li>
+            <a target="_blank" href="http://people.php.net/{{ user.name }}">View his profile on phppeople</a>
+        </li>
+    </ul>
 
     {% if user.requests.count() %}
         {% include '_partials/tables/requests.twig' with {requests: user.requests, table_name: 'Created RFCs'} %}
