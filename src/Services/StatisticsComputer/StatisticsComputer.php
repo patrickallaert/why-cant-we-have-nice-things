@@ -23,7 +23,10 @@ class StatisticsComputer
         $noVotes    = $totalVotes - $yesVotes;
 
         $hivemind        = $this->computeHivemind($user);
-        $passedRequests  = $user->requests->filterBy('passed');
+        $passedRequests  = $user->requests->filter(function (Request $request) {
+            return $request->status === 2;
+        });
+
         $createdRequests = $user->requests->count();
 
         return [
@@ -71,11 +74,8 @@ class StatisticsComputer
             return $question->approval ?: $this->forQuestion($question)['approval'];
         });
 
-        $approval = $approvals->average();
-
         return [
-            'approval' => $approval,
-            'passed'   => $this->hasPassed($request, $approval),
+            'approval' => $approvals->average(),
         ];
     }
 

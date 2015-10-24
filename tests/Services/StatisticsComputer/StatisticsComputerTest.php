@@ -50,17 +50,6 @@ class StatisticsComputerTest extends TestCase
         ], $stats);
     }
 
-    public function testCanCheckIfHasPassed()
-    {
-        $request = new Request(['condition' => 'Must be 50%+1']);
-        $this->assertTrue($this->computer->hasPassed($request, 0.6));
-        $this->assertFalse($this->computer->hasPassed($request, 0.4));
-
-        $request = new Request(['condition' => 'Must be 2/3']);
-        $this->assertTrue($this->computer->hasPassed($request, 0.8));
-        $this->assertFalse($this->computer->hasPassed($request, 0.4));
-    }
-
     public function testCanComputeStatisticsForRequest()
     {
         $request            = new Request();
@@ -72,7 +61,6 @@ class StatisticsComputerTest extends TestCase
         $stats = $this->computer->forRequest($request);
         $this->assertEquals([
             'approval' => 0.75,
-            'passed'   => true,
         ], $stats);
     }
 
@@ -89,7 +77,6 @@ class StatisticsComputerTest extends TestCase
         $stats = $this->computer->forRequest($request);
         $this->assertEquals([
             'approval' => 1,
-            'passed'   => true,
         ], $stats);
     }
 
@@ -109,8 +96,8 @@ class StatisticsComputerTest extends TestCase
             (new Vote(['choice' => 2]))->setAttribute('question', $question),
         ]);
         $user->requests = new Collection([
-            new Request(['passed' => true]),
-            new Request(['passed' => false]),
+            new Request(['status' => 2]),
+            new Request(['status' => 0]),
         ]);
 
         $stats = $this->computer->forUser($user);

@@ -1,6 +1,7 @@
 <?php
 namespace History\Services\RequestsGatherer;
 
+use DateTime;
 use History\Entities\Models\Question;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
@@ -90,8 +91,9 @@ class RequestsGatherer
         $request             = Request::firstOrNew(['link' => $link]);
         $request->name       = $informations['name'];
         $request->condition  = $informations['condition'];
-        $request->created_at = $informations['timestamp'];
-        $request->updated_at = $informations['timestamp'];
+        $request->status     = $informations['status'];
+        $request->created_at = $informations['timestamp'] ?: new DateTime();
+        $request->updated_at = $informations['timestamp'] ?: new DateTime();
         $request->save();
 
         $this->createQuestions($request, $informations['questions']);
@@ -157,8 +159,8 @@ class RequestsGatherer
 
         // Try to retrieve user if he's already an author
         $email = $informations['email'];
-        $user = User::firstOrNew(['email' => $email]);
-        $user = $user ?: User::firstOrNew(['name' => $username]);
+        $user  = User::firstOrNew(['email' => $email]);
+        $user  = $user ?: User::firstOrNew(['name' => $username]);
 
         // Fill-in informations
         $user->name      = $username;

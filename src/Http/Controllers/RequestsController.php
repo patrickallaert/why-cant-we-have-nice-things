@@ -20,10 +20,14 @@ class RequestsController extends AbstractController
             return $request->votes->count();
         });
 
+        $passed = $requests->filter(function (Request $request) {
+            return $request->status == 2;
+        });
+
         return $this->views->render('requests/index.twig', [
             'requests' => $requests,
             'voted'    => $voted,
-            'passed'   => $voted->filterBy('passed')->count() / $voted->count(),
+            'passed'   => $passed->count() / $requests->count(),
         ]);
     }
 

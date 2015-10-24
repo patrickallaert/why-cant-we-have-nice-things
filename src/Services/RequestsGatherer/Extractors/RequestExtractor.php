@@ -17,6 +17,7 @@ class RequestExtractor extends AbstractExtractor implements ExtractorInterface
         $name               = $this->getRequestName();
         $majorityConditions = $this->getMajorityConditions();
         $informations       = $this->getInformations();
+        $status             = $this->getStatus($informations);
         $timestamp          = $this->getRequestTimestamp($informations);
         $authors            = $this->getAuthors($informations);
 
@@ -27,6 +28,7 @@ class RequestExtractor extends AbstractExtractor implements ExtractorInterface
 
         return [
             'name'      => $name,
+            'status'    => $status,
             'condition' => $majorityConditions,
             'authors'   => $authors,
             'timestamp' => $timestamp,
@@ -81,6 +83,23 @@ class RequestExtractor extends AbstractExtractor implements ExtractorInterface
     }
 
     /**
+     * @param array $informations
+     *
+     * @return int
+     */
+    protected function getStatus(array $informations)
+    {
+        $status = $this->findInformation($informations, '/Status/');
+        if (preg_match('/(draft|discussion)/i', $status)) {
+            return 1;
+        } elseif (preg_match('/(accepted|implemented)/i', $status)) {
+            return 2;
+        }
+
+        return 0;
+    }
+
+    /**
      * Here we try to retrieve an RFC's author. As usual since there
      * is no real defined format to present the authors, we have to do
      * a lot of guessing and cleanup
@@ -91,28 +110,23 @@ class RequestExtractor extends AbstractExtractor implements ExtractorInterface
      */
     protected function getAuthors(array $informations)
     {
-        $authors = [];
-        foreach ($informations as $label => $value) {
-            if (strpos($label, 'Author') === false) {
-                continue;
-            }
+        $authors = $this->findInformation($informations, '/Author/');
 
-            // Try to split off authors
-            $authors = explode(',', $value);
-            foreach ($authors as $key => $author) {
+        // Try to split off authors
+        $authors = explode(',', $authors);
+        foreach ($authors as $key => $author) {
 
-                // Get email from the author's name
-                $author = trim($author);
-                $author = last(explode(' ', $author));
+            // Get email from the author's name
+            $author = trim($author);
+            $author = last(explode(' ', $author));
 
-                // Cleanup email and unify to @php.net
-                $author = str_replace('#at#', '@', $author);
-                $author = trim($author, "<>()'");
-                $author = preg_replace('/@(.+)/', '@php.net', $author);
-                $author = strpos($author, '@') !== false ? $author : null;
+            // Cleanup email and unify to @php.net
+            $author = str_replace('#at#', '@', $author);
+            $author = trim($author, "<>()'");
+            $author = preg_replace('/@(.+)/', '@php.net', $author);
+            $author = strpos($author, '@') !== false ? $author : null;
 
-                $authors[$key] = $author;
-            }
+            $authors[$key] = $author;
         }
 
         return array_filter($authors);
@@ -129,22 +143,14 @@ class RequestExtractor extends AbstractExtractor implements ExtractorInterface
      */
     protected function getRequestTimestamp(array $informations)
     {
-        $timestamp = null;
-        foreach ($informations as $label => $value) {
-            if (!preg_match('/(created|date)/i', $label)) {
-                continue;
-            }
+        $date = $this->findInformation($informations, '/(created|date)/i');
+        $date = preg_replace('/(\d{4}[-\/]\d{2}[-\/]\d{2}).*/i', '$1', $date);
+        $date = str_replace('/', '-', $date);
+        $date = trim($date);
 
-            $date = preg_replace('/(\d{4}[-\/]\d{2}[-\/]\d{2}).*/i', '$1', $value);
-            $date = str_replace('/', '-', $date);
-            $date = trim($date);
-
-            if (strpos($date, '20') === 0) {
-                $timestamp = $date;
-            }
+        if (strpos($date, '20') === 0) {
+            return DateTime::createFromFormat('Y-m-d', $date);
         }
-
-        return DateTime::createFromFormat('Y-m-d', $timestamp);
     }
 
     /**
@@ -158,6 +164,27 @@ class RequestExtractor extends AbstractExtractor implements ExtractorInterface
         foreach ($locations as $location) {
             if ($text = $this->extractText($location)) {
                 return $text;
+            }
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    ////////////////////////////// HELPERS ///////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+
+    /**
+     * Find a value in the informations array
+     *
+     * @param array  $informations
+     * @param string $matcher
+     *
+     * @return string
+     */
+    protected function findInformation(array $informations, $matcher)
+    {
+        foreach ($informations as $label => $value) {
+            if (preg_match($matcher, $label)) {
+                return $value;
             }
         }
     }

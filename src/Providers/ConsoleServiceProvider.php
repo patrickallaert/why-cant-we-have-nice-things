@@ -94,7 +94,7 @@ class ConsoleServiceProvider extends ServiceProvider
         $output = new SymfonyStyle(new ArrayInput([]), $output);
         $computer = new StatisticsComputer();
 
-        $users     = User::with('votes')->get();
+        $users     = User::with('votes', 'requests')->get();
         $questions = Question::with('votes')->get();
         $requests  = Request::with('questions.votes')->get();
 

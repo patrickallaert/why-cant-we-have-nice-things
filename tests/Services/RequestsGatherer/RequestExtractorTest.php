@@ -17,6 +17,7 @@ class RequestExtractorTest extends TestCase
 
         $this->assertEquals([
             'name'      => 'Support Class Constant Visibility',
+            'status'    => 1,
             'condition' => 'Simple Yes/No option. This requires a 2/3 majority.',
             'timestamp' => DateTime::createFromFormat('Y-m-d', '2015-09-13'),
             'authors'   => ['sean@php.net', 'reeze@php.net'],
@@ -67,6 +68,25 @@ class RequestExtractorTest extends TestCase
 
         $informations = $this->getInformationsFromHtml('<h1>Request for Comments: Foobar</h1>');
         $this->assertEquals('Foobar', $informations['name']);
+    }
+
+    public function testCanParseStatus()
+    {
+        $html         = '<div class="page"><ul class="level1"><li>Status: Under discussion</li></ul></div>';
+        $informations = $this->getInformationsFromHtml($html);
+        $this->assertEquals(1, $informations['status']);
+
+        $html         = '<div class="page"><ul class="level1"><li>Status: in draft</li></ul></div>';
+        $informations = $this->getInformationsFromHtml($html);
+        $this->assertEquals(1, $informations['status']);
+
+        $html         = '<div class="page"><ul class="level1"><li>Status: Implemented (in PHP 7.0)</li></ul></div>';
+        $informations = $this->getInformationsFromHtml($html);
+        $this->assertEquals(2, $informations['status']);
+
+        $html         = '<div class="page"><ul class="level1"><li>Status: accepted</li></ul></div>';
+        $informations = $this->getInformationsFromHtml($html);
+        $this->assertEquals(2, $informations['status']);
     }
 
     /**

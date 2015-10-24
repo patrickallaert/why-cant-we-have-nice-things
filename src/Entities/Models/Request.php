@@ -6,12 +6,24 @@ class Request extends AbstractModel
     /**
      * @var array
      */
+    const STATUS = ['Declined', 'Draft', 'Implemented'];
+
+    /**
+     * @var array
+     */
     protected $fillable = [
         'name',
         'link',
         'condition',
         'approval',
-        'passed',
+        'status',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $casts = [
+        'status' => 'integer',
     ];
 
     //////////////////////////////////////////////////////////////////////
@@ -20,7 +32,6 @@ class Request extends AbstractModel
 
     /**
      * @codeCoverageIgnore
-     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function questions()
@@ -30,7 +41,6 @@ class Request extends AbstractModel
 
     /**
      * @codeCoverageIgnore
-     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function authors()
@@ -40,11 +50,22 @@ class Request extends AbstractModel
 
     /**
      * @codeCoverageIgnore
-     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function votes()
     {
         return $this->hasManyThrough(Vote::class, Question::class);
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    ////////////////////////////// ACCESSORS /////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+
+    /**
+     * @return string
+     */
+    public function getStatusLabelAttribute()
+    {
+        return array_get(self::STATUS, $this->status);
     }
 }
