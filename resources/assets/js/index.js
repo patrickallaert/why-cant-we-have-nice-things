@@ -2,6 +2,7 @@ import $ from 'jquery';
 import 'tablesorter';
 import 'tablesorter/dist/js/widgets/widget-filter.min';
 import 'bootstrap/js/collapse';
+import 'bootstrap/js/tooltip';
 
 import 'bootswatch/flatly/bootstrap.css';
 import '../sass/styles.scss';
@@ -14,3 +15,5 @@ $('.table').tablesorter({
         filter_searchDelay:   100,
     },
 });
+
+$('abbr').tooltip();

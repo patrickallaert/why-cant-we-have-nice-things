@@ -97,16 +97,20 @@ class StatisticsComputerTest extends TestCase
     {
         $question        = new Question(['choices' => 2]);
         $question->votes = new Collection([
-           new Vote(['choice'  => 1]),
+            new Vote(['choice' => 1]),
             new Vote(['choice' => 2]),
             new Vote(['choice' => 2]),
         ]);
 
-        $user        = new User([]);
-        $user->votes = new Collection([
+        $user           = new User([]);
+        $user->votes    = new Collection([
             (new Vote(['choice' => 1]))->setAttribute('question', $question),
             (new Vote(['choice' => 2]))->setAttribute('question', $question),
             (new Vote(['choice' => 2]))->setAttribute('question', $question),
+        ]);
+        $user->requests = new Collection([
+            new Request(['passed' => true]),
+            new Request(['passed' => false]),
         ]);
 
         $stats = $this->computer->forUser($user);
@@ -115,6 +119,7 @@ class StatisticsComputerTest extends TestCase
             'no_votes'    => 2,
             'total_votes' => 3,
             'approval'    => 1 / 3,
+            'success'     => 1 / 2,
             'hivemind'    => 2 / 3,
         ], $stats);
     }

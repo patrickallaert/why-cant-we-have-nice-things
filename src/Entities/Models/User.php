@@ -13,6 +13,7 @@ class User extends AbstractModel
         'yes_votes',
         'no_votes',
         'total_votes',
+        'success',
         'approval',
         'hivemind',
     ];

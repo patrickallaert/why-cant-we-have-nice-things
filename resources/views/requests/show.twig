@@ -4,7 +4,7 @@
 
 {% block content %}
     <p class="lead text-center">
-        This RFC is currently approved at <strong>{{ percentage(request.approval) }}%</strong>.<br>
+        This RFC is currently approved at <strong>{{ percentage(request.approval) }}</strong>.<br>
         <a href="{{ request.link }}" target="_blank">View this RFC on the PHP wiki</a>
     </p>
 
@@ -13,7 +13,7 @@
             <table class="table table-condensed table-striped table-hover">
                 <thead>
                 <tr>
-                    <th class="text-center" colspan="2">{{ question.name }} ({{ percentage(question.approval) }}% approved)</th>
+                    <th class="text-center" colspan="2">{{ question.name }} ({{ percentage(question.approval) }} approved)</th>
                 </tr>
                 <tr>
                     <th>User</th>

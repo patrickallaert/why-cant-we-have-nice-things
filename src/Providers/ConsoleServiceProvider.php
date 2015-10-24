@@ -12,7 +12,9 @@ use League\Container\ServiceProvider;
 use Psy\Shell;
 use Silly\Application;
 use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ConsoleServiceProvider extends ServiceProvider
 {
@@ -36,7 +38,7 @@ class ConsoleServiceProvider extends ServiceProvider
             // Register commands
             $app->command('tinker', [$this, 'tinker']);
             $app->command('refresh [--scratch]', [$this, 'refresh']);
-            $app->command('refresh:stats', [$this, 'refreshStatistics']);
+            $app->command('stats', [$this, 'refreshStats']);
 
             return $app;
         });
@@ -63,13 +65,17 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     public function refresh($scratch, OutputInterface $output)
     {
+        $output = new SymfonyStyle(new ArrayInput([]), $output);
+
         // Empty cache
         if ($scratch) {
+            $output->writeln('<error>Emptying cache</error>');
             $cache = $this->container->get(Repository::class);
             $cache->flush();
         }
 
         // Refresh requests
+        $output->writeln('<comment>Refreshing requests</comment>');
         $gatherer = $this->container->get(RequestsGatherer::class);
         $gatherer->setOutput($output);
         $gatherer->createRequests();
@@ -85,20 +91,24 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     public function refreshStats(OutputInterface $output)
     {
+        $output = new SymfonyStyle(new ArrayInput([]), $output);
         $computer = new StatisticsComputer();
 
         $users     = User::with('votes')->get();
         $questions = Question::with('votes')->get();
         $requests  = Request::with('questions.votes')->get();
 
+        $output->writeln('<comment>Refreshing User statistics</comment>');
         $this->progressIterator($output, $users, function (User $user) use ($computer) {
             $user->update($computer->forUser($user));
         });
 
+        $output->writeln('<comment>Refreshing Question statistics</comment>');
         $this->progressIterator($output, $questions, function (Question $question) use ($computer) {
             $question->update($computer->forQuestion($question));
         });
 
+        $output->writeln('<comment>Refreshing Request statistics</comment>');
         $this->progressIterator($output, $requests, function (Request $request) use ($computer) {
             $request->update($computer->forRequest($request));
         });

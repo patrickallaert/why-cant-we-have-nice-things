@@ -2,12 +2,6 @@
 {% set subtitle = 'Users' %}
 
 {% block content %}
-    <ul class="explanations list-unstyled">
-        <li>Only users who voted more than 5 times are taken into account.</li>
-        <li>The <strong>Approval %</strong> is how many RFCs an user has approved of.</li>
-        <li>The <strong>Hivemind %</strong> is how many RFCs an user has approved of that other users also approved of in their majority.</li>
-    </ul>
-
     {% include '_partials/search.twig' %}
 
     <div class="table-responsive">
@@ -16,11 +10,12 @@
             <tr>
                 <th>User</th>
                 <th class="text-right">Created RFCs</th>
+                <th class="text-right"><abbr title="Percentage of created RFCs that got approved">Success %</abbr></th>
                 <th class="text-right">Voted YES</th>
                 <th class="text-right">Voted NO</th>
                 <th class="text-right"># of votes</th>
-                <th class="text-right">Approval %</th>
-                <th class="text-right">Hivemind %</th>
+                <th class="text-right"><abbr title="How many RFCs the user has approved of">Approval %</abbr></th>
+                <th class="text-right"><abbr title="How many RFCs an user has approved of that other users also approved of in their majority">Hivemind %</abbr></th>
             </tr>
             </thead>
             <tbody>
@@ -30,11 +25,12 @@
                         <a href="/users/{{ user.name }}">{{ user.name }}</a>
                     </td>
                     <td class="text-right">{{ user.requests.count() }}</td>
+                    <td class="text-right">{{ percentage(user.success) }}</td>
                     <td class="text-right">{{ user.yes_votes }}</td>
                     <td class="text-right">{{ user.no_votes }}</td>
                     <td class="text-right">{{ user.total_votes }}</td>
-                    <td class="text-right">{{ percentage(user.approval) }}%</td>
-                    <td class="text-right">{{ percentage(user.hivemind) }}%</td>
+                    <td class="text-right">{{ percentage(user.approval) }}</td>
+                    <td class="text-right">{{ percentage(user.hivemind) }}</td>
                 </tr>
             {% endfor %}
             </tbody>

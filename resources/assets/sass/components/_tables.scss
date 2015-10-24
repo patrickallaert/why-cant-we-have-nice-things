@@ -13,6 +13,10 @@
             outline: 0;
         }
 
+        abbr {
+            border-color: black;
+        }
+
         th.text-center[colspan] {
             background-color: darken($color-green, 2);
             font-size: 2rem;
@@ -32,10 +36,10 @@
         }
 
         th.tablesorter-headerDesc:before {
-            content: '▲';
+            content: '▼';
         }
         th.tablesorter-headerAsc:before {
-            content: '▼';
+            content: '▲';
         }
     }
 

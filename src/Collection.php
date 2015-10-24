@@ -26,4 +26,18 @@ class Collection extends \Illuminate\Database\Eloquent\Collection
             return $entries->count();
         });
     }
+
+    /**
+     * Filter the collection by an attribute
+     *
+     * @param string $attribute
+     *
+     * @return static
+     */
+    public function filterBy($attribute)
+    {
+        return $this->filter(function ($entry) use ($attribute) {
+            return object_get($entry, $attribute);
+        });
+    }
 }

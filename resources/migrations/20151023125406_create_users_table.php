@@ -30,6 +30,7 @@ class CreateUsersTable extends AbstractMigration
              ->addColumn('no_votes', 'integer')
              ->addColumn('total_votes', 'integer')
              ->addColumn('approval', 'float')
+             ->addColumn('success', 'float')
              ->addColumn('hivemind', 'float')
              ->addColumn('created_at', 'datetime')
              ->addColumn('updated_at', 'datetime')
