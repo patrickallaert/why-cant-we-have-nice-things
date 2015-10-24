@@ -1,5 +1,5 @@
 <?php
-namespace History\Providers;
+namespace History\Http\Providers;
 
 use History\Application;
 use History\Entities\Models\Question;

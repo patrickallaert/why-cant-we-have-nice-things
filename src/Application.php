@@ -2,15 +2,15 @@
 namespace History;
 
 use Dotenv\Dotenv;
+use History\Http\Providers\ErrorsServiceProvider;
+use History\Http\Providers\RoutingServiceProvider;
+use History\Http\Providers\TwigServiceProvider;
 use History\Providers\CacheServiceProvider;
 use History\Providers\ConsoleServiceProvider;
 use History\Providers\DatabaseServiceProvider;
 use History\Providers\DebugbarServiceProvider;
-use History\Providers\ErrorsServiceProvider;
 use History\Providers\GravatarServiceProvider;
 use History\Providers\PathsServiceProvider;
-use History\Providers\RoutingServiceProvider;
-use History\Providers\TwigServiceProvider;
 use History\Services\RequestsGatherer\RequestsGathererServiceProvider;
 use Illuminate\Database\Capsule\Manager;
 use League\Container\ContainerInterface;
@@ -45,7 +45,6 @@ class Application
         TwigServiceProvider::class,
         DatabaseServiceProvider::class,
         ConsoleServiceProvider::class,
-        DebugbarServiceProvider::class,
         ErrorsServiceProvider::class,
         GravatarServiceProvider::class,
     ];

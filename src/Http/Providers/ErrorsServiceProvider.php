@@ -1,5 +1,5 @@
 <?php
-namespace History\Providers;
+namespace History\Http\Providers;
 
 use League\Container\ServiceProvider;
 use Whoops\Handler\PrettyPageHandler;

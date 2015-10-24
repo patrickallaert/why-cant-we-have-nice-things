@@ -1,5 +1,5 @@
 <?php
-namespace History\Providers;
+namespace History\Http\Providers;
 
 use History\Http\Controllers\PagesController;
 use History\Http\Controllers\RequestsController;
