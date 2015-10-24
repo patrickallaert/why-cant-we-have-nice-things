@@ -2,6 +2,7 @@
 namespace History\Entities\Observers;
 
 use History\Entities\Models\Vote;
+use History\StatisticsComputer\StatisticsComputer;
 
 class VoteObserver
 {
@@ -10,7 +11,9 @@ class VoteObserver
      */
     public function saved(Vote $vote)
     {
-        //$vote->user->computeStatistics();
-        //$vote->request->computeStatistics();
+        $computer = new StatisticsComputer();
+        
+        $vote->user->update($computer->forUser($vote->user));
+        $vote->request->update($computer->forRequest($vote->request));
     }
 }
