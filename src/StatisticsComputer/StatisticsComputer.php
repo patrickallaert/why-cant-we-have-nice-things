@@ -62,7 +62,7 @@ class StatisticsComputer
             return $question->approval ?: $this->forQuestion($question)['approval'];
         });
 
-        $approval = (int) $approvals->average();
+        $approval = $approvals->average();
 
         return [
             'approval' => $approval,
