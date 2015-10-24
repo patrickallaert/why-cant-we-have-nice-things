@@ -21,6 +21,10 @@ class ErrorsServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        if (getenv('APP_ENV') !== 'local') {
+            return;
+        }
+
         $this->container->singleton(Run::class, function () {
             $whoops = new Run();
             $whoops->pushHandler(new PrettyPageHandler());

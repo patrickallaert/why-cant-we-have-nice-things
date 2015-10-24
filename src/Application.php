@@ -14,9 +14,11 @@ use History\Services\RequestsGatherer\RequestsGathererServiceProvider;
 use Illuminate\Database\Capsule\Manager;
 use League\Container\ContainerInterface;
 use League\Route\Dispatcher;
+use League\Route\Http\Exception\NotFoundException;
 use League\Route\RouteCollection;
 use Silly\Application as Console;
 use Symfony\Component\HttpFoundation\Request;
+use Twig_Environment;
 use Whoops\Run;
 
 class Application
@@ -78,7 +80,12 @@ class Application
         /* @type Request $request */
         $dispatcher = $this->container->get(RouteCollection::class)->getDispatcher();
         $request    = $this->container->get(Request::class);
-        $response   = $dispatcher->dispatch($request->getMethod(), $request->getPathInfo());
+
+        try {
+            $response   = $dispatcher->dispatch($request->getMethod(), $request->getPathInfo());
+        } catch (NotFoundException $exception) {
+            return $this->container->get(Twig_Environment::class)->display('errors/404.twig');
+        }
 
         return $response->send();
     }
