@@ -1,7 +1,16 @@
 .layout-header {
+    background: lighten(#2c3e50, 15);
+    padding: 5rem;
+    margin: 0;
+
+    h1, h2 {
+        margin: 0;
+    }
+
     a {
-        color: $color-text;
+        color: white;
         transition: color 0.3s;
+        font-weight: 300;
 
         &:hover {
             color: $color-green;

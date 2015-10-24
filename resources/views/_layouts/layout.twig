@@ -1,4 +1,5 @@
 {% set title = title ? "#{title} - #{app_name}" : "#{app_name}" %}
+{% set subtitle = subtitle|default(title) %}
 
 <!doctype html>
 <html lang="en">
@@ -7,22 +8,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.png">
+    <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{{ assets.main.css }}">
 </head>
 <body>
+    {% include '_layouts/partials/header.twig' %}
     {% include '_layouts/partials/navbar.twig' %}
 
-    <main class="container-fluid">
-        <header class="page-header text-center">
-            <h1 class="layout-header">
-                <a href="/">{{ app_name }}</a><br>
-                <small>Tracker of PHP RFCs since 1873</small>
-            </h1>
-
-            {% if subtitle %}
-                <h2>{{ subtitle }}</h2>
-            {% endif %}
-        </header>
+    <main class="layout-content container-fluid">
+        {% if subtitle %}
+            <h2 class="text-center">{{ subtitle }}</h2>
+        {% endif %}
 
         {% block content %}{% endblock %}
     </main>

@@ -1,7 +1,11 @@
 @import 'utils/variables';
 @import 'base/body';
+
 @import 'components/explanations';
 @import 'components/tables';
+
 @import 'layout/header';
+@import 'layout/navbar';
+@import 'layout/content';
 @import 'layout/search';
 @import 'layout/footer';
