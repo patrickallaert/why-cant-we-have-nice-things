@@ -31,5 +31,10 @@
         "psr-4": {
             "History\\": "src"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "History\\": "tests"
+        }
     }
 }

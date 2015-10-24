@@ -8,6 +8,11 @@ use History\Entities\Models\Vote;
 
 class StatisticsComputer
 {
+    /**
+     * @param User $user
+     *
+     * @return array
+     */
     public function forUser(User $user)
     {
         $totalVotes = $user->votes->count();
