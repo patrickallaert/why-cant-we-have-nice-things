@@ -19,7 +19,7 @@ class RequestExtractorTest extends TestCase
             'name'      => 'Support Class Constant Visibility',
             'condition' => 'Simple Yes/No option. This requires a 2/3 majority.',
             'timestamp' => DateTime::createFromFormat('Y-m-d', '2015-09-13'),
-            'authors'   => ['sean@siobud.com', 'reeze@php.net'],
+            'authors'   => ['sean@php.net', 'reeze@php.net'],
             'questions' => [
                 [
                     'name'    => 'Class Constant Visibility',
@@ -51,7 +51,7 @@ class RequestExtractorTest extends TestCase
 
     public function testCanParseWeirdAssDateFormats()
     {
-        $html         = '<ul class="level1"><li>created at the DaTe   : 2014/01/02 lolmdr©</li></ul>';
+        $html         = '<div class="page"><ul class="level1"><li>created at the DaTe   : 2014/01/02 lolmdr©</li></ul></div>';
         $informations = $this->getInformationsFromHtml($html);
 
         $this->assertEquals(DateTime::createFromFormat('Y-m-d', '2014-01-02'), $informations['timestamp']);
