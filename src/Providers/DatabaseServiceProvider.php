@@ -38,12 +38,8 @@ class DatabaseServiceProvider extends ServiceProvider
             ]);
 
             // Configure database capsule
-            $capsule->setEventDispatcher(new Dispatcher(new Container()));
             $capsule->setAsGlobal();
             $capsule->bootEloquent();
-
-            // Setup observers
-            Vote::observe(new VoteObserver());
 
             // Enable query log in local
             if (getenv('APP_ENV') === 'local') {
