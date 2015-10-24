@@ -88,7 +88,7 @@ class TwigServiceProvider extends ServiceProvider
 
         $twig->addGlobal('navigation', [
             ['uri' => '/users', 'label' => 'Users'],
-            //['uri' => '/votes', 'label' => 'Votes'],
+            ['uri' => '/votes', 'label' => 'Votes'],
             ['uri' => '/requests', 'label' => 'RFCs'],
             ['uri' => '/about', 'label' => 'About'],
         ]);

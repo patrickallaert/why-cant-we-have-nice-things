@@ -11,9 +11,15 @@ class VotesController extends AbstractController
     public function index()
     {
         $votes = Vote::with('user', 'question.request')
-            ->latest()
-            ->limit(50)
-            ->get();
+                     ->latest()
+                     ->paginate(
+                         50,
+                         ['*'],
+                         'page',
+                         $this->request->get('page')
+                     );
+
+        $votes->setPath('votes');
 
         return $this->views->render('votes/index.twig', [
             'votes' => $votes,

@@ -9,15 +9,18 @@
         </table>
     </div>
 
-    <ul>
-        {% for vote in votes %}
-            <li>
-                <a href="/users/{{ vote.user.name }}">{{ vote.user.name }}</a>
-                voted {{ choice(vote.question, vote) }}
-                on
-                <a href="/requests/{{ vote.question.request.id }}">{{ vote.question.request.name }}</a>
-                {{ vote.created_at.diffForHumans() }}
-            </li>
-        {% endfor %}
-    </ul>
+    <ul class="list-group"></ul>
+    {% for vote in votes %}
+        <li class="list-group-item">
+            <a href="/users/{{ vote.user.name }}">{{ vote.user.name }}</a>
+            voted <strong>{{ choice(vote.question, vote) }}</strong>
+            on
+            <a href="/requests/{{ vote.question.request.id }}">{{ vote.question.request.name }}</a>
+            <span class="badge">{{ vote.created_at.diffForHumans() }}</span>
+        </li>
+    {% endfor %}
+
+    <div class="text-center">
+        {{ votes.render() | raw }}
+    </div>
 {% endblock %}
