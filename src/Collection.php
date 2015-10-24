@@ -28,7 +28,7 @@ class Collection extends \Illuminate\Database\Eloquent\Collection
     }
 
     /**
-     * Filter the collection by an attribute
+     * Filter the collection by an attribute.
      *
      * @param string $attribute
      *
@@ -37,7 +37,7 @@ class Collection extends \Illuminate\Database\Eloquent\Collection
     public function filterBy($attribute)
     {
         return $this->filter(function ($entry) use ($attribute) {
-            return object_get($entry, $attribute);
+            return data_get($entry, $attribute);
         });
     }
 }

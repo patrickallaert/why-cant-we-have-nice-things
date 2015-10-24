@@ -1,9 +1,8 @@
 <?php
-namespace History\Services\RequestsGatherer;
+namespace History\Services\RequestsGatherer\Extractors;
 
 use DateTime;
 use DateTimeZone;
-use History\Services\RequestsGatherer\Extractors\RequestExtractor;
 use History\TestCase;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -11,7 +10,7 @@ class RequestExtractorTest extends TestCase
 {
     public function testCanGetRequestName()
     {
-        $html         = file_get_contents(__DIR__.'/../../_pages/rfc.html');
+        $html         = $this->getDummyPage('rfc');
         $informations = $this->getInformationsFromHtml($html);
         $timezone     = new DateTimeZone('UTC');
 

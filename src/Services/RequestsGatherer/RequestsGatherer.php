@@ -1,13 +1,14 @@
 <?php
 namespace History\Services\RequestsGatherer;
 
-use DateTime;
-use History\Entities\Models\Question;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
-use History\Entities\Models\Vote;
 use History\Services\RequestsGatherer\Extractors\RequestExtractor;
 use History\Services\RequestsGatherer\Extractors\UserExtractor;
+use History\Services\RequestsGatherer\Synchronizers\QuestionSynchronizer;
+use History\Services\RequestsGatherer\Synchronizers\RequestSynchronizer;
+use History\Services\RequestsGatherer\Synchronizers\UserSynchronizer;
+use History\Services\RequestsGatherer\Synchronizers\VoteSynchronizer;
 use Illuminate\Contracts\Cache\Repository;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\NullOutput;
@@ -88,13 +89,9 @@ class RequestsGatherer
 
         // Retrieve or create the request
         // and update its informations
-        $request             = Request::firstOrNew(['link' => $link]);
-        $request->name       = $informations['name'];
-        $request->condition  = $informations['condition'];
-        $request->status     = $informations['status'];
-        $request->created_at = $informations['timestamp'] ?: new DateTime();
-        $request->updated_at = $informations['timestamp'] ?: new DateTime();
-        $request->save();
+        $informations['link'] = $link;
+        $synchronizer         = new RequestSynchronizer($informations);
+        $request              = $synchronizer->persist();
 
         $this->createQuestions($request, $informations['questions']);
         $this->createAuthors($request, $informations['authors']);
@@ -104,7 +101,7 @@ class RequestsGatherer
      * @param Request $request
      * @param array   $authors
      */
-    private function createAuthors(Request $request, array $authors)
+    protected function createAuthors(Request $request, array $authors)
     {
         foreach ($authors as $author) {
             $user = User::firstOrNew(['email' => $author]);
@@ -122,30 +119,23 @@ class RequestsGatherer
      */
     protected function createQuestions(Request $request, array $questions)
     {
-        foreach ($questions as $question) {
-            $votes    = $question['votes'];
-            $question = Question::firstOrCreate([
-                'name'       => $question['name'],
-                'choices'    => $question['choices'],
-                'request_id' => $request->id,
-            ]);
+        foreach ($questions as $informations) {
+            $question = new QuestionSynchronizer($informations, $request);
+            $question = $question->persist();
+            $question->votes()->delete();
 
             // Sanitize vote structure
-            foreach ($votes as $key => $vote) {
-                $vote['question_id'] = $question->id;
-                $vote['user_id']     = $this->createUser($vote['user_id'])->id;
-                $vote['updated_at']  = $vote['created_at'];
-
-                $votes[$key] = $vote;
+            $votes = $informations['votes'];
+            foreach ($votes as $vote) {
+                $user = $this->createUser($vote['user_id']);
+                $vote = new VoteSynchronizer($vote, $question, $user);
+                $vote->persist();
             }
-
-            $question->votes()->delete();
-            Vote::insert($votes);
         }
     }
 
     /**
-     * Create an user if needed.
+     * Create an user from its username.
      *
      * @param string $username
      *
@@ -153,22 +143,12 @@ class RequestsGatherer
      */
     protected function createUser($username)
     {
-        $crawler      = $this->getPageCrawler('http://people.php.net/'.$username);
+        $crawler = $this->getPageCrawler('http://people.php.net/'.$username);
+
         $extractor    = new UserExtractor($crawler);
-        $informations = $extractor->extract();
+        $synchronizer = new UserSynchronizer($extractor->extract());
 
-        // Try to retrieve user if he's already an author
-        $email = $informations['email'];
-        $user  = User::firstOrNew(['email' => $email]);
-        $user  = $user ?: User::firstOrNew(['name' => $username]);
-
-        // Fill-in informations
-        $user->name      = $username;
-        $user->full_name = $informations['full_name'];
-        $user->email     = $email;
-        $user->save();
-
-        return $user;
+        return $synchronizer->persist();
     }
 
     /**

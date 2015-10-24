@@ -1,9 +1,7 @@
 <?php
 namespace History\Services\RequestsGatherer\Extractors;
 
-use History\Services\RequestsGatherer\ExtractorInterface;
-
-class QuestionExtractor extends AbstractExtractor implements ExtractorInterface
+class QuestionExtractor extends AbstractExtractor
 {
     /**
      * Extract informations about something.

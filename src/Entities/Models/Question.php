@@ -11,7 +11,6 @@ class Question extends AbstractModel
         'choices',
         'passed',
         'approval',
-        'request_id',
     ];
 
     //////////////////////////////////////////////////////////////////////

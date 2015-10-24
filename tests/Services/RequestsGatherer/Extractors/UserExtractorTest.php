@@ -1,7 +1,6 @@
 <?php
-namespace History\Services\RequestsGatherer;
+namespace History\Services\RequestsGatherer\Extractors;
 
-use History\Services\RequestsGatherer\Extractors\UserExtractor;
 use History\TestCase;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -9,11 +8,12 @@ class UserExtractorTest extends TestCase
 {
     public function testCanExtractUserInformations()
     {
-        $html      = file_get_contents(__DIR__.'/../../_pages/user.html');
+        $html      = $this->getDummyPage('user');
         $crawler   = new Crawler($html);
         $extractor = new UserExtractor($crawler);
 
         $this->assertEquals([
+            'username'  => 'anahkiasen',
             'full_name' => 'Maxime Fabre',
             'email'     => 'foo@bar.com',
         ], $extractor->extract());

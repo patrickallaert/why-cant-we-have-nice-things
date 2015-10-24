@@ -61,7 +61,7 @@ class TwigServiceProvider extends ServiceProvider
         $twig->addExtension(new Twig_Extension_Debug());
 
         $twig->addFunction(new Twig_SimpleFunction('percentage', function ($number) {
-            return round($number * 100, self::PRECISION) . '%';
+            return round($number * 100, self::PRECISION).'%';
         }));
 
         $twig->addFunction(new Twig_SimpleFunction('choice', function (Question $question, Vote $vote) {

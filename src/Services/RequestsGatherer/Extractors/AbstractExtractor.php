@@ -1,10 +1,11 @@
 <?php
 namespace History\Services\RequestsGatherer\Extractors;
 
+use History\Services\RequestsGatherer\ExtractorInterface;
 use Illuminate\Support\Str;
 use Symfony\Component\DomCrawler\Crawler;
 
-abstract class AbstractExtractor
+abstract class AbstractExtractor implements ExtractorInterface
 {
     /**
      * @var Crawler

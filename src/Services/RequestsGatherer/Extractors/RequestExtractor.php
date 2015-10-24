@@ -2,9 +2,8 @@
 namespace History\Services\RequestsGatherer\Extractors;
 
 use DateTime;
-use History\Services\RequestsGatherer\ExtractorInterface;
 
-class RequestExtractor extends AbstractExtractor implements ExtractorInterface
+class RequestExtractor extends AbstractExtractor
 {
     /**
      * Get informations about an RFC.
@@ -41,7 +40,7 @@ class RequestExtractor extends AbstractExtractor implements ExtractorInterface
     //////////////////////////////////////////////////////////////////////
 
     /**
-     * Extract the RFC's informations
+     * Extract the RFC's informations.
      *
      * @return array
      */
@@ -57,7 +56,7 @@ class RequestExtractor extends AbstractExtractor implements ExtractorInterface
                 return;
             }
 
-            list (, $label, $value) = $matches;
+            list(, $label, $value) = $matches;
             $label = $this->cleanWhitespace($label);
             $value = $this->cleanWhitespace($value);
 
@@ -102,7 +101,7 @@ class RequestExtractor extends AbstractExtractor implements ExtractorInterface
     /**
      * Here we try to retrieve an RFC's author. As usual since there
      * is no real defined format to present the authors, we have to do
-     * a lot of guessing and cleanup
+     * a lot of guessing and cleanup.
      *
      * @param array $informations
      *
@@ -173,7 +172,7 @@ class RequestExtractor extends AbstractExtractor implements ExtractorInterface
     //////////////////////////////////////////////////////////////////////
 
     /**
-     * Find a value in the informations array
+     * Find a value in the informations array.
      *
      * @param array  $informations
      * @param string $matcher

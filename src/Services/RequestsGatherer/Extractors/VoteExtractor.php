@@ -3,9 +3,8 @@ namespace History\Services\RequestsGatherer\Extractors;
 
 use DateTime;
 use DateTimeZone;
-use History\Services\RequestsGatherer\ExtractorInterface;
 
-class VoteExtractor extends AbstractExtractor implements ExtractorInterface
+class VoteExtractor extends AbstractExtractor
 {
     /**
      * Extract informations about something.
@@ -26,7 +25,7 @@ class VoteExtractor extends AbstractExtractor implements ExtractorInterface
                 $timestamp = $image->attr('title');
 
                 $voted = $key;
-                $time  = $timestamp;
+                $time = $timestamp;
             }
         });
 
@@ -40,7 +39,7 @@ class VoteExtractor extends AbstractExtractor implements ExtractorInterface
 
     /**
      * Replace the full names by usernames for
-     * the people who voted with their full names
+     * the people who voted with their full names.
      *
      * @param string $name
      *
