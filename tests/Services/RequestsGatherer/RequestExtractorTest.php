@@ -19,6 +19,7 @@ class RequestExtractorTest extends TestCase
             'name'      => 'Support Class Constant Visibility',
             'condition' => 'Simple Yes/No option. This requires a 2/3 majority.',
             'timestamp' => DateTime::createFromFormat('Y-m-d', '2015-09-13'),
+            'authors'   => ['sean@siobud.com', 'reeze@php.net'],
             'questions' => [
                 [
                     'name'    => 'Class Constant Visibility',
