@@ -11,7 +11,7 @@ class RequestExtractorTest extends TestCase
 {
     public function testCanGetRequestName()
     {
-        $html         = file_get_contents(__DIR__.'/../../rfc.html');
+        $html         = file_get_contents(__DIR__.'/../../_pages/rfc.html');
         $informations = $this->getInformationsFromHtml($html);
         $timezone     = new DateTimeZone('UTC');
 
