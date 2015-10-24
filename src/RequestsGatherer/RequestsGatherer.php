@@ -93,9 +93,10 @@ class RequestsGatherer
         $request->save();
 
         foreach ($informations['questions'] as $question) {
-            $votes = $question['votes'];
+            $votes    = $question['votes'];
             $question = Question::firstOrCreate([
                 'name'       => $question['name'],
+                'choices'    => $question['choices'],
                 'request_id' => $request->id,
             ]);
 

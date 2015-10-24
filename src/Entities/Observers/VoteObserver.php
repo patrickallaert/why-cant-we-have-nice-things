@@ -10,7 +10,7 @@ class VoteObserver
      */
     public function saved(Vote $vote)
     {
-        $vote->user->computeStatistics();
-        $vote->request->computeStatistics();
+        //$vote->user->computeStatistics();
+        //$vote->request->computeStatistics();
     }
 }

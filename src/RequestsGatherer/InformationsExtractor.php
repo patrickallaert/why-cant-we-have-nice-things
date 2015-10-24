@@ -24,7 +24,7 @@ class InformationsExtractor
     }
 
     /**
-     * Get informations about an RFC
+     * Get informations about an RFC.
      *
      * @return array
      */
@@ -71,7 +71,7 @@ class InformationsExtractor
     /**
      * Get the creation/update date of a request.
      * This is pretty dirty since nobody thought about agreeing
-     * on a date format so we have a bit of everything
+     * on a date format so we have a bit of everything.
      *
      * @return DateTime
      */
@@ -93,7 +93,7 @@ class InformationsExtractor
     }
 
     /**
-     * Get the majority conditions (50%+1 or 2/3)
+     * Get the majority conditions (50%+1 or 2/3).
      *
      * @return string|void
      */
@@ -111,7 +111,7 @@ class InformationsExtractor
     }
 
     /**
-     * Get the questions asked on this RFC
+     * Get the questions asked on this RFC.
      *
      * @return array
      */
@@ -120,35 +120,56 @@ class InformationsExtractor
         return $this->crawler->filter('table.inline')->each(function ($question) {
             $name = $question->filter('tr:first-child')->text();
             $name = $this->cleanWhitespace($name);
+            $choices = $this->getChoices($question);
 
             return [
-                'name'  => $name,
-                'votes' => $this->getVotes($question),
+                'name'    => $name,
+                'choices' => count($choices),
+                'votes'   => $this->getVotes($question, $choices),
             ];
         });
     }
 
     /**
-     * Get the votes for a question
+     * Get the choices available for this question.
      *
-     * @param $question
+     * @param Crawler $question
      *
      * @return array
      */
-    protected function getVotes(Crawler $question)
+    protected function getChoices(Crawler $question)
     {
-        $votes   = [];
-        $choices = $question->filter('tr.row1 td')->each(function ($choice) {
+        return $question->filter('tr.row1 td')->each(function ($choice) {
             return $choice->text();
         });
+    }
+
+    /**
+     * Get the votes for a question.
+     *
+     * @param Crawler $question
+     * @param array   $choices
+     *
+     * @return array
+     */
+    protected function getVotes(Crawler $question, array $choices)
+    {
+        $votes = [];
 
         $question
             ->filter('tr')
             ->reduce(function ($vote) {
                 return $vote->filter('td.rightalign a')->count() > 0;
             })->each(function ($vote) use (&$votes, $choices) {
-                $user  = $vote->filter('td.rightalign a')->text();
-                $voted = !$vote->filter('td:last-child img')->count();
+                $user = $vote->filter('td.rightalign a')->text();
+
+                // Get which choice the user picked
+                $voted = 0;
+                $vote->filter('td')->each(function ($choice, $key) use (&$voted) {
+                    if ($choice->filter('img')->count()) {
+                        $voted = $key;
+                    }
+                });
 
                 // Create user
                 $user = User::firstOrCreate([
@@ -158,7 +179,7 @@ class InformationsExtractor
                 // Save vote for this request
                 $votes[] = [
                     'user_id'    => $user->id,
-                    'vote'       => $voted,
+                    'choice'     => $voted,
                     'created_at' => new DateTime(),
                     'updated_at' => new DateTime(),
                 ];

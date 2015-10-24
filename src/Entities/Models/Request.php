@@ -2,10 +2,8 @@
 namespace History\Entities\Models;
 
 use History\Entities\Traits\CanPass;
-use History\Entities\Traits\HasVotes;
-use Illuminate\Database\Eloquent\Model;
 
-class Request extends Model
+class Request extends AbstractModel
 {
     use CanPass;
 
@@ -14,10 +12,15 @@ class Request extends Model
      */
     protected $fillable = [
         'name',
-        'condition',
         'link',
+        'condition',
         'approval',
+        'passed',
     ];
+
+    //////////////////////////////////////////////////////////////////////
+    //////////////////////////// RELATIONSHIPS ///////////////////////////
+    //////////////////////////////////////////////////////////////////////
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -28,18 +31,10 @@ class Request extends Model
     }
 
     /**
-     * Compute the RFC's statistics
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function computeStatistics()
+    public function votes()
     {
-        $approvals = $this->questions->map(function (Question $question) {
-            return $question->getApproval();
-        })->all();
-
-        $approval = $approvals ? array_sum($approvals) / count($approvals) : 0;
-
-        $this->update([
-            'approval' => $approval,
-        ]);
+        return $this->hasMany(Vote::class);
     }
 }

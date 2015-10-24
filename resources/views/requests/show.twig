@@ -22,11 +22,12 @@
                 </thead>
                 <tbody>
                 {% for vote in question.votes %}
+                    {% set yes = vote.choice < question.choices %}
                     <tr>
                         <td>
                             <a href="/users/{{ vote.user.name }}">{{ vote.user.name }}</a>
                         </td>
-                        <td class="text-center {{ vote.vote ? 'success' : 'danger' }}">{{ vote.vote ? 'Yes' : 'No' }}</td>
+                        <td class="text-center {{ yes ? 'success' : 'danger' }}">{{ choice(question, vote) }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

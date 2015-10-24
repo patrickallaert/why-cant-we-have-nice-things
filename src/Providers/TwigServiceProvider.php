@@ -2,19 +2,19 @@
 namespace History\Providers;
 
 use History\Application;
-use Illuminate\Support\Str;
+use History\Entities\Models\Question;
+use History\Entities\Models\Vote;
 use League\Container\ServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Twig_Environment;
 use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;
-use Twig_SimpleFilter;
 use Twig_SimpleFunction;
 
 class TwigServiceProvider extends ServiceProvider
 {
     /**
-     * @var integer
+     * @var int
      */
     const PRECISION = 1;
 
@@ -47,6 +47,13 @@ class TwigServiceProvider extends ServiceProvider
             $twig->addExtension(new Twig_Extension_Debug());
             $twig->addFunction(new Twig_SimpleFunction('percentage', function ($number) {
                 return round($number * 100, self::PRECISION);
+            }));
+            $twig->addFunction(new Twig_SimpleFunction('choice', function (Question $question, Vote $vote) {
+                if ($question->choices <= 2) {
+                    return $vote->choice === 1 ? 'Yes' : 'No';
+                }
+
+                return $vote->choice;
             }));
 
             return $twig;

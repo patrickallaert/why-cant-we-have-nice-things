@@ -4,17 +4,29 @@ namespace History\Entities\Traits;
 trait CanPass
 {
     /**
-     * Did an RFC pass?
-     *
-     * @return bool
+     * @return float
      */
-    public function getPassedAttribute()
+    public function getMajorityCondition()
     {
-        $majority = 0.5;
-        if (strpos($this->condition, '2/3') !== false) {
+        $majority  = 0.5;
+        $condition = $this->request ? $this->request->condition : $this->condition;
+
+        if (strpos($condition, '2/3') !== false) {
             $majority = 2 / 3;
         }
 
-        return $this->approval > $majority;
+        return $majority;
+    }
+
+    /**
+     * Did an RFC pass?
+     *
+     * @param float $approval
+     *
+     * @return bool
+     */
+    public function hasPassed($approval)
+    {
+        return $approval > $this->getMajorityCondition();
     }
 }

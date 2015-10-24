@@ -18,14 +18,12 @@ class ErrorsServiceProvider extends ServiceProvider
      * Use the register method to register items with the container via the
      * protected $this->container property or the `getContainer` method
      * from the ContainerAwareTrait.
-     *
-     * @return void
      */
     public function register()
     {
-        $this->container->singleton(Run::class, function() {
-            $whoops = new Run;
-            $whoops->pushHandler(new PrettyPageHandler);
+        $this->container->singleton(Run::class, function () {
+            $whoops = new Run();
+            $whoops->pushHandler(new PrettyPageHandler());
             $whoops->register();
 
             return $whoops;

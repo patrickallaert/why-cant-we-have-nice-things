@@ -23,7 +23,7 @@ class CreateVotesTable extends AbstractMigration
     public function change()
     {
         $this->table('votes')
-             ->addColumn('vote', 'boolean')
+             ->addColumn('choice', 'integer')
              ->addColumn('question_id', 'integer')
              ->addColumn('user_id', 'integer')
              ->addColumn('created_at', 'datetime')

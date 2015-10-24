@@ -1,18 +1,20 @@
 <?php
 namespace History\Entities\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Vote extends Model
+class Vote extends AbstractModel
 {
     /**
      * @var array
      */
     protected $fillable = [
-        'user_id',
+        'choice',
         'question_id',
-        'vote',
+        'user_id',
     ];
+
+    //////////////////////////////////////////////////////////////////////
+    //////////////////////////// RELATIONSHIPS ///////////////////////////
+    //////////////////////////////////////////////////////////////////////
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -6,6 +6,7 @@ use History\Entities\Models\Question;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
 use History\RequestsGatherer\RequestsGatherer;
+use History\StatisticsComputer\StatisticsComputer;
 use Illuminate\Contracts\Cache\Repository;
 use League\Container\ServiceProvider;
 use Psy\Shell;
@@ -57,7 +58,7 @@ class ConsoleServiceProvider extends ServiceProvider
     /**
      * Refresh the requests and comments.
      *
-     * @param boolean         $scratch
+     * @param bool            $scratch
      * @param OutputInterface $output
      */
     public function refresh($scratch, OutputInterface $output)
@@ -84,20 +85,22 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     public function refreshStats(OutputInterface $output)
     {
+        $computer = new StatisticsComputer();
+
         $users     = User::with('votes')->get();
         $questions = Question::with('votes')->get();
         $requests  = Request::with('questions.votes')->get();
 
-        $this->progressIterator($output, $users, function (User $user) {
-            $user->computeStatistics();
+        $this->progressIterator($output, $users, function (User $user) use ($computer) {
+            $user->update($computer->forUser($user));
         });
 
-        $this->progressIterator($output, $questions, function (Question $question) {
-            $question->computeStatistics();
+        $this->progressIterator($output, $questions, function (Question $question) use ($computer) {
+            $question->update($computer->forQuestion($question));
         });
 
-        $this->progressIterator($output, $requests, function (Request $request) {
-            $request->computeStatistics();
+        $this->progressIterator($output, $requests, function (Request $request) use ($computer) {
+            $request->update($computer->forRequest($request));
         });
     }
 

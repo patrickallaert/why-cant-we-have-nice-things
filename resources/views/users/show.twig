@@ -18,14 +18,15 @@
             </tr>
         </thead>
         {% for vote in user.votes %}
+            {% set yes = vote.choice < vote.question.choices %}
             <tr>
                 <td>
                     <a href="/requests/{{ vote.question.request.id }}">{{ vote.question.request.name }}</a>
                 </td>
                 <td>{{ vote.question.name }}</td>
-                <td class="text-right">{{ vote.vote ? 'Yes' : 'No' }}</td>
+                <td class="text-right">{{ choice(vote.question, vote) }}</td>
                 <td class="text-right">{{ percentage(vote.question.approval) }}%</td>
-                <td class="text-right">{{ vote.question.passed == vote.vote ? 'Yes' : 'No' }}</td>
+                <td class="text-right">{{ vote.question.majority_choice == vote.choice ? 'Yes' : 'No' }}</td>
             </tr>
         {% endfor %}
     </table>

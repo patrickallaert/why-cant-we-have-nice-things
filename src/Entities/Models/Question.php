@@ -2,12 +2,9 @@
 namespace History\Entities\Models;
 
 use History\Entities\Traits\CanPass;
-use History\Entities\Traits\HasVotes;
-use Illuminate\Database\Eloquent\Model;
 
-class Question extends Model
+class Question extends AbstractModel
 {
-    use HasVotes;
     use CanPass;
 
     /**
@@ -15,19 +12,15 @@ class Question extends Model
      */
     protected $fillable = [
         'name',
+        'choices',
+        'passed',
         'approval',
         'request_id',
     ];
 
-    /**
-     * Compute the question's statistics
-     */
-    public function computeStatistics()
-    {
-        $this->update([
-           'approval' => $this->getApproval(),
-        ]);
-    }
+    //////////////////////////////////////////////////////////////////////
+    //////////////////////////// RELATIONSHIPS ///////////////////////////
+    //////////////////////////////////////////////////////////////////////
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -35,5 +28,30 @@ class Question extends Model
     public function request()
     {
         return $this->belongsTo(Request::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function votes()
+    {
+        return $this->hasMany(Vote::class);
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    ///////////////////////////// ATTRIBUTES /////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+
+    /**
+     * Get which choice was picked by the majority.
+     *
+     * @return int
+     */
+    public function getMajorityChoiceAttribute()
+    {
+        $majority = $this->votes->groupByCounts('choice')->sort();
+        $majority = $majority->keys()->last();
+
+        return $majority;
     }
 }

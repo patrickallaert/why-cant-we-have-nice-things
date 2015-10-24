@@ -1,13 +1,8 @@
 <?php
 namespace History\Entities\Models;
 
-use History\Entities\Traits\HasVotes;
-use Illuminate\Database\Eloquent\Model;
-
-class User extends Model
+class User extends AbstractModel
 {
-    use HasVotes;
-
     /**
      * @var array
      */
@@ -20,21 +15,11 @@ class User extends Model
         'hivemind',
     ];
 
-    //////////////////////////////////////////////////////////////////////
-    ///////////////////////////// ATTRIBUTES /////////////////////////////
-    //////////////////////////////////////////////////////////////////////
-
     /**
-     * Recompute the user statistics.
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function computeStatistics()
+    public function votes()
     {
-        $this->update([
-            'yes_votes'   => $this->getYesVotes()->count(),
-            'no_votes'    => $this->getNoVotes()->count(),
-            'total_votes' => $this->votes->count(),
-            'approval'    => $this->getApproval(),
-            'hivemind'    => $this->getHivemind(),
-        ]);
+        return $this->hasMany(Vote::class);
     }
 }
