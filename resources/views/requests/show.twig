@@ -12,8 +12,8 @@
         <div class="table-responsive">
             <table class="table table-condensed table-striped table-hover">
                 <thead>
-                <tr class="text-center">
-                    <td colspan="2">{{ question.name }} ({{ percentage(question.approval) }}% approved)</td>
+                <tr>
+                    <th class="text-center" colspan="2">{{ question.name }} ({{ percentage(question.approval) }}% approved)</th>
                 </tr>
                 <tr>
                     <th>User</th>
@@ -28,6 +28,10 @@
                             <a href="/users/{{ vote.user.name }}">{{ vote.user.name }}</a>
                         </td>
                         <td class="text-center {{ yes ? 'success' : 'danger' }}">{{ choice(question, vote) }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="2" class="text-center lead">No votes yet</td>
                     </tr>
                 {% endfor %}
                 </tbody>

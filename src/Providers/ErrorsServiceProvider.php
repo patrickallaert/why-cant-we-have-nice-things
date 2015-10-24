@@ -25,7 +25,7 @@ class ErrorsServiceProvider extends ServiceProvider
             if (getenv('APP_ENV') !== 'local') {
                 return;
             }
-            
+
             $whoops = new Run();
             $whoops->pushHandler(new PrettyPageHandler());
             $whoops->register();
