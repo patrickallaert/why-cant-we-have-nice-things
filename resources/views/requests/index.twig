@@ -24,11 +24,11 @@
             {% for request in requests %}
                 <tr>
                     <td>
-                        <a href="{{ request.link }}">{{ request.name }}</a>
+                        <a href="/requests/{{ request.id }}">{{ request.name }}</a>
                     </td>
                     <td class="text-right">{{ request.votes.count() }}</td>
                     <td class="text-right">{{ percentage(request.approval) }}%</td>
-                    <td class="text-right">{{ request.votes.count() ? (request.passed ? 'Yes' : 'No') : 'N/A' }}</td>
+                    <td class="text-right {{ request.passed ? 'success' : 'danger' }}">{{ request.votes.count() ? (request.passed ? 'Yes' : 'No') : 'N/A' }}</td>
                     <td>{{ request.created_at.toDateString() }}</td>
                 </tr>
             {% endfor %}
