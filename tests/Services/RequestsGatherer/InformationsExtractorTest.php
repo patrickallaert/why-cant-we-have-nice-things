@@ -55,6 +55,18 @@ class InformationsExtractorTest extends TestCase
         $this->assertEquals(DateTime::createFromFormat('Y-m-d', '2014-01-02'), $informations['timestamp']);
     }
 
+    public function testCanCleanupRequestTitle()
+    {
+        $informations = $this->getInformationsFromHtml('<h1>PHP RFC: Foobar</h1>');
+        $this->assertEquals('Foobar', $informations['name']);
+
+        $informations = $this->getInformationsFromHtml('<h1>RFC: Foobar</h1>');
+        $this->assertEquals('Foobar', $informations['name']);
+
+        $informations = $this->getInformationsFromHtml('<h1>Request for Comments: Foobar</h1>');
+        $this->assertEquals('Foobar', $informations['name']);
+    }
+
     /**
      * Get the infromations from a piece of HTML
      *
