@@ -1,4 +1,5 @@
 <?php
+
 use History\Application;
 use League\Container\Container;
 

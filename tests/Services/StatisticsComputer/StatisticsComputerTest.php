@@ -10,7 +10,7 @@ class StatisticsComputerTest extends TestCase
 {
     public function testCanComputeQuestionStatistics()
     {
-        $question = new Question(['choices' => 2]);
+        $question        = new Question(['choices' => 2]);
         $question->votes = new Collection([
             new Vote(['choice' => 2]),
             new Vote(['choice' => 1]),
@@ -26,7 +26,7 @@ class StatisticsComputerTest extends TestCase
 
     public function testCanComputeQuestionStatsWithoutVotes()
     {
-        $question = new Question(['choices' => 2]);
+        $question        = new Question(['choices' => 2]);
         $question->votes = new Collection([]);
 
         $stats = (new StatisticsComputer())->forQuestion($question);

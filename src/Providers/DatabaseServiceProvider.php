@@ -1,11 +1,8 @@
 <?php
 namespace History\Providers;
 
-use History\Entities\Models\Vote;
-use History\Entities\Observers\VoteObserver;
 use Illuminate\Container\Container;
 use Illuminate\Database\Capsule\Manager;
-use Illuminate\Events\Dispatcher;
 use League\Container\ServiceProvider;
 
 class DatabaseServiceProvider extends ServiceProvider
