@@ -18,11 +18,9 @@ class RequestExtractor extends AbstractExtractor implements ExtractorInterface
         $majorityConditions = $this->getMajorityConditions();
         $timestamp          = $this->getRequestTimestamp();
 
-        // Extract Questions
+        // Extract questions
         $questions = $this->crawler->filter('table.inline')->each(function ($question) {
-            $extractor = new QuestionsExtractor($question);
-
-            return $extractor->extract();
+            return (new QuestionExtractor($question))->extract();
         });
 
         return [

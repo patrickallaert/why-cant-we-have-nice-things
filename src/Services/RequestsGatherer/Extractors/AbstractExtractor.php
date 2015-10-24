@@ -22,8 +22,8 @@ abstract class AbstractExtractor
     }
 
     /**
-     * @param string $selector
-     * @param Crawler|null   $crawler
+     * @param string       $selector
+     * @param Crawler|null $crawler
      *
      * @return string
      */
