@@ -82,6 +82,17 @@ class StatisticsComputer
 
     /**
      * @param AbstractModel $model
+     * @param float         $approval
+     *
+     * @return bool
+     */
+    public function hasPassed(AbstractModel $model, $approval)
+    {
+        return $approval > $this->getMajorityCondition($model);
+    }
+
+    /**
+     * @param AbstractModel $model
      *
      * @return float
      */
@@ -95,17 +106,6 @@ class StatisticsComputer
         }
 
         return $majority;
-    }
-
-    /**
-     * @param AbstractModel $model
-     * @param float         $approval
-     *
-     * @return bool
-     */
-    protected function hasPassed(AbstractModel $model, $approval)
-    {
-        return $approval > $this->getMajorityCondition($model);
     }
 
     /**
