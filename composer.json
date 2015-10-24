@@ -18,16 +18,16 @@
         "robmorgan/phinx": "^0.4.6",
         "symfony/css-selector": "^2.7",
         "symfony/dom-crawler": "^2.7",
+        "thomaswelton/gravatarlib": "^0.1.0",
         "twig/twig": "^1.22",
-        "vlucas/phpdotenv": "^2.0",
-        "thomaswelton/gravatarlib": "^0.1.0"
+        "vlucas/phpdotenv": "^2.0"
     },
     "require-dev": {
         "fabpot/php-cs-fixer": "^1.10",
         "maximebf/debugbar": "^1.10",
+        "phpunit/phpunit": "^5.0",
         "psy/psysh": "^0.5.2",
-        "symfony/var-dumper": "^2.7",
-        "phpunit/phpunit": "^5.0"
+        "symfony/var-dumper": "^2.7"
     },
     "autoload": {
         "psr-4": {
