@@ -25,16 +25,14 @@ class RequestExtractorTest extends TestCase
                     'choices' => 2,
                     'votes'   => [
                         [
-                            'user_id'    => 1,
+                            'user_id'    => 'ajf',
                             'choice'     => 2,
                             'created_at' => DateTime::createFromFormat('Y-m-d H:i', '2015-10-22 22:30', $timezone),
-                            'updated_at' => DateTime::createFromFormat('Y-m-d H:i', '2015-10-22 22:30', $timezone),
                         ],
                         [
-                            'user_id'    => 1,
+                            'user_id'    => 'ajf',
                             'choice'     => 1,
                             'created_at' => DateTime::createFromFormat('Y-m-d H:i', '2015-10-22 22:30', $timezone),
-                            'updated_at' => DateTime::createFromFormat('Y-m-d H:i', '2015-10-22 22:30', $timezone),
                         ],
                     ],
                 ],

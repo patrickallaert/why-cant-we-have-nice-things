@@ -81,7 +81,7 @@ class RequestExtractor extends AbstractExtractor implements ExtractorInterface
         $locations = ['#proposed_voting_choices + div', '#vote + div p'];
         foreach ($locations as $location) {
             if ($text = $this->extractText($location)) {
-                return $location;
+                return $text;
             }
         }
     }
