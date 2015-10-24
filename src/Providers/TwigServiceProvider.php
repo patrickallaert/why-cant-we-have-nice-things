@@ -68,7 +68,7 @@ class TwigServiceProvider extends ServiceProvider
                 return $vote->choice === 1 ? 'Yes' : 'No';
             }
 
-            return $vote->choice;
+            return $vote->choice . '/' . $question->choices;
         }));
     }
 
