@@ -35,6 +35,6 @@ class Request extends AbstractModel
      */
     public function votes()
     {
-        return $this->hasMany(Vote::class);
+        return $this->hasManyThrough(Vote::class, Question::class);
     }
 }
