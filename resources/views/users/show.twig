@@ -12,7 +12,10 @@
 
 {% block content %}
     <ul class="list-unstyled lead text-center">
-        <li>Created <strong>{{ user.requests.count() }}</strong> RFCs.</li>
+        <li>
+            Created <strong>{{ user.requests.count() }}</strong> RFCs,
+            <strong>{{ percentage(user.success) }}</strong> of which have been approved.
+        </li>
         <li>
             Voted <strong>{{ user.total_votes }}</strong> times, and has been correct
             <strong>{{ percentage(user.hivemind) }}</strong> of the time.

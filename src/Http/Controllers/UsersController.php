@@ -1,6 +1,7 @@
 <?php
 namespace History\Http\Controllers;
 
+use History\Entities\Models\Request;
 use History\Entities\Models\User;
 
 class UsersController extends AbstractController

@@ -19,7 +19,7 @@ class UserExtractor extends AbstractExtractor
     }
 
     /**
-     * Get the user's contributions
+     * Get the user's contributions.
      *
      * @return string[]
      */
