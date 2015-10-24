@@ -31,6 +31,16 @@ class Request extends AbstractModel
     /**
      * @codeCoverageIgnore
      *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function authors()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    /**
+     * @codeCoverageIgnore
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function votes()

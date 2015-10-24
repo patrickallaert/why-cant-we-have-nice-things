@@ -95,6 +95,21 @@ class RequestsGatherer
         $request->save();
 
         $this->createQuestions($request, $informations['questions']);
+        $this->createAuthors($request, $informations['authors']);
+    }
+
+    /**
+     * @param Request $request
+     * @param array   $authors
+     */
+    private function createAuthors(Request $request, array $authors)
+    {
+        foreach ($authors as $author) {
+            $user = User::firstOrNew(['email' => $author]);
+            $user->save();
+
+            $request->authors()->save($user);
+        }
     }
 
     /**
@@ -140,9 +155,15 @@ class RequestsGatherer
         $extractor    = new UserExtractor($crawler);
         $informations = $extractor->extract();
 
-        $user            = User::firstOrNew(['name' => $username]);
+        // Try to retrieve user if he's already an author
+        $email = $informations['email'];
+        $user = User::firstOrNew(['email' => $email]);
+        $user = $user ?: User::firstOrNew(['name' => $username]);
+
+        // Fill-in informations
+        $user->name      = $username;
         $user->full_name = $informations['full_name'];
-        $user->email     = $informations['email'];
+        $user->email     = $email;
         $user->save();
 
         return $user;

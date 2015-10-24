@@ -46,13 +46,16 @@ class RequestExtractor extends AbstractExtractor implements ExtractorInterface
     protected function getInformations()
     {
         $informations = [];
-        $this->crawler->filter('.level1 li')->each(function ($information) use (&$informations) {
+        $this->crawler->filter('.page .level1 li')->each(function ($information) use (&$informations) {
             $text = $information->text();
             $text = str_replace("\n", ' ', $text);
 
             preg_match('/([^:]+) *: *(.+)/mi', $text, $matches);
-            list (, $label, $value) = $matches;
+            if (count($matches) < 3) {
+                return;
+            }
 
+            list (, $label, $value) = $matches;
             $label = $this->cleanWhitespace($label);
             $value = $this->cleanWhitespace($value);
 
@@ -78,6 +81,10 @@ class RequestExtractor extends AbstractExtractor implements ExtractorInterface
     }
 
     /**
+     * Here we try to retrieve an RFC's author. As usual since there
+     * is no real defined format to present the authors, we have to do
+     * a lot of guessing and cleanup
+     *
      * @param array $informations
      *
      * @return array
@@ -90,14 +97,25 @@ class RequestExtractor extends AbstractExtractor implements ExtractorInterface
                 continue;
             }
 
+            // Try to split off authors
             $authors = explode(',', $value);
             foreach ($authors as $key => $author) {
-                $author        = trim($author);
-                $authors[$key] = last(explode(' ', $author));
+
+                // Get email from the author's name
+                $author = trim($author);
+                $author = last(explode(' ', $author));
+
+                // Cleanup email and unify to @php.net
+                $author = str_replace('#at#', '@', $author);
+                $author = trim($author, "<>()'");
+                $author = preg_replace('/@(.+)/', '@php.net', $author);
+                $author = strpos($author, '@') !== false ? $author : null;
+
+                $authors[$key] = $author;
             }
         }
 
-        return $authors;
+        return array_filter($authors);
     }
 
     /**

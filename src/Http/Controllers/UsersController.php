@@ -10,7 +10,7 @@ class UsersController extends AbstractController
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::with('requests')->get();
         $users = $users->filter(function (User $user) {
             return $user->total_votes > 5;
         })->sortBy(function (User $user) {
@@ -29,7 +29,7 @@ class UsersController extends AbstractController
      */
     public function show($user)
     {
-        $user = User::with('votes.question.request')
+        $user = User::with('votes.question.request', 'requests')
                     ->whereName($user)
                     ->firstOrFail();
 

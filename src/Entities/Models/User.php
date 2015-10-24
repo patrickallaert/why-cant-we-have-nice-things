@@ -26,4 +26,14 @@ class User extends AbstractModel
     {
         return $this->hasMany(Vote::class);
     }
+
+    /**
+     * @codeCoverageIgnore
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function requests()
+    {
+        return $this->belongsToMany(Request::class);
+    }
 }

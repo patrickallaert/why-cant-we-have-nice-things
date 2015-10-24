@@ -15,6 +15,7 @@
             <thead>
             <tr>
                 <th>User</th>
+                <th class="text-right">Created RFCs</th>
                 <th class="text-right">Voted YES</th>
                 <th class="text-right">Voted NO</th>
                 <th class="text-right"># of votes</th>
@@ -28,6 +29,7 @@
                     <td>
                         <a href="/users/{{ user.name }}">{{ user.name }}</a>
                     </td>
+                    <td class="text-right">{{ user.requests.count() }}</td>
                     <td class="text-right">{{ user.yes_votes }}</td>
                     <td class="text-right">{{ user.no_votes }}</td>
                     <td class="text-right">{{ user.total_votes }}</td>
