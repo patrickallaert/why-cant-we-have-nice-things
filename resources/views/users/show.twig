@@ -4,7 +4,8 @@
 
 {% block content %}
     <p class="lead text-center">
-        This user has voted <strong>{{ user.total_votes }}</strong> times, and has been correct <strong>{{ percentage(user.hivemind) }}%</strong> of the time.
+        This user has voted <strong>{{ user.total_votes }}</strong> times, and has been correct <strong>{{ percentage(user.hivemind) }}%</strong> of the time.<br>
+        <a target="_blank" href="http://people.php.net/{{ user.name }}">View his profile on phppeople</a>
     </p>
 
     <table class="table table-condensed table-hover table-striped">
