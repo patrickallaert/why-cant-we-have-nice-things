@@ -1,7 +1,9 @@
 .navbar {
     border-radius: 0;
+    min-height: auto;
 
-    a {
+    li > a {
+        padding: 0.5em;
         text-transform: lowercase;
     }
 }
