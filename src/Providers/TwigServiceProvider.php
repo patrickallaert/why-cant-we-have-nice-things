@@ -6,6 +6,7 @@ use History\Entities\Models\Question;
 use History\Entities\Models\Vote;
 use League\Container\ServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
+use thomaswelton\GravatarLib\Gravatar;
 use Twig_Environment;
 use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;
@@ -68,7 +69,7 @@ class TwigServiceProvider extends ServiceProvider
                 return $vote->choice === 1 ? 'Yes' : 'No';
             }
 
-            return $vote->choice . '/' . $question->choices;
+            return $vote->choice.'/'.$question->choices;
         }));
     }
 
@@ -79,7 +80,11 @@ class TwigServiceProvider extends ServiceProvider
      */
     private function registerGlobalVariables(Twig_Environment $twig)
     {
+        $gravatar = new Gravatar();
+        $gravatar->setAvatarSize(250);
+
         $twig->addGlobal('app_name', Application::NAME);
+        $twig->addGlobal('gravatar', $gravatar);
 
         $request = $this->container->get(Request::class);
         $twig->addGlobal('current_uri', $request->getPathInfo());

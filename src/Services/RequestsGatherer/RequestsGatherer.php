@@ -3,7 +3,10 @@ namespace History\Services\RequestsGatherer;
 
 use History\Entities\Models\Question;
 use History\Entities\Models\Request;
+use History\Entities\Models\User;
 use History\Entities\Models\Vote;
+use History\Services\RequestsGatherer\Extractors\RequestExtractor;
+use History\Services\RequestsGatherer\Extractors\UserExtractor;
 use Illuminate\Contracts\Cache\Repository;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\NullOutput;
@@ -75,24 +78,34 @@ class RequestsGatherer
     public function createRequest($link)
     {
         $crawler   = $this->getPageCrawler($link);
-        $extractor = new InformationsExtractor($crawler);
+        $extractor = new RequestExtractor($crawler);
 
-        $informations = $extractor->getRequestInformations();
+        $informations = $extractor->extract();
         if (!$informations['name']) {
             return;
         }
 
         // Retrieve or create the request
-        $request = Request::firstOrNew(['link' => $link]);
-
-        // Update timestamps
+        // and update its informations
+        $request             = Request::firstOrNew(['link' => $link]);
         $request->name       = $informations['name'];
         $request->condition  = $informations['condition'];
         $request->created_at = $informations['timestamp'];
         $request->updated_at = $informations['timestamp'];
         $request->save();
 
-        foreach ($informations['questions'] as $question) {
+        $this->createQuestions($request, $informations['questions']);
+    }
+
+    /**
+     * Create the questions for a request.
+     *
+     * @param Request $request
+     * @param array   $questions
+     */
+    protected function createQuestions(Request $request, array $questions)
+    {
+        foreach ($questions as $question) {
             $votes    = $question['votes'];
             $question = Question::firstOrCreate([
                 'name'       => $question['name'],
@@ -100,16 +113,39 @@ class RequestsGatherer
                 'request_id' => $request->id,
             ]);
 
-            // Insert question votes
-            $votes = array_map(function ($vote) use ($question) {
+            // Sanitize vote structure
+            foreach ($votes as $key => $vote) {
                 $vote['question_id'] = $question->id;
+                $vote['user_id']     = $this->createUser($vote['user_id'])->id;
+                $vote['updated_at']  = $vote['created_at'];
 
-                return $vote;
-            }, $votes);
+                $votes[$key] = $vote;
+            }
 
             $question->votes()->delete();
             Vote::insert($votes);
         }
+    }
+
+    /**
+     * Create an user if needed.
+     *
+     * @param string $username
+     *
+     * @return User
+     */
+    protected function createUser($username)
+    {
+        $crawler      = $this->getPageCrawler('http://people.php.net/'.$username);
+        $extractor    = new UserExtractor($crawler);
+        $informations = $extractor->extract();
+
+        $user            = User::firstOrNew(['name' => $username]);
+        $user->full_name = $informations['full_name'];
+        $user->email     = $informations['email'];
+        $user->save();
+
+        return $user;
     }
 
     /**

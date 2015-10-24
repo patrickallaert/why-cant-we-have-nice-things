@@ -1,35 +1,19 @@
 <?php
-namespace History\Services\RequestsGatherer;
+namespace History\Services\RequestsGatherer\Extractors;
 
 use DateTime;
 use DateTimeZone;
-use History\Entities\Models\User;
-use Illuminate\Support\Str;
+use History\Services\RequestsGatherer\ExtractorInterface;
 use Symfony\Component\DomCrawler\Crawler;
 
-class InformationsExtractor
+class RequestExtractor extends AbstractExtractor implements ExtractorInterface
 {
-    /**
-     * @var Crawler
-     */
-    protected $crawler;
-
-    /**
-     * InformationsExtractor constructor.
-     *
-     * @param Crawler $crawler
-     */
-    public function __construct(Crawler $crawler)
-    {
-        $this->crawler = $crawler;
-    }
-
     /**
      * Get informations about an RFC.
      *
      * @return array
      */
-    public function getRequestInformations()
+    public function extract()
     {
         $name               = $this->getRequestName();
         $majorityConditions = $this->cleanWhitespace($this->getMajorityConditions());
@@ -119,8 +103,8 @@ class InformationsExtractor
     protected function getQuestions()
     {
         return $this->crawler->filter('table.inline')->each(function ($question) {
-            $name = $question->filter('tr:first-child')->text();
-            $name = $this->cleanWhitespace($name);
+            $name    = $question->filter('tr:first-child')->text();
+            $name    = $this->cleanWhitespace($name);
             $choices = $this->getChoices($question);
 
             return [
@@ -166,28 +150,22 @@ class InformationsExtractor
 
                 // Get which choice the user picked
                 $voted = 0;
-                $time = new DateTime();
+                $time  = new DateTime();
                 $vote->filter('td')->each(function ($choice, $key) use (&$voted, &$time) {
                     $image = $choice->filter('img');
                     if ($image->count()) {
                         $timestamp = $image->attr('title');
 
                         $voted = $key;
-                        $time = DateTime::createFromFormat('Y/m/d H:i', $timestamp, new DateTimeZone('UTC'));
+                        $time  = $timestamp;
                     }
                 });
 
-                // Create user
-                $user = User::firstOrCreate([
-                    'name' => $user,
-                ]);
-
                 // Save vote for this request
                 $votes[] = [
-                    'user_id'    => $user->id,
+                    'user_id'    => $this->replaceFullnamesByUsernames($user),
                     'choice'     => $voted,
-                    'created_at' => $time,
-                    'updated_at' => $time,
+                    'created_at' => DateTime::createFromFormat('Y/m/d H:i', $time, new DateTimeZone('UTC')),
                 ];
             });
 
@@ -195,16 +173,18 @@ class InformationsExtractor
     }
 
     /**
-     * @param $information
+     * Replace the full names by usernames for
+     * the people who voted with their full names
+     *
+     * @param string $name
      *
      * @return string
      */
-    protected function cleanWhitespace($information)
+    protected function replaceFullnamesByUsernames($name)
     {
-        $information = Str::ascii($information);
-        $information = preg_replace("/\s+/", ' ', $information);
-        $information = trim($information);
-
-        return $information;
+        return strtr($name, [
+            'Barry Carlyon' => 'bcarlyon',
+            'Ivan Enderlin' => 'hywan',
+        ]);
     }
 }

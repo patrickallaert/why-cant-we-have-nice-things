@@ -8,6 +8,8 @@ class User extends AbstractModel
      */
     protected $fillable = [
         'name',
+        'full_name',
+        'email',
         'yes_votes',
         'no_votes',
         'total_votes',

@@ -19,7 +19,8 @@
         "symfony/css-selector": "^2.7",
         "symfony/dom-crawler": "^2.7",
         "twig/twig": "^1.22",
-        "vlucas/phpdotenv": "^2.0"
+        "vlucas/phpdotenv": "^2.0",
+        "thomaswelton/gravatarlib": "^0.1.0"
     },
     "require-dev": {
         "fabpot/php-cs-fixer": "^1.10",

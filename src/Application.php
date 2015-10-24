@@ -82,7 +82,7 @@ class Application
         $request    = $this->container->get(Request::class);
 
         try {
-            $response   = $dispatcher->dispatch($request->getMethod(), $request->getPathInfo());
+            $response = $dispatcher->dispatch($request->getMethod(), $request->getPathInfo());
         } catch (NotFoundException $exception) {
             return $this->container->get(Twig_Environment::class)->display('errors/404.twig');
         }

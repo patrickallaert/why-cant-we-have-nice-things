@@ -2,6 +2,14 @@
 {% set title = user.name %}
 {% set subtitle = user.name %}
 
+{% block title %}
+    <img class="img-circle" src="{{ gravatar.get(user.email) }}" alt="">
+    <h2>
+        {{ user.name }}<br>
+        <small>{{ user.full_name }}</small>
+    </h2>
+{% endblock %}
+
 {% block content %}
     <p class="lead text-center">
         This user has voted <strong>{{ user.total_votes }}</strong> times, and has been correct <strong>{{ percentage(user.hivemind) }}%</strong> of the time.<br>

@@ -1,7 +1,6 @@
 <?php
 namespace History\Providers;
 
-use Illuminate\Container\Container;
 use Illuminate\Database\Capsule\Manager;
 use League\Container\ServiceProvider;
 

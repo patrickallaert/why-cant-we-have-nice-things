@@ -3,10 +3,11 @@ namespace History\Services\RequestsGatherer;
 
 use DateTime;
 use DateTimeZone;
+use History\Services\RequestsGatherer\Extractors\RequestExtractor;
 use History\TestCase;
 use Symfony\Component\DomCrawler\Crawler;
 
-class InformationsExtractorTest extends TestCase
+class RequestExtractorTest extends TestCase
 {
     public function testCanGetRequestName()
     {
@@ -79,8 +80,8 @@ class InformationsExtractorTest extends TestCase
     protected function getInformationsFromHtml($html)
     {
         $crawler   = new Crawler($html);
-        $extractor = new InformationsExtractor($crawler);
+        $extractor = new RequestExtractor($crawler);
 
-        return $extractor->getRequestInformations();
+        return $extractor->extract();
     }
 }

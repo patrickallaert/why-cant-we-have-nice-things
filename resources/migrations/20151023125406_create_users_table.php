@@ -24,6 +24,8 @@ class CreateUsersTable extends AbstractMigration
     {
         $this->table('users')
              ->addColumn('name', 'string')
+             ->addColumn('full_name', 'string')
+             ->addColumn('email', 'string')
              ->addColumn('yes_votes', 'integer')
              ->addColumn('no_votes', 'integer')
              ->addColumn('total_votes', 'integer')
