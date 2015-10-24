@@ -16,6 +16,8 @@ class User extends AbstractModel
     ];
 
     /**
+     * @codeCoverageIgnore
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function votes()

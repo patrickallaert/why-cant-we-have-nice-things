@@ -80,7 +80,7 @@ class InformationsExtractor
         $timestamp = null;
         $this->crawler->filter('.level1 li')->each(function ($information) use (&$timestamp) {
             $text = $information->text();
-            $date = preg_replace('/.*(created|date) ?: +(\d{4}-\d{2}-\d{2}).*/i', '$2', $text);
+            $date = preg_replace('/.*(created|date) *: +(\d{4}[-\/]\d{2}[-\/]\d{2}).*/i', '$2', $text);
             $date = str_replace('/', '-', $date);
             $date = trim($date);
 

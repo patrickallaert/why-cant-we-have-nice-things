@@ -17,6 +17,8 @@ class Vote extends AbstractModel
     //////////////////////////////////////////////////////////////////////
 
     /**
+     * @codeCoverageIgnore
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function question()
@@ -25,6 +27,8 @@ class Vote extends AbstractModel
     }
 
     /**
+     * @codeCoverageIgnore
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function request()
@@ -33,6 +37,8 @@ class Vote extends AbstractModel
     }
 
     /**
+     * @codeCoverageIgnore
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
