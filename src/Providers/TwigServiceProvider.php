@@ -34,8 +34,8 @@ class TwigServiceProvider extends ServiceProvider
     {
         $this->container->singleton(Twig_Environment::class, function () {
             $loader = new Twig_Loader_Filesystem($this->container->get('paths.views'));
-            $debug  = getenv('APP_ENV') === 'local';
-            $twig   = new Twig_Environment($loader, [
+            $debug = getenv('APP_ENV') === 'local';
+            $twig = new Twig_Environment($loader, [
                 'debug'            => $debug,
                 'auto_reload'      => $debug,
                 'strict_variables' => false,
@@ -51,7 +51,7 @@ class TwigServiceProvider extends ServiceProvider
     }
 
     /**
-     * Add extensions to Twig
+     * Add extensions to Twig.
      *
      * @param Twig_Environment $twig
      */

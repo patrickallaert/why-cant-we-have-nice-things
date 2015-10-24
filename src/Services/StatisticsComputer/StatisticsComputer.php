@@ -20,7 +20,7 @@ class StatisticsComputer
         $yesVotes   = $user->votes->filter(function (Vote $vote) {
             return $vote->choice < $vote->question->choices;
         })->count();
-        $noVotes    = $totalVotes - $yesVotes;
+        $noVotes = $totalVotes - $yesVotes;
 
         $hivemind = $this->computeHivemind($user);
 

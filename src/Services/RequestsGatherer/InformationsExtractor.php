@@ -119,8 +119,8 @@ class InformationsExtractor
     protected function getQuestions()
     {
         return $this->crawler->filter('table.inline')->each(function ($question) {
-            $name    = $question->filter('tr:first-child')->text();
-            $name    = $this->cleanWhitespace($name);
+            $name = $question->filter('tr:first-child')->text();
+            $name = $this->cleanWhitespace($name);
             $choices = $this->getChoices($question);
 
             return [
@@ -166,14 +166,14 @@ class InformationsExtractor
 
                 // Get which choice the user picked
                 $voted = 0;
-                $time  = new DateTime();
+                $time = new DateTime();
                 $vote->filter('td')->each(function ($choice, $key) use (&$voted, &$time) {
                     $image = $choice->filter('img');
                     if ($image->count()) {
                         $timestamp = $image->attr('title');
 
                         $voted = $key;
-                        $time  = DateTime::createFromFormat('Y/m/d H:i', $timestamp, new DateTimeZone('UTC'));
+                        $time = DateTime::createFromFormat('Y/m/d H:i', $timestamp, new DateTimeZone('UTC'));
                     }
                 });
 

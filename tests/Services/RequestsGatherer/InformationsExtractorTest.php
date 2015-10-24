@@ -12,7 +12,7 @@ class InformationsExtractorTest extends TestCase
     {
         $html         = file_get_contents(__DIR__.'/../../rfc.html');
         $informations = $this->getInformationsFromHtml($html);
-        $timezone = new DateTimeZone('UTC');
+        $timezone     = new DateTimeZone('UTC');
 
         $this->assertEquals([
             'name'      => 'Support Class Constant Visibility',
@@ -70,7 +70,7 @@ class InformationsExtractorTest extends TestCase
     }
 
     /**
-     * Get the infromations from a piece of HTML
+     * Get the infromations from a piece of HTML.
      *
      * @param string $html
      *

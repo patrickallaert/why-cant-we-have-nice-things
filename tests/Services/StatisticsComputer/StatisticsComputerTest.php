@@ -95,9 +95,9 @@ class StatisticsComputerTest extends TestCase
 
     public function testCanComputeUserStatistics()
     {
-        $question = new Question(['choices' => 2]);
+        $question        = new Question(['choices' => 2]);
         $question->votes = new Collection([
-           new Vote(['choice' => 1]),
+           new Vote(['choice'  => 1]),
             new Vote(['choice' => 2]),
             new Vote(['choice' => 2]),
         ]);

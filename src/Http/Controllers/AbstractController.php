@@ -22,7 +22,7 @@ abstract class AbstractController
      */
     public function __construct(Twig_Environment $views, Request $request)
     {
-        $this->views = $views;
+        $this->views   = $views;
         $this->request = $request;
     }
 }
