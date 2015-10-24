@@ -34,8 +34,8 @@ class TwigServiceProvider extends ServiceProvider
     {
         $this->container->singleton(Twig_Environment::class, function () {
             $loader = new Twig_Loader_Filesystem($this->container->get('paths.views'));
-            $debug = getenv('APP_ENV') === 'local';
-            $twig = new Twig_Environment($loader, [
+            $debug  = getenv('APP_ENV') === 'local';
+            $twig   = new Twig_Environment($loader, [
                 'debug'            => $debug,
                 'auto_reload'      => $debug,
                 'strict_variables' => false,
@@ -44,20 +44,32 @@ class TwigServiceProvider extends ServiceProvider
 
             // Configure Twig
             $this->registerGlobalVariables($twig);
-            $twig->addExtension(new Twig_Extension_Debug());
-            $twig->addFunction(new Twig_SimpleFunction('percentage', function ($number) {
-                return round($number * 100, self::PRECISION);
-            }));
-            $twig->addFunction(new Twig_SimpleFunction('choice', function (Question $question, Vote $vote) {
-                if ($question->choices <= 2) {
-                    return $vote->choice === 1 ? 'Yes' : 'No';
-                }
-
-                return $vote->choice;
-            }));
+            $this->addTwigExtensions($twig);
 
             return $twig;
         });
+    }
+
+    /**
+     * Add extensions to Twig
+     *
+     * @param Twig_Environment $twig
+     */
+    private function addTwigExtensions(Twig_Environment $twig)
+    {
+        $twig->addExtension(new Twig_Extension_Debug());
+
+        $twig->addFunction(new Twig_SimpleFunction('percentage', function ($number) {
+            return round($number * 100, self::PRECISION);
+        }));
+
+        $twig->addFunction(new Twig_SimpleFunction('choice', function (Question $question, Vote $vote) {
+            if ($question->choices <= 2) {
+                return $vote->choice === 1 ? 'Yes' : 'No';
+            }
+
+            return $vote->choice;
+        }));
     }
 
     /**
@@ -76,6 +88,7 @@ class TwigServiceProvider extends ServiceProvider
 
         $twig->addGlobal('navigation', [
             ['uri' => '/users', 'label' => 'Users'],
+            //['uri' => '/votes', 'label' => 'Votes'],
             ['uri' => '/requests', 'label' => 'RFCs'],
             ['uri' => '/about', 'label' => 'About'],
         ]);

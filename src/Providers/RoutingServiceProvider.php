@@ -4,6 +4,7 @@ namespace History\Providers;
 use History\Http\Controllers\PagesController;
 use History\Http\Controllers\RequestsController;
 use History\Http\Controllers\UsersController;
+use History\Http\Controllers\VotesController;
 use League\Container\ServiceProvider;
 use League\Route\RouteCollection;
 use League\Route\Strategy\UriStrategy;
@@ -41,6 +42,8 @@ class RoutingServiceProvider extends ServiceProvider
 
             $routes->addRoute('GET', '/requests', RequestsController::class.'::index');
             $routes->addRoute('GET', '/requests/{request}', RequestsController::class.'::show');
+
+            $routes->addRoute('GET', '/votes', VotesController::class.'::index');
 
             $routes->addRoute('GET', '/about', PagesController::class.'::about');
 

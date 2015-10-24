@@ -1,0 +1,23 @@
+{% extends '_layouts/layout.twig' %}
+{% set title = 'Latest votes' %}
+{% set subtitle = title %}
+
+{% block content %}
+    <div class="table-responsive">
+        <table class="table">
+
+        </table>
+    </div>
+
+    <ul>
+        {% for vote in votes %}
+            <li>
+                <a href="/users/{{ vote.user.name }}">{{ vote.user.name }}</a>
+                voted {{ choice(vote.question, vote) }}
+                on
+                <a href="/requests/{{ vote.question.request.id }}">{{ vote.question.request.name }}</a>
+                {{ vote.created_at.diffForHumans() }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
