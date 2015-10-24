@@ -1,9 +1,10 @@
 .navbar {
     border-radius: 0;
-    min-height: auto;
+    min-height: 0;
 
     li > a {
         padding: 0.5em;
         text-transform: lowercase;
+        transition: color 0.3s;
     }
 }

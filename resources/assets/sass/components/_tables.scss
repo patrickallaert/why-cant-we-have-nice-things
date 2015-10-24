@@ -37,4 +37,14 @@
     tr.filtered {
         display: none;
     }
+
+    tbody > tr {
+        > td.success {
+            background-color: darken($color-green, 2);
+        }
+
+        &:hover > td.success {
+            background-color: lighten($color-green, 2);
+        }
+    }
 }
