@@ -16,7 +16,7 @@ class RequestExtractor extends AbstractExtractor implements ExtractorInterface
     public function extract()
     {
         $name               = $this->getRequestName();
-        $majorityConditions = $this->cleanWhitespace($this->getMajorityConditions());
+        $majorityConditions = $this->getMajorityConditions();
         $timestamp          = $this->getRequestTimestamp();
         $questions          = $this->getQuestions();
 
@@ -39,13 +39,7 @@ class RequestExtractor extends AbstractExtractor implements ExtractorInterface
      */
     protected function getRequestName()
     {
-        $title = $this->crawler->filter('h1');
-        if (!$title->count()) {
-            return;
-        }
-
-        // Remove some tags from title
-        $title = $title->text();
+        $title = $this->extractText('h1');
         $title = str_replace('PHP RFC:', '', $title);
         $title = str_replace('RFC:', '', $title);
         $title = str_replace('Request for Comments:', '', $title);
@@ -84,14 +78,11 @@ class RequestExtractor extends AbstractExtractor implements ExtractorInterface
      */
     protected function getMajorityConditions()
     {
-        $condition = $this->crawler->filter('#proposed_voting_choices + div');
-        if ($condition->count()) {
-            return $condition->text();
-        }
-
-        $condition = $this->crawler->filter('#vote + div p');
-        if ($condition->count()) {
-            return $condition->text();
+        $locations = ['#proposed_voting_choices + div', '#vote + div p'];
+        foreach ($locations as $location) {
+            if ($text = $this->extractText($location)) {
+                return $location;
+            }
         }
     }
 
@@ -103,8 +94,7 @@ class RequestExtractor extends AbstractExtractor implements ExtractorInterface
     protected function getQuestions()
     {
         return $this->crawler->filter('table.inline')->each(function ($question) {
-            $name    = $question->filter('tr:first-child')->text();
-            $name    = $this->cleanWhitespace($name);
+            $name    = $this->extractText('tr:first-child', $question);
             $choices = $this->getChoices($question);
 
             return [

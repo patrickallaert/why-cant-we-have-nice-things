@@ -22,6 +22,23 @@ abstract class AbstractExtractor
     }
 
     /**
+     * @param string $selector
+     * @param Crawler|null   $crawler
+     *
+     * @return string
+     */
+    protected function extractText($selector, $crawler = null)
+    {
+        $crawler = $crawler ?: $this->crawler;
+
+        $text = $crawler->filter($selector);
+        $text = $text->count() ? $text->text() : '';
+        $text = $this->cleanWhitespace($text);
+
+        return $text;
+    }
+
+    /**
      * @param $information
      *
      * @return string
