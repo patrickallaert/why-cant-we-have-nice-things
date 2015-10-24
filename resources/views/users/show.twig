@@ -16,17 +16,19 @@
             Created <strong>{{ user.requests.count() }}</strong> RFCs,
             <strong>{{ percentage(user.success) }}</strong> of which have been approved.
         </li>
-        <li>
-            Voted <strong>{{ user.total_votes }}</strong> times, and has been correct
-            <strong>{{ percentage(user.hivemind) }}</strong> of the time.
-        </li>
-        <li>
-            {% if user.negativeness >= 0.5 %}
-                Has voted <strong>negatively</strong> on <strong>{{ percentage(user.negativeness) }}</strong> of the matters he voted on.
-            {% else %}
-                Has voted <strong>positively</strong> on <strong>{{ percentage(1 - user.negativeness) }}</strong> of the matters he voted on.
-            {% endif %}
-        </li>
+        {% if user.total_votes %}
+            <li>
+                Voted <strong>{{ user.total_votes }}</strong> times, and has been correct
+                <strong>{{ percentage(user.hivemind) }}</strong> of the time.
+            </li>
+            <li>
+                {% if user.negativeness >= 0.5 %}
+                    Has voted <strong>negatively</strong> on <strong>{{ percentage(user.negativeness) }}</strong> of the matters he voted on.
+                {% else %}
+                    Has voted <strong>positively</strong> on <strong>{{ percentage(1 - user.negativeness) }}</strong> of the matters he voted on.
+                {% endif %}
+            </li>
+        {% endif %}
         <li>
             {% if user.contributions is not empty %}
                 Contributed to <strong>{{ user.contributions|length }}</strong> projects ({{ user.contributions|slice(1, 3)|join(', ') }}, etc.)
