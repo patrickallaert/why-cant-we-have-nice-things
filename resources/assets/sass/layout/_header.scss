@@ -17,4 +17,12 @@
             text-decoration: none;
         }
     }
+
+    @media (max-width: 1000px) {
+        padding: 1.5rem;
+
+        h1, h2 {
+            font-size: 2rem;
+        }
+    }
 }
