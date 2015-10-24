@@ -1,6 +1,7 @@
 <?php
 namespace History\Services\StatisticsComputer;
 
+use History\Entities\Models\AbstractModel;
 use History\Entities\Models\Question;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
@@ -19,7 +20,7 @@ class StatisticsComputer
         $yesVotes   = $user->votes->filter(function (Vote $vote) {
             return $vote->choice < $vote->question->choices;
         })->count();
-        $noVotes = $totalVotes - $yesVotes;
+        $noVotes    = $totalVotes - $yesVotes;
 
         $hivemind = $this->computeHivemind($user);
 
@@ -52,7 +53,7 @@ class StatisticsComputer
 
         return [
             'approval' => $approval,
-            'passed'   => $question->hasPassed($approval),
+            'passed'   => $this->hasPassed($question, $approval),
         ];
     }
 
@@ -71,13 +72,41 @@ class StatisticsComputer
 
         return [
             'approval' => $approval,
-            'passed'   => $request->hasPassed($approval),
+            'passed'   => $this->hasPassed($request, $approval),
         ];
     }
 
     //////////////////////////////////////////////////////////////////////
     ////////////////////////////// HELPERS ///////////////////////////////
     //////////////////////////////////////////////////////////////////////
+
+    /**
+     * @param AbstractModel $model
+     *
+     * @return float
+     */
+    protected function getMajorityCondition(AbstractModel $model)
+    {
+        $majority  = 0.5;
+        $condition = $model->request ? $model->request->condition : $model->condition;
+
+        if (strpos($condition, '2/3') !== false) {
+            $majority = 2 / 3;
+        }
+
+        return $majority;
+    }
+
+    /**
+     * @param AbstractModel $model
+     * @param float         $approval
+     *
+     * @return bool
+     */
+    protected function hasPassed(AbstractModel $model, $approval)
+    {
+        return $approval > $this->getMajorityCondition($model);
+    }
 
     /**
      * @param User $user

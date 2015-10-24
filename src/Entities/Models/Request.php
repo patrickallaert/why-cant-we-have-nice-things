@@ -1,12 +1,8 @@
 <?php
 namespace History\Entities\Models;
 
-use History\Entities\Traits\CanPass;
-
 class Request extends AbstractModel
 {
-    use CanPass;
-
     /**
      * @var array
      */
