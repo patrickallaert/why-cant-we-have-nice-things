@@ -28,7 +28,7 @@ class DatabaseServiceProvider extends ServiceProvider
             $capsule = new Manager();
             $capsule->addConnection([
                 'driver'    => 'mysql',
-                'host'      => 'localhost',
+                'host'      => getenv('DB_HOST'),
                 'database'  => getenv('DB_DATABASE'),
                 'username'  => getenv('DB_USERNAME'),
                 'password'  => getenv('DB_PASSWORD'),

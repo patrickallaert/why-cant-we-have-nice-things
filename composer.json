@@ -36,5 +36,8 @@
         "psr-4": {
             "History\\": "tests"
         }
+    },
+    "scripts": {
+        "test": "phpunit"
     }
 }
