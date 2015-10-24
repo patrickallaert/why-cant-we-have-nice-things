@@ -16,6 +16,7 @@ class UserExtractorTest extends TestCase
             'username'  => 'anahkiasen',
             'full_name' => 'Maxime Fabre',
             'email'     => 'foo@bar.com',
+            'contributions' => ['pear/packages', 'pear/peardoc'],
         ], $extractor->extract());
     }
 }

@@ -9,17 +9,19 @@ class UserSynchronizerTest extends TestCase
     public function testCanSynchronizerUser()
     {
         $sync = new UserSynchronizer([
-            'username'  => 'foobar',
-            'email'     => 'foo@bar.com',
-            'full_name' => 'Foo Bar',
+            'username'      => 'foobar',
+            'email'         => 'foo@bar.com',
+            'full_name'     => 'Foo Bar',
+            'contributions' => ['foo', 'bar'],
         ]);
 
         $user = $sync->synchronize();
         $this->assertInstanceOf(User::class, $user);
         $this->assertEquals([
-            'name'      => 'foobar',
-            'email'     => 'foo@bar.com',
-            'full_name' => 'Foo Bar',
+            'name'          => 'foobar',
+            'email'         => 'foo@bar.com',
+            'full_name'     => 'Foo Bar',
+            'contributions' => ['foo', 'bar'],
         ], $user->toArray());
     }
 

@@ -10,12 +10,20 @@ class User extends AbstractModel
         'name',
         'full_name',
         'email',
+        'contributions',
         'yes_votes',
         'no_votes',
         'total_votes',
         'success',
         'approval',
         'hivemind',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $casts = [
+        'contributions' => 'array',
     ];
 
     //////////////////////////////////////////////////////////////////////

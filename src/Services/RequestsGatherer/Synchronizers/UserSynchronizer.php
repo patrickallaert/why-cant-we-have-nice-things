@@ -18,9 +18,10 @@ class UserSynchronizer extends AbstractSynchronizer
         $user = $user->id || !$username ? $user : User::firstOrNew(['name' => $username]);
 
         // Fill-in informations
-        $user->name      = $username;
-        $user->full_name = $this->get('full_name');
-        $user->email     = $email;
+        $user->name          = $username;
+        $user->full_name     = $this->get('full_name');
+        $user->email         = $email;
+        $user->contributions = $this->get('contributions');
 
         return $user;
     }
