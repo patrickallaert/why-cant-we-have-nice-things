@@ -18,6 +18,10 @@ dependencies:
     - npm install
     - composer install --prefer-source --no-interaction
 
+database:
+  override:
+    - vendor/bin/phinx migrate
+
 test:
   override:
     - npm run build
