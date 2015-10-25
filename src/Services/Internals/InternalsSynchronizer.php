@@ -60,11 +60,14 @@ class InternalsSynchronizer
     public function synchronize()
     {
         $this->parsed = Comment::lists('xref')->all();
-        $count        = $this->internals->getTotalNumberArticles();
+
+        $count = $this->internals->getTotalNumberArticles();
+        $start = 6000; // No RFC talks in the beginning
 
         $progress = new ProgressBar($this->output, $count / self::CHUNK);
         $progress->start();
-        for ($i = 1; $i <= $count; $i += self::CHUNK) {
+        for ($i = $start; $i <= $count; $i += self::CHUNK) {
+        dump($i);
             $to = $i + (self::CHUNK - 1);
 
             // Process this chunk of articles
