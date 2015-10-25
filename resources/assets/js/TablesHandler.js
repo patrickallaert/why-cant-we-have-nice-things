@@ -61,7 +61,7 @@ export default class TablesHandler {
             valueB = parseInt(valueB, 10);
         }
 
-        return valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
+        return this.spaceship(valueA, valueB);
     }
 
     /**
@@ -130,11 +130,30 @@ export default class TablesHandler {
     /**
      * Get the rows of a table
      *
-     * @param tbody
+     * @param {object} tbody
      *
-     * @returns {Array.<T>}
+     * @returns {Array}
      */
     getRowsArray(tbody) {
-        return Array.prototype.slice.call(tbody.rows, 0);
+        return Reflect.apply(Array.prototype.slice, tbody.rows, [0]);
+    }
+
+    /**
+     * Half-assed spaceship operator in JS
+     *
+     * @param {number} a
+     * @param {number} b
+     *
+     * @returns {number}
+     */
+    spaceship(a, b) {
+        switch (true) {
+            case a > b:
+                return 1;
+            case a < b:
+                return -1;
+            default:
+                return 0;
+        }
     }
 }
