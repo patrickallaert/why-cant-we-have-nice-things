@@ -1,6 +1,7 @@
 <?php
 namespace History\Services\Internals;
 
+use Illuminate\Contracts\Cache\Repository;
 use League\Container\ServiceProvider;
 use Rvdv\Nntp\Client;
 use Rvdv\Nntp\Connection\Connection;
@@ -25,6 +26,7 @@ class InternalsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->container->singleton(Internals::class, function () {
+            $cache      = $this->container->get(Repository::class);
             $connection = new Connection('news.php.net', 119);
 
             // Create NNTP client
@@ -32,13 +34,13 @@ class InternalsServiceProvider extends ServiceProvider
             $client->connect();
 
             // Get php.internals group
-            $group  = $client->group('php.internals')->getResult();
+            $group = $client->group('php.internals')->getResult();
 
-            return new Internals($client, $group);
+            return new Internals($cache, $client, $group);
         });
 
-        $this->container->singleton(InternalsSynchronizer::class, function() {
-           return new InternalsSynchronizer($this->container->get(Internals::class));
+        $this->container->singleton(InternalsSynchronizer::class, function () {
+            return new InternalsSynchronizer($this->container->get(Internals::class));
         });
     }
 }

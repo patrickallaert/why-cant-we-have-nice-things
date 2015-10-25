@@ -60,7 +60,6 @@ class Body extends Command
     {
         // Convert to array and remove encoding lines
         $body = (array) $response->getLines();
-        $body = array_slice($body, 2);
         $body = implode(PHP_EOL, $body);
 
         $this->result = trim($body);

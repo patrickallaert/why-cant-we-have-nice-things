@@ -2,12 +2,12 @@
 namespace History\Services\Internals;
 
 use DateTime;
-use History\Collection;
 use History\Entities\Models\Comment;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
 use History\Services\EmailExtractor;
 use Rvdv\Nntp\Exception\InvalidArgumentException;
+use SplFixedArray;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -17,7 +17,7 @@ class InternalsSynchronizer
     /**
      * @var integer
      */
-    const ARTICLES = 500;
+    const CHUNK = 200;
 
     /**
      * @var Internals
@@ -28,6 +28,11 @@ class InternalsSynchronizer
      * @var OutputInterface
      */
     protected $output;
+
+    /**
+     * @var array
+     */
+    protected $parsed;
 
     /**
      * InternalsSynchronizer constructor.
@@ -54,18 +59,34 @@ class InternalsSynchronizer
      */
     public function synchronize()
     {
-        $existingComments = Comment::lists('xref')->all();
+        $this->parsed = Comment::lists('xref')->all();
+        $count        = $this->internals->getTotalNumberArticles();
 
-        $comments = new Collection();
-        $articles = $this->internals->getLatestArticles(self::ARTICLES);
-        $progress = new ProgressBar($this->output, self::ARTICLES);
+        $progress = new ProgressBar($this->output, $count / self::CHUNK);
         $progress->start();
+        for ($i = 0; $i <= $count; $i += self::CHUNK) {
+            $to = $i + (self::CHUNK - 1);
 
-        foreach ($articles as $article) {
+            // Process this chunk of articles
+            $articles = $this->internals->getArticles($i, $to);
+            $this->processArticles($articles);
             $progress->advance();
+        }
+
+        $progress->finish();
+    }
+
+    /**
+     * Process a chunk of articles
+     *
+     * @param SplFixedArray $articles
+     */
+    public function processArticles(SplFixedArray $articles)
+    {
+        foreach ($articles as $article) {
 
             // If we already synchronized this one, skip it
-            if (in_array($article['xref'], $existingComments)) {
+            if (in_array($article['xref'], $this->parsed)) {
                 continue;
             }
 
@@ -86,13 +107,13 @@ class InternalsSynchronizer
             }
 
             // Grab the message contents and insert into database
-            $comments[] = $this->createCommentFromArticle($article, $request, $user);
+            $this->createCommentFromArticle($article, $request, $user);
         }
-
-        $progress->finish();
-
-        return $comments;
     }
+
+    //////////////////////////////////////////////////////////////////////
+    /////////////////////// INFORMATIONS EXTRACTORS //////////////////////
+    //////////////////////////////////////////////////////////////////////
 
     /**
      * Remove tags from an article's subject
@@ -138,12 +159,16 @@ class InternalsSynchronizer
      */
     protected function getRelatedUser(array $article)
     {
-        $existingUsers = User::lists('id', 'email');
+        $existingUsers = User::lists('id', 'email')->toArray();
 
         $extractor = new EmailExtractor($article['from']);
         $email     = head($extractor->extract());
 
-        return array_get($existingUsers, $email);
+        if ($existing = array_get($existingUsers, $email)) {
+            return $existing;
+        }
+
+        return User::create(['email' => $email])->id;
     }
 
     /**
@@ -158,7 +183,8 @@ class InternalsSynchronizer
     protected function createCommentFromArticle(array $article, $request, $user)
     {
         try {
-            $contents = $this->internals->getArticleBody($article['number']);
+            $contents = '';
+            //$contents = $this->internals->getArticleBody($article['number']);
         } catch (InvalidArgumentException $exception) {
             return;
         }
