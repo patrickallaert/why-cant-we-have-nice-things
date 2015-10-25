@@ -1,3 +1,5 @@
+{% set fluid = fluid is defined ? fluid : true %}
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -12,7 +14,7 @@
     {% include '_layouts/partials/header.twig' %}
     {% include '_layouts/partials/navbar.twig' %}
 
-    <main class="layout-content container-fluid">
+    <main class="layout-content container{{ fluid ? '-fluid' : '' }}">
         <div class="layout-pagehead text-center">
             {% block title %}
                 {% if title %}
