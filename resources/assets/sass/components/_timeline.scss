@@ -34,11 +34,15 @@
         border-radius: 50%;
         margin-right: 2rem;
 
+        &.fa-history,
         &.fa-thumbs-down,
         &.fa-thumbs-up {
             color: white;
         }
 
+        &.fa-history {
+            background-color: #4aa3df;
+        }
         &.fa-thumbs-up {
             background-color: $color-green;
         }
