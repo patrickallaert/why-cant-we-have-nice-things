@@ -13,12 +13,12 @@
                 <i class="fa fa-{{ icons[event.type] }}"></i>
                 <div>
                     {% if event.type starts with 'vote' %}
-                        <a href="/users/{{ event.eventable.user.name }}">{{ event.eventable.user.name }}</a>
+                        <a href="/users/{{ event.eventable.user.id }}">{{ event.eventable.user.display_name }}</a>
                         voted <strong>{{ choice(event.eventable.question, event.eventable) }}</strong>
                         on <a href="/requests/{{ event.eventable.question.request.id }}">{{ event.eventable.question.request.name }}</a>
                     {% elseif event.type == 'rfc_created' %}
                         {% for key, author in event.eventable.authors %}
-                            <a href="/users/{{ author.name }}">{{ author.name }}</a>{% if (key + 1) < event.eventable.authors.count() %},{% endif %}
+                            <a href="/users/{{ author.id }}">{{ author.display_name }}</a>{% if (key + 1) < event.eventable.authors.count() %},{% endif %}
                         {% endfor %}
                         created RFC <a href="/requests/{{ event.eventable.id }}">{{ event.eventable.name }}</a>
                     {% endif %}

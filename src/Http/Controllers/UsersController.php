@@ -31,8 +31,7 @@ class UsersController extends AbstractController
     public function show($user)
     {
         $user = User::with('votes.question.request', 'requests')
-                    ->whereName($user)
-                    ->firstOrFail();
+                    ->findOrFail($user);
 
         return $this->views->render('users/show.twig', [
             'user' => $user,

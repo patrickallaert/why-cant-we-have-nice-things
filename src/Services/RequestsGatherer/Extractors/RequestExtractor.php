@@ -109,10 +109,13 @@ class RequestExtractor extends AbstractExtractor
      */
     protected function getAuthors(array $informations)
     {
+        // Get and cleanup authors
         $authors = $this->findInformation($informations, '/Author/');
+        $authors = preg_replace('/[<>\(\)]/', '', $authors);
+        $authors = preg_replace('/([ #]at[# ])/', '@', $authors);
+        $authors = str_replace(' . ', '.', $authors);
 
         // Try to split off authors
-        $authors = preg_replace('/[\(\)]/', '', $authors);
         $authors = preg_split('/[\s,]+/', $authors);
         foreach ($authors as $key => $author) {
 

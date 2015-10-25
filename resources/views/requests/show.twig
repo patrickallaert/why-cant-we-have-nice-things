@@ -24,7 +24,7 @@
                     {% set yes = vote.choice < question.choices %}
                     <tr>
                         <td>
-                            <a href="/users/{{ vote.user.name }}">{{ vote.user.name }}</a>
+                            <a href="/users/{{ vote.user.id }}">{{ vote.user.display_name }}</a>
                         </td>
                         <td class="text-center {{ yes ? 'success' : 'danger' }}">{{ choice(question, vote) }}</td>
                     </tr>

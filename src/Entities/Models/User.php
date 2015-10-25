@@ -55,6 +55,14 @@ class User extends AbstractModel
     //////////////////////////////////////////////////////////////////////
 
     /**
+     * @return string
+     */
+    public function getDisplayNameAttribute()
+    {
+        return head(array_filter([$this->name, $this->full_name, $this->email]));
+    }
+
+    /**
      * @return float
      */
     public function getNegativenessAttribute()

@@ -61,6 +61,10 @@ HTML;
 HTML;
         $informations = $this->getInformationsFromInformationBlock($html);
         $this->assertEquals(['wietse@php.net'], $informations['authors']);
+
+        $html = ' Author: Ryusuke Sekiyama &lt;rsky0711 at gmail . com&gt;, Sebastian Deutsch &lt;sebastian.deutsch at 9elements . com&gt;';
+        $informations = $this->getInformationsFromInformationBlock($html);
+        $this->assertEquals(['rsky0711@php.net', 'sebastian.deutsch@php.net'], $informations['authors']);
     }
 
     public function testCanParseConditionsFromProposedVotingChoices()

@@ -22,7 +22,7 @@
             {% for user in users %}
                 <tr>
                     <td>
-                        <a href="/users/{{ user.name }}">{{ user.name }}</a>
+                        <a href="/users/{{ user.id }}">{{ user.display_name }}</a>
                     </td>
                     <td class="text-right">{{ user.requests.count() }}</td>
                     <td class="text-right">{{ percentage(user.success) }}</td>
