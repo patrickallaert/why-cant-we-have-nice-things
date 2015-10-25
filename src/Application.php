@@ -55,6 +55,7 @@ class Application
     public function __construct(ContainerInterface $container = null)
     {
         $this->container = $container ?: new Container();
+        $this->container->add('debug', getenv('APP_ENV') === 'local');
 
         // Load dotenv file
         $dotenv = new Dotenv(__DIR__.'/..');

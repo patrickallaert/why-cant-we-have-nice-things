@@ -38,7 +38,7 @@ class DatabaseServiceProvider extends ServiceProvider
             $capsule->bootEloquent();
 
             // Enable query log in local
-            if (getenv('APP_ENV') === 'local') {
+            if ($this->container->get('debug')) {
                 $capsule->connection()->enableQueryLog();
             }
 

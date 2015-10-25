@@ -22,7 +22,7 @@ class ErrorsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->container->singleton(Run::class, function () {
-            if (getenv('APP_ENV') !== 'local') {
+            if ($this->container->get('debug')) {
                 return;
             }
 
