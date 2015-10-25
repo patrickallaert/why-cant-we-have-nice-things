@@ -128,7 +128,7 @@ class RequestExtractor extends AbstractExtractor
             $authors[$key] = $author;
         }
 
-        return array_filter($authors);
+        return array_values(array_filter($authors));
     }
 
     /**

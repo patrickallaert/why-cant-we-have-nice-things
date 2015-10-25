@@ -41,6 +41,20 @@ class RequestExtractorTest extends TestCase
         ], $informations);
     }
 
+    public function testCanParseAuthors()
+    {
+        $html = <<<'HTML'
+        Author:
+Foo Bar
+<a>foo@bar.com</a>
+, Bar Foo
+<a>bar@php.net</a>,
+Baz Qux, <a>baz@qux.net</a>
+HTML;
+        $informations = $this->getInformationsFromInformationBlock($html);
+        $this->assertEquals(['foo@php.net', 'bar@php.net', 'baz@php.net'], $informations['authors']);
+    }
+
     public function testCanParseConditionsFromProposedVotingChoices()
     {
         $html         = '<div id="proposed_voting_choices"></div><div>Requires a 2/3 majority</div>';
@@ -51,8 +65,7 @@ class RequestExtractorTest extends TestCase
 
     public function testCanParseWeirdAssDateFormats()
     {
-        $html         = '<div class="page"><ul class="level1"><li>created at the DaTe   : 2014/01/02 lolmdr©</li></ul></div>';
-        $informations = $this->getInformationsFromHtml($html);
+        $informations = $this->getInformationsFromInformationBlock('created at the DaTe   : 2014/01/02 lolmdr©');
 
         $this->assertEquals(DateTime::createFromFormat('Y-m-d', '2014-01-02'), $informations['timestamp']);
     }
@@ -71,21 +84,29 @@ class RequestExtractorTest extends TestCase
 
     public function testCanParseStatus()
     {
-        $html         = '<div class="page"><ul class="level1"><li>Status: Under discussion</li></ul></div>';
-        $informations = $this->getInformationsFromHtml($html);
+        $informations = $this->getInformationsFromInformationBlock('Status: Under discussion');
         $this->assertEquals(1, $informations['status']);
 
-        $html         = '<div class="page"><ul class="level1"><li>Status: in draft</li></ul></div>';
-        $informations = $this->getInformationsFromHtml($html);
+        $informations = $this->getInformationsFromInformationBlock('Status: in draft');
         $this->assertEquals(1, $informations['status']);
 
-        $html         = '<div class="page"><ul class="level1"><li>Status: Implemented (in PHP 7.0)</li></ul></div>';
-        $informations = $this->getInformationsFromHtml($html);
+        $informations = $this->getInformationsFromInformationBlock('Status: Implemented (in PHP 7.0)');
         $this->assertEquals(2, $informations['status']);
 
-        $html         = '<div class="page"><ul class="level1"><li>Status: accepted</li></ul></div>';
-        $informations = $this->getInformationsFromHtml($html);
+        $informations = $this->getInformationsFromInformationBlock('Status: accepted');
         $this->assertEquals(2, $informations['status']);
+    }
+
+    /**
+     * Mock an informations block and get the informations from it
+     *
+     * @param string $html
+     *
+     * @return array
+     */
+    protected function getInformationsFromInformationBlock($html)
+    {
+        return $this->getInformationsFromHtml('<div class="page"><ul class="level1"><li>'.$html.'</li></ul></div>');
     }
 
     /**
