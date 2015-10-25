@@ -21,10 +21,10 @@
                         {% for key, author in event.eventable.authors %}
                             <a href="/users/{{ author.id }}">{{ author.display_name }}</a>{% if (key + 1) < event.eventable.authors.count() %},{% endif %}
                         {% endfor %}
-                        created RFC <a href="/requests/{{ event.eventable.id }}">{{ event.eventable.name }}</a>
+                        created <a href="/requests/{{ event.eventable.id }}">{{ event.eventable.name }}</a>
                     {% elseif event.type == 'rfc_status' %}
-                        RFC <a href="/requests/{{ event.eventable.id }}">{{ event.eventable.name }}</a>
-                        changed status to <strong>{{ event.eventable.statusLabel(event.metadata.new_status) }}</strong>
+                        <a href="/requests/{{ event.eventable.id }}">{{ event.eventable.name }}</a>
+                        is now <strong>{{ event.eventable.statusLabel(event.metadata.new_status)|lower }}</strong>
                     {% endif %}
                     <time datetime="{{ event.created_at }}">{{ event.created_at.diffForHumans() }}</time>
                 </div>
