@@ -49,9 +49,9 @@ class CommentSynchronizer extends AbstractSynchronizer
 
         // Fix weird characters, bad encoding issues
         // and all other kinds of marvelous joys
-        $contents = preg_replace('/^--.*--$/', '', $contents);
-        $contents = preg_replace('/^>.*$/m', '', $contents);
-        $contents = preg_replace('/On [\w\d\s,:\t\n\r<>.@\-+]+wrote:/', '', $contents);
+        $contents = preg_replace('/^--.*--$/m', '', $contents);
+        //$contents = preg_replace('/^>.*$/m', '', $contents);
+        //$contents = preg_replace('/On [\w\d\s,:\t\n\r<>.@\-+]+wrote:/', '', $contents);
 
         // Cleanup all the empty lines
         $contents = preg_replace('/[\n]{3,}/', "\n\n", $contents);
