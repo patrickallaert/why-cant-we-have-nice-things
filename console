@@ -2,7 +2,4 @@
 <?php
 require 'vendor/autoload.php';
 
-$container = new League\Container\Container();
-$app       = new History\Application($container);
-
-return $app->runConsole();
+return (new History\Application())->runConsole();

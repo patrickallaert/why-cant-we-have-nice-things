@@ -12,6 +12,7 @@ use History\Providers\GravatarServiceProvider;
 use History\Providers\PathsServiceProvider;
 use History\Services\RequestsGatherer\RequestsGathererServiceProvider;
 use Illuminate\Database\Capsule\Manager;
+use League\Container\Container;
 use League\Container\ContainerInterface;
 use League\Route\Dispatcher;
 use League\Route\Http\Exception\NotFoundException;
@@ -51,11 +52,11 @@ class Application
     /**
      * Application constructor.
      *
-     * @param ContainerInterface $container
+     * @param ContainerInterface|null $container
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container = null)
     {
-        $this->container = $container;
+        $this->container = $container ?: new Container();
 
         // Load dotenv file
         $dotenv = new Dotenv(__DIR__.'/..');
