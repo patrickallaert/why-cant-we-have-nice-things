@@ -1,0 +1,15 @@
+<article class="comment">
+    <figure class="media-left">
+        <a href="/users/{{ comment.user_id }}">
+            <img class="media-object img-circle" src="{{ gravatar.setAvatarSize(100).get(comment.user.email) }}" alt="...">
+        </a>
+    </figure>
+    <div class="media-body">
+        <h4 class="media-heading">
+            {{ comment.user.display_name }}
+            <small>{{ comment.created_at.toDateTimeString() }}</small>
+        </h4>
+
+        {{ comment.parsed_contents|raw }}
+    </div>
+</article>

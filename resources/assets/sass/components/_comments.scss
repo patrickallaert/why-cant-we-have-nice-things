@@ -1,7 +1,8 @@
 .comment {
     display: flex;
     flex-direction: row;
-    align-items: center;;
+    align-items: center;
+    margin-bottom: 2rem;
 
     .media-left {
         padding: 1rem;
@@ -17,5 +18,9 @@
     .media-body {
         padding: 2rem;
         background-color: $color-grey;
+    }
+
+    blockquote {
+        display: none;
     }
 }

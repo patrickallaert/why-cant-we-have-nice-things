@@ -71,7 +71,7 @@ class Request extends AbstractModel
      */
     public function comments()
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class)->oldest();
     }
 
     //////////////////////////////////////////////////////////////////////

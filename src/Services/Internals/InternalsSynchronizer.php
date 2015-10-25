@@ -6,6 +6,7 @@ use History\Entities\Models\Comment;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
 use History\Services\EmailExtractor;
+use History\Services\RequestsGatherer\Synchronizers\CommentSynchronizer;
 use Rvdv\Nntp\Exception\InvalidArgumentException;
 use SplFixedArray;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -17,7 +18,7 @@ class InternalsSynchronizer
     /**
      * @var integer
      */
-    const CHUNK = 200;
+    const CHUNK = 500;
 
     /**
      * @var Internals
@@ -62,12 +63,11 @@ class InternalsSynchronizer
         $this->parsed = Comment::lists('xref')->all();
 
         $count = $this->internals->getTotalNumberArticles();
-        $start = 6000; // No RFC talks in the beginning
+        $start = 40000; // First RFC was #40037 so, can skip all these
 
         $progress = new ProgressBar($this->output, $count / self::CHUNK);
         $progress->start();
         for ($i = $start; $i <= $count; $i += self::CHUNK) {
-        dump($i);
             $to = $i + (self::CHUNK - 1);
 
             // Process this chunk of articles
@@ -186,29 +186,17 @@ class InternalsSynchronizer
     protected function createCommentFromArticle(array $article, $request, $user)
     {
         try {
-            $contents = '';
-            //$contents = $this->internals->getArticleBody($article['number']);
+            $contents = $this->internals->getArticleBody($article['number']);
         } catch (InvalidArgumentException $exception) {
             return;
         }
 
-        $datetime = new DateTime($article['date']);
+        $synchronizer = new CommentSynchronizer(array_merge($article, [
+            'contents' => $contents,
+            'request_id' => $request,
+            'user_id' => $user,
+        ]));
 
-        // If we already synchronized this one, skip it
-        $comment = Comment::firstOrNew(['xref' => $article['xref']]);
-        if ($comment->exists) {
-            return $comment;
-        }
-
-        // Else update attributes
-        $comment->name       = $article['subject'];
-        $comment->contents   = $contents;
-        $comment->request_id = $request;
-        $comment->user_id    = $user;
-        $comment->created_at = $datetime;
-        $comment->updated_at = $datetime;
-        $comment->save();
-
-        return $comment;
-    }
+        return $synchronizer->persist();
+     }
 }

@@ -69,8 +69,10 @@ class Internals
      */
     public function getArticleBody($article)
     {
-        return $this->client
-            ->sendCommand(new Body($article))
-            ->getResult();
+        return $this->cache->rememberForever('body-'.$article, function () use ($article) {
+            return $this->client
+                ->sendCommand(new Body($article))
+                ->getResult();
+        });
     }
 }
