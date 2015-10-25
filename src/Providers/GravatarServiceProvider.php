@@ -23,7 +23,7 @@ class GravatarServiceProvider extends ServiceProvider
         $this->container->singleton(Gravatar::class, function () {
             $gravatar = new Gravatar();
             $gravatar->setDefaultImage('retro');
-            $gravatar->setAvatarSize(250);
+            $gravatar->setAvatarSize(200);
 
             return $gravatar;
         });

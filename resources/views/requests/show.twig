@@ -3,6 +3,10 @@
 {% set fluid = false %}
 
 {% block title %}
+    <div class="page-header">
+        <h2>{{ title }}</h2>
+    </div>
+
     <div class="authors">
         {% for author in request.authors %}
             {% include '_partials/user.twig' with {user: author} %}
@@ -15,9 +19,11 @@
         <li>
             Currently <strong>{{ request.status_label|lower }}</strong>
         </li>
-        <li>
-            Approved at <strong>{{ percentage(request.approval) }}</strong>
-        </li>
+        {% if request.questions.count() %}
+            <li>
+                Approved at <strong>{{ percentage(request.approval) }}</strong>
+            </li>
+        {% endif %}
         <li>
             <a href="{{ request.link }}" target="_blank">View this RFC on the PHP wiki</a>
         </li>
