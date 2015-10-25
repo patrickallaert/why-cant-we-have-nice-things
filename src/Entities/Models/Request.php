@@ -69,10 +69,20 @@ class Request extends AbstractModel
     //////////////////////////////////////////////////////////////////////
 
     /**
+     * @param integer $status
+     *
+     * @return string
+     */
+    public function statusLabel($status)
+    {
+        return array_get(self::STATUS, $status);
+    }
+
+    /**
      * @return string
      */
     public function getStatusLabelAttribute()
     {
-        return array_get(self::STATUS, $this->status);
+        return $this->statusLabel($this->status);
     }
 }

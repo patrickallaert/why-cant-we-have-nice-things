@@ -27,6 +27,7 @@ class CreateEventsTable extends AbstractMigration
              ->addColumn('type', 'enum', ['values' => Event::TYPES])
              ->addColumn('eventable_id', 'integer')
              ->addColumn('eventable_type', 'string')
+             ->addColumn('metadata', 'text')
              ->addColumn('created_at', 'datetime')
              ->addColumn('updated_at', 'datetime')
              ->save();

@@ -11,10 +11,6 @@ class VoteObserver
     public function created(Vote $vote)
     {
         $type = $vote->choice < $vote->question->choices ? 'up' : 'down';
-        $vote->events()->create([
-            'type'       => 'vote_'.$type,
-            'created_at' => $vote->created_at,
-            'updated_at' => $vote->updated_at,
-        ]);
+        $vote->registerEvent('vote_'.$type);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace History\Entities\Observers;
 
+use DateTime;
 use History\Entities\Models\Request;
 
 class RequestObserver
@@ -10,10 +11,18 @@ class RequestObserver
      */
     public function created(Request $request)
     {
-        $request->events()->create([
-            'type'       => 'rfc_created',
-            'created_at' => $request->created_at,
-            'updated_at' => $request->updated_at,
-        ]);
+        $request->registerEvent('rfc_created');
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function updating(Request $request)
+    {
+        if ($request->isDirty('status')) {
+            $request->registerEvent('rfc_status', [
+                'new_status' => $request->status,
+            ]);
+        }
     }
 }

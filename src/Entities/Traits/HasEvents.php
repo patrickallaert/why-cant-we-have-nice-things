@@ -12,4 +12,27 @@ trait HasEvents
     {
         return $this->morphMany(Event::class, 'eventable');
     }
+
+    /**
+     * Register an event
+     *
+     * @param string $type
+     * @param array  $metadata
+     */
+    public function registerEvent($type, array $metadata = [])
+    {
+        $attributes = [
+            'type'     => $type,
+            'metadata' => $metadata,
+        ];
+
+        if ($type !== 'rfc_status') {
+            $attributes = array_merge($attributes, [
+                'created_at' => $this->created_at,
+                'updated_at' => $this->updated_at,
+            ]);
+        }
+
+        $this->events()->create($attributes);
+    }
 }
