@@ -8,6 +8,9 @@
 {% block content %}
     <ul class="list-unstyled lead text-center">
         <li>
+            Commented <strong>{{ user.comments.count() }}</strong> times
+        </li>
+        <li>
             {% if user.requests.count() %}
                 Created <strong>{{ user.requests.count() }}</strong> RFCs,
                 <strong>{{ percentage(user.success) }}</strong> of which have been approved.

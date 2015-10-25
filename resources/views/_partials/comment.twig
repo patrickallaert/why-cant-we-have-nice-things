@@ -1,12 +1,12 @@
 <article class="comment">
     <figure class="media-left">
-        <a href="/users/{{ comment.user_id }}">
-            <img class="media-object img-circle" src="{{ gravatar.setAvatarSize(100).get(comment.user.email) }}" alt="...">
-        </a>
+        <img class="media-object img-circle" src="{{ gravatar.setAvatarSize(100).get(comment.user.email) }}" alt="...">
     </figure>
     <div class="media-body">
         <h4 class="media-heading">
-            {{ comment.user.display_name }}
+            <a href="/users/{{ comment.user_id }}">
+                {{ comment.user.display_name }}
+            </a>
             <small>{{ comment.created_at.toDateTimeString() }}</small>
         </h4>
 

@@ -50,6 +50,16 @@ class User extends AbstractModel
         return $this->belongsToMany(Request::class);
     }
 
+    /**
+     * @codeCoverageIgnore
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     //////////////////////////////////////////////////////////////////////
     ////////////////////////////// ACCESSORS /////////////////////////////
     //////////////////////////////////////////////////////////////////////
