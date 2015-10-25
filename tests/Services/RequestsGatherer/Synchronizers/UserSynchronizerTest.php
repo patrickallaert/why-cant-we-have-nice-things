@@ -37,4 +37,12 @@ class UserSynchronizerTest extends TestCase
         $user     = $sync->synchronize();
         $this->assertEquals($existing->id, $user->id);
     }
+
+    public function testCanInfereUsernameFromEmail()
+    {
+        $existing = User::create(['name' => 'foobarz']);
+        $sync     = new UserSynchronizer(['email' => 'foobarz@php.net']);
+        $user     = $sync->synchronize();
+        $this->assertEquals($existing->id, $user->id);
+    }
 }

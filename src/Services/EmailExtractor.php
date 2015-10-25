@@ -35,7 +35,6 @@ class EmailExtractor
             // Check if email is valid, if not
             // throw it away
             $email = trim($email);
-            $email = preg_replace('/@(.+)/', '@php.net', $email);
             $email = filter_var($email, FILTER_VALIDATE_EMAIL) ? $email : null;
 
             $emails[$key] = $email;

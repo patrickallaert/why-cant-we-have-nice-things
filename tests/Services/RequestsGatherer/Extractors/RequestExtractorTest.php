@@ -19,7 +19,7 @@ class RequestExtractorTest extends TestCase
             'status'    => 2,
             'condition' => 'Simple Yes/No option. This requires a 2/3 majority.',
             'timestamp' => DateTime::createFromFormat('Y-m-d', '2015-09-13'),
-            'authors'   => ['sean@php.net', 'reeze@php.net'],
+            'authors'   => ['sean@siobud.com', 'reeze@php.net'],
             'questions' => [
                 [
                     'name'    => 'Class Constant Visibility',
@@ -52,7 +52,7 @@ Foo Bar
 Baz Qux, <a>baz@qux.net</a>
 HTML;
         $informations = $this->getInformationsFromInformationBlock($html);
-        $this->assertEquals(['foo@php.net', 'bar@php.net', 'baz@php.net'], $informations['authors']);
+        $this->assertEquals(['foo@bar.com', 'bar@php.net', 'baz@qux.net'], $informations['authors']);
 
         $html = <<<'HTML'
 <strong>Author:</strong> <a href="http://www.porcupine.org/wietse/" class="urlextern" title="http://www.porcupine.org/wietse/" rel="nofollow">Wietse Venema (wietse@porcupine.org)</a> <br>
@@ -60,11 +60,11 @@ HTML;
  Hawthorne, NY, USA
 HTML;
         $informations = $this->getInformationsFromInformationBlock($html);
-        $this->assertEquals(['wietse@php.net'], $informations['authors']);
+        $this->assertEquals(['wietse@porcupine.org'], $informations['authors']);
 
         $html = ' Author: Ryusuke Sekiyama &lt;rsky0711 at gmail . com&gt;, Sebastian Deutsch &lt;sebastian.deutsch at 9elements . com&gt;';
         $informations = $this->getInformationsFromInformationBlock($html);
-        $this->assertEquals(['rsky0711@php.net', 'sebastian.deutsch@php.net'], $informations['authors']);
+        $this->assertEquals(['rsky0711@gmail.com', 'sebastian.deutsch@9elements.com'], $informations['authors']);
     }
 
     public function testCanParseConditionsFromProposedVotingChoices()
@@ -97,16 +97,16 @@ HTML;
     public function testCanParseStatus()
     {
         $informations = $this->getInformationsFromInformationBlock('Status: Under discussion');
-        $this->assertEquals(1, $informations['status']);
+        $this->assertEquals(2, $informations['status']);
 
         $informations = $this->getInformationsFromInformationBlock('Status: in draft');
         $this->assertEquals(1, $informations['status']);
 
         $informations = $this->getInformationsFromInformationBlock('Status: Implemented (in PHP 7.0)');
-        $this->assertEquals(2, $informations['status']);
+        $this->assertEquals(3, $informations['status']);
 
         $informations = $this->getInformationsFromInformationBlock('Status: accepted');
-        $this->assertEquals(2, $informations['status']);
+        $this->assertEquals(3, $informations['status']);
     }
 
     /**

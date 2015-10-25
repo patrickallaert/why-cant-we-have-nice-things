@@ -7,6 +7,8 @@ use History\Entities\Models\Request;
 use History\Entities\Models\User;
 use History\Services\EmailExtractor;
 use History\Services\RequestsGatherer\Synchronizers\CommentSynchronizer;
+use History\Services\RequestsGatherer\Synchronizers\UserSynchronizer;
+use Illuminate\Support\Arr;
 use Rvdv\Nntp\Exception\InvalidArgumentException;
 use SplFixedArray;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -162,16 +164,20 @@ class InternalsSynchronizer
      */
     protected function getRelatedUser(array $article)
     {
-        $existingUsers = User::lists('id', 'email')->toArray();
-
+        // Get user email
         $extractor = new EmailExtractor($article['from']);
         $email     = head($extractor->extract());
 
-        if ($existing = array_get($existingUsers, $email)) {
-            return $existing;
-        }
+        // Get user name
+        preg_match_all('/\((.+)\)/', $article['from'], $matches);
+        $name = Arr::get($matches, '1.0');
 
-        return User::create(['email' => $email])->id;
+        $synchronizer = new UserSynchronizer([
+            'email' => $email,
+            'full_name' => $name,
+        ]);
+
+        return $synchronizer->persist()->id;
     }
 
     /**
