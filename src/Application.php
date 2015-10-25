@@ -50,8 +50,6 @@ class Application
     ];
 
     /**
-     * Application constructor.
-     *
      * @param ContainerInterface|null $container
      */
     public function __construct(ContainerInterface $container = null)

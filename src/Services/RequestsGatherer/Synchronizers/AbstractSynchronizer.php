@@ -11,8 +11,6 @@ abstract class AbstractSynchronizer implements SynchronizerInterface
     protected $informations;
 
     /**
-     * AbstractSynchronizer constructor.
-     *
      * @param array $informations
      */
     public function __construct(array $informations)

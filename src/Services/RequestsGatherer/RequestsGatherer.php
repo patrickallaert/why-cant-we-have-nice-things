@@ -33,8 +33,6 @@ class RequestsGatherer
     protected $output;
 
     /**
-     * RequestsGatherer constructor.
-     *
      * @param Repository $cache
      */
     public function __construct(Repository $cache)

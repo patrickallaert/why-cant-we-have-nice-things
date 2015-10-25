@@ -13,8 +13,6 @@ abstract class AbstractExtractor implements ExtractorInterface
     protected $crawler;
 
     /**
-     * RequestExtractor constructor.
-     *
      * @param Crawler $crawler
      */
     public function __construct(Crawler $crawler)
@@ -40,7 +38,7 @@ abstract class AbstractExtractor implements ExtractorInterface
     }
 
     /**
-     * @param $information
+     * @param string $information
      *
      * @return string
      */
