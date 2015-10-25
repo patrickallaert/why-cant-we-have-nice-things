@@ -28,7 +28,7 @@ class PathsServiceProvider extends ServiceProvider
         ];
 
         foreach ($paths as $key => $path) {
-            $this->container->add('paths.'.$key, $path);
+            $this->container->add('paths.'.$key, realpath($path));
         }
     }
 }

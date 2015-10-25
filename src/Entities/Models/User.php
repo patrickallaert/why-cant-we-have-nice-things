@@ -55,7 +55,7 @@ class User extends AbstractModel
     //////////////////////////////////////////////////////////////////////
 
     /**
-     * @return bool
+     * @return float
      */
     public function getNegativenessAttribute()
     {
