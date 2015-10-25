@@ -1,8 +1,12 @@
 <?php
 namespace History\Entities\Models;
 
+use History\Entities\Traits\HasEvents;
+
 class Vote extends AbstractModel
 {
+    use HasEvents;
+
     /**
      * @var array
      */

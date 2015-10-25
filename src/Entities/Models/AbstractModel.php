@@ -15,4 +15,20 @@ abstract class AbstractModel extends Model
     {
         return new Collection($models);
     }
+
+    /**
+     * Define relationships as set for Twig
+     *
+     * @param string $key
+     *
+     * @return bool
+     */
+    public function __isset($key)
+    {
+        if (method_exists($this, $key)) {
+            return true;
+        }
+
+        return parent::__isset($key);
+    }
 }

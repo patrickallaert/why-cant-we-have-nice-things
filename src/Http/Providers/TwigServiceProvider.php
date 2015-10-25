@@ -40,7 +40,7 @@ class TwigServiceProvider extends ServiceProvider
                 'debug'            => $debug,
                 'auto_reload'      => $debug,
                 'strict_variables' => false,
-                'cache'            => $this->container->get('paths.cache'),
+                'cache'            => $this->container->get('paths.cache').'/twig',
             ]);
 
             // Configure Twig
@@ -90,7 +90,7 @@ class TwigServiceProvider extends ServiceProvider
 
         $twig->addGlobal('navigation', [
             ['uri' => '/users', 'label' => 'Users'],
-            ['uri' => '/votes', 'label' => 'Votes'],
+            ['uri' => '/events', 'label' => 'Timeline'],
             ['uri' => '/requests', 'label' => 'RFCs'],
             ['uri' => '/about', 'label' => 'About'],
         ]);

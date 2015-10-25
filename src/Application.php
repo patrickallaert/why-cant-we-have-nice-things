@@ -55,11 +55,11 @@ class Application
     public function __construct(ContainerInterface $container = null)
     {
         $this->container = $container ?: new Container();
-        $this->container->add('debug', getenv('APP_ENV') === 'local');
 
         // Load dotenv file
         $dotenv = new Dotenv(__DIR__.'/..');
         $dotenv->load();
+        $this->container->add('debug', getenv('APP_ENV') === 'local');
 
         // Boot up providers
         foreach ($this->providers as $provider) {

@@ -1,0 +1,24 @@
+{% extends '_layouts/layout.twig' %}
+{% set title = 'Latest events' %}
+
+{% block content %}
+    <ul class="list-group">
+        {% for event in events %}
+            <li class="list-group-item">
+                {% if event.type == 'vote' %}
+                    <a href="/users/{{ event.eventable.user.name }}">{{ event.eventable.user.name }}</a>
+                    voted <strong>{{ choice(event.eventable.question, event.eventable) }}</strong>
+                    on <a href="/requests/{{ event.eventable.question.request.id }}">{{ event.eventable.question.request.name }}</a>
+                {% elseif event.type == 'rfc_created' %}
+                    <a href="/users/{{ event.eventable.user.name }}">{{ event.eventable.authors.lists('name')|join(', ') }}</a>
+                    created RFC <a href="/requests/{{ event.eventable.id }}">{{ event.eventable.name }}</a>
+                {% endif %}
+                <span class="badge">{{ event.created_at.diffForHumans() }}</span>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div class="text-center">
+        {{ events.render() | raw }}
+    </div>
+{% endblock %}
