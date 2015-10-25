@@ -17,6 +17,7 @@ class RequestSynchronizer extends AbstractSynchronizer
 
         $request             = Request::firstOrNew(['link' => $this->get('link')]);
         $request->name       = $this->get('name');
+        $request->contents   = $this->get('contents');
         $request->condition  = $this->get('condition');
         $request->status     = $this->get('status');
         $request->created_at = $timestamp;

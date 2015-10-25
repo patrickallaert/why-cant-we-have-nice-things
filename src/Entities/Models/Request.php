@@ -17,6 +17,7 @@ class Request extends AbstractModel
      */
     protected $fillable = [
         'name',
+        'contents',
         'link',
         'condition',
         'approval',

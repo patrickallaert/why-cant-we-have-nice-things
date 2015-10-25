@@ -101,10 +101,11 @@ class RequestsGatherer
      */
     protected function createAuthors(Request $request, array $authors)
     {
-        foreach ($authors as $author) {
-            $user = User::firstOrCreate(['email' => $author]);
-            $request->authors()->save($user);
+        foreach ($authors as $key => $author) {
+            $authors[$key] = User::firstOrCreate(['email' => $author])->id;
         }
+
+        $request->authors()->sync($authors);
     }
 
     /**

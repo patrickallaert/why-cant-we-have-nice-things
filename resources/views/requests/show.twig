@@ -29,6 +29,12 @@
         </li>
     </ul>
 
+    <h2 class="text-center">Contents</h2>
+    <section class="contents">
+        {{ request.contents | raw }}
+    </section>
+
+    <h2 class="text-center">Votes</h2>
     {% for question in request.questions %}
         <div class="table-responsive">
             <table class="table table-condensed table-striped table-hover">
@@ -61,7 +67,7 @@
     {% endfor %}
 
     {% if request.comments.count() %}
-        <h2>Comments</h2>
+        <h2 class="text-center">Comments</h2>
         {% for comment in request.comments %}
             {% include '_partials/comment.twig' %}
         {% endfor %}

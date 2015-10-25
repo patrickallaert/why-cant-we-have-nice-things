@@ -15,6 +15,7 @@ class RequestExtractor extends AbstractExtractor
     {
         // Extract Request informations
         $name               = $this->getRequestName();
+        $contents           = $this->getContents();
         $majorityConditions = $this->getMajorityConditions();
         $informations       = $this->getInformations();
         $status             = $this->getStatus($informations);
@@ -28,6 +29,7 @@ class RequestExtractor extends AbstractExtractor
 
         return [
             'name'      => $name,
+            'contents'  => $contents,
             'status'    => $status,
             'condition' => $majorityConditions,
             'authors'   => $authors,
@@ -39,6 +41,23 @@ class RequestExtractor extends AbstractExtractor
     //////////////////////////////////////////////////////////////////////
     ////////////////////////////// HELPERS ///////////////////////////////
     //////////////////////////////////////////////////////////////////////
+
+    /**
+     * @return string
+     */
+    protected function getContents()
+    {
+        $contents = '';
+        $this->crawler->filter('.page.group h2')->each(function($section) use (&$contents) {
+            $key = $section->attr('id');
+            if ($key !== 'vote') {
+               $contents .= '<h3>'.$section->html().'</h3>';
+               $contents .= $this->crawler->filter('#'.$key. ' + div')->html();
+           }
+        });
+
+        return $contents;
+    }
 
     /**
      * Extract the RFC's informations.
