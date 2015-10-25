@@ -1,3 +1,11 @@
 .layout-pagehead {
     margin: 4rem 0;
 }
+
+.rfc__contents {
+    h1, #vote {
+        &, & + div {
+            display: none;
+        }
+    }
+}

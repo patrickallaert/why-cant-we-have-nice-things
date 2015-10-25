@@ -3,6 +3,7 @@ namespace History\Services\RequestsGatherer\Extractors;
 
 use DateTime;
 use History\Services\EmailExtractor;
+use Symfony\Component\DomCrawler\Crawler;
 
 class RequestExtractor extends AbstractExtractor
 {
@@ -43,17 +44,35 @@ class RequestExtractor extends AbstractExtractor
     //////////////////////////////////////////////////////////////////////
 
     /**
+     * Get the HTML contents of the RFC
+     *
      * @return string
      */
     protected function getContents()
     {
         $contents = '';
-        $this->crawler->filter('.page.group h2')->each(function($section) use (&$contents) {
-            $key = $section->attr('id');
-            if ($key !== 'vote') {
-               $contents .= '<h3>'.$section->html().'</h3>';
-               $contents .= $this->crawler->filter('#'.$key. ' + div')->html();
-           }
+        $this->crawler->filter('.page.group')->children()->each(function (Crawler $section) use (&$contents) {
+
+            $html = '';
+            $tag  = $section->nodeName();
+            switch ($tag) {
+                case 'pre':
+                    // I'll have my own syntax highlighting, WITH BLACKJACK AND HOOKERS
+                    $html = '<pre><code>'.htmlentities($section->text()).'</code></pre>';
+                    break;
+
+                default:
+                    $html = sprintf(
+                        '<%s id="%s">%s</%s>',
+                        $tag,
+                        $section->attr('id'),
+                        $section->html(),
+                        $tag
+                    );
+                    break;
+            }
+
+            $contents .= $html;
         });
 
         return $contents;
