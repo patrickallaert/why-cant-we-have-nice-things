@@ -8,6 +8,7 @@ use History\Entities\Models\User;
 use History\Services\RequestsGatherer\RequestsGatherer;
 use History\Services\StatisticsComputer\StatisticsComputer;
 use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Database\Capsule\Manager;
 use League\Container\ServiceProvider;
 use Psy\Shell;
 use Silly\Application;
@@ -76,12 +77,14 @@ class ConsoleServiceProvider extends ServiceProvider
 
         // Refresh requests
         $output->writeln('<comment>Refreshing requests</comment>');
-        $gatherer = $this->container->get(RequestsGatherer::class);
-        $gatherer->setOutput($output);
-        $gatherer->createRequests();
+        Manager::transaction(function() use ($output) {
+            $gatherer = $this->container->get(RequestsGatherer::class);
+            $gatherer->setOutput($output);
+            $gatherer->createRequests();
 
-        // Refresh statistics
-        $this->refreshStats($output);
+            // Refresh statistics
+            $this->refreshStats($output);
+        });
     }
 
     /**
