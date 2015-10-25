@@ -10,6 +10,7 @@ class PathsServiceProvider extends ServiceProvider
      */
     protected $provides = [
         'paths.cache',
+        'paths.builds',
         'paths.views',
     ];
 
