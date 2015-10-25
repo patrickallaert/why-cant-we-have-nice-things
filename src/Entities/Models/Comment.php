@@ -1,10 +1,13 @@
 <?php
 namespace History\Entities\Models;
 
+use History\Entities\Traits\HasEvents;
 use League\CommonMark\CommonMarkConverter;
 
 class Comment extends AbstractModel
 {
+    use HasEvents;
+
     /**
      * @var array
      */
@@ -24,6 +27,14 @@ class Comment extends AbstractModel
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function request()
+    {
+        return $this->belongsTo(Request::class);
     }
 
     //////////////////////////////////////////////////////////////////////

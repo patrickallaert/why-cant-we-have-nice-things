@@ -2,7 +2,7 @@
     $decorators-color: lighten(black, 70);
 
     display: flex;
-    flex-direction:  column;
+    flex-direction: column;
     width: auto;
     padding-left: 30%;
 
@@ -34,20 +34,24 @@
         border-radius: 50%;
         margin-right: 2rem;
 
+        $icons: (
+            history: #4AA3DF,
+            commenting: lighten(black, 40),
+            thumbs-up: $color-green,
+            thumbs-down: $color-red,
+        );
+
         &.fa-history,
         &.fa-thumbs-down,
+        &.fa-commenting,
         &.fa-thumbs-up {
             color: white;
         }
 
-        &.fa-history {
-            background-color: #4aa3df;
-        }
-        &.fa-thumbs-up {
-            background-color: $color-green;
-        }
-        &.fa-thumbs-down {
-            background-color: $color-red;
+        @each $icon, $color in $icons {
+            &.fa-#{$icon} {
+                background-color: $color;
+            }
         }
     }
 

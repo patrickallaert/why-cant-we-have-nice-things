@@ -1,8 +1,9 @@
 {% extends '_layouts/layout.twig' %}
 {% set title = 'Latest events' %}
 {% set icons = {
-    rfc_created: 'commenting',
+    rfc_created: 'edit',
     rfc_status: 'history',
+    comment_created: 'commenting',
     vote_up: 'thumbs-up',
     vote_down: 'thumbs-down',
 } %}
@@ -13,19 +14,7 @@
             <li class="list-group-item">
                 <i class="fa fa-{{ icons[event.type] }}"></i>
                 <div>
-                    {% if event.type starts with 'vote' %}
-                        <a href="/users/{{ event.eventable.user.id }}">{{ event.eventable.user.display_name }}</a>
-                        voted <strong>{{ choice(event.eventable.question, event.eventable) }}</strong>
-                        on <a href="/requests/{{ event.eventable.question.request.id }}">{{ event.eventable.question.request.name }}</a>
-                    {% elseif event.type == 'rfc_created' %}
-                        {% for key, author in event.eventable.authors %}
-                            <a href="/users/{{ author.id }}">{{ author.display_name }}</a>{% if (key + 1) < event.eventable.authors.count() %},{% endif %}
-                        {% endfor %}
-                        created <a href="/requests/{{ event.eventable.id }}">{{ event.eventable.name }}</a>
-                    {% elseif event.type == 'rfc_status' %}
-                        <a href="/requests/{{ event.eventable.id }}">{{ event.eventable.name }}</a>
-                        is now <strong>{{ event.eventable.statusLabel(event.metadata.new_status)|lower }}</strong>
-                    {% endif %}
+                    {% include "events/events/#{event.type}.twig" %}
                     <time datetime="{{ event.created_at }}">{{ event.created_at.diffForHumans() }}</time>
                 </div>
             </li>

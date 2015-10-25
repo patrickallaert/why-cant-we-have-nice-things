@@ -1,0 +1,4 @@
+{% for key, author in event.eventable.authors %}
+    <a href="/users/{{ author.id }}">{{ author.display_name }}</a>{% if (key + 1) < event.eventable.authors.count() %},{% endif %}
+{% endfor %}
+created <a href="/requests/{{ event.eventable.id }}">{{ event.eventable.name }}</a>

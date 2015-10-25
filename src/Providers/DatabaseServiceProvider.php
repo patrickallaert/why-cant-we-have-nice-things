@@ -1,8 +1,10 @@
 <?php
 namespace History\Providers;
 
+use History\Entities\Models\Comment;
 use History\Entities\Models\Request;
 use History\Entities\Models\Vote;
+use History\Entities\Observers\CommentObserver;
 use History\Entities\Observers\RequestObserver;
 use History\Entities\Observers\VoteObserver;
 use Illuminate\Container\Container;
@@ -47,6 +49,7 @@ class DatabaseServiceProvider extends ServiceProvider
             // Configure observers
             Vote::observe(new VoteObserver());
             Request::observe(new RequestObserver());
+            Comment::observe(new CommentObserver());
 
             // Enable query log in local
             if ($this->container->get('debug')) {

@@ -17,7 +17,7 @@ class InternalsSynchronizer
     /**
      * @var integer
      */
-    const ARTICLES = 5000;
+    const ARTICLES = 500;
 
     /**
      * @var Internals
