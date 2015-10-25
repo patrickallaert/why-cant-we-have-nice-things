@@ -4,7 +4,7 @@ import 'tablesorter/dist/js/widgets/widget-filter.min';
 import 'bootstrap/js/collapse';
 import 'bootstrap/js/tooltip';
 
-import 'bootswatch/flatly/bootstrap.css';
+import '../sass/flatly.scss';
 import '../sass/styles.scss';
 
 $('.table').tablesorter({
