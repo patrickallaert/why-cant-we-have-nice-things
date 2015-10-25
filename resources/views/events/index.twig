@@ -1,13 +1,18 @@
 {% extends '_layouts/layout.twig' %}
 {% set title = 'Latest events' %}
+{% set icons = {
+    rfc_created: 'commenting',
+    vote_up: 'thumbs-up',
+    vote_down: 'thumbs-down',
+} %}
 
 {% block content %}
     <ul class="list-group timeline">
         {% for event in events %}
             <li class="list-group-item">
-                <i class="fa fa-{{ {rfc_created: 'commenting', vote: 'thumbs-down'}[event.type] }}"></i>
+                <i class="fa fa-{{ icons[event.type] }}"></i>
                 <div>
-                    {% if event.type == 'vote' %}
+                    {% if event.type starts with 'vote' %}
                         <a href="/users/{{ event.eventable.user.name }}">{{ event.eventable.user.name }}</a>
                         voted <strong>{{ choice(event.eventable.question, event.eventable) }}</strong>
                         on <a href="/requests/{{ event.eventable.question.request.id }}">{{ event.eventable.question.request.name }}</a>

@@ -24,11 +24,27 @@
         }
     }
 
+    a {
+        font-weight: bold;
+    }
+
     i {
         background: #EEE;
         padding: 1.5rem;
         border-radius: 50%;
         margin-right: 2rem;
+
+        &.fa-thumbs-down,
+        &.fa-thumbs-up {
+            color: white;
+        }
+
+        &.fa-thumbs-up {
+            background-color: $color-green;
+        }
+        &.fa-thumbs-down {
+            background-color: $color-red;
+        }
     }
 
     div {

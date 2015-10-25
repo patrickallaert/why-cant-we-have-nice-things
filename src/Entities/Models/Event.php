@@ -6,7 +6,7 @@ class Event extends AbstractModel
     /**
      * @var array
      */
-    const TYPES = ['vote', 'rfc_created', 'rfc_closed'];
+    const TYPES = ['vote_up', 'vote_down', 'rfc_created', 'rfc_closed'];
 
     /**
      * @var array
