@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fdc20529e6e00861234aef921889ecc9",
-    "content-hash": "c14b78b15484e5f0ca6058b9577d3371",
+    "hash": "c5aafe40bae3338b922eba42c18668f5",
+    "content-hash": "04b3bb651f35cc3c47578df60c945e75",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -896,6 +896,49 @@
             "time": "2015-10-22 19:49:23"
         },
         {
+            "name": "php-imap/php-imap",
+            "version": "2.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/barbushin/php-imap.git",
+                "reference": "cc1a49a3f68090db182183c59ffbc09055d59f5b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/barbushin/php-imap/zipball/cc1a49a3f68090db182183c59ffbc09055d59f5b",
+                "reference": "cc1a49a3f68090db182183c59ffbc09055d59f5b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PhpImap": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD 3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sergey Barbushin",
+                    "email": "barbushin@gmail.com",
+                    "homepage": "http://linkedin.com/in/barbushin"
+                }
+            ],
+            "description": "PHP class to access mailbox by POP3/IMAP/NNTP using IMAP extension",
+            "homepage": "https://github.com/barbushin/php-imap",
+            "keywords": [
+                "imap",
+                "mail",
+                "php"
+            ],
+            "time": "2015-09-16 07:40:39"
+        },
+        {
             "name": "robmorgan/phinx",
             "version": "v0.4.6",
             "source": {
@@ -956,6 +999,50 @@
                 "phinx"
             ],
             "time": "2015-09-11 15:44:41"
+        },
+        {
+            "name": "rvdv/nntp",
+            "version": "v0.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/RobinvdVleuten/php-nntp.git",
+                "reference": "a232313212212d0c0660497586af1a88e823dbf9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/RobinvdVleuten/php-nntp/zipball/a232313212212d0c0660497586af1a88e823dbf9",
+                "reference": "a232313212212d0c0660497586af1a88e823dbf9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "@stable"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.7.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Rvdv\\Nntp\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Robin van der Vleuten",
+                    "email": "robinvdvleuten@gmail.com"
+                }
+            ],
+            "description": "Client for communicating with servers throught the Network News Transfer Protocol (NNTP) protocol.",
+            "time": "2014-08-20 07:47:40"
         },
         {
             "name": "symfony/config",

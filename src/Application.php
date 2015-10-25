@@ -10,6 +10,7 @@ use History\Providers\ConsoleServiceProvider;
 use History\Providers\DatabaseServiceProvider;
 use History\Providers\GravatarServiceProvider;
 use History\Providers\PathsServiceProvider;
+use History\Services\Internals\InternalsServiceProvider;
 use History\Services\RequestsGatherer\RequestsGathererServiceProvider;
 use Illuminate\Database\Capsule\Manager;
 use League\Container\Container;
@@ -47,6 +48,7 @@ class Application
         ConsoleServiceProvider::class,
         ErrorsServiceProvider::class,
         GravatarServiceProvider::class,
+        InternalsServiceProvider::class,
     ];
 
     /**
