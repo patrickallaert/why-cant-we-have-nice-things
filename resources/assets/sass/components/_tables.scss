@@ -22,8 +22,8 @@
             font-size: 2rem;
         }
 
-        th.tablesorter-headerAsc,
-        th.tablesorter-headerDesc {
+        th.asc,
+        th.desc {
             background-color: lighten($color-green, 5);
 
             &:before {
@@ -35,10 +35,10 @@
             }
         }
 
-        th.tablesorter-headerDesc:before {
+        th.desc:before {
             content: '▼';
         }
-        th.tablesorter-headerAsc:before {
+        th.asc:before {
             content: '▲';
         }
     }

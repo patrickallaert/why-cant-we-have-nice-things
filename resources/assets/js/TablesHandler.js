@@ -1,0 +1,140 @@
+export default class TablesHandler {
+
+    cellIndex = 0;
+    th        = '';
+    order     = null;
+
+    /**
+     * Enable the TableSorter
+     */
+    enable() {
+        // Bind sorting
+        const headings = document.getElementsByTagName('th');
+        for (let i = 0; i < headings.length; i++) {
+            headings[i].onclick = this.onClickEvent.bind(this);
+        }
+
+        // Bind search if present
+        const search = document.getElementById('search');
+        if (search) {
+            search.onkeyup = this.search.bind(this);
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    /////////////////////////////// SEARCH ///////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+
+    /**
+     * Filter the results of the table
+     *
+     * @param {Event} event
+     */
+    search(event) {
+        const rows = this.getRowsArray(document.querySelector('tbody'));
+        rows.forEach(row => {
+            const matches = row.innerText.match(new RegExp(event.target.value));
+            row.classList.toggle('filtered', !matches);
+        });
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    ////////////////////////////// SORTING ///////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+
+    /**
+     * Sort two rows
+     *
+     * @param {Element} first
+     * @param {Element} second
+     *
+     * @returns {number}
+     */
+    sort(first, second) {
+        let valueA = this.getText(first);
+        let valueB = this.getText(second);
+
+        // Get numeric value if necessary
+        const numericValue = parseInt(valueA, 10);
+        if (numericValue) {
+            valueA = numericValue;
+            valueB = parseInt(valueB, 10);
+        }
+
+        return valueA > valueB ? 1 : valueA < valueB ? -1 : 0;
+    }
+
+    /**
+     * Toggle the sorting order
+     */
+    toggle() {
+        const newOrder = this.order !== true;
+
+        this.th.classList.remove(this.order ? 'asc' : 'desc');
+        this.th.classList.add(newOrder ? 'asc' : 'desc');
+        this.order = newOrder;
+    }
+
+    /**
+     * Reset the sorting order
+     */
+    reset() {
+        this.order = null;
+        this.th.classList.remove('asc');
+        this.th.classList.remove('desc');
+    }
+
+    /**
+     * Sort the table
+     *
+     * @param {Event} event
+     */
+    onClickEvent(event) {
+        if (this.th && this.cellIndex !== event.target.cellIndex) {
+            this.reset();
+        }
+
+        // Assign current header and its index
+        this.th        = event.target;
+        this.cellIndex = this.th.cellIndex;
+        const tbody    = this.th.offsetParent.querySelector('tbody');
+
+        let rows = this.getRowsArray(tbody);
+        if (rows) {
+            rows = rows.sort(this.sort.bind(this));
+            if (this.order) {
+                rows.reverse();
+            }
+
+            this.toggle();
+            tbody.innerHtml = '';
+            rows.forEach(row => tbody.appendChild(row));
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    ////////////////////////////// HELPERS ///////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+
+    /**
+     * Extract the text of a row
+     *
+     * @param {object} row
+     *
+     * @returns {string}
+     */
+    getText(row) {
+        return row.cells.item(this.cellIndex).textContent.toLowerCase();
+    }
+
+    /**
+     * Get the rows of a table
+     *
+     * @param tbody
+     *
+     * @returns {Array.<T>}
+     */
+    getRowsArray(tbody) {
+        return Array.prototype.slice.call(tbody.rows, 0);
+    }
+}
