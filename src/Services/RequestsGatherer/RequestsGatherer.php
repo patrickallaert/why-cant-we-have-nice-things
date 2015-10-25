@@ -20,7 +20,7 @@ class RequestsGatherer
     /**
      * @var string
      */
-    const DOMAIN = 'https://wiki.php.net/';
+    const DOMAIN = 'https://wiki.php.net';
 
     /**
      * @var Repository

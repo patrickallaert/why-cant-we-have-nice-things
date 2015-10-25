@@ -4,7 +4,7 @@ namespace History\Services\RequestsGatherer;
 interface SynchronizerInterface
 {
     /**
-     * Synchronize an user with our domain.
+     * Synchronize an entity with our domain.
      *
      * @return AbstractModel
      */
