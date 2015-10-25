@@ -47,32 +47,34 @@
         {% include '_partials/tables/requests.twig' with {requests: user.requests, table_name: 'Created RFCs'} %}
     {% endif %}
 
-    <div class="table-responsive">
-        <table class="table table-condensed table-hover table-striped">
-            <thead>
-            <tr>
-                <th class="text-center" colspan="5">Voted RFCs</th>
-            </tr>
-            <tr>
-                <th>RFC</th>
-                <th>Question</th>
-                <th class="text-right">Voted</th>
-                <th class="text-right">Approval %</th>
-                <th class="text-right">Correct?</th>
-            </tr>
-            </thead>
-            {% for vote in user.votes %}
-                {% set yes = vote.choice < vote.question.choices %}
+    {% if user.votes.count() %}
+        <div class="table-responsive">
+            <table class="table table-condensed table-hover table-striped">
+                <thead>
                 <tr>
-                    <td>
-                        <a href="/requests/{{ vote.question.request.id }}">{{ vote.question.request.name }}</a>
-                    </td>
-                    <td>{{ vote.question.name }}</td>
-                    <td class="text-right">{{ choice(vote.question, vote) }}</td>
-                    <td class="text-right">{{ percentage(vote.question.approval) }}</td>
-                    <td class="text-right">{{ vote.question.majority_choice == vote.choice ? 'Yes' : 'No' }}</td>
+                    <th class="text-center" colspan="5">Voted RFCs</th>
                 </tr>
-            {% endfor %}
-        </table>
-    </div>
+                <tr>
+                    <th>RFC</th>
+                    <th>Question</th>
+                    <th class="text-right">Voted</th>
+                    <th class="text-right">Approval %</th>
+                    <th class="text-right">Correct?</th>
+                </tr>
+                </thead>
+                {% for vote in user.votes %}
+                    {% set yes = vote.choice < vote.question.choices %}
+                    <tr>
+                        <td>
+                            <a href="/requests/{{ vote.question.request.id }}">{{ vote.question.request.name }}</a>
+                        </td>
+                        <td>{{ vote.question.name }}</td>
+                        <td class="text-right">{{ choice(vote.question, vote) }}</td>
+                        <td class="text-right">{{ percentage(vote.question.approval) }}</td>
+                        <td class="text-right">{{ vote.question.majority_choice == vote.choice ? 'Yes' : 'No' }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% endif %}
 {% endblock %}
