@@ -9,45 +9,50 @@
         background-color: $color-green;
         color: white;
 
-        th:focus {
-            outline: 0;
-        }
-
         abbr {
             border-color: black;
         }
 
-        th.text-center[colspan] {
-            background-color: darken($color-green, 2);
-            font-size: 2rem;
-        }
+        tr > th {
+            padding: 0.5em 0.75em;
 
-        th.asc,
-        th.desc {
-            background-color: lighten($color-green, 5);
-
-            &:before {
-                margin-right: 0.5em;
+            &:focus {
+                outline: 0;
             }
 
-            &:before, div {
-                display: inline-block;
+            &.text-center[colspan] {
+                background-color: darken($color-green, 2);
+                font-size: 2rem;
+            }
+
+            &.asc,
+            &.desc {
+                background-color: lighten($color-green, 5);
+
+                &:before {
+                    margin-right: 0.5em;
+                }
+
+                &:before, div {
+                    display: inline-block;
+                }
+            }
+
+            &.desc:before {
+                content: '▼';
+            }
+            &.asc:before {
+                content: '▲';
             }
         }
 
-        th.desc:before {
-            content: '▼';
-        }
-        th.asc:before {
-            content: '▲';
-        }
-    }
-
-    tr.filtered {
-        display: none;
     }
 
     tbody > tr {
+        &.filtered {
+            display: none;
+        }
+
         > td.success {
             background-color: darken($color-green, 2);
         }
