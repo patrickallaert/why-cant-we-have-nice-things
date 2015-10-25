@@ -1,10 +1,7 @@
-{% set title = title ? "#{title} - #{app_name}" : "#{app_name}" %}
-{% set subtitle = subtitle|default(title) %}
-
 <!doctype html>
 <html lang="en">
 <head>
-    <title>{{ title }}</title>
+    <title>{{ title ? "#{title} - #{app_name}" : app_name }}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.png">
@@ -18,8 +15,8 @@
     <main class="layout-content container-fluid">
         <div class="layout-pagehead text-center">
             {% block title %}
-                {% if subtitle %}
-                    <h2>{{ subtitle }}</h2>
+                {% if title %}
+                    <h2>{{ title }}</h2>
                 {% endif %}
             {% endblock %}
         </div>

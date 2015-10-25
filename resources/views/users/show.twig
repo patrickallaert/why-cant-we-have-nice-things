@@ -1,6 +1,5 @@
 {% extends '_layouts/layout.twig' %}
 {% set title = user.name %}
-{% set subtitle = user.name %}
 
 {% block title %}
     <img class="img-circle" src="{{ gravatar.get(user.email) }}" alt="">
