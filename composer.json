@@ -13,6 +13,7 @@
         "illuminate/events": "^5.1",
         "illuminate/filesystem": "^5.1",
         "illuminate/pagination": "^5.1",
+        "league/commonmark": "^0.11.3",
         "league/container": "^1.3",
         "league/route": "^1.2",
         "mnapoli/silly": "^1.1",

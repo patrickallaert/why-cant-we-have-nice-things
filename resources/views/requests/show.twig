@@ -52,4 +52,24 @@
             </table>
         </div>
     {% endfor %}
+
+    {% if request.comments.count() %}
+        <h2>Comments</h2>
+        {% for comment in request.comments %}
+            <div class="comment">
+                <div class="media-left">
+                    <a href="/users/{{ comment.user_id }}">
+                        <img class="media-object img-circle" src="{{ gravatar.setAvatarSize(150).get(comment.user.email) }}" alt="...">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">
+                        {{ comment.user.display_name }}
+                        <small>{{ comment.created_at.diffForHumans() }}</small>
+                    </h4>
+                    {{ comment.parsed_contents|raw }}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
 {% endblock %}

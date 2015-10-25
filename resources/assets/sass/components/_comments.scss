@@ -1,0 +1,26 @@
+.comment {
+    display: flex;
+    flex-direction: row;
+    align-items: center;;
+
+    .media-left,
+    .media-body {
+    }
+
+    .media-left {
+        padding: 1rem;
+        padding-right: 3rem;
+    }
+
+    .media-heading {
+        padding-bottom: 0.5em;
+        border-bottom: 2px solid darken($color-grey, 10);
+        margin: 0;
+        margin-bottom: 2rem;
+    }
+
+    .media-body {
+        padding: 2rem;
+        background-color: $color-grey;
+    }
+}

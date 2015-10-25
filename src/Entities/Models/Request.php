@@ -64,6 +64,16 @@ class Request extends AbstractModel
         return $this->hasManyThrough(Vote::class, Question::class);
     }
 
+    /**
+     * @codeCoverageIgnore
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     //////////////////////////////////////////////////////////////////////
     ////////////////////////////// ACCESSORS /////////////////////////////
     //////////////////////////////////////////////////////////////////////
