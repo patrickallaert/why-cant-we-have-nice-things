@@ -23,7 +23,7 @@ class StatisticsComputer
 
         $hivemind       = $this->computeHivemind($user);
         $passedRequests = $user->requests->filter(function (Request $request) {
-            return $request->status === 2;
+            return $request->status === (count(Request::STATUS) - 1);
         });
 
         $createdRequests = $user->requests->count();
