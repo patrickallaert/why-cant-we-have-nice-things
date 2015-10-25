@@ -10,6 +10,7 @@ class RequestsGathererServiceProvider extends ServiceProvider
      * @var array
      */
     protected $provides = [
+        'gatherer',
         RequestsGatherer::class,
     ];
 
@@ -22,6 +23,10 @@ class RequestsGathererServiceProvider extends ServiceProvider
     {
         $this->container->singleton(RequestsGatherer::class, function () {
             return new RequestsGatherer($this->container->get(Repository::class));
+        });
+
+        $this->container->add('gatherer', function() {
+            return $this->container->get(RequestsGatherer::class);
         });
     }
 }

@@ -112,18 +112,14 @@ class RequestExtractor extends AbstractExtractor
         $authors = $this->findInformation($informations, '/Author/');
 
         // Try to split off authors
-        $authors = explode(',', $authors);
+        $authors = preg_replace('/[\(\)]/', '', $authors);
+        $authors = preg_split('/[\s,]+/', $authors);
         foreach ($authors as $key => $author) {
 
             // Get email from the author's name
             $author = trim($author);
-            $author = last(explode(' ', $author));
-
-            // Cleanup email and unify to @php.net
-            $author = str_replace('#at#', '@', $author);
-            $author = trim($author, "<>()'");
             $author = preg_replace('/@(.+)/', '@php.net', $author);
-            $author = strpos($author, '@') !== false ? $author : null;
+            $author = filter_var($author, FILTER_VALIDATE_EMAIL) ? $author : null;
 
             $authors[$key] = $author;
         }

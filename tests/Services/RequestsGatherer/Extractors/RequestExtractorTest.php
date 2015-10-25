@@ -48,11 +48,19 @@ class RequestExtractorTest extends TestCase
 Foo Bar
 <a>foo@bar.com</a>
 , Bar Foo
-<a>bar@php.net</a>,
+<a>&laquo;bar@php.net&raquo;</a>,
 Baz Qux, <a>baz@qux.net</a>
 HTML;
         $informations = $this->getInformationsFromInformationBlock($html);
         $this->assertEquals(['foo@php.net', 'bar@php.net', 'baz@php.net'], $informations['authors']);
+
+        $html = <<<'HTML'
+<strong>Author:</strong> <a href="http://www.porcupine.org/wietse/" class="urlextern" title="http://www.porcupine.org/wietse/" rel="nofollow">Wietse Venema (wietse@porcupine.org)</a> <br>
+ IBM T.J. Watson Research Center <br>
+ Hawthorne, NY, USA
+HTML;
+        $informations = $this->getInformationsFromInformationBlock($html);
+        $this->assertEquals(['wietse@php.net'], $informations['authors']);
     }
 
     public function testCanParseConditionsFromProposedVotingChoices()
