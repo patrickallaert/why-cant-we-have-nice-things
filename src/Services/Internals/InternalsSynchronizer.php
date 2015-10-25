@@ -64,7 +64,7 @@ class InternalsSynchronizer
 
         $progress = new ProgressBar($this->output, $count / self::CHUNK);
         $progress->start();
-        for ($i = 0; $i <= $count; $i += self::CHUNK) {
+        for ($i = 1; $i <= $count; $i += self::CHUNK) {
             $to = $i + (self::CHUNK - 1);
 
             // Process this chunk of articles
