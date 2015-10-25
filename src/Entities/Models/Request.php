@@ -10,7 +10,7 @@ class Request extends AbstractModel
     /**
      * @var array
      */
-    const STATUS = ['Declined', 'Draft', 'Implemented'];
+    const STATUS = ['Declined', 'In draft', 'Implemented'];
 
     /**
      * @var array

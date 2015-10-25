@@ -2,11 +2,7 @@
 {% set title = user.display_name %}
 
 {% block title %}
-    <img class="img-circle" src="{{ gravatar.get(user.email) }}" alt="">
-    <h2>
-        {{ user.display_name }}<br>
-        <small>{{ user.full_name }}</small>
-    </h2>
+    {% include '_partials/user.twig' %}
 {% endblock %}
 
 {% block content %}

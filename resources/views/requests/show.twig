@@ -1,11 +1,26 @@
 {% extends '_layouts/layout.twig' %}
 {% set title = request.name %}
 
+{% block title %}
+    <div class="authors">
+        {% for author in request.authors %}
+            {% include '_partials/user.twig' with {user: author} %}
+        {% endfor %}
+    </div>
+{% endblock %}
+
 {% block content %}
-    <p class="lead text-center">
-        This RFC is currently approved at <strong>{{ percentage(request.approval) }}</strong>.<br>
-        <a href="{{ request.link }}" target="_blank">View this RFC on the PHP wiki</a>
-    </p>
+    <ul class="lead text-center list-unstyled">
+        <li>
+            Currently <strong>{{ request.status_label|lower }}</strong>
+        </li>
+        <li>
+            Approved at <strong>{{ percentage(request.approval) }}</strong>
+        </li>
+        <li>
+            <a href="{{ request.link }}" target="_blank">View this RFC on the PHP wiki</a>
+        </li>
+    </ul>
 
     {% for question in request.questions %}
         <div class="table-responsive">
