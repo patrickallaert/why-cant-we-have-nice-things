@@ -1,4 +1,5 @@
 import 'bootstrap.native/lib/collapse-native';
+import 'font-awesome/css/font-awesome.css';
 import '../sass/flatly.scss';
 import '../sass/styles.scss';
 

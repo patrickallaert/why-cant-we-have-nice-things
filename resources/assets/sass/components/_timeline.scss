@@ -1,0 +1,42 @@
+.timeline {
+    $decorators-color: lighten(black, 70);
+
+    display: flex;
+    flex-direction:  column;
+    width: 35%;
+    margin: auto;
+
+    .list-group-item {
+        margin: 1.5rem 0;
+        padding: 0 1rem;
+        display: flex;
+        align-items: center;
+        border: none;
+
+        &:before {
+            content: '';
+            background: lighten($decorators-color, 20);
+            width: 5px;
+            height: 100px;
+            position: absolute;
+            left: 30px;
+            z-index: -1;
+        }
+    }
+
+    i {
+        background: #EEE;
+        padding: 1.5rem;
+        border-radius: 50%;
+        margin-right: 2rem;
+    }
+
+    div {
+        flex: 1;
+    }
+
+    time {
+        display: block;
+        color: $decorators-color;
+    }
+}
