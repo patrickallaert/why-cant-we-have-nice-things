@@ -13,7 +13,7 @@ class UsersController extends AbstractController
     {
         $users = User::with('requests')->get();
         $users = $users->filter(function (User $user) {
-            return $user->total_votes > 5;
+            return $user->total_votes > 5 || $user->requests->count();
         })->sortBy(function (User $user) {
             return $user->hivemind;
         });
