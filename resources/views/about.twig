@@ -3,12 +3,19 @@
 {% set fluid = false %}
 
 {% block content %}
-    <p class="lead text-justify">
-        This application was made to give people more insight into who votes RFCs and their voting history.<br>
-        My motivation is I've seen a lot of people (me included) bash certain names as constant downvoters of good features
-        and I wanted to verify whether this was confirmation bias or a reality.
-    </p>
-    <p>
-        <em>It was confirmation bias.</em>
-    </p>
+    <div class="lead text-justify">
+        <p>
+            The PHP internals are <a target="_blank" href="https://philsturgeon.uk/php/2013/09/12/solving-the-php-internals-workflow/">horrible</a>, it's not new, I know it, you know it.
+            Between the wiki, the mailing lists from 1997, the Github repository and so on, information is spread out across the web; difficult to access, to comprehend, and to participate in.
+            If you're not familiar with it, it's an unwelcoming world to whomever might want to know more about advances in the PHP language.
+        </p>
+        <p>
+            This tool aims to simplify this by unifying sources of information under one roof, and answer all the questions people might have about the PHP internals.<br>
+            Who voted on what? Who even are the people voting? What did they also vote on? What comments were made on a particular RFC? And so on.
+        </p>
+        <p>
+            The app is not perfect, it's even pretty disgusting at times, but so is the data I'm working with so, you know. Doing my best here.<br>
+            If you want to make it better, you're <a target="_blank" href="https://github.com/madewithlove/why-cant-we-have-nice-things">more than welcome to</a>.
+        </p>
+    </div>
 {% endblock %}
