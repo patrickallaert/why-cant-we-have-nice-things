@@ -13,8 +13,12 @@
 {% block content %}
     <ul class="list-unstyled lead text-center">
         <li>
-            Created <strong>{{ user.requests.count() }}</strong> RFCs,
-            <strong>{{ percentage(user.success) }}</strong> of which have been approved.
+            {% if user.requests.count() %}
+                Created <strong>{{ user.requests.count() }}</strong> RFCs,
+                <strong>{{ percentage(user.success) }}</strong> of which have been approved.
+            {% else %}
+                Did not create any RFCs.
+            {% endif %}
         </li>
         {% if user.total_votes %}
             <li>
