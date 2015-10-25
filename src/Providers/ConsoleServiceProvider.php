@@ -5,10 +5,10 @@ use History\Console\Commands\Tinker;
 use History\Entities\Models\Question;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
+use History\Services\Internals\InternalsSynchronizer;
 use History\Services\RequestsGatherer\RequestsGatherer;
 use History\Services\StatisticsComputer\StatisticsComputer;
 use Illuminate\Contracts\Cache\Repository;
-use Illuminate\Database\Capsule\Manager;
 use League\Container\ServiceProvider;
 use Psy\Shell;
 use Silly\Application;
@@ -38,12 +38,18 @@ class ConsoleServiceProvider extends ServiceProvider
 
             // Register commands
             $app->command('tinker', [$this, 'tinker']);
-            $app->command('refresh [--scratch]', [$this, 'refresh']);
-            $app->command('stats', [$this, 'refreshStats']);
+            $app->command('sync [--scratch]', [$this, 'sync']);
+            $app->command('sync:requests', [$this, 'syncRequests']);
+            $app->command('sync:internals', [$this, 'syncInternals']);
+            $app->command('sync:stats', [$this, 'syncStats']);
 
             return $app;
         });
     }
+
+    //////////////////////////////////////////////////////////////////////
+    ////////////////////////////// COMMANDS //////////////////////////////
+    //////////////////////////////////////////////////////////////////////
 
     /**
      * Tinker with the application.
@@ -59,12 +65,10 @@ class ConsoleServiceProvider extends ServiceProvider
     }
 
     /**
-     * Refresh the requests and comments.
-     *
      * @param bool            $scratch
      * @param OutputInterface $output
      */
-    public function refresh($scratch, OutputInterface $output)
+    public function sync($scratch, OutputInterface $output)
     {
         $output = new SymfonyStyle(new ArrayInput([]), $output);
 
@@ -75,16 +79,34 @@ class ConsoleServiceProvider extends ServiceProvider
             $cache->flush();
         }
 
-        // Refresh requests
-        $output->writeln('<comment>Refreshing requests</comment>');
-        Manager::transaction(function () use ($output) {
-            $gatherer = $this->container->get(RequestsGatherer::class);
-            $gatherer->setOutput($output);
-            $gatherer->createRequests();
+        $this->syncRequests($output);
+        $this->syncStats($output);
+    }
 
-            // Refresh statistics
-            $this->refreshStats($output);
-        });
+    /**
+     * Refresh the requests and votes.
+     *
+     * @param OutputInterface $output
+     */
+    public function syncRequests(OutputInterface $output)
+    {
+        $output->writeln('<comment>Refreshing requests</comment>');
+        $gatherer = $this->container->get(RequestsGatherer::class);
+        $gatherer->setOutput($output);
+        $gatherer->createRequests();
+    }
+
+    /**
+     * Sync the internals comments
+     *
+     * @param OutputInterface $output
+     */
+    public function syncInternals(OutputInterface $output)
+    {
+        $output->writeln('<comment>Refreshing internal comments</comment>');
+        $synchronizer = $this->container->get(InternalsSynchronizer::class);
+        $synchronizer->setOutput($output);
+        $synchronizer->synchronize();
     }
 
     /**
@@ -92,7 +114,7 @@ class ConsoleServiceProvider extends ServiceProvider
      *
      * @param OutputInterface $output
      */
-    public function refreshStats(OutputInterface $output)
+    public function syncStats(OutputInterface $output)
     {
         $output   = new SymfonyStyle(new ArrayInput([]), $output);
         $computer = new StatisticsComputer();
@@ -116,6 +138,10 @@ class ConsoleServiceProvider extends ServiceProvider
             $request->update($computer->forRequest($request));
         });
     }
+
+    //////////////////////////////////////////////////////////////////////
+    ////////////////////////////// HELPERS ///////////////////////////////
+    //////////////////////////////////////////////////////////////////////
 
     /**
      * @param OutputInterface $output

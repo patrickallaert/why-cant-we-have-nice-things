@@ -2,6 +2,7 @@
 namespace History\Services\RequestsGatherer\Extractors;
 
 use DateTime;
+use History\Services\EmailExtractor;
 
 class RequestExtractor extends AbstractExtractor
 {
@@ -111,25 +112,10 @@ class RequestExtractor extends AbstractExtractor
      */
     protected function getAuthors(array $informations)
     {
-        // Get and cleanup authors
-        $authors = $this->findInformation($informations, '/Author/');
-        $authors = preg_replace('/[<>\(\)]/', '', $authors);
-        $authors = preg_replace('/([ #]at[# ])/', '@', $authors);
-        $authors = str_replace(' . ', '.', $authors);
+        $authors   = $this->findInformation($informations, '/Author/');
+        $extractor = new EmailExtractor($authors);
 
-        // Try to split off authors
-        $authors = preg_split('/[\s,]+/', $authors);
-        foreach ($authors as $key => $author) {
-
-            // Get email from the author's name
-            $author = trim($author);
-            $author = preg_replace('/@(.+)/', '@php.net', $author);
-            $author = filter_var($author, FILTER_VALIDATE_EMAIL) ? $author : null;
-
-            $authors[$key] = $author;
-        }
-
-        return array_values(array_filter($authors));
+        return $extractor->extract();
     }
 
     /**

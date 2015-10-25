@@ -11,6 +11,7 @@ class InternalsServiceProvider extends ServiceProvider
      * @var array
      */
     protected $provides = [
+        InternalsSynchronizer::class,
         Internals::class,
     ];
 
@@ -30,7 +31,14 @@ class InternalsServiceProvider extends ServiceProvider
             $client = new Client($connection);
             $client->connect();
 
-            return new Internals($client);
+            // Get php.internals group
+            $group  = $client->group('php.internals')->getResult();
+
+            return new Internals($client, $group);
+        });
+
+        $this->container->singleton(InternalsSynchronizer::class, function() {
+           return new InternalsSynchronizer($this->container->get(Internals::class));
         });
     }
 }

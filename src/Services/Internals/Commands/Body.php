@@ -3,6 +3,7 @@ namespace History\Services\Internals\Commands;
 
 use Rvdv\Nntp\Command\Command;
 use Rvdv\Nntp\Response\MultiLineResponseInterface;
+use Rvdv\Nntp\Response\ResponseInterface;
 
 class Body extends Command
 {
@@ -10,6 +11,11 @@ class Body extends Command
      * @var integer
      */
     const BODY_RECEIVED = 222;
+
+    /**
+     * @var integer
+     */
+    const NO_SUCH_ARTICLE = 423;
 
     /**
      * @var string
@@ -42,7 +48,8 @@ class Body extends Command
     public function getExpectedResponseCodes()
     {
         return [
-            self::BODY_RECEIVED => 'onBodyReceived',
+            self::BODY_RECEIVED   => 'onBodyReceived',
+            self::NO_SUCH_ARTICLE => 'onArticleNotFound',
         ];
     }
 
@@ -51,9 +58,19 @@ class Body extends Command
      */
     public function onBodyReceived(MultiLineResponseInterface $response)
     {
-        $this->result = [];
-        foreach ($response->getLines() as $line) {
-            $this->result[] = $line;
-        }
+        // Convert to array and remove encoding lines
+        $body = (array) $response->getLines();
+        $body = array_slice($body, 2);
+        $body = implode(PHP_EOL, $body);
+
+        $this->result = trim($body);
+    }
+
+    /**
+     * @param ResponseInterface $response
+     */
+    public function onArticleNotFound(ResponseInterface $response)
+    {
+        $this->result = $response->getMessage();
     }
 }

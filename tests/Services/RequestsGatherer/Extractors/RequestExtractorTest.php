@@ -16,7 +16,7 @@ class RequestExtractorTest extends TestCase
 
         $this->assertEquals([
             'name'      => 'Support Class Constant Visibility',
-            'status'    => 1,
+            'status'    => 2,
             'condition' => 'Simple Yes/No option. This requires a 2/3 majority.',
             'timestamp' => DateTime::createFromFormat('Y-m-d', '2015-09-13'),
             'authors'   => ['sean@php.net', 'reeze@php.net'],
