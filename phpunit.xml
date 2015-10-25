@@ -19,8 +19,5 @@
             <directory suffix=".php">src/Entities</directory>
             <directory suffix=".php">src/Services</directory>
         </whitelist>
-        <blacklist>
-            <file>src/Services/RequestsGatherer/RequestsGathererServiceProvider.php</file>
-        </blacklist>
     </filter>
 </phpunit>

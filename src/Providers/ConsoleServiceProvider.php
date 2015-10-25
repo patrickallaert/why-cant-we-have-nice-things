@@ -77,7 +77,7 @@ class ConsoleServiceProvider extends ServiceProvider
 
         // Refresh requests
         $output->writeln('<comment>Refreshing requests</comment>');
-        Manager::transaction(function() use ($output) {
+        Manager::transaction(function () use ($output) {
             $gatherer = $this->container->get(RequestsGatherer::class);
             $gatherer->setOutput($output);
             $gatherer->createRequests();

@@ -8,7 +8,6 @@ use History\Http\Providers\TwigServiceProvider;
 use History\Providers\CacheServiceProvider;
 use History\Providers\ConsoleServiceProvider;
 use History\Providers\DatabaseServiceProvider;
-use History\Providers\DebugbarServiceProvider;
 use History\Providers\GravatarServiceProvider;
 use History\Providers\PathsServiceProvider;
 use History\Services\RequestsGatherer\RequestsGathererServiceProvider;

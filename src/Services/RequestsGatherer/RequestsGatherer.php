@@ -104,9 +104,7 @@ class RequestsGatherer
     protected function createAuthors(Request $request, array $authors)
     {
         foreach ($authors as $author) {
-            $user = User::firstOrNew(['email' => $author]);
-            $user->save();
-
+            $user = User::firstOrCreate(['email' => $author]);
             $request->authors()->save($user);
         }
     }

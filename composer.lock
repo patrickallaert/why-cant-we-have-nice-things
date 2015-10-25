@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6537c356ef0401581da883c7551d3e78",
-    "content-hash": "5d6c1ba7637899355eb84bf62150d457",
+    "hash": "538e9514e32b3768232e87d2691c385c",
+    "content-hash": "57bfe08b6398959628bce046b2e74a8e",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1690,51 +1690,6 @@
             ],
             "description": "A tool to automatically fix PHP code style",
             "time": "2015-10-21 19:19:43"
-        },
-        {
-            "name": "illuminate/events",
-            "version": "v5.1.20",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/illuminate/events.git",
-                "reference": "fdb64e091b635bf1525c157f1cfdd19cbca508c9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/events/zipball/fdb64e091b635bf1525c157f1cfdd19cbca508c9",
-                "reference": "fdb64e091b635bf1525c157f1cfdd19cbca508c9",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/container": "5.1.*",
-                "illuminate/contracts": "5.1.*",
-                "illuminate/support": "5.1.*",
-                "php": ">=5.5.9"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "5.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Illuminate\\Events\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylorotwell@gmail.com"
-                }
-            ],
-            "description": "The Illuminate Events package.",
-            "homepage": "http://laravel.com",
-            "time": "2015-09-23 13:19:23"
         },
         {
             "name": "jakub-onderka/php-console-color",
