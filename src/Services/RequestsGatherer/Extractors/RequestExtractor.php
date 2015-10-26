@@ -61,9 +61,10 @@ class RequestExtractor extends AbstractExtractor
 
         // I'll have my own syntax highlighting, WITH BLACKJACK AND HOOKERS
         $this->crawler->filter('pre')->each(function ($code) use (&$contents) {
+            $language    = str_replace('code ', '', $code->attr('class'));
             $unformatted = htmlentities($code->text());
-            $unformatted = '<pre><code class="php">'.$unformatted.'</code></pre>';
-            $contents    = str_replace('<pre class="code php">'.$code->html().'</pre>', $unformatted, $contents);
+            $unformatted = '<pre><code class="'.$language.'">'.$unformatted.'</code></pre>';
+            $contents    = str_replace('<pre class="code '.$language.'">'.$code->html().'</pre>', $unformatted, $contents);
         });
 
         return $contents;
