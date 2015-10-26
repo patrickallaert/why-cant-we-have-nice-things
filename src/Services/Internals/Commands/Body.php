@@ -10,7 +10,7 @@ class Body extends Command
     /**
      * @var integer
      */
-    const BODY_RECEIVED = 220;
+    const ARTICLE_RECEIVED = 220;
 
     /**
      * @var integer
@@ -48,8 +48,8 @@ class Body extends Command
     public function getExpectedResponseCodes()
     {
         return [
-            self::BODY_RECEIVED   => 'onBodyReceived',
-            self::NO_SUCH_ARTICLE => 'onArticleNotFound',
+            self::ARTICLE_RECEIVED => 'onArticleReceived',
+            self::NO_SUCH_ARTICLE  => 'onArticleNotFound',
         ];
     }
 
