@@ -56,6 +56,9 @@ class RequestExtractor extends AbstractExtractor
 
         $contents = $contents->html();
 
+        // Make tables into nice tables
+        $contents = str_replace('<table class="inline">', '<table class="table table-striped table-hover">', $contents);
+
         // I'll have my own syntax highlighting, WITH BLACKJACK AND HOOKERS
         $this->crawler->filter('pre')->each(function ($code) use (&$contents) {
             $unformatted = htmlentities($code->text());
