@@ -3,7 +3,6 @@ namespace History\Services\RequestsGatherer\Extractors;
 
 use DateTime;
 use History\Services\EmailExtractor;
-use Symfony\Component\DomCrawler\Crawler;
 
 class RequestExtractor extends AbstractExtractor
 {
@@ -50,29 +49,13 @@ class RequestExtractor extends AbstractExtractor
      */
     protected function getContents()
     {
-        $contents = '';
-        $this->crawler->filter('.page.group')->children()->each(function (Crawler $section) use (&$contents) {
+        $contents = $this->crawler->filter('.page.group')->html();
 
-            $html = '';
-            $tag  = $section->nodeName();
-            switch ($tag) {
-                case 'pre':
-                    // I'll have my own syntax highlighting, WITH BLACKJACK AND HOOKERS
-                    $html = '<pre><code>'.htmlentities($section->text()).'</code></pre>';
-                    break;
-
-                default:
-                    $html = sprintf(
-                        '<%s id="%s">%s</%s>',
-                        $tag,
-                        $section->attr('id'),
-                        $section->html(),
-                        $tag
-                    );
-                    break;
-            }
-
-            $contents .= $html;
+        // I'll have my own syntax highlighting, WITH BLACKJACK AND HOOKERS
+        $this->crawler->filter('pre')->each(function ($code) use (&$contents) {
+            $unformatted = htmlentities($code->text());
+            $unformatted = '<pre><code class="php">'.$unformatted.'</code></pre>';
+            $contents    = str_replace('<pre class="code php">'.$code->html().'</pre>', $unformatted, $contents);
         });
 
         return $contents;
