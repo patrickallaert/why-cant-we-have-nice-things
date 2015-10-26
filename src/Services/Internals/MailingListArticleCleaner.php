@@ -182,6 +182,11 @@ class MailingListArticleCleaner
             $line = $this->convertToUtf8($line, $this->charset);
         }
 
+        // Fix lines that started with a period and got escaped
+        if (substr($line, 0, 2) == "..") {
+            $line = substr($line, 1);
+        }
+
         return $line;
     }
 
