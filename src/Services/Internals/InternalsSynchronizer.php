@@ -189,6 +189,7 @@ class InternalsSynchronizer
         // Just get the last reference cause
         $references = explode(' ', $references);
         $reference  = last($references);
+        return;
 
         // Try to retrieve the comment the reference's about
         try {
