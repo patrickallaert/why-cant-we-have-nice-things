@@ -3,13 +3,11 @@ namespace History\Services\Internals;
 
 use History\Entities\Models\Comment;
 use History\Entities\Models\Request;
-use History\Entities\Models\User;
 use History\Services\EmailExtractor;
 use History\Services\RequestsGatherer\Synchronizers\CommentSynchronizer;
 use History\Services\RequestsGatherer\Synchronizers\UserSynchronizer;
 use Illuminate\Support\Arr;
 use Rvdv\Nntp\Exception\InvalidArgumentException;
-use SplFixedArray;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -73,7 +71,9 @@ class InternalsSynchronizer
 
             // Process this chunk of articles
             $articles = $this->internals->getArticles($i, $to);
-            $this->processArticles($articles);
+            foreach ($articles as $article) {
+                $this->processArticle($article);
+            }
             $progress->advance();
         }
 
@@ -83,36 +83,36 @@ class InternalsSynchronizer
     /**
      * Process a chunk of articles.
      *
-     * @param SplFixedArray $articles
+     * @param array $article
      */
-    public function processArticles(SplFixedArray $articles)
+    public function processArticle(array $article)
     {
-        foreach ($articles as $article) {
-
-            // If we already synchronized this one, skip it
-            if (in_array($article['xref'], $this->parsed, true)) {
-                continue;
-            }
-
-            // If the article is not about RFCs, fuck off
-            if (strpos($article['subject'], 'RFC') === false) {
-                continue;
-            }
-
-            // Get the RFC the message relates to
-            $article['subject'] = $this->cleanupSubject($article['subject']);
-            if (!$request = $this->getRelatedRequest($article)) {
-                continue;
-            }
-
-            // Get the user that posted the message
-            if (!$user = $this->getRelatedUser($article)) {
-                continue;
-            }
-
-            // Grab the message contents and insert into database
-            $this->createCommentFromArticle($article, $request, $user);
+        // If we already synchronized this one, skip it
+        if (in_array($article['xref'], $this->parsed, true)) {
+            return;
         }
+
+        // If the article is not about RFCs, fuck off
+        if (strpos($article['subject'], 'RFC') === false) {
+            return;
+        }
+
+        // Get the RFC the message relates to
+        $article['subject'] = $this->cleanupSubject($article['subject']);
+        if (!$request = $this->getRelatedRequest($article)) {
+            return;
+        }
+
+        // Get the user that posted the message
+        if (!$user = $this->getRelatedUser($article)) {
+            return;
+        }
+
+        // If the article has references, find them
+        $comment = $this->getCommentFromReference($article['references']);
+
+        // Grab the message contents and insert into database
+        $this->createCommentFromArticle($article, $request, $user, $comment);
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -180,6 +180,28 @@ class InternalsSynchronizer
     }
 
     /**
+     * @param string $references
+     *
+     * @return integer|null
+     */
+    private function getCommentFromReference($references)
+    {
+        // Just get the last reference cause
+        $references = explode(' ', $references);
+        $reference  = last($references);
+
+        // Try to retrieve the comment the reference's about
+        try {
+            $reference = $this->internals->findArticleFromReference($reference);
+            $comment   = Comment::where('xref', $reference)->first();
+        } catch (InvalidArgumentException $exception) {
+            return;
+        }
+
+        return $comment ? $comment->id : null;
+    }
+
+    /**
      * Create a comment from a NNTP article.
      *
      * @param array $article
@@ -188,7 +210,7 @@ class InternalsSynchronizer
      *
      * @return Comment
      */
-    protected function createCommentFromArticle(array $article, $request, $user)
+    protected function createCommentFromArticle(array $article, $request, $user, $comment = null)
     {
         try {
             $contents = $this->internals->getArticleBody($article['number']);
@@ -198,6 +220,7 @@ class InternalsSynchronizer
 
         $synchronizer = new CommentSynchronizer(array_merge($article, [
             'contents'   => $contents,
+            'comment_id' => $comment,
             'request_id' => $request,
             'user_id'    => $user,
         ]));

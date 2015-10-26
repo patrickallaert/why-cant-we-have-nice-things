@@ -2,6 +2,7 @@
 namespace History\Services\Internals;
 
 use History\Services\Internals\Commands\Body;
+use History\Services\Internals\Commands\Xpath;
 use Illuminate\Contracts\Cache\Repository;
 use Rvdv\Nntp\Client;
 use SplFixedArray;
@@ -55,7 +56,7 @@ class Internals
     public function getArticles($from, $to)
     {
         return $this->cache->rememberForever($from.'-'.$to, function () use ($from, $to) {
-            $format = $this->client->overviewFormat()->getResult();
+            $format  = $this->client->overviewFormat()->getResult();
             $command = $this->client->xover($from, $to, $format);
 
             return $command->getResult();
@@ -77,5 +78,19 @@ class Internals
         });
 
         return $cleaner->cleanup($article);
+    }
+
+    /**
+     * @param string $reference
+     *
+     * @return string
+     */
+    public function findArticleFromReference($reference)
+    {
+        return $this->cache->rememberForever('xpath-'.$reference, function () use ($reference) {
+            return $this->client
+                ->sendCommand(new Xpath($reference))
+                ->getResult();
+        });
     }
 }

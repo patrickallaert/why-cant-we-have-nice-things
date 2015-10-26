@@ -25,7 +25,7 @@ class Body extends Command
     /**
      * Constructor.
      *
-     * @param string $article The name of the group.
+     * @param string $article The id of the article.
      */
     public function __construct($article)
     {

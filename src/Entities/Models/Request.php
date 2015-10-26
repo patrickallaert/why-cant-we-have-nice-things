@@ -75,6 +75,16 @@ class Request extends AbstractModel
         return $this->hasMany(Comment::class)->oldest();
     }
 
+    /**
+     * @codeCoverageIgnore
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function rootComments()
+    {
+        return $this->comments()->whereNull('comment_id');
+    }
+
     //////////////////////////////////////////////////////////////////////
     ////////////////////////////// ACCESSORS /////////////////////////////
     //////////////////////////////////////////////////////////////////////

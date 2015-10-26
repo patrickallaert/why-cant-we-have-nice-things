@@ -26,6 +26,7 @@ class CommentSynchronizer extends AbstractSynchronizer
         $comment->name       = $this->get('subject');
         $comment->contents   = $this->get('contents');
         $comment->request_id = $this->get('request_id');
+        $comment->comment_id = $this->get('comment_id');
         $comment->user_id    = $this->get('user_id');
         $comment->created_at = $datetime;
         $comment->updated_at = $datetime;

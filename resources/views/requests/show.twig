@@ -68,7 +68,7 @@
 
     {% if request.comments.count() %}
         <h2 class="text-center">Comments</h2>
-        {% for comment in request.comments %}
+        {% for comment in request.rootComments %}
             {% include '_partials/comment.twig' %}
         {% endfor %}
     {% endif %}

@@ -1,15 +1,19 @@
 <article class="comment">
-    <figure class="media-left">
-        <img class="media-object img-circle" src="{{ gravatar.setAvatarSize(100).get(comment.user.email) }}" alt="...">
-    </figure>
-    <div class="media-body">
-        <h4 class="media-heading">
-            <a href="/users/{{ comment.user_id }}">
-                {{ comment.user.display_name }}
-            </a>
+    <header class="comment__header">
+        <figure>
+            <img src="{{ gravatar.setAvatarSize(50).get(comment.user.email) }}" alt="...">
+        </figure>
+        <h4>
+            <a href="/users/{{ comment.user_id }}">{{ comment.user.display_name }}</a><br>
             <small>{{ comment.created_at.toDateTimeString() }}</small>
         </h4>
+    </header>
 
-        {{ comment.parsed_contents|raw }}
-    </div>
+    {{ comment.parsed_contents|raw }}
 </article>
+
+<div class="comment__children">
+    {% for comment in comment.children %}
+        {% include '_partials/comment.twig' %}
+    {% endfor %}
+</div>
