@@ -1,5 +1,6 @@
-import Highlight from 'highlight.js';
 import 'highlight.js/styles/github.css';
+import Highlight from 'highlight.js/lib/highlight';
+import php from 'highlight.js/lib/languages/php';
 
-console.log(Highlight);
+Highlight.registerLanguage('php', php);
 Highlight.initHighlightingOnLoad();
