@@ -110,13 +110,19 @@ class RequestExtractor extends AbstractExtractor
      */
     protected function getStatus(array $informations)
     {
-        $status = $this->findInformation($informations, '/Status/');
-        if (preg_match('/(draft)/i', $status)) {
-            return 1;
-        } elseif (preg_match('/(discussion)/i', $status)) {
-            return 2;
-        } elseif (preg_match('/(accepted|implemented)/i', $status)) {
-            return 3;
+        $status   = $this->findInformation($informations, '/Status/');
+        $statuses = [
+            'draft',
+            'discussion',
+            'voting',
+            'accepted|implemented',
+        ];
+
+        // Look for a match in the status
+        foreach ($statuses as $key => $matcher) {
+            if (preg_match('/'.$matcher.'/i', $status)) {
+                return $key;
+            }
         }
 
         return 0;

@@ -102,11 +102,14 @@ HTML;
         $informations = $this->getInformationsFromInformationBlock('Status: in draft');
         $this->assertEquals(1, $informations['status']);
 
-        $informations = $this->getInformationsFromInformationBlock('Status: Implemented (in PHP 7.0)');
+        $informations = $this->getInformationsFromInformationBlock('Status: In voting phase');
         $this->assertEquals(3, $informations['status']);
 
+        $informations = $this->getInformationsFromInformationBlock('Status: Implemented (in PHP 7.0)');
+        $this->assertEquals(4, $informations['status']);
+
         $informations = $this->getInformationsFromInformationBlock('Status: accepted');
-        $this->assertEquals(3, $informations['status']);
+        $this->assertEquals(4, $informations['status']);
     }
 
     /**
