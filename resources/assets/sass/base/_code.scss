@@ -1,5 +1,13 @@
-pre code.hljs {
-    background-color: darken($color-grey, 0);
+pre {
     padding: 1.5em 2em;
-    tab-size: 4;
+    margin: 2rem 0;
+    font-family: monospace;
+    border-radius: 0;
+    border: none;
+
+    code.hljs {
+        padding: 0;
+        background-color: darken($color-grey, 0);
+        tab-size: 4;
+    }
 }
