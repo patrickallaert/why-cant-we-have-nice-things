@@ -33,7 +33,7 @@ export default class TablesHandler {
     search(event) {
         const rows = this.getRowsArray(document.querySelector('tbody'));
         rows.forEach(row => {
-            const matches = row.innerText.match(new RegExp(event.target.value));
+            const matches = row.innerText.match(new RegExp(event.target.value, 'i'));
             row.classList.toggle('filtered', !matches);
         });
     }
