@@ -3,7 +3,10 @@
 }
 
 .rfc__contents {
-    h1, #vote {
+    h1,
+    #vote,
+    #votes,
+    #voting {
         &, & + div {
             display: none;
         }
