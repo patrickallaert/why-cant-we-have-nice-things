@@ -10,7 +10,7 @@ class Body extends Command
     /**
      * @var integer
      */
-    const BODY_RECEIVED = 222;
+    const BODY_RECEIVED = 220;
 
     /**
      * @var integer
@@ -39,7 +39,7 @@ class Body extends Command
      */
     public function execute()
     {
-        return sprintf('BODY %s', $this->article);
+        return sprintf('ARTICLE %s', $this->article);
     }
 
     /**
@@ -56,13 +56,9 @@ class Body extends Command
     /**
      * @param MultiLineResponseInterface $response
      */
-    public function onBodyReceived(MultiLineResponseInterface $response)
+    public function onArticleReceived(MultiLineResponseInterface $response)
     {
-        // Convert to array and remove encoding lines
-        $body = (array) $response->getLines();
-        $body = implode(PHP_EOL, $body);
-
-        $this->result = trim($body);
+        $this->result = (array) $response->getLines();
     }
 
     /**

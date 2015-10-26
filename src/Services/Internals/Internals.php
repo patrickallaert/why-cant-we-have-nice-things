@@ -65,14 +65,17 @@ class Internals
     /**
      * @param integer $article
      *
-     * @return \Rvdv\Nntp\Command\CommandInterface
+     * @return string
      */
     public function getArticleBody($article)
     {
-        return $this->cache->rememberForever('body-'.$article, function () use ($article) {
+        $cleaner = new MailingListArticleCleaner();
+        $article = $this->cache->rememberForever('body-'.$article, function () use ($article) {
             return $this->client
                 ->sendCommand(new Body($article))
                 ->getResult();
         });
+
+        return $cleaner->cleanup($article);
     }
 }
