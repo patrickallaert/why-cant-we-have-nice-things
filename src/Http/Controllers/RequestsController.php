@@ -10,10 +10,7 @@ class RequestsController extends AbstractController
      */
     public function index()
     {
-        $requests = Request::with('questions.votes')->get();
-        $requests = $requests->sortByDesc(function (Request $request) {
-            return $request->created_at;
-        });
+        $requests = Request::with('questions.votes')->latest()->get();
 
         // Compute % of passed RFCs
         $voted = $requests->filter(function (Request $request) {
