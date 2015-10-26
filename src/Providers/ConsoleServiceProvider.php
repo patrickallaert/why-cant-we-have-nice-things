@@ -97,7 +97,7 @@ class ConsoleServiceProvider extends ServiceProvider
     }
 
     /**
-     * Sync the internals comments
+     * Sync the internals comments.
      *
      * @param OutputInterface $output
      */

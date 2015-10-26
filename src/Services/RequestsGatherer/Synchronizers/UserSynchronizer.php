@@ -24,7 +24,7 @@ class UserSynchronizer extends AbstractSynchronizer
         // If we have no username but have an email
         // try to infere username from it
         if (!$username && $email) {
-            $username = explode('@', $email)[0];
+            $username     = explode('@', $email)[0];
             $components[] = ['name', $username];
         }
 

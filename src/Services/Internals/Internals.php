@@ -37,7 +37,7 @@ class Internals
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getTotalNumberArticles()
     {
@@ -45,17 +45,17 @@ class Internals
     }
 
     /**
-     * List all availables articles
+     * List all availables articles.
      *
-     * @param integer $from
-     * @param integer $to
+     * @param int $from
+     * @param int $to
      *
      * @return SplFixedArray
      */
     public function getArticles($from, $to)
     {
         return $this->cache->rememberForever($from.'-'.$to, function () use ($from, $to) {
-            $format  = $this->client->overviewFormat()->getResult();
+            $format = $this->client->overviewFormat()->getResult();
             $command = $this->client->xover($from, $to, $format);
 
             return $command->getResult();
@@ -63,7 +63,7 @@ class Internals
     }
 
     /**
-     * @param integer $article
+     * @param int $article
      *
      * @return string
      */

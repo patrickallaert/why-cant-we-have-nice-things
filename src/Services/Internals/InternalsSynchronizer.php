@@ -1,7 +1,6 @@
 <?php
 namespace History\Services\Internals;
 
-use DateTime;
 use History\Entities\Models\Comment;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
@@ -18,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class InternalsSynchronizer
 {
     /**
-     * @var integer
+     * @var int
      */
     const CHUNK = 500;
 
@@ -58,7 +57,7 @@ class InternalsSynchronizer
 
     /**
      * Synchronize the php.internals mailing list
-     * to a fucking usable format
+     * to a fucking usable format.
      */
     public function synchronize()
     {
@@ -82,7 +81,7 @@ class InternalsSynchronizer
     }
 
     /**
-     * Process a chunk of articles
+     * Process a chunk of articles.
      *
      * @param SplFixedArray $articles
      */
@@ -91,7 +90,7 @@ class InternalsSynchronizer
         foreach ($articles as $article) {
 
             // If we already synchronized this one, skip it
-            if (in_array($article['xref'], $this->parsed)) {
+            if (in_array($article['xref'], $this->parsed, true)) {
                 continue;
             }
 
@@ -121,7 +120,7 @@ class InternalsSynchronizer
     //////////////////////////////////////////////////////////////////////
 
     /**
-     * Remove tags from an article's subject
+     * Remove tags from an article's subject.
      *
      * @param string $subject
      *
@@ -141,7 +140,7 @@ class InternalsSynchronizer
     /**
      * @param array $article
      *
-     * @return integer|null
+     * @return int|null
      */
     protected function getRelatedRequest(array $article)
     {
@@ -160,7 +159,7 @@ class InternalsSynchronizer
     /**
      * @param array $article
      *
-     * @return integer|null
+     * @return int|null
      */
     protected function getRelatedUser(array $article)
     {
@@ -173,7 +172,7 @@ class InternalsSynchronizer
         $name = Arr::get($matches, '1.0');
 
         $synchronizer = new UserSynchronizer([
-            'email' => $email,
+            'email'     => $email,
             'full_name' => $name,
         ]);
 
@@ -181,11 +180,11 @@ class InternalsSynchronizer
     }
 
     /**
-     * Create a comment from a NNTP article
+     * Create a comment from a NNTP article.
      *
-     * @param array   $article
-     * @param integer $request
-     * @param integer $user
+     * @param array $article
+     * @param int   $request
+     * @param int   $user
      *
      * @return Comment
      */
@@ -198,11 +197,11 @@ class InternalsSynchronizer
         }
 
         $synchronizer = new CommentSynchronizer(array_merge($article, [
-            'contents' => $contents,
+            'contents'   => $contents,
             'request_id' => $request,
-            'user_id' => $user,
+            'user_id'    => $user,
         ]));
 
         return $synchronizer->persist();
-     }
+    }
 }

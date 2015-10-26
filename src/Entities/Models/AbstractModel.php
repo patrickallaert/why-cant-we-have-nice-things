@@ -17,7 +17,7 @@ abstract class AbstractModel extends Model
     }
 
     /**
-     * Define relationships as set for Twig
+     * Define relationships as set for Twig.
      *
      * @param string $key
      *

@@ -97,7 +97,7 @@ class MailingListArticleCleaner
     }
 
     /**
-     * Extract the message's headers
+     * Extract the message's headers.
      *
      * @param string $line
      */
@@ -105,7 +105,7 @@ class MailingListArticleCleaner
     {
         // If we were in the headers and face
         // a newline, that means we're not in Kansas anymore
-        if ($line === null || $line === "" || $line === "\n" || $line == "\r\n") {
+        if ($line === null || $line === '' || $line === "\n" || $line === "\r\n") {
             $this->inHeaders = false;
             $this->configureEncoding();
 
@@ -115,13 +115,13 @@ class MailingListArticleCleaner
         // Header fields can be split across lines: CRLF WSP where WSP
         // is a space (ASCII 32) or tab (ASCII 9)
         $firstCharacter = substr($line, 0, 1);
-        if ($this->headerKey && ($firstCharacter == ' ' || $firstCharacter == "\t")) {
+        if ($this->headerKey && ($firstCharacter === ' ' || $firstCharacter === "\t")) {
             $this->headers[$this->headerKey] .= $line;
 
             return;
         }
 
-        @list($key, $value) = explode(": ", $line, 2);
+        @list($key, $value) = explode(': ', $line, 2);
         if ($key && $value) {
             $this->headerKey                 = strtolower($key);
             $this->headers[$this->headerKey] = $value;
@@ -129,7 +129,7 @@ class MailingListArticleCleaner
     }
 
     /**
-     * Configure the message's encoding from its headers
+     * Configure the message's encoding from its headers.
      */
     protected function configureEncoding()
     {
@@ -144,7 +144,7 @@ class MailingListArticleCleaner
                 $this->boundary     = end($this->boundaries);
             }
 
-            if (preg_match("/([^;]+)(;|\$)/", $this->headers['content-type'], $matches)) {
+            if (preg_match('/([^;]+)(;|$)/', $this->headers['content-type'], $matches)) {
                 $this->mimetype = trim(strtolower($matches[1]));
                 ++$this->mimecount;
             }
@@ -157,7 +157,7 @@ class MailingListArticleCleaner
 
     /**
      * Convert a line to the correct encoding found
-     * in the headers
+     * in the headers.
      *
      * @param string $line
      *
@@ -167,11 +167,11 @@ class MailingListArticleCleaner
     {
         // Convert line based on the encoding we found
         switch ($this->encoding) {
-            case "quoted-printable":
+            case 'quoted-printable':
                 $line = quoted_printable_decode($line);
                 break;
-            case "base64":
-                $line = base64_decode($line);
+            case 'base64':
+                $line = base64_decode($line, true);
                 break;
         }
 
@@ -183,7 +183,7 @@ class MailingListArticleCleaner
         }
 
         // Fix lines that started with a period and got escaped
-        if (substr($line, 0, 2) == "..") {
+        if (substr($line, 0, 2) === '..') {
             $line = substr($line, 1);
         }
 
@@ -191,7 +191,7 @@ class MailingListArticleCleaner
     }
 
     /**
-     * Convert a string to UTF8 in a particular charset
+     * Convert a string to UTF8 in a particular charset.
      *
      * @param string $string
      * @param string $charset

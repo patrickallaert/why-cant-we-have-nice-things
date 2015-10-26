@@ -20,13 +20,11 @@ class InternalsServiceProvider extends ServiceProvider
      * Use the register method to register items with the container via the
      * protected $this->container property or the `getContainer` method
      * from the ContainerAwareTrait.
-     *
-     * @return void
      */
     public function register()
     {
         $this->container->singleton(Internals::class, function () {
-            $cache      = $this->container->get(Repository::class);
+            $cache = $this->container->get(Repository::class);
             $connection = new Connection('news.php.net', 119);
 
             // Create NNTP client

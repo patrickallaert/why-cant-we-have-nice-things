@@ -8,12 +8,12 @@ use Rvdv\Nntp\Response\ResponseInterface;
 class Body extends Command
 {
     /**
-     * @var integer
+     * @var int
      */
     const ARTICLE_RECEIVED = 220;
 
     /**
-     * @var integer
+     * @var int
      */
     const NO_SUCH_ARTICLE = 423;
 
@@ -23,7 +23,7 @@ class Body extends Command
     private $article;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $article The name of the group.
      */

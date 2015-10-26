@@ -14,7 +14,7 @@ trait HasEvents
     }
 
     /**
-     * Register an event
+     * Register an event.
      *
      * @param string $type
      * @param array  $metadata

@@ -80,7 +80,7 @@ class Request extends AbstractModel
     //////////////////////////////////////////////////////////////////////
 
     /**
-     * @param integer $status
+     * @param int $status
      *
      * @return string
      */

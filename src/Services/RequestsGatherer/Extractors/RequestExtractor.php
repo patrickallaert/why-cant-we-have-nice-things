@@ -43,7 +43,7 @@ class RequestExtractor extends AbstractExtractor
     //////////////////////////////////////////////////////////////////////
 
     /**
-     * Get the HTML contents of the RFC
+     * Get the HTML contents of the RFC.
      *
      * @return string
      */
@@ -66,7 +66,7 @@ class RequestExtractor extends AbstractExtractor
 
             $unformatted = htmlentities($code->text());
             $unformatted = '<pre><code class="'.$newLanguage.'">'.$unformatted.'</code></pre>';
-            $contents    = str_replace('<pre class="code '.$language.'">'.$code->html().'</pre>', $unformatted, $contents);
+            $contents = str_replace('<pre class="code '.$language.'">'.$code->html().'</pre>', $unformatted, $contents);
         });
 
         return $contents;

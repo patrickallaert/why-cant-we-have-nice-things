@@ -68,7 +68,7 @@ HTML;
         $informations = $this->getInformationsFromInformationBlock($html);
         $this->assertEquals(['wietse@porcupine.org'], $informations['authors']);
 
-        $html = ' Author: Ryusuke Sekiyama &lt;rsky0711 at gmail . com&gt;, Sebastian Deutsch &lt;sebastian.deutsch at 9elements . com&gt;';
+        $html         = ' Author: Ryusuke Sekiyama &lt;rsky0711 at gmail . com&gt;, Sebastian Deutsch &lt;sebastian.deutsch at 9elements . com&gt;';
         $informations = $this->getInformationsFromInformationBlock($html);
         $this->assertEquals(['rsky0711@gmail.com', 'sebastian.deutsch@9elements.com'], $informations['authors']);
     }
@@ -119,7 +119,7 @@ HTML;
     }
 
     /**
-     * Mock an informations block and get the informations from it
+     * Mock an informations block and get the informations from it.
      *
      * @param string $html
      *

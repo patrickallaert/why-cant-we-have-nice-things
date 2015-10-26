@@ -25,7 +25,7 @@ class RequestsGathererServiceProvider extends ServiceProvider
             return new RequestsGatherer($this->container->get(Repository::class));
         });
 
-        $this->container->add('gatherer', function() {
+        $this->container->add('gatherer', function () {
             return $this->container->get(RequestsGatherer::class);
         });
     }

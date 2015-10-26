@@ -1,10 +1,10 @@
 <?php
 namespace History\Http\Providers;
 
+use History\Http\Controllers\EventsController;
 use History\Http\Controllers\PagesController;
 use History\Http\Controllers\RequestsController;
 use History\Http\Controllers\UsersController;
-use History\Http\Controllers\EventsController;
 use League\Container\ServiceProvider;
 use League\Route\RouteCollection;
 use League\Route\Strategy\UriStrategy;

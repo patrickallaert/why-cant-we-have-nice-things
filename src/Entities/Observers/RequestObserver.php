@@ -1,7 +1,6 @@
 <?php
 namespace History\Entities\Observers;
 
-use DateTime;
 use History\Entities\Models\Request;
 
 class RequestObserver
