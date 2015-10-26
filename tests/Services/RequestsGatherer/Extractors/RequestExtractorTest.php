@@ -14,6 +14,9 @@ class RequestExtractorTest extends TestCase
         $informations = $this->getInformationsFromHtml($html);
         $timezone     = new DateTimeZone('UTC');
 
+        $contents = $informations['contents'];
+        unset($informations['contents']);
+
         $this->assertEquals([
             'name'      => 'Support Class Constant Visibility',
             'status'    => 2,
@@ -39,6 +42,9 @@ class RequestExtractorTest extends TestCase
                 ],
             ],
         ], $informations);
+
+        $this->assertNotContains('<pre class="code php">', $contents);
+        $this->assertContains('<pre><code class="php">', $contents);
     }
 
     public function testCanParseAuthors()
@@ -96,11 +102,11 @@ HTML;
 
     public function testCanParseStatus()
     {
-        $informations = $this->getInformationsFromInformationBlock('Status: Under discussion');
-        $this->assertEquals(2, $informations['status']);
-
         $informations = $this->getInformationsFromInformationBlock('Status: in draft');
         $this->assertEquals(1, $informations['status']);
+
+        $informations = $this->getInformationsFromInformationBlock('Status: Under discussion');
+        $this->assertEquals(2, $informations['status']);
 
         $informations = $this->getInformationsFromInformationBlock('Status: In voting phase');
         $this->assertEquals(3, $informations['status']);
@@ -121,7 +127,7 @@ HTML;
      */
     protected function getInformationsFromInformationBlock($html)
     {
-        return $this->getInformationsFromHtml('<div class="page"><ul class="level1"><li>'.$html.'</li></ul></div>');
+        return $this->getInformationsFromHtml('<div class="page group"><ul class="level1"><li>'.$html.'</li></ul></div>');
     }
 
     /**

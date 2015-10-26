@@ -49,7 +49,12 @@ class RequestExtractor extends AbstractExtractor
      */
     protected function getContents()
     {
-        $contents = $this->crawler->filter('.page.group')->html();
+        $contents = $this->crawler->filter('.page.group');
+        if (!$contents->count()) {
+            return;
+        }
+
+        $contents = $contents->html();
 
         // I'll have my own syntax highlighting, WITH BLACKJACK AND HOOKERS
         $this->crawler->filter('pre')->each(function ($code) use (&$contents) {
@@ -112,6 +117,7 @@ class RequestExtractor extends AbstractExtractor
     {
         $status   = $this->findInformation($informations, '/Status/');
         $statuses = [
+            'declined',
             'draft',
             'discussion',
             'voting',
@@ -120,7 +126,7 @@ class RequestExtractor extends AbstractExtractor
 
         // Look for a match in the status
         foreach ($statuses as $key => $matcher) {
-            if (preg_match('/'.$matcher.'/i', $status)) {
+            if (preg_match('/('.$matcher.')/i', $status)) {
                 return $key;
             }
         }

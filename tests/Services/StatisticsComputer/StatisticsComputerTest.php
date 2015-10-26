@@ -113,7 +113,7 @@ class StatisticsComputerTest extends TestCase
             (new Vote(['choice' => 2]))->setAttribute('question', $question),
         ]);
         $user->requests = new Collection([
-            new Request(['status' => 2]),
+            new Request(['status' => 4]),
             new Request(['status' => 0]),
         ]);
 

@@ -21,6 +21,7 @@ class RequestSynchronizerTest extends TestCase
         $this->assertEquals([
             'link'       => 'google.com',
             'name'       => 'foobar',
+            'contents'   => '',
             'condition'  => '2/3',
             'status'     => 2,
             'created_at' => '2015-01-01 00:00:00',
