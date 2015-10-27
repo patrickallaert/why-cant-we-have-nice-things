@@ -1,7 +1,7 @@
 <figure class="user">
     <img class="img-circle" src="{{ gravatar.get(user.email) }}" alt="">
     <h2>
-        {{ user.display_name }}<br>
+        <a href="/users/{{ user.id }}">{{ user.display_name }}</a><br>
         <small>{{ user.full_name }}</small>
     </h2>
 </figure>
