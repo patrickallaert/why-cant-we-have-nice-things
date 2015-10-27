@@ -37,6 +37,7 @@ class IdentityExtractor
         $emails = preg_replace('/[<>\(\)]/', '', $this->string);
         $emails = preg_replace('/([ #]at[# ])/', '@', $emails);
         $emails = str_replace(' . ', '.', $emails);
+        $emails = str_replace('(original)', '', $emails);
 
         $names = $this->extractEmails($emails);
         $this->extractNames($names);
