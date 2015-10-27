@@ -7,6 +7,7 @@ use History\Http\Controllers\RequestsController;
 use History\Http\Controllers\UsersController;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Route\RouteCollection;
+use League\Route\Strategy\ParamStrategy;
 use Symfony\Component\HttpFoundation\Request;
 
 class RoutingServiceProvider extends AbstractServiceProvider

@@ -1,7 +1,6 @@
 <?php
 namespace History\Http\Controllers;
 
-use Symfony\Component\HttpFoundation\Request;
 use Twig_Environment;
 
 abstract class AbstractController
@@ -12,17 +11,10 @@ abstract class AbstractController
     protected $views;
 
     /**
-     * @var Request
-     */
-    protected $request;
-
-    /**
      * @param Twig_Environment $views
-     * @param Request          $request
      */
-    public function __construct(Twig_Environment $views, Request $request)
+    public function __construct(Twig_Environment $views)
     {
-        $this->views   = $views;
-        $this->request = $request;
+        $this->views = $views;
     }
 }

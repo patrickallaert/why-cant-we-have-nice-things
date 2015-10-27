@@ -1,8 +1,9 @@
 <?php
 namespace History\Http\Controllers;
 
-use History\Entities\Models\Request;
 use History\Entities\Models\User;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class UsersController extends AbstractController
 {
@@ -24,14 +25,16 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @param string $user
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface      $response
+     * @param array                  $parameters
      *
      * @return string
      */
-    public function show($user)
+    public function show(ServerRequestInterface $request, ResponseInterface $response, $parameters)
     {
         $user = User::with('votes.question.request', 'requests')
-                    ->findOrFail($user);
+                    ->findOrFail($parameters['user']);
 
         return $this->views->render('users/show.twig', [
             'user' => $user,

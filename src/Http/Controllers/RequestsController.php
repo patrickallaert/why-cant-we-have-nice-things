@@ -2,6 +2,8 @@
 namespace History\Http\Controllers;
 
 use History\Entities\Models\Request;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class RequestsController extends AbstractController
 {
@@ -29,13 +31,15 @@ class RequestsController extends AbstractController
     }
 
     /**
-     * @param int $request
+     * @param ServerRequestInterface $serverRequest
+     * @param ResponseInterface      $response
+     * @param array                  $parameters
      *
      * @return string
      */
-    public function show($request)
+    public function show(ServerRequestInterface $serverRequest, ResponseInterface $response, $parameters)
     {
-        $request = Request::with('questions.votes.user')->findOrFail($request);
+        $request = Request::with('questions.votes.user')->findOrFail($parameters['request']);
 
         return $this->views->render('requests/show.twig', [
             'request' => $request,
