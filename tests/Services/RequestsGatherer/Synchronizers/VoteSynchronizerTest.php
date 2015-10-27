@@ -14,14 +14,14 @@ class VoteSynchronizerTest extends TestCase
         $user     = new User();
         $user->id = 1;
 
-        $vote     = new Question();
-        $vote->id = 1;
+        $question     = new Question();
+        $question->id = 1;
 
         $time = new DateTime();
         $sync = new VoteSynchronizer([
             'choice'     => 2,
             'created_at' => $time,
-        ], $vote, $user);
+        ], $question, $user);
 
         $vote = $sync->synchronize();
         $this->assertInstanceOf(Vote::class, $vote);
@@ -32,5 +32,30 @@ class VoteSynchronizerTest extends TestCase
             'created_at'  => $time->format('Y-m-d H:i:s'),
             'updated_at'  => $time->format('Y-m-d H:i:s'),
         ], $vote->toArray());
+    }
+
+    public function testDoesntOverwriteExistingVotes()
+    {
+        $existing              = new Vote;
+        $existing->user_id     = 1;
+        $existing->question_id = 1;
+        $existing->choice      = 1;
+        $existing->save();
+
+        $user     = new User();
+        $user->id = 1;
+
+        $question     = new Question();
+        $question->id = 1;
+
+        $time = new DateTime();
+        $sync = new VoteSynchronizer([
+            'choice'     => 2,
+            'created_at' => $time,
+        ], $question, $user);
+
+        $vote = $sync->persist();
+        $this->assertEquals($vote->id, $existing->id);
+        $this->assertEquals(2, $vote->choice);
     }
 }

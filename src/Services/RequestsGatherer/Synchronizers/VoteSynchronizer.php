@@ -36,8 +36,12 @@ class VoteSynchronizer extends AbstractSynchronizer
      */
     public function synchronize()
     {
-        $vote = new Vote(['choice' => $this->get('choice')]);
+        $vote = Vote::firstOrNew([
+            'question_id' => $this->question->id,
+            'user_id'     => $this->user->id,
+        ]);
 
+        $vote->choice      = $this->get('choice');
         $vote->question_id = $this->question->id;
         $vote->user_id     = $this->user->id;
         $vote->created_at  = $this->get('created_at');

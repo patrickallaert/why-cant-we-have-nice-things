@@ -2,10 +2,14 @@
 namespace History\Entities\Models;
 
 use History\Collection;
+use History\Entities\Traits\Fakable;
 use Illuminate\Database\Eloquent\Model;
+use League\FactoryMuffin\Facade;
 
 abstract class AbstractModel extends Model
 {
+    use Fakable;
+
     /**
      * @param array $models
      *
