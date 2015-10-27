@@ -23,7 +23,7 @@ class RequestExtractor extends AbstractExtractor
         $authors            = $this->getAuthors($informations);
 
         // Extract questions
-        $questions = $this->crawler->filterXpath('//table[@class="inline"]')->each(function ($question) {
+        $questions = $this->crawler->filterXpath('//form/table[@class="inline"]')->each(function ($question) {
             return (new QuestionExtractor($question))->extract();
         });
 
@@ -61,12 +61,12 @@ class RequestExtractor extends AbstractExtractor
 
         // I'll have my own syntax highlighting, WITH BLACKJACK AND HOOKERS
         $this->crawler->filterXpath('//pre')->each(function ($code) use (&$contents) {
-            $language = str_replace('code ', '', $code->attr('class'));
+            $language    = str_replace('code ', '', $code->attr('class'));
             $newLanguage = $language === 'c' ? 'cpp' : $language;
 
             $unformatted = htmlentities($code->text());
             $unformatted = '<pre><code class="'.$newLanguage.'">'.$unformatted.'</code></pre>';
-            $contents = str_replace('<pre class="code '.$language.'">'.$code->html().'</pre>', $unformatted, $contents);
+            $contents    = str_replace('<pre class="code '.$language.'">'.$code->html().'</pre>', $unformatted, $contents);
         });
 
         return $contents;
@@ -80,13 +80,12 @@ class RequestExtractor extends AbstractExtractor
     protected function getInformations()
     {
         $informations = [];
-        $this->crawler->filterXpath('//div[@class="page group"]/div[@class="level1"]/ul/li')->each(function ($information) use (&$informations) {
-            $text = $information->text();
-            $text = str_replace("\n", ' ', $text);
-
+        $lines        = $this->crawler->filterXpath('//div[@class="page group"]/div[@class="level1"]/ul/li');
+        foreach ($lines as $line) {
+            $text = str_replace("\n", ' ', $line->nodeValue);
             preg_match('/([^:]+) *: *(.+)/mi', $text, $matches);
             if (count($matches) < 3) {
-                return;
+                continue;
             }
 
             list(, $label, $value) = $matches;
@@ -94,7 +93,7 @@ class RequestExtractor extends AbstractExtractor
             $value = $this->cleanWhitespace($value);
 
             $informations[$label] = $value;
-        });
+        }
 
         return $informations;
     }
@@ -121,23 +120,42 @@ class RequestExtractor extends AbstractExtractor
      */
     protected function getStatus(array $informations)
     {
-        $status   = $this->findInformation($informations, '/Status/');
-        $statuses = [
-            'declined',
-            'draft',
-            'discussion',
-            'voting',
-            'accepted|implemented',
+        $statusText = $this->findInformation($informations, '/Status/');
+        $statuses   = [
+            0 => 'declined',
+            1 => 'draft',
+            2 => 'discussion',
+            4 => 'accepted|implemented',
+            3 => 'voting',
         ];
 
         // Look for a match in the status
+        $status = 0;
         foreach ($statuses as $key => $matcher) {
-            if (preg_match('/('.$matcher.')/i', $status)) {
-                return $key;
+            if (preg_match('/('.$matcher.')/i', $statusText)) {
+                $status = $key;
+                break;
             }
         }
 
-        return 0;
+        // If all polls are closed, then we're not voting
+        // anymore and can consider implemented/declined
+        if ($this->allPollsClosed() && $status === 3) {
+            $status = 4;
+        }
+
+        return $status;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function allPollsClosed()
+    {
+        $polls  = $this->crawler->filterXPath('//form/table[@class="inline"]')->count();
+        $closed = $this->crawler->filterXPath('//form/table/tbody/tr/td[@colspan]')->count();
+
+        return $polls && $polls === $closed;
     }
 
     /**

@@ -52,7 +52,7 @@ class RequestExtractorTest extends TestCase
 
     public function testCanParseAuthors()
     {
-        $html = <<<'HTML'
+        $html         = <<<'HTML'
         Author:
 Foo Bar
 <a>foo@bar.com</a>
@@ -67,7 +67,7 @@ HTML;
             ['full_name' => 'Baz Qux', 'email' => 'baz@qux.net'],
         ], $informations['authors']);
 
-        $html = <<<'HTML'
+        $html         = <<<'HTML'
 <strong>Author:</strong> <a href="http://www.porcupine.org/wietse/" class="urlextern" title="http://www.porcupine.org/wietse/" rel="nofollow">Wietse Venema (wietse@porcupine.org)</a> <br>
  IBM T.J. Watson Research Center <br>
  Hawthorne, NY, USA
@@ -134,9 +134,61 @@ HTML;
         $informations = $this->getInformationsFromInformationBlock('Status: Implemented (in PHP 7.0)');
         $this->assertEquals(4, $informations['status']);
 
+        $informations = $this->getInformationsFromInformationBlock('Status: accepted (see voting results)');
+        $this->assertEquals(4, $informations['status']);
+
         $informations = $this->getInformationsFromInformationBlock('Status: accepted');
         $this->assertEquals(4, $informations['status']);
     }
+
+    public function testIgnoresStatusIfAllPollsAreClosed()
+    {
+        $html         = <<<'HTML'
+<div class="page group">
+    <div class="level1"><ul><li>Status: i has voting</li></ul></div>
+
+    <form action="">
+        <table class="inline">
+            <tbody><tr><td colspan="8">POOL IS CLOSED</td></tr></tbody>
+        </table>
+    </form>
+
+    <form><table class="inline"></table></form>
+</div>
+HTML;
+        $informations = $this->getInformationsFromHtml($html);
+
+        $this->assertEquals(3, $informations['status']);
+
+        $html         = <<<'HTML'
+<div class="page group">
+    <div class="level1"><ul><li>Status: i has voting</li></ul></div>
+
+    <table class="inline">
+        <tbody><tr>Some unrelated table</tr></tbody>
+    </table>
+
+    <form>
+        <table class="inline">
+            <tbody><tr><td colspan="8">POOL IS CLOSED</td></tr></tbody>
+        </table>
+    </form>
+
+    <form>
+        <table class="inline">
+            <tbody><tr><td colspan="8">POOL IS CLOSED</td></tr></tbody>
+        </table>
+    </form>
+</div>
+HTML;
+        $informations = $this->getInformationsFromHtml($html);
+
+        $this->assertEquals(4, $informations['status']);
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    ////////////////////////////// HELPERS ///////////////////////////////
+    //////////////////////////////////////////////////////////////////////
 
     /**
      * Mock an informations block and get the informations from it.
