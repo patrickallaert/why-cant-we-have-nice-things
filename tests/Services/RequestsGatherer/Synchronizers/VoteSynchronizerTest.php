@@ -36,17 +36,13 @@ class VoteSynchronizerTest extends TestCase
 
     public function testDoesntOverwriteExistingVotes()
     {
-        $existing              = new Vote;
-        $existing->user_id     = 1;
-        $existing->question_id = 1;
-        $existing->choice      = 1;
-        $existing->save();
+        $existing = Vote::seed();
 
         $user     = new User();
-        $user->id = 1;
+        $user->id = $existing->user_id;
 
         $question     = new Question();
-        $question->id = 1;
+        $question->id = $existing->question_id;
 
         $time = new DateTime();
         $sync = new VoteSynchronizer([

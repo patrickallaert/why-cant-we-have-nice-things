@@ -10,9 +10,9 @@ trait Fakable
      *
      * @return static
      */
-    public static function fake()
+    public static function fake(...$args)
     {
-        return Facade::instance(static::class);
+        return Facade::instance(static::class, ...$args);
     }
 
     /**
@@ -20,8 +20,8 @@ trait Fakable
      *
      * @return static
      */
-    public static function seed()
+    public static function seed(...$args)
     {
-        return Facade::create(static::class);
+        return Facade::create(static::class, ...$args);
     }
 }

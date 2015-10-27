@@ -8,7 +8,7 @@ class HasEventsTest extends TestCase
 {
     public function testCanFireEvents()
     {
-        $vote = Vote::create(['question_id' => 1]);
+        $vote = Vote::seed();
         $vote->registerEvent('vote_up');
 
         $events = $vote->events->toArray();
