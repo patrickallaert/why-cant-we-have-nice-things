@@ -29,6 +29,6 @@ class CreateVotesTable extends AbstractMigration
              ->addColumn('created_at', 'datetime')
              ->addColumn('updated_at', 'datetime')
              ->addForeignKey('question_id', 'questions', 'id', ['delete' => 'CASCADE'])
-             ->save();
+             ->create();
     }
 }

@@ -27,6 +27,6 @@ class CreateRequestUserTable extends AbstractMigration
              ->addColumn('user_id', 'integer')
              ->addForeignKey('request_id', 'requests', 'id', ['delete' => 'CASCADE'])
              ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE'])
-             ->save();
+             ->create();
     }
 }

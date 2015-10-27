@@ -33,6 +33,6 @@ class CreateCommentsTable extends AbstractMigration
              ->addColumn('updated_at', 'datetime')
              ->addForeignKey('request_id', 'requests', 'id', ['delete' => 'CASCADE'])
              ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE'])
-             ->save();
+             ->create();
     }
 }

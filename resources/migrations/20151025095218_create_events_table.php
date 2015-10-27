@@ -30,6 +30,6 @@ class CreateEventsTable extends AbstractMigration
              ->addColumn('metadata', 'text')
              ->addColumn('created_at', 'datetime')
              ->addColumn('updated_at', 'datetime')
-             ->save();
+             ->create();
     }
 }

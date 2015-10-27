@@ -31,6 +31,6 @@ class CreateQuestionsTable extends AbstractMigration
              ->addColumn('created_at', 'datetime')
              ->addColumn('updated_at', 'datetime')
              ->addForeignKey('request_id', 'requests', 'id', ['delete' => 'CASCADE'])
-             ->save();
+             ->create();
     }
 }

@@ -31,6 +31,6 @@ class CreateRequestsTable extends AbstractMigration
              ->addColumn('status', 'integer')
              ->addColumn('created_at', 'datetime')
              ->addColumn('updated_at', 'datetime')
-             ->save();
+             ->create();
     }
 }
