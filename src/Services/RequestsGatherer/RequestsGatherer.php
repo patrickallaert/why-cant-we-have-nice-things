@@ -119,7 +119,6 @@ class RequestsGatherer
         foreach ($questions as $informations) {
             $question = new QuestionSynchronizer($informations, $request);
             $question = $question->persist();
-            $question->votes()->delete();
 
             // Sanitize vote structure
             $votes = $informations['votes'];
