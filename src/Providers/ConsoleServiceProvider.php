@@ -4,16 +4,10 @@ namespace History\Providers;
 use History\Console\Commands\SyncCommand;
 use History\Console\Commands\SyncRequestsCommand;
 use History\Console\Commands\SyncStatsCommand;
-use History\Console\Commands\TestCommand;
 use History\Console\Commands\Tinker;
 use History\Console\Commands\TinkerCommand;
-use Illuminate\Contracts\Cache\Repository;
-use Interop\Container\ContainerInterface;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Silly\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ConsoleServiceProvider extends AbstractServiceProvider
 {

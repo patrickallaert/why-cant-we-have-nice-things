@@ -2,7 +2,9 @@
 namespace History\Providers;
 
 use History\Entities\Models\Comment;
+use History\Entities\Models\Question;
 use History\Entities\Models\Request;
+use History\Entities\Models\User;
 use History\Entities\Models\Vote;
 use History\Entities\Observers\CommentObserver;
 use History\Entities\Observers\RequestObserver;
@@ -11,6 +13,7 @@ use Illuminate\Container\Container;
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Events\Dispatcher;
 use League\Container\ServiceProvider\AbstractServiceProvider;
+use League\FactoryMuffin\Facade;
 
 class DatabaseServiceProvider extends AbstractServiceProvider
 {
@@ -54,9 +57,31 @@ class DatabaseServiceProvider extends AbstractServiceProvider
             // Enable query log in local
             if ($this->container->get('debug')) {
                 $capsule->connection()->enableQueryLog();
+
+                // Seed database if needed
+                $this->seedDatabase();
             }
 
             return $capsule;
         });
+    }
+
+    /**
+     * Seed the database with dummy data.
+     */
+    protected function seedDatabase()
+    {
+        // Load factories if they aren't already
+        Facade::loadFactories($this->container->get('paths.factories'));
+
+        if (Request::count()) {
+            return;
+        }
+
+        User::seed(50);
+        $requests = Request::seed(50);
+        Question::seed(count($requests) * 3);
+        Vote::seed(200);
+        Comment::seed(200);
     }
 }

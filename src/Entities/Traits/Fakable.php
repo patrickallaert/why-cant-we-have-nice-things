@@ -6,7 +6,7 @@ use League\FactoryMuffin\Facade;
 trait Fakable
 {
     /**
-     * Get a fake instance of the model
+     * Get a fake instance of the model.
      *
      * @return static
      */
@@ -16,12 +16,16 @@ trait Fakable
     }
 
     /**
-     * Seed a fake instance of the model
+     * Seed a fake instance of the model.
      *
      * @return static
      */
     public static function seed(...$args)
     {
+        if ($args && !is_array($args[0])) {
+            return Facade::seed($args[0], static::class);
+        }
+
         return Facade::create(static::class, ...$args);
     }
 }

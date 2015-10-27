@@ -2,7 +2,6 @@
 namespace History\Console\Commands;
 
 use History\Services\Internals\InternalsSynchronizer;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class SyncInternalsCommand extends AbstractCommand
 {
@@ -20,7 +19,7 @@ class SyncInternalsCommand extends AbstractCommand
     }
 
     /**
-     * Run the command
+     * Run the command.
      */
     public function run()
     {

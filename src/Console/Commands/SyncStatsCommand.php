@@ -22,7 +22,7 @@ class SyncStatsCommand extends AbstractCommand
     }
 
     /**
-     * Run the command
+     * Run the command.
      */
     public function run()
     {

@@ -45,9 +45,9 @@ class SyncCommand
     }
 
     /**
-     * Run the command
+     * Run the command.
      *
-     * @param boolean         $scratch
+     * @param bool            $scratch
      * @param OutputInterface $output
      *
      * @throws Exception

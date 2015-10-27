@@ -14,12 +14,12 @@ abstract class AbstractCommand
     protected $output;
 
     /**
-     * Run the command
+     * Run the command.
      */
     abstract protected function run();
 
     /**
-     * Run the command
+     * Run the command.
      *
      * @param OutputInterface $output
      */
@@ -38,7 +38,7 @@ abstract class AbstractCommand
     }
 
     /**
-     * Show progress as we loop through an iterable
+     * Show progress as we loop through an iterable.
      *
      * @param array    $entries
      * @param callable $callback

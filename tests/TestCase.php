@@ -2,12 +2,9 @@
 namespace History;
 
 use Carbon\Carbon;
-use History\Entities\Models\User;
-use History\Entities\Models\Vote;
 use Illuminate\Database\Capsule\Manager;
 use League\Container\Container;
 use League\Container\ContainerInterface;
-use League\FactoryMuffin\Facade;
 use Mockery;
 use PHPUnit_Framework_TestCase;
 
@@ -27,9 +24,6 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 
         // Mock current time
         Carbon::setTestNow(new Carbon('2011-01-01 01:01:01'));
-
-        // Load FM factories
-        Facade::loadFactories(__DIR__.'/../resources/factories');
 
         Manager::beginTransaction();
     }

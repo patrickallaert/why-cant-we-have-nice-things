@@ -2,7 +2,6 @@
 namespace History\Console\Commands;
 
 use History\Services\RequestsGatherer\RequestsGatherer;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class SyncRequestsCommand extends AbstractCommand
 {
@@ -22,7 +21,7 @@ class SyncRequestsCommand extends AbstractCommand
     }
 
     /**
-     * Run the command
+     * Run the command.
      */
     public function run()
     {

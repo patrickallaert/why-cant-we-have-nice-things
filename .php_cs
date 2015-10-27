@@ -3,7 +3,12 @@ use Symfony\CS\Config\Config;
 use Symfony\CS\Finder\DefaultFinder;
 use Symfony\CS\FixerInterface;
 
-$finder = DefaultFinder::create()->in(['src', 'tests']);
+$finder = DefaultFinder::create()->in([
+    'resources/migrations',
+    'resources/factories',
+    'src',
+    'tests',
+]);
 
 return Config::create()
              ->level(FixerInterface::SYMFONY_LEVEL)

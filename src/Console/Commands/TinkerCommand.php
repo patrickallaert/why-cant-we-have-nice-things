@@ -29,7 +29,7 @@ class TinkerCommand
     }
 
     /**
-     * Run the command
+     * Run the command.
      */
     public function __invoke()
     {
