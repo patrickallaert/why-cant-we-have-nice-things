@@ -35,8 +35,9 @@ class IdentityExtractor
     {
         // Workaround some anti-bot measures
         $emails = preg_replace('/[<>\(\)]/', '', $this->string);
-        $emails = preg_replace('/([ #]at[# ])/', '@', $emails);
         $emails = str_replace(' . ', '.', $emails);
+        $emails = preg_replace('/([. #]at[.# ])/', '@', $emails);
+        $emails = preg_replace('/([. #]dot[.# ])/', '.', $emails);
         $emails = str_replace('(original)', '', $emails);
 
         $names = $this->extractEmails($emails);
@@ -68,12 +69,12 @@ class IdentityExtractor
     {
         // Try to split off emails
         $names  = $emails;
-        $emails = preg_split('/[\s,]+/', $emails);
+        $emails = preg_split('/[\s,\/]+/', $emails);
         foreach ($emails as $key => $email) {
 
             // Check if email is valid, if not
             // throw it away
-            $email = trim($email);
+            $email = trim($email, ' /');
             $email = filter_var($email, FILTER_VALIDATE_EMAIL) ? $email : null;
             $names = str_replace($email, '', $names);
 
@@ -91,11 +92,15 @@ class IdentityExtractor
         $names = preg_split('/(,|  |\n)/', $names);
         $names = array_filter($names);
         foreach ($names as $key => $name) {
-            $name = trim($name);
+            $name = trim($name, ' /');
 
-            // Special case for that one guy who
-            // put his whole resume as name
-            if (strpos($name, 'Watson Research') || strlen($name) <= 3) {
+            // Special cases for that one guy who
+            // put his whole resume as name and other
+            // marvelous joys
+            if (
+                strpos($name, 'Watson Research') ||
+                strlen($name) <= 3 ||
+                strpos($name, 'http') !== false) {
                 continue;
             }
 

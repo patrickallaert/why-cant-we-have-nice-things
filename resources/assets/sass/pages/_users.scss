@@ -1,0 +1,15 @@
+.page-users {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .table-responsive {
+        flex: 1;
+        margin-right: 2rem;
+
+        @media (max-width: 1000px) {
+            flex: initial;
+            width: 100%;
+        }
+    }
+}

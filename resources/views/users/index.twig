@@ -4,36 +4,66 @@
 {% block content %}
     {% include '_partials/search.twig' %}
 
-    <div class="table-responsive">
-        <table class="table table-striped table-condensed table-hover">
-            <thead>
-            <tr>
-                <th>User</th>
-                <th class="text-right">Created RFCs</th>
-                <th class="text-right"><abbr title="Percentage of created RFCs that got approved">Success %</abbr></th>
-                <th class="text-right">Voted YES</th>
-                <th class="text-right">Voted NO</th>
-                <th class="text-right"># of votes</th>
-                <th class="text-right"><abbr title="How many RFCs the user has approved of">Approval %</abbr></th>
-                <th class="text-right"><abbr title="How many RFCs an user has approved of that other users also approved of in their majority">Hivemind %</abbr></th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for user in users %}
+    <section class="page-users">
+        <div class="table-responsive">
+            <table class="table table-striped table-condensed table-hover">
+                <thead>
                 <tr>
-                    <td>
-                        <a href="/users/{{ user.id }}">{{ user.display_name }}</a>
-                    </td>
-                    <td class="text-right">{{ user.requests.count() }}</td>
-                    <td class="text-right">{{ percentage(user.success) }}</td>
-                    <td class="text-right">{{ user.yes_votes }}</td>
-                    <td class="text-right">{{ user.no_votes }}</td>
-                    <td class="text-right">{{ user.total_votes }}</td>
-                    <td class="text-right">{{ percentage(user.approval) }}</td>
-                    <td class="text-right">{{ percentage(user.hivemind) }}</td>
+                    <th class="text-center" colspan="8">RFC Voters</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                <tr>
+                    <th>User</th>
+                    <th class="text-right">Voted YES</th>
+                    <th class="text-right">Voted NO</th>
+                    <th class="text-right"># of votes</th>
+                    <th class="text-right"><abbr title="How many RFCs the user has approved of">Approval %</abbr></th>
+                    <th class="text-right">
+                        <abbr title="How many RFCs an user has approved of that other users also approved of in their majority">Hivemind %</abbr>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in voters %}
+                    <tr>
+                        <td>
+                            <a href="/users/{{ user.id }}">{{ user.display_name }}</a>
+                        </td>
+                        <td class="text-right">{{ user.yes_votes }}</td>
+                        <td class="text-right">{{ user.no_votes }}</td>
+                        <td class="text-right">{{ user.total_votes }}</td>
+                        <td class="text-right">{{ percentage(user.approval) }}</td>
+                        <td class="text-right">{{ percentage(user.hivemind) }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-condensed table-hover">
+                <thead>
+                <tr>
+                    <th class="text-center" colspan="8">RFC Creators</th>
+                </tr>
+                <tr>
+                    <th>User</th>
+                    <th class="text-right">Created RFCs</th>
+                    <th class="text-right"><abbr title="Percentage of created RFCs that got approved">Success %</abbr>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in creators %}
+                    <tr>
+                        <td>
+                            <a href="/users/{{ user.id }}">{{ user.display_name }}</a>
+                        </td>
+                        <td class="text-right">{{ user.requests.count() }}</td>
+                        <td class="text-right">{{ percentage(user.success) }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
 {% endblock %}

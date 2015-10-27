@@ -31,12 +31,15 @@ export default class TablesHandler {
      * @param {Event} event
      */
     search(event) {
-        const rows = this.getRowsArray(document.querySelector('tbody'));
-        rows.forEach(row => {
-            const text = row.textContent || row.innerText;
-            const matches = text.match(new RegExp(event.target.value, 'i'));
-            row.classList.toggle('filtered', !matches);
-        });
+        const tables = document.querySelectorAll('tbody');
+        for (let i = 0; i <= tables.length; i++) {
+            const rows = this.getRowsArray(tables[i]);
+            rows.forEach(row => {
+                const text = row.textContent || row.innerText;
+                const matches = text.match(new RegExp(event.target.value, 'i'));
+                row.classList.toggle('filtered', !matches);
+            });
+        }
     }
 
     //////////////////////////////////////////////////////////////////////

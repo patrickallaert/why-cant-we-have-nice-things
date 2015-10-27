@@ -12,15 +12,12 @@ class UsersController extends AbstractController
      */
     public function index()
     {
-        $users = User::with('requests')->get();
-        $users = $users->filter(function (User $user) {
-            return $user->total_votes > 5 || $user->requests->count();
-        })->sortBy(function (User $user) {
-            return $user->hivemind;
-        });
+        $creators = User::has('requests')->orderBy('success', 'DESC')->get();
+        $voters   = User::has('votes', '>', 5)->with('requests')->orderBy('hivemind', 'ASC')->get();
 
         return $this->views->render('users/index.twig', [
-            'users' => $users,
+            'creators' => $creators,
+            'voters'   => $voters,
         ]);
     }
 
