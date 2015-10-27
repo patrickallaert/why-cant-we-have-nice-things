@@ -13,13 +13,13 @@ class VoteExtractor extends AbstractExtractor
      */
     public function extract()
     {
-        $user = $this->extractText('td.rightalign a');
+        $user = $this->extractText('td[@class="rightalign"]/a');
 
         // Get which choice the user picked
         $voted = 0;
         $time  = new DateTime();
-        $this->crawler->filter('td')->each(function ($choice, $key) use (&$voted, &$time) {
-            $image = $choice->filter('img');
+        $this->crawler->filterXpath('//td')->each(function ($choice, $key) use (&$voted, &$time) {
+            $image = $choice->filterXpath('//img');
 
             if ($image->count()) {
                 $timestamp = $image->attr('title');

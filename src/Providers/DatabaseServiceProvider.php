@@ -14,6 +14,7 @@ use Illuminate\Database\Capsule\Manager;
 use Illuminate\Events\Dispatcher;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\FactoryMuffin\Facade;
+use PDO;
 
 class DatabaseServiceProvider extends AbstractServiceProvider
 {

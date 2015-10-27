@@ -1,6 +1,8 @@
 <?php
 namespace History\Services\RequestsGatherer;
 
+use History\Entities\Models\AbstractModel;
+
 interface SynchronizerInterface
 {
     /**

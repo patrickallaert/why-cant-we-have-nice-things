@@ -4,6 +4,7 @@ namespace History\Services\RequestsGatherer;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
 use History\Services\RequestsGatherer\Extractors\RequestExtractor;
+use History\Services\RequestsGatherer\Extractors\RequestsExtractor;
 use History\Services\RequestsGatherer\Extractors\UserExtractor;
 use History\Services\RequestsGatherer\Synchronizers\QuestionSynchronizer;
 use History\Services\RequestsGatherer\Synchronizers\RequestSynchronizer;
@@ -59,13 +60,13 @@ class RequestsGatherer
     public function createRequests()
     {
         $crawler  = $this->getPageCrawler(static::DOMAIN.'/rfc');
-        $requests = $crawler->filter('li.level1 a.wikilink1');
+        $requests = (new RequestsExtractor($crawler))->extract();
 
-        $progress = new ProgressBar($this->output, $requests->count());
-        $requests->each(function ($request) use ($progress) {
-            $this->createRequest(static::DOMAIN.$request->attr('href'));
+        $progress = new ProgressBar($this->output, count($requests));
+        foreach ($requests as $request) {
+            $this->createRequest(static::DOMAIN.$request);
             $progress->advance();
-        });
+        }
 
         $progress->finish();
     }
@@ -139,8 +140,15 @@ class RequestsGatherer
      */
     protected function createUser($username)
     {
-        $crawler = $this->getPageCrawler('http://people.php.net/'.$username);
+        // If we already have an user with that username and
+        // all his/her infos are filled in, just return it
+        $existing = User::where('name', $username)->first();
+        if ($existing && $existing->full_name && $existing->email) {
+            return $existing;
+        }
 
+        // Else find his informations and extract them
+        $crawler      = $this->getPageCrawler('http://people.php.net/'.$username);
         $extractor    = new UserExtractor($crawler);
         $synchronizer = new UserSynchronizer($extractor->extract());
 

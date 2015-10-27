@@ -19,7 +19,6 @@ class Question extends AbstractModel
 
     /**
      * @codeCoverageIgnore
-     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function request()
@@ -29,7 +28,6 @@ class Question extends AbstractModel
 
     /**
      * @codeCoverageIgnore
-     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function votes()
@@ -48,9 +46,10 @@ class Question extends AbstractModel
      */
     public function getMajorityChoiceAttribute()
     {
-        $majority = $this->votes->groupByCounts('choice')->sort();
-        $majority = $majority->keys()->last();
+        $choices = $this->votes->lists('choice')->all();
+        $choices = array_count_values($choices);
+        arsort($choices);
 
-        return $majority;
+        return head(array_keys($choices));
     }
 }

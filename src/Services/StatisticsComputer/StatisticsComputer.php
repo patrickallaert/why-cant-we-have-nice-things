@@ -121,13 +121,13 @@ class StatisticsComputer
         }
 
         // Did the user pick the majority's choice
-        $hivemind = [];
+        $hivemind = 0;
         foreach ($user->votes as $vote) {
-            $hivemind[] = $vote->question->majority_choice === $vote->choice;
+            $hivemind += (int) $vote->question->getMajorityChoiceAttribute() === $vote->choice;
         }
 
         // Compute number of correct choices over total questions
-        $hivemind = count(array_filter($hivemind)) / count($hivemind);
+        $hivemind = $hivemind / $user->votes->count();
 
         return $hivemind;
     }

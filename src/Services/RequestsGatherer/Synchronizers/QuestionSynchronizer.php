@@ -29,9 +29,12 @@ class QuestionSynchronizer extends AbstractSynchronizer
      */
     public function synchronize()
     {
-        $question = Question::firstOrNew(['name' => $this->get('name')]);
+        $question = Question::firstOrNew([
+            'name'       => $this->get('name'),
+            'choices'    => $this->get('choices'),
+            'request_id' => $this->request->id,
+        ]);
 
-        $question->choices    = $this->get('choices');
         $question->request_id = $this->request->id;
 
         return $question;

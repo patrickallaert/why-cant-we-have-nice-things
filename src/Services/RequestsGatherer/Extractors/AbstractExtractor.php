@@ -30,7 +30,7 @@ abstract class AbstractExtractor implements ExtractorInterface
     {
         $crawler = $crawler ?: $this->crawler;
 
-        $text = $crawler->filter($selector);
+        $text = $crawler->filterXPath('//'.$selector);
         $text = $text->count() ? $text->text() : '';
         $text = $this->cleanWhitespace($text);
 

@@ -18,8 +18,8 @@ class HasEventsTest extends TestCase
             'eventable_id'   => $vote->id,
             'eventable_type' => 'History\\Entities\\Models\\Vote',
             'metadata'       => [],
-            'created_at'     => '2011-01-01 01:01:01',
-            'updated_at'     => '2011-01-01 01:01:01',
+            'created_at'     => $events[1]['created_at'],
+            'updated_at'     => $events[1]['updated_at'],
         ], $events[1]);
     }
 }

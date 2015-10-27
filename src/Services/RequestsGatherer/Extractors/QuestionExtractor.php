@@ -11,14 +11,14 @@ class QuestionExtractor extends AbstractExtractor
     public function extract()
     {
         // Extract Question informations
-        $name    = $this->extractText('tr:first-child');
+        $name    = $this->extractText('tr[position() = 1]');
         $choices = $this->getChoices();
 
         // Extract votes
         $votes = $this->crawler
-            ->filter('tr')
+            ->filterXpath('//tr')
             ->reduce(function ($vote) {
-                return $vote->filter('td.rightalign a')->count() > 0;
+                return $vote->filterXpath('//td/img')->count() > 0;
             })->each(function ($vote) use (&$votes, $choices) {
                 return (new VoteExtractor($vote))->extract();
             });
@@ -37,7 +37,7 @@ class QuestionExtractor extends AbstractExtractor
      */
     protected function getChoices()
     {
-        return $this->crawler->filter('tr.row1 td')->each(function ($choice) {
+        return $this->crawler->filterXpath('//tr[@class="row1"]/td')->each(function ($choice) {
             return $choice->text();
         });
     }

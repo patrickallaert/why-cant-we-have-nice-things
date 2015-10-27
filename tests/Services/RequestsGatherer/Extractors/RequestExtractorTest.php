@@ -147,7 +147,7 @@ HTML;
      */
     protected function getInformationsFromInformationBlock($html)
     {
-        return $this->getInformationsFromHtml('<div class="page group"><ul class="level1"><li>'.$html.'</li></ul></div>');
+        return $this->getInformationsFromHtml('<div class="page group"><div class="level1"><ul><li>'.$html.'</li></ul></div></div>');
     }
 
     /**

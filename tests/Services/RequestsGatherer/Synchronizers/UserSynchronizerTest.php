@@ -57,4 +57,14 @@ class UserSynchronizerTest extends TestCase
         $this->assertEquals('foo', $user->name);
         $this->assertEquals('Marco', $user->full_name);
     }
+
+    public function testNeverOverwriteWithPhpEmail()
+    {
+        $existing = User::create(['name' => 'foo', 'email' => 'foo@gmail.com']);
+        $sync     = new UserSynchronizer(['username' => 'foo', 'email' => 'foo@php.net']);
+        $user     = $sync->synchronize();
+
+        $this->assertEquals($existing->id, $user->id);
+        $this->assertEquals('foo@gmail.com', $user->email);
+    }
 }

@@ -11,11 +11,8 @@ class VoteSynchronizerTest extends TestCase
 {
     public function testCanSynchronizeVote()
     {
-        $user     = new User();
-        $user->id = 1;
-
-        $question     = new Question();
-        $question->id = 1;
+        $user     = User::seed();
+        $question = Question::seed();
 
         $time = new DateTime();
         $sync = new VoteSynchronizer([
@@ -27,8 +24,8 @@ class VoteSynchronizerTest extends TestCase
         $this->assertInstanceOf(Vote::class, $vote);
         $this->assertEquals([
             'choice'      => 2,
-            'question_id' => 1,
-            'user_id'     => 1,
+            'question_id' => $question->id,
+            'user_id'     => $user->id,
             'created_at'  => $time->format('Y-m-d H:i:s'),
             'updated_at'  => $time->format('Y-m-d H:i:s'),
         ], $vote->toArray());

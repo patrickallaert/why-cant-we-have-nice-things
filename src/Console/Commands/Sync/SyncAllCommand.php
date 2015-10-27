@@ -3,6 +3,7 @@ namespace History\Console\Commands\Sync;
 
 use Exception;
 use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Database\Capsule\Manager;
 use Silly\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -63,8 +64,10 @@ class SyncAllCommand
         }
 
         // Run sync commands
-        foreach ($this->commands as $command) {
-            $this->app->find($command)->run(new ArrayInput([$this->output]), $this->output);
-        }
+        Manager::transaction(function() {
+            foreach ($this->commands as $command) {
+                $this->app->find($command)->run(new ArrayInput([$this->output]), $this->output);
+            }
+        });
     }
 }

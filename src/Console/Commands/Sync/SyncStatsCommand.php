@@ -27,7 +27,7 @@ class SyncStatsCommand extends AbstractCommand
      */
     public function run()
     {
-        $users     = User::with('votes', 'requests')->get();
+        $users     = User::with('votes.question', 'requests')->get();
         $questions = Question::with('votes')->get();
         $requests  = Request::with('questions.votes')->get();
 

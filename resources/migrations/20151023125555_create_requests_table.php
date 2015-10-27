@@ -26,7 +26,7 @@ class CreateRequestsTable extends AbstractMigration
              ->addColumn('name', 'string')
              ->addColumn('contents', 'text')
              ->addColumn('link', 'string')
-             ->addColumn('condition', 'string', ['null' => true])
+             ->addColumn('condition', 'text', ['null' => true])
              ->addColumn('approval', 'float')
              ->addColumn('status', 'integer')
              ->addColumn('created_at', 'datetime')
