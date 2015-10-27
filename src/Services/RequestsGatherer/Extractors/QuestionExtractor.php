@@ -25,7 +25,7 @@ class QuestionExtractor extends AbstractExtractor
 
         return [
             'name'    => $name,
-            'choices' => count($choices),
+            'choices' => $choices,
             'votes'   => $votes,
         ];
     }
@@ -38,7 +38,7 @@ class QuestionExtractor extends AbstractExtractor
     protected function getChoices()
     {
         return $this->crawler->filterXpath('//tr[@class="row1"]/td')->each(function ($choice) {
-            return $choice->text();
+            return trim($choice->text(), ' ?!');
         });
     }
 }

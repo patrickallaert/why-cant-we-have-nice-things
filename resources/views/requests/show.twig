@@ -51,17 +51,16 @@
                         </tr>
                         <tr>
                             <th>User</th>
-                            <th class="text-center">Vote</th>
+                            <th class="text-right">Vote</th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for vote in question.votes %}
-                            {% set yes = vote.choice < question.choices %}
                             <tr>
                                 <td>
                                     <a href="/users/{{ vote.user.id }}">{{ vote.user.display_name }}</a>
                                 </td>
-                                <td class="text-center {{ yes ? 'success' : 'danger' }}">{{ choice(question, vote) }}</td>
+                                <td class="text-right {{ vote.isPositive() ? 'success' : 'danger' }}">{{ choice(question, vote) }}</td>
                             </tr>
                         {% else %}
                             <tr>

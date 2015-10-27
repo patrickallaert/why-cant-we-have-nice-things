@@ -24,12 +24,10 @@ class StatisticsComputerTest extends TestCase
 
     public function testCanComputeQuestionStatistics()
     {
-        $question        = new Question(['choices' => 2]);
-        $question->votes = new Collection([
-            new Vote(['choice' => 2]),
-            new Vote(['choice' => 1]),
-            new Vote(['choice' => 1]),
-        ]);
+        $question = Question::seed();
+        Vote::seed(['choice' => 2, 'question_id' => $question->id]);
+        Vote::seed(['choice' => 1, 'question_id' => $question->id]);
+        Vote::seed(['choice' => 1, 'question_id' => $question->id]);
 
         $stats = $this->computer->forQuestion($question);
         $this->assertEquals([
@@ -40,13 +38,11 @@ class StatisticsComputerTest extends TestCase
 
     public function testCanComputeDependingOnMajorityConditions()
     {
-        $question          = new Question(['choices' => 2]);
+        $question          = Question::seed();
         $question->request = new Request(['condition' => '2/3']);
-        $question->votes   = new Collection([
-            new Vote(['choice' => 2]),
-            new Vote(['choice' => 1]),
-            new Vote(['choice' => 1]),
-        ]);
+        Vote::seed(['choice' => 2, 'question_id' => $question->id]);
+        Vote::seed(['choice' => 1, 'question_id' => $question->id]);
+        Vote::seed(['choice' => 1, 'question_id' => $question->id]);
 
         $stats = $this->computer->forQuestion($question);
         $this->assertEquals([
@@ -57,7 +53,7 @@ class StatisticsComputerTest extends TestCase
 
     public function testCanComputeQuestionStatsWithoutVotes()
     {
-        $question        = new Question(['choices' => 2]);
+        $question        = Question::seed();
         $question->votes = new Collection([]);
 
         $stats = $this->computer->forQuestion($question);
@@ -83,10 +79,8 @@ class StatisticsComputerTest extends TestCase
 
     public function testCanComputeQuestionApprovalIfNotDefined()
     {
-        $question        = new Question(['choices' => 2]);
-        $question->votes = new Collection([
-            new Vote(['choice' => 1]),
-        ]);
+        $question = Question::seed();
+        Vote::seed(['choice' => 1, 'question_id' => $question->id]);
 
         $request            = new Request();
         $request->questions = new Collection([$question]);
@@ -99,15 +93,13 @@ class StatisticsComputerTest extends TestCase
 
     public function testCanComputeUserStatistics()
     {
-        $question        = new Question(['choices' => 2]);
-        $question->votes = new Collection([
-            new Vote(['choice' => 1]),
-            new Vote(['choice' => 2]),
-            new Vote(['choice' => 2]),
-        ]);
+        $question = Question::seed();
+        Vote::seed(['choice' => 1, 'question_id' => $question->id]);
+        Vote::seed(['choice' => 2, 'question_id' => $question->id]);
+        Vote::seed(['choice' => 2, 'question_id' => $question->id]);
 
-        $user        = new User([]);
-        $user->votes = new Collection([
+        $user           = new User([]);
+        $user->votes    = new Collection([
             (new Vote(['choice' => 1]))->setAttribute('question', $question),
             (new Vote(['choice' => 2]))->setAttribute('question', $question),
             (new Vote(['choice' => 2]))->setAttribute('question', $question),

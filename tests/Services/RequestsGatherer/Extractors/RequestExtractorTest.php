@@ -29,7 +29,7 @@ class RequestExtractorTest extends TestCase
             'questions' => [
                 [
                     'name'    => 'Class Constant Visibility',
-                    'choices' => 2,
+                    'choices' => ['Yes', 'No'],
                     'votes'   => [
                         [
                             'user_id'    => 'ajf',

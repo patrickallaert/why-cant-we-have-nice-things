@@ -64,7 +64,6 @@
                 </tr>
                 </thead>
                 {% for vote in user.votes %}
-                    {% set yes = vote.choice < vote.question.choices %}
                     <tr>
                         <td>
                             <a href="/requests/{{ vote.question.request.id }}">{{ vote.question.request.name }}</a>

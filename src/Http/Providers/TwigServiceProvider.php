@@ -65,11 +65,7 @@ class TwigServiceProvider extends AbstractServiceProvider
         }));
 
         $twig->addFunction(new Twig_SimpleFunction('choice', function (Question $question, Vote $vote) {
-            if ($question->choices <= 2) {
-                return $vote->choice === 1 ? 'Yes' : 'No';
-            }
-
-            return $vote->choice.'/'.$question->choices;
+            return ucfirst($question->choices[$vote->choice - 1]);
         }));
     }
 

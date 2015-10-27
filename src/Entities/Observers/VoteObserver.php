@@ -10,7 +10,7 @@ class VoteObserver
      */
     public function created(Vote $vote)
     {
-        $type = $vote->choice < $vote->question->choices ? 'up' : 'down';
+        $type = $vote->isPositive() ? 'up' : 'down';
         $vote->registerEvent('vote_'.$type);
     }
 }

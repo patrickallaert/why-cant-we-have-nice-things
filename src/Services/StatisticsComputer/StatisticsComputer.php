@@ -17,7 +17,7 @@ class StatisticsComputer
     {
         $totalVotes = $user->votes->count();
         $yesVotes   = $user->votes->filter(function (Vote $vote) {
-            return $vote->choice < $vote->question->choices;
+            return $vote->isPositive();
         })->count();
         $noVotes = $totalVotes - $yesVotes;
 
@@ -46,7 +46,7 @@ class StatisticsComputer
     public function forQuestion(Question $question)
     {
         $approval = $question->votes->map(function (Vote $vote) use ($question) {
-            return $vote->choice < $question->choices;
+            return $vote->isPositive();
         });
 
         // Compute approval %

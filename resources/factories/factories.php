@@ -57,7 +57,9 @@ FactoryMuffin::define(Comment::class, [
 
 FactoryMuffin::define(Question::class, [
     'name'       => 'sentence',
-    'choices'    => 'numberBetween|1;5',
+    'choices'    => function () {
+        return ['Yes', 'No'];
+    },
     'request_id' => random(Request::class),
     'created_at' => 'dateTimeThisYear',
     'updated_at' => 'dateTimeThisYear',

@@ -24,7 +24,7 @@ class CreateQuestionsTable extends AbstractMigration
     {
         $this->table('questions')
              ->addColumn('name', 'string')
-             ->addColumn('choices', 'integer')
+             ->addColumn('choices', 'text')
              ->addColumn('approval', 'float')
              ->addColumn('passed', 'boolean')
              ->addColumn('request_id', 'integer')

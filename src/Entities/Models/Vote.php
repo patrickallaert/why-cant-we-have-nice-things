@@ -56,4 +56,16 @@ class Vote extends AbstractModel
     {
         return $this->belongsTo(User::class);
     }
+
+    //////////////////////////////////////////////////////////////////////
+    ///////////////////////////// ATTRIBUTES /////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+
+    /**
+     * @return bool
+     */
+    public function isPositive()
+    {
+        return $this->question && $this->choice < count($this->question->choices);
+    }
 }

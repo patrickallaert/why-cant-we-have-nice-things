@@ -60,5 +60,9 @@
         &:hover > td.success {
             background-color: lighten($color-green, 2);
         }
+
+        > td.text-right {
+            max-width: 50px;
+        }
     }
 }
