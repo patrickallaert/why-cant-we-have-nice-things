@@ -1,6 +1,5 @@
 {% extends '_layouts/layout.twig' %}
 {% set title = request.name %}
-{% set fluid = false %}
 
 {% block title %}
     <div class="page-header">
@@ -15,61 +14,70 @@
 {% endblock %}
 
 {% block content %}
-    <ul class="lead text-center list-unstyled">
-        <li>
-            Currently <strong>{{ request.status_label|lower }}</strong>
-        </li>
-        {% if request.questions.count() %}
-            <li>
-                Approved at <strong>{{ percentage(request.approval) }}</strong>
-            </li>
-        {% endif %}
-        <li>
-            <a href="{{ request.link }}" target="_blank">View this RFC on the PHP wiki</a>
-        </li>
-    </ul>
+    <section class="request">
+        <nav class="request__navigation">
+            <ul class="list-unstyled">
+            </ul>
+        </nav>
 
-    <h2 class="text-center">Contents</h2>
-    <section class="rfc__contents">
-        {{ request.contents | raw }}
-    </section>
+        <section class="request__summary">
+            <ul class="lead text-center list-unstyled">
+                <li>
+                    Currently <strong>{{ request.status_label|lower }}</strong>
+                </li>
+                {% if request.questions.count() %}
+                    <li>
+                        Approved at <strong>{{ percentage(request.approval) }}</strong>
+                    </li>
+                {% endif %}
+                <li>
+                    <a href="{{ request.link }}" target="_blank">View this RFC on the PHP wiki</a>
+                </li>
+            </ul>
 
-    <h2 class="text-center">Votes</h2>
-    {% for question in request.questions %}
-        <div class="table-responsive">
-            <table class="table table-condensed table-striped table-hover">
-                <thead>
-                <tr>
-                    <th class="text-center" colspan="2">{{ question.name }} ({{ percentage(question.approval) }} approved)</th>
-                </tr>
-                <tr>
-                    <th>User</th>
-                    <th class="text-center">Vote</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for vote in question.votes %}
-                    {% set yes = vote.choice < question.choices %}
-                    <tr>
-                        <td>
-                            <a href="/users/{{ vote.user.id }}">{{ vote.user.display_name }}</a>
-                        </td>
-                        <td class="text-center {{ yes ? 'success' : 'danger' }}">{{ choice(question, vote) }}</td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="2" class="text-center lead">No votes yet</td>
-                    </tr>
+            <h2 class="text-center">Contents</h2>
+            <section class="request__contents">
+                {{ request.contents | raw }}
+            </section>
+
+            <h2 id="votes" class="text-center">Votes</h2>
+            {% for question in request.questions %}
+                <div class="table-responsive">
+                    <table class="table table-condensed table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th class="text-center" colspan="2">{{ question.name }} ({{ percentage(question.approval) }} approved)</th>
+                        </tr>
+                        <tr>
+                            <th>User</th>
+                            <th class="text-center">Vote</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for vote in question.votes %}
+                            {% set yes = vote.choice < question.choices %}
+                            <tr>
+                                <td>
+                                    <a href="/users/{{ vote.user.id }}">{{ vote.user.display_name }}</a>
+                                </td>
+                                <td class="text-center {{ yes ? 'success' : 'danger' }}">{{ choice(question, vote) }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="2" class="text-center lead">No votes yet</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endfor %}
+
+            {% if request.comments.count() %}
+                <h2 id="comments" class="text-center">Comments</h2>
+                {% for comment in request.rootComments %}
+                    {% include '_partials/comment.twig' %}
                 {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    {% endfor %}
-
-    {% if request.comments.count() %}
-        <h2 class="text-center">Comments</h2>
-        {% for comment in request.rootComments %}
-            {% include '_partials/comment.twig' %}
-        {% endfor %}
-    {% endif %}
+            {% endif %}
+        </section>
+    </section>
 {% endblock %}

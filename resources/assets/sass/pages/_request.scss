@@ -1,0 +1,56 @@
+.request {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    padding: 0 2rem;
+
+    &__navigation {
+        background: lighten($color-grey, 3);
+        flex: 1;
+        padding: 1em;
+        margin-top: 5rem;
+        margin-right: 3rem;
+        font-size: 2rem;
+
+        ul {
+            &.sticky {
+                position: fixed;
+                top: 2rem;
+            }
+
+            li {
+                padding: 0.25em 0;
+                border-bottom: 1px dashed rgba(black, 0.1);
+            }
+
+            @for $i from 1 through 5 {
+                .level-h#{$i} {
+                    $i: $i - 2;
+
+                    font-size: (0.8em - ($i * 0.1em));
+                    padding-left: 1.5em * $i;
+                }
+            }
+        }
+    }
+
+    &__summary {
+        flex: 4;
+    }
+
+    h1,
+    #vote,
+    #votes,
+    #voting,
+    #voting1,
+    #voting2,
+    #voting3,
+    #voting4,
+    #voting5,
+    #proposed_voting_choices {
+        &, & + div {
+            display: none;
+        }
+    }
+}
+

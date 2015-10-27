@@ -11,3 +11,9 @@ if (document.querySelector('pre code')) {
         require('./components/highlight');
     });
 }
+
+if (document.querySelector('.request')) {
+    require.ensure([], () => {
+       require('./components/request-navigation');
+    });
+}
