@@ -187,7 +187,7 @@ class RequestExtractor extends AbstractExtractor
     {
         $locations = [
             '*[@id="proposed_voting_choices"]/following-sibling::div',
-            '*[@id="vote"]/following-sibling::div/p'
+            '*[@id="vote"]/following-sibling::div/p',
         ];
 
         foreach ($locations as $location) {

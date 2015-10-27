@@ -19,6 +19,7 @@ class Question extends AbstractModel
 
     /**
      * @codeCoverageIgnore
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function request()
@@ -28,6 +29,7 @@ class Question extends AbstractModel
 
     /**
      * @codeCoverageIgnore
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function votes()

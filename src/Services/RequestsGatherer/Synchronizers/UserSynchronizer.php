@@ -39,7 +39,7 @@ class UserSynchronizer extends AbstractSynchronizer
 
         // Do not replace the user's email if it is more valid than the one we have or
         // if we don't even have one
-        $shouldReplaceEmail  = $email && (!$user->email || strpos($user->email, '@php.net'));
+        $shouldReplaceEmail = $email && (!$user->email || strpos($user->email, '@php.net'));
 
         // Fill-in informations
         $user->name          = $user->name ?: $username;

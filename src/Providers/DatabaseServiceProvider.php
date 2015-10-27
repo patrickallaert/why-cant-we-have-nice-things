@@ -2,9 +2,7 @@
 namespace History\Providers;
 
 use History\Entities\Models\Comment;
-use History\Entities\Models\Question;
 use History\Entities\Models\Request;
-use History\Entities\Models\User;
 use History\Entities\Models\Vote;
 use History\Entities\Observers\CommentObserver;
 use History\Entities\Observers\RequestObserver;
@@ -14,7 +12,6 @@ use Illuminate\Database\Capsule\Manager;
 use Illuminate\Events\Dispatcher;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\FactoryMuffin\Facade;
-use PDO;
 
 class DatabaseServiceProvider extends AbstractServiceProvider
 {

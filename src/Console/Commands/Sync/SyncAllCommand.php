@@ -64,7 +64,7 @@ class SyncAllCommand
         }
 
         // Run sync commands
-        Manager::transaction(function() {
+        Manager::transaction(function () {
             foreach ($this->commands as $command) {
                 $this->app->find($command)->run(new ArrayInput([$this->output]), $this->output);
             }

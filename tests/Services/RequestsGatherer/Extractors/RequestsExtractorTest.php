@@ -8,9 +8,9 @@ class RequestsExtractorTest extends TestCase
 {
     public function testCanExtractRequests()
     {
-        $crawler = new Crawler($this->getDummyPage('rfcs'));
+        $crawler   = new Crawler($this->getDummyPage('rfcs'));
         $extractor = new RequestsExtractor($crawler);
-        $requests = $extractor->extract();
+        $requests  = $extractor->extract();
 
         $this->assertEquals([
             '/rfc/void_return_type',
