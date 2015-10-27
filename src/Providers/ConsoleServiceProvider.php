@@ -1,6 +1,7 @@
 <?php
 namespace History\Providers;
 
+use History\Console\Commands\TestCommand;
 use History\Console\Commands\Tinker;
 use History\Entities\Models\Question;
 use History\Entities\Models\Request;
