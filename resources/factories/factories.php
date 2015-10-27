@@ -22,18 +22,18 @@ if (!function_exists('random')) {
 }
 
 FactoryMuffin::define(User::class, [
-    'name'      => 'userName',
-    'full_name' => 'name',
-    'email'     => 'email',
+    'name'       => 'userName',
+    'full_name'  => 'name',
+    'email'      => 'email',
     'created_at' => 'dateTimeThisYear',
     'updated_at' => 'dateTimeThisYear',
 ]);
 
 FactoryMuffin::define(Request::class, [
-    'name'      => 'sentence',
-    'contents'  => 'paragraph',
-    'link'      => 'url',
-    'condition' => '2/3',
+    'name'       => 'sentence',
+    'contents'   => 'paragraph',
+    'link'       => 'url',
+    'condition'  => '2/3',
     'created_at' => 'dateTimeThisDecade',
     'updated_at' => 'dateTimeThisDecade',
 ], function (Request $request) {
@@ -63,6 +63,6 @@ FactoryMuffin::define(Vote::class, [
     'choice'      => 'numberBetween|1;3',
     'question_id' => random(Question::class),
     'user_id'     => random(User::class),
-    'created_at' => 'dateTimeThisYear',
-    'updated_at' => 'dateTimeThisYear',
+    'created_at'  => 'dateTimeThisYear',
+    'updated_at'  => 'dateTimeThisYear',
 ]);

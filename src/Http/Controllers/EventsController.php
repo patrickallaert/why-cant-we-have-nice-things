@@ -15,7 +15,7 @@ class EventsController extends AbstractController
     public function index(ServerRequestInterface $request)
     {
         $parameters = new ParameterBag($request->getQueryParams());
-        $events = Event::with('eventable.question.request', 'eventable.user')
+        $events     = Event::with('eventable.question.request', 'eventable.user')
                        ->latest()
                        ->paginate(
                            50, ['*'], 'page',
