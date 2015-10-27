@@ -1,5 +1,5 @@
 <?php
-namespace History\Console\Commands;
+namespace History\Console\Commands\Sync;
 
 use Exception;
 use Illuminate\Contracts\Cache\Repository;
@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class SyncCommand
+class SyncAllCommand
 {
     /**
      * @var OutputInterface

@@ -1,6 +1,7 @@
 <?php
-namespace History\Console\Commands;
+namespace History\Console\Commands\Sync;
 
+use History\Console\Commands\AbstractCommand;
 use History\Entities\Models\Question;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;

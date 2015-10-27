@@ -58,30 +58,11 @@ class DatabaseServiceProvider extends AbstractServiceProvider
             if ($this->container->get('debug')) {
                 $capsule->connection()->enableQueryLog();
 
-                // Seed database if needed
-                $this->seedDatabase();
+                // Load factories if they aren't already
+                Facade::loadFactories($this->container->get('paths.factories'));
             }
 
             return $capsule;
         });
-    }
-
-    /**
-     * Seed the database with dummy data.
-     */
-    protected function seedDatabase()
-    {
-        // Load factories if they aren't already
-        Facade::loadFactories($this->container->get('paths.factories'));
-
-        if (Request::count()) {
-            return;
-        }
-
-        User::seed(50);
-        $requests = Request::seed(50);
-        Question::seed(count($requests) * 3);
-        Vote::seed(200);
-        Comment::seed(200);
     }
 }
