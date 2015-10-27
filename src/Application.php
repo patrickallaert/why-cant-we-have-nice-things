@@ -2,11 +2,11 @@
 namespace History;
 
 use Dotenv\Dotenv;
+use History\Console\ConsoleServiceProvider;
 use History\Http\Providers\ErrorsServiceProvider;
 use History\Http\Providers\RoutingServiceProvider;
 use History\Http\Providers\TwigServiceProvider;
 use History\Providers\CacheServiceProvider;
-use History\Providers\ConsoleServiceProvider;
 use History\Providers\DatabaseServiceProvider;
 use History\Providers\GravatarServiceProvider;
 use History\Providers\PathsServiceProvider;
@@ -60,6 +60,7 @@ class Application
      */
     public function __construct(ContainerInterface $container = null)
     {
+        // Configure container
         $this->container = $container ?: new Container();
         $this->container->delegate(new ReflectionContainer());
         $this->container->share(ContainerInterface::class, $this->container);

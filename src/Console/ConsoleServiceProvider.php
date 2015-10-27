@@ -1,11 +1,12 @@
 <?php
-namespace History\Providers;
+namespace History\Console;
 
 use History\Console\Commands\SyncCommand;
 use History\Console\Commands\SyncRequestsCommand;
 use History\Console\Commands\SyncStatsCommand;
 use History\Console\Commands\Tinker;
 use History\Console\Commands\TinkerCommand;
+use History\Providers\SyncInternalsCommandI;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Silly\Application;
 
