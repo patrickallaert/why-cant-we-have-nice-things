@@ -8,6 +8,7 @@ First copy `.env.example` to `.env` and fill in the informations for your enviro
 
 ```bash
 $ composer install
+$ npm install
 $ npm run build
 ```
 
