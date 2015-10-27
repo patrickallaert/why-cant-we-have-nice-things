@@ -47,6 +47,7 @@
         }
     },
     "scripts": {
+        "migrate": "phinx migrate",
         "test": "phpunit"
     }
 }

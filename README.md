@@ -1,4 +1,4 @@
-# THIS IS A WORK IN PROGRESS AND NOT PUBLIC YET. HERE BE DRAGONS. 
+# THIS IS A WORK IN PROGRESS AND NOT PUBLIC YET. HERE BE DRAGONS.
 
 # Why can't we have nice things
 
@@ -14,7 +14,18 @@ $ npm install
 $ npm run build
 ```
 
+Then migrate the database:
+
+```bash
+$ composer migrate
+```
+
 And, well. That's pretty much it.
+
+## Fetching the data
+
+You can run `./console sync` to sync RFCs and users and such. It will be slow the first time and then faster after that.
+Data from the mailing list is synced separately for now through the `./console sync:internals` command.
 
 ## Running the tests
 
