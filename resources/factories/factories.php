@@ -7,14 +7,18 @@ use History\Entities\Models\User;
 use History\Entities\Models\Vote;
 use League\FactoryMuffin\Facade as FactoryMuffin;
 
-/*
- * @param string $class
- *
- * @return Closure
- */
 if (!function_exists('random')) {
+    /*
+     * @param string $class
+     *
+     * @return Closure
+     */
     function random($class)
     {
+        if (!$class::count()) {
+            return 'factory|'.$class;
+        }
+
         return function () use ($class) {
             return $class::lists('id')->shuffle()->first();
         };
