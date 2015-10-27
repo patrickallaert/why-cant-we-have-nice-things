@@ -1,13 +1,14 @@
 pre {
     padding: 1.5em 2em;
+    background-color: rgba(black, 0.05);
     margin: 2rem 0;
     font-family: monospace;
     border-radius: 0;
     border: none;
 
     code.hljs {
+        background: none;
         padding: 0;
-        background-color: darken($color-grey, 0);
         tab-size: 4;
     }
 }
