@@ -2,11 +2,11 @@
 namespace History\Services\Internals;
 
 use Illuminate\Contracts\Cache\Repository;
-use League\Container\ServiceProvider;
+use League\Container\ServiceProvider\AbstractServiceProvider;
 use Rvdv\Nntp\Client;
 use Rvdv\Nntp\Connection\Connection;
 
-class InternalsServiceProvider extends ServiceProvider
+class InternalsServiceProvider extends AbstractServiceProvider
 {
     /**
      * @var array
@@ -23,7 +23,7 @@ class InternalsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->container->singleton(Internals::class, function () {
+        $this->container->share(Internals::class, function () {
             $cache = $this->container->get(Repository::class);
             $connection = new Connection('news.php.net', 119);
 
@@ -37,7 +37,7 @@ class InternalsServiceProvider extends ServiceProvider
             return new Internals($cache, $client, $group);
         });
 
-        $this->container->singleton(InternalsSynchronizer::class, function () {
+        $this->container->share(InternalsSynchronizer::class, function () {
             return new InternalsSynchronizer($this->container->get(Internals::class));
         });
     }

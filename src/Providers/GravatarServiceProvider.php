@@ -1,10 +1,10 @@
 <?php
 namespace History\Providers;
 
-use League\Container\ServiceProvider;
+use League\Container\ServiceProvider\AbstractServiceProvider;
 use thomaswelton\GravatarLib\Gravatar;
 
-class GravatarServiceProvider extends ServiceProvider
+class GravatarServiceProvider extends AbstractServiceProvider
 {
     /**
      * @var array
@@ -20,7 +20,7 @@ class GravatarServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->container->singleton(Gravatar::class, function () {
+        $this->container->share(Gravatar::class, function () {
             $gravatar = new Gravatar();
             $gravatar->setDefaultImage('retro');
             $gravatar->setAvatarSize(200);

@@ -34,14 +34,14 @@ class InternalsSynchronizer
     protected $output;
 
     /**
-     * The existing comments
+     * The existing comments.
      *
      * @var array
      */
     protected $parsed;
 
     /**
-     * The created comments
+     * The created comments.
      *
      * @var array
      */

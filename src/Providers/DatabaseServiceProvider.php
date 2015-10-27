@@ -10,9 +10,9 @@ use History\Entities\Observers\VoteObserver;
 use Illuminate\Container\Container;
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Events\Dispatcher;
-use League\Container\ServiceProvider;
+use League\Container\ServiceProvider\AbstractServiceProvider;
 
-class DatabaseServiceProvider extends ServiceProvider
+class DatabaseServiceProvider extends AbstractServiceProvider
 {
     /**
      * @var array
@@ -28,7 +28,7 @@ class DatabaseServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->container->singleton(Manager::class, function () {
+        $this->container->share(Manager::class, function () {
             $capsule = new Manager();
             $capsule->addConnection([
                 'driver'    => 'mysql',

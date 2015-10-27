@@ -1,9 +1,9 @@
 <?php
 namespace History\Providers;
 
-use League\Container\ServiceProvider;
+use League\Container\ServiceProvider\AbstractServiceProvider;
 
-class PathsServiceProvider extends ServiceProvider
+class PathsServiceProvider extends AbstractServiceProvider
 {
     /**
      * @var array

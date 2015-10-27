@@ -15,13 +15,16 @@ use History\Services\RequestsGatherer\RequestsGathererServiceProvider;
 use Illuminate\Database\Capsule\Manager;
 use League\Container\Container;
 use League\Container\ContainerInterface;
-use League\Route\Dispatcher;
+use League\Container\ReflectionContainer;
 use League\Route\Http\Exception\NotFoundException;
 use League\Route\RouteCollection;
 use Silly\Application as Console;
+use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Twig_Environment;
 use Whoops\Run;
+use Zend\Diactoros\Response\SapiEmitter;
 
 class Application
 {
@@ -57,6 +60,7 @@ class Application
     public function __construct(ContainerInterface $container = null)
     {
         $this->container = $container ?: new Container();
+        $this->container->delegate(new ReflectionContainer());
 
         // Load dotenv file
         $dotenv = new Dotenv(__DIR__.'/..');
@@ -86,18 +90,23 @@ class Application
      */
     public function run()
     {
-        /** @var Dispatcher $dispatcher */
+        /** @var RouteCollection $dispatcher */
         /* @type Request $request */
-        $dispatcher = $this->container->get(RouteCollection::class)->getDispatcher();
+        $dispatcher = $this->container->get(RouteCollection::class);
         $request    = $this->container->get(Request::class);
 
+        // Convert to PSR7 objects
+        $factory  = new DiactorosFactory();
+        $request  = $factory->createRequest($request);
+        $response = $factory->createResponse(new Response(''));
+
         try {
-            $response = $dispatcher->dispatch($request->getMethod(), $request->getPathInfo());
+            $response = $dispatcher->dispatch($request, $response);
         } catch (NotFoundException $exception) {
             return $this->container->get(Twig_Environment::class)->display('errors/404.twig');
         }
 
-        return $response->send();
+        return (new SapiEmitter())->emit($response);
     }
 
     /**

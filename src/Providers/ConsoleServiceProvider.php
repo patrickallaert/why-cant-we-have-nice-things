@@ -1,7 +1,6 @@
 <?php
 namespace History\Providers;
 
-use History\Console\Commands\TestCommand;
 use History\Console\Commands\Tinker;
 use History\Entities\Models\Question;
 use History\Entities\Models\Request;
@@ -10,7 +9,7 @@ use History\Services\Internals\InternalsSynchronizer;
 use History\Services\RequestsGatherer\RequestsGatherer;
 use History\Services\StatisticsComputer\StatisticsComputer;
 use Illuminate\Contracts\Cache\Repository;
-use League\Container\ServiceProvider;
+use League\Container\ServiceProvider\AbstractServiceProvider;
 use Psy\Shell;
 use Silly\Application;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -18,7 +17,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class ConsoleServiceProvider extends ServiceProvider
+class ConsoleServiceProvider extends AbstractServiceProvider
 {
     /**
      * @var array
@@ -34,7 +33,7 @@ class ConsoleServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->container->singleton(Application::class, function () {
+        $this->container->share(Application::class, function () {
             $app = new Application('WhyCantWeHaveNiceThings');
 
             // Register commands

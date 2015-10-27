@@ -5,12 +5,11 @@ use History\Http\Controllers\EventsController;
 use History\Http\Controllers\PagesController;
 use History\Http\Controllers\RequestsController;
 use History\Http\Controllers\UsersController;
-use League\Container\ServiceProvider;
+use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Route\RouteCollection;
-use League\Route\Strategy\UriStrategy;
 use Symfony\Component\HttpFoundation\Request;
 
-class RoutingServiceProvider extends ServiceProvider
+class RoutingServiceProvider extends AbstractServiceProvider
 {
     /**
      * @var array
@@ -27,25 +26,24 @@ class RoutingServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->container->singleton(Request::class, function () {
+        $this->container->share(Request::class, function () {
             return Request::createFromGlobals();
         });
 
-        $this->container->singleton(RouteCollection::class, function () {
+        $this->container->share(RouteCollection::class, function () {
             $routes = new RouteCollection($this->container);
-            $routes->setStrategy(new UriStrategy());
 
             // Register routes
-            $routes->addRoute('GET', '/', UsersController::class.'::index');
-            $routes->addRoute('GET', '/users', UsersController::class.'::index');
-            $routes->addRoute('GET', '/users/{user}', UsersController::class.'::show');
+            $routes->map('GET', '/', UsersController::class.'::index');
+            $routes->map('GET', 'users', UsersController::class.'::index');
+            $routes->map('GET', 'users/{user}', UsersController::class.'::show');
 
-            $routes->addRoute('GET', '/requests', RequestsController::class.'::index');
-            $routes->addRoute('GET', '/requests/{request}', RequestsController::class.'::show');
+            $routes->map('GET', 'requests', RequestsController::class.'::index');
+            $routes->map('GET', 'requests/{request}', RequestsController::class.'::show');
 
-            $routes->addRoute('GET', '/events', EventsController::class.'::index');
+            $routes->map('GET', 'events', EventsController::class.'::index');
 
-            $routes->addRoute('GET', '/about', PagesController::class.'::about');
+            $routes->map('GET', 'about', PagesController::class.'::about');
 
             return $routes;
         });

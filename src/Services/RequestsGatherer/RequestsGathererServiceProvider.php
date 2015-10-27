@@ -2,9 +2,9 @@
 namespace History\Services\RequestsGatherer;
 
 use Illuminate\Contracts\Cache\Repository;
-use League\Container\ServiceProvider;
+use League\Container\ServiceProvider\AbstractServiceProvider;
 
-class RequestsGathererServiceProvider extends ServiceProvider
+class RequestsGathererServiceProvider extends AbstractServiceProvider
 {
     /**
      * @var array
@@ -21,7 +21,7 @@ class RequestsGathererServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->container->singleton(RequestsGatherer::class, function () {
+        $this->container->share(RequestsGatherer::class, function () {
             return new RequestsGatherer($this->container->get(Repository::class));
         });
 

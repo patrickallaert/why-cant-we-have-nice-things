@@ -4,7 +4,7 @@ namespace History\Http\Providers;
 use History\Application;
 use History\Entities\Models\Question;
 use History\Entities\Models\Vote;
-use League\Container\ServiceProvider;
+use League\Container\ServiceProvider\AbstractServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 use thomaswelton\GravatarLib\Gravatar;
 use Twig_Environment;
@@ -12,7 +12,7 @@ use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;
 use Twig_SimpleFunction;
 
-class TwigServiceProvider extends ServiceProvider
+class TwigServiceProvider extends AbstractServiceProvider
 {
     /**
      * @var int
@@ -33,7 +33,7 @@ class TwigServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->container->singleton(Twig_Environment::class, function () {
+        $this->container->share(Twig_Environment::class, function () {
             $loader = new Twig_Loader_Filesystem($this->container->get('paths.views'));
             $debug = $this->container->get('debug');
             $twig = new Twig_Environment($loader, [

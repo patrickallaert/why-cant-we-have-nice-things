@@ -28,7 +28,7 @@ class InternalsSynchronizerTest extends TestCase
                 'subject'    => '[RFC] foobar',
                 'from'       => 'Maxime Fabre (foo@bar.com)',
                 'references' => '',
-                'date' => '2011-01-01 01:01:01',
+                'date'       => '2011-01-01 01:01:01',
             ],
         ]);
 
@@ -43,8 +43,8 @@ class InternalsSynchronizerTest extends TestCase
             'request_id' => $request->id,
             'comment_id' => null,
             'user_id'    => $user->id,
-            "created_at" => '2011-01-01 01:01:01',
-            "updated_at" => '2011-01-01 01:01:01',
+            'created_at' => '2011-01-01 01:01:01',
+            'updated_at' => '2011-01-01 01:01:01',
             'id'         => $created[0]['id'],
         ], $created[0]->toArray());
     }

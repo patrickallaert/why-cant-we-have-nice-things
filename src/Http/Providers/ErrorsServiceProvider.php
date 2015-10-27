@@ -1,11 +1,11 @@
 <?php
 namespace History\Http\Providers;
 
-use League\Container\ServiceProvider;
+use League\Container\ServiceProvider\AbstractServiceProvider;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
-class ErrorsServiceProvider extends ServiceProvider
+class ErrorsServiceProvider extends AbstractServiceProvider
 {
     /**
      * @var array
@@ -21,7 +21,7 @@ class ErrorsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->container->singleton(Run::class, function () {
+        $this->container->share(Run::class, function () {
             if (!$this->container->get('debug')) {
                 return;
             }

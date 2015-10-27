@@ -5,9 +5,9 @@ use Illuminate\Cache\FileStore;
 use Illuminate\Cache\Repository as IlluminateCache;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Filesystem\Filesystem;
-use League\Container\ServiceProvider;
+use League\Container\ServiceProvider\AbstractServiceProvider;
 
-class CacheServiceProvider extends ServiceProvider
+class CacheServiceProvider extends AbstractServiceProvider
 {
     /**
      * @var array
@@ -23,7 +23,7 @@ class CacheServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->container->singleton(Repository::class, function () {
+        $this->container->share(Repository::class, function () {
             $store = new FileStore(new Filesystem(), $this->container->get('paths.cache'));
 
             return new IlluminateCache($store);
