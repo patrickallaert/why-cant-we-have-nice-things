@@ -6,7 +6,6 @@ use History\Entities\Models\Request;
 use History\Services\IdentityExtractor;
 use History\Services\RequestsGatherer\Synchronizers\CommentSynchronizer;
 use History\Services\RequestsGatherer\Synchronizers\UserSynchronizer;
-use Illuminate\Support\Arr;
 use Rvdv\Nntp\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\NullOutput;
@@ -14,6 +13,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class InternalsSynchronizer
 {
+    /**
+     * @var int
+     */
+    const FIRST_RFC = 40000;
+
     /**
      * @var int
      */
@@ -30,9 +34,18 @@ class InternalsSynchronizer
     protected $output;
 
     /**
+     * The existing comments
+     *
      * @var array
      */
     protected $parsed;
+
+    /**
+     * The created comments
+     *
+     * @var array
+     */
+    protected $created = [];
 
     /**
      * InternalsSynchronizer constructor.
@@ -62,11 +75,10 @@ class InternalsSynchronizer
         $this->parsed = Comment::lists('xref')->all();
 
         $count = $this->internals->getTotalNumberArticles();
-        $start = 40000; // First RFC was #40037 so, can skip all these
 
         $progress = new ProgressBar($this->output, $count / self::CHUNK);
         $progress->start();
-        for ($i = $start; $i <= $count; $i += self::CHUNK) {
+        for ($i = self::FIRST_RFC; $i <= $count; $i += self::CHUNK) {
             $to = $i + (self::CHUNK - 1);
 
             // Process this chunk of articles
@@ -78,6 +90,8 @@ class InternalsSynchronizer
         }
 
         $progress->finish();
+
+        return $this->created;
     }
 
     /**
@@ -104,9 +118,7 @@ class InternalsSynchronizer
         }
 
         // Get the user that posted the message
-        if (!$user = $this->getRelatedUser($article)) {
-            return;
-        }
+        $user = $this->getRelatedUser($article);
 
         // If the article has references, find them
         $comment = $this->getCommentFromReference($article['references']);
@@ -164,17 +176,9 @@ class InternalsSynchronizer
     protected function getRelatedUser(array $article)
     {
         // Get user email
-        $extractor = new IdentityExtractor($article['from']);
-        $email     = head($extractor->extract())['email'];
-
-        // Get user name
-        preg_match_all('/\((.+)\)/', $article['from'], $matches);
-        $name = Arr::get($matches, '1.0');
-
-        $synchronizer = new UserSynchronizer([
-            'email'     => $email,
-            'full_name' => $name,
-        ]);
+        $extractor    = new IdentityExtractor($article['from']);
+        $user         = head($extractor->extract());
+        $synchronizer = new UserSynchronizer($user);
 
         return $synchronizer->persist()->id;
     }
@@ -227,6 +231,11 @@ class InternalsSynchronizer
             'user_id'    => $user,
         ]));
 
-        return $synchronizer->persist();
+        // Save comment and append to existing
+        $comment         = $synchronizer->persist();
+        $this->created[] = $comment;
+        $this->parsed[]  = $comment->xref;
+
+        return $comment;
     }
 }

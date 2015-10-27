@@ -1,12 +1,15 @@
 <?php
 namespace History\Entities\Traits;
 
+use DateTime;
 use History\Entities\Models\Event;
 
 trait HasEvents
 {
     /**
-     * @return mixed
+     * @codeCoverageIgnore
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function events()
     {
@@ -28,8 +31,8 @@ trait HasEvents
 
         if ($type !== 'rfc_status') {
             $attributes = array_merge($attributes, [
-                'created_at' => $this->created_at,
-                'updated_at' => $this->updated_at,
+                'created_at' => $this->created_at ?: new DateTime(),
+                'updated_at' => $this->updated_at ?: new DateTime(),
             ]);
         }
 
