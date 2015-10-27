@@ -14,26 +14,27 @@
 {% endblock %}
 
 {% block content %}
+    <ul class="request__summary lead text-center list-unstyled">
+        <li>
+            Currently <strong>{{ request.status_label|lower }}</strong>
+        </li>
+        {% if request.questions.count() %}
+            <li>
+                Approved at <strong>{{ percentage(request.approval) }}</strong>
+            </li>
+        {% endif %}
+        <li>
+            <a href="{{ request.link }}" target="_blank">View this RFC on the PHP wiki</a>
+        </li>
+    </ul>
+
     <section class="request">
         <nav class="request__navigation">
             <ul class="list-unstyled">
             </ul>
         </nav>
 
-        <section class="request__summary">
-            <ul class="lead text-center list-unstyled">
-                <li>
-                    Currently <strong>{{ request.status_label|lower }}</strong>
-                </li>
-                {% if request.questions.count() %}
-                    <li>
-                        Approved at <strong>{{ percentage(request.approval) }}</strong>
-                    </li>
-                {% endif %}
-                <li>
-                    <a href="{{ request.link }}" target="_blank">View this RFC on the PHP wiki</a>
-                </li>
-            </ul>
+        <section class="request__text">
 
             <h2 class="text-center">Contents</h2>
             <section class="request__contents">
