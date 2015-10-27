@@ -26,9 +26,9 @@
             </li>
             <li>
                 {% if user.negativeness >= 0.5 %}
-                    Has voted <strong>negatively</strong> on <strong>{{ percentage(user.negativeness) }}</strong> of the matters he voted on.
+                    Has voted <strong>negatively</strong> on <strong>{{ percentage(user.negativeness) }}</strong> of the matters he/she voted on.
                 {% else %}
-                    Has voted <strong>positively</strong> on <strong>{{ percentage(1 - user.negativeness) }}</strong> of the matters he voted on.
+                    Has voted <strong>positively</strong> on <strong>{{ percentage(1 - user.negativeness) }}</strong> of the matters he/she voted on.
                 {% endif %}
             </li>
         {% endif %}
