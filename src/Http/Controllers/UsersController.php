@@ -33,8 +33,7 @@ class UsersController extends AbstractController
      */
     public function show(ServerRequestInterface $request, ResponseInterface $response, $parameters)
     {
-        $user = User::with('votes.question.request', 'requests')
-                    ->findOrFail($parameters['user']);
+        $user = User::with('votes.question.request', 'requests')->findOrFail($parameters['user']);
 
         return $this->views->render('users/show.twig', [
             'user' => $user,

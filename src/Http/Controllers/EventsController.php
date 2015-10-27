@@ -2,6 +2,7 @@
 namespace History\Http\Controllers;
 
 use History\Entities\Models\Event;
+use Illuminate\Pagination\Paginator;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
@@ -14,13 +15,14 @@ class EventsController extends AbstractController
      */
     public function index(ServerRequestInterface $request)
     {
+        /* @var Paginator $events */
         $parameters = new ParameterBag($request->getQueryParams());
         $events     = Event::with('eventable.question.request', 'eventable.user')
                        ->latest()
                        ->paginate(
-                           50, ['*'], 'page',
-                           $parameters->get('page')
-                       );
+                               50, ['*'], 'page',
+                               $parameters->get('page')
+                           );
 
         $events->setPath($request->getUri()->getPath());
 

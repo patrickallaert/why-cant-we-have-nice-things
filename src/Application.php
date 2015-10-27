@@ -13,6 +13,7 @@ use History\Providers\PathsServiceProvider;
 use History\Services\Internals\InternalsServiceProvider;
 use History\Services\RequestsGatherer\RequestsGathererServiceProvider;
 use Illuminate\Database\Capsule\Manager;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Interop\Container\ContainerInterface;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
@@ -91,7 +92,7 @@ class Application
      */
     public function run()
     {
-        /** @var RouteCollection $dispatcher */
+        /* @type RouteCollection $dispatcher */
         /* @type Request $request */
         $dispatcher = $this->container->get(RouteCollection::class);
         $request    = $this->container->get(Request::class);
@@ -100,14 +101,17 @@ class Application
         $factory  = new DiactorosFactory();
         $request  = $factory->createRequest($request);
         $response = $factory->createResponse(new Response(''));
+        $error    = $this->container->get(Twig_Environment::class)->render('errors/404.twig');
 
         try {
             $response = $dispatcher->dispatch($request, $response);
+        } catch (ModelNotFoundException $exception) {
+            $response = $factory->createResponse(new Response($error));
         } catch (NotFoundException $exception) {
-            return $this->container->get(Twig_Environment::class)->display('errors/404.twig');
+            $response = $factory->createResponse(new Response($error));
         }
 
-        return (new SapiEmitter())->emit($response);
+        (new SapiEmitter())->emit($response);
     }
 
     /**
