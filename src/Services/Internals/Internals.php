@@ -56,7 +56,7 @@ class Internals
     public function getArticles($from, $to)
     {
         return $this->cache->rememberForever($from.'-'.$to, function () use ($from, $to) {
-            $format  = $this->client->overviewFormat()->getResult();
+            $format = $this->client->overviewFormat()->getResult();
             $command = $this->client->xover($from, $to, $format);
 
             return $command->getResult();

@@ -22,6 +22,8 @@ class Comment extends AbstractModel
     //////////////////////////////////////////////////////////////////////
 
     /**
+     * @codeCoverageIgnore
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
@@ -30,6 +32,8 @@ class Comment extends AbstractModel
     }
 
     /**
+     * @codeCoverageIgnore
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function request()
@@ -38,11 +42,13 @@ class Comment extends AbstractModel
     }
 
     /**
+     * @codeCoverageIgnore
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function children()
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(self::class);
     }
 
     //////////////////////////////////////////////////////////////////////

@@ -7,12 +7,12 @@ use Rvdv\Nntp\Response\ResponseInterface;
 class Xpath extends Command
 {
     /**
-     * @var integer
+     * @var int
      */
     const FOUND_PATH = 223;
 
     /**
-     * @var integer
+     * @var int
      */
     const INVALID_REFERENCE = 501;
 
@@ -65,7 +65,6 @@ class Xpath extends Command
      */
     public function onInvalidMessage()
     {
-        dump($this->reference);
         $this->result = null;
     }
 }

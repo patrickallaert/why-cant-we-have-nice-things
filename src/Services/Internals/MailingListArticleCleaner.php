@@ -93,7 +93,7 @@ class MailingListArticleCleaner
             $contents .= PHP_EOL.$this->convertLineWithEncoding($line);
         }
 
-        return trim($contents, "\n\r\t ");
+        return trim($contents, "\n\r\t. ");
     }
 
     /**

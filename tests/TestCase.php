@@ -3,19 +3,22 @@ namespace History;
 
 use Illuminate\Database\Capsule\Manager;
 use League\Container\Container;
+use League\Container\ContainerInterface;
 use PHPUnit_Framework_TestCase;
 
 abstract class TestCase extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var Application
+     * @var ContainerInterface
      */
     protected $app;
 
     public function setUp()
     {
         $container = new Container();
-        $this->app = new Application($container);
+        $app       = new Application($container);
+
+        $this->app = $app->getContainer();
 
         Manager::beginTransaction();
     }

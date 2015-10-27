@@ -23,7 +23,7 @@ class RequestExtractorTest extends TestCase
             'condition' => 'Simple Yes/No option. This requires a 2/3 majority.',
             'timestamp' => DateTime::createFromFormat('Y-m-d', '2015-09-13'),
             'authors'   => [
-                ['full_name' => 'Sean DuBois', 'email' => 'sean@siobud.com',],
+                ['full_name' => 'Sean DuBois', 'email' => 'sean@siobud.com'],
                 ['full_name' => 'Reeze Xia', 'email' => 'reeze@php.net'],
             ],
             'questions' => [
@@ -52,7 +52,7 @@ class RequestExtractorTest extends TestCase
 
     public function testCanParseAuthors()
     {
-        $html         = <<<'HTML'
+        $html = <<<'HTML'
         Author:
 Foo Bar
 <a>foo@bar.com</a>
@@ -67,7 +67,7 @@ HTML;
             ['full_name' => 'Baz Qux', 'email' => 'baz@qux.net'],
         ], $informations['authors']);
 
-        $html         = <<<'HTML'
+        $html = <<<'HTML'
 <strong>Author:</strong> <a href="http://www.porcupine.org/wietse/" class="urlextern" title="http://www.porcupine.org/wietse/" rel="nofollow">Wietse Venema (wietse@porcupine.org)</a> <br>
  IBM T.J. Watson Research Center <br>
  Hawthorne, NY, USA

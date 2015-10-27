@@ -49,7 +49,7 @@ class IdentityExtractor
         // Combine informations
         $identities = [];
         $count      = count($this->emails) ?: count($this->names);
-        for ($i = 0; $i <= $count; $i++) {
+        for ($i = 0; $i <= $count; ++$i) {
             $identities[] = array_filter([
                 'email'     => Arr::get($this->emails, $i),
                 'full_name' => Arr::get($this->names, $i),
