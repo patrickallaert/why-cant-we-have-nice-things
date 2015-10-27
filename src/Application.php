@@ -13,8 +13,8 @@ use History\Providers\PathsServiceProvider;
 use History\Services\Internals\InternalsServiceProvider;
 use History\Services\RequestsGatherer\RequestsGathererServiceProvider;
 use Illuminate\Database\Capsule\Manager;
+use Interop\Container\ContainerInterface;
 use League\Container\Container;
-use League\Container\ContainerInterface;
 use League\Container\ReflectionContainer;
 use League\Route\Http\Exception\NotFoundException;
 use League\Route\RouteCollection;
@@ -61,6 +61,7 @@ class Application
     {
         $this->container = $container ?: new Container();
         $this->container->delegate(new ReflectionContainer());
+        $this->container->share(ContainerInterface::class, $this->container);
 
         // Load dotenv file
         $dotenv = new Dotenv(__DIR__.'/..');
