@@ -38,11 +38,10 @@ class UserSynchronizer extends AbstractSynchronizer
         }
 
         // Fill-in informations
-        $user                = $user->id ? $user : new User();
-        $user->name          = $username;
-        $user->full_name     = $fullName;
-        $user->email         = $email;
-        $user->contributions = $this->get('contributions') ?: [];
+        $user->name          = $user->name ?: $username;
+        $user->full_name     = $user->full_name ?: $fullName;
+        $user->email         = $user->email && !strpos($user->email, '@php.net') ? $user->email : $email;
+        $user->contributions = $user->contributions ?: ($this->get('contributions') ?: []);
 
         return $user;
     }

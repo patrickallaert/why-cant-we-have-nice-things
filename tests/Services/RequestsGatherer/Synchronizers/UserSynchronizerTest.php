@@ -45,4 +45,16 @@ class UserSynchronizerTest extends TestCase
         $user     = $sync->synchronize();
         $this->assertEquals($existing->id, $user->id);
     }
+
+    public function testDoesntOverwriteInformationsWithLessPertinentOnes()
+    {
+        $existing = User::create(['name' => 'foo', 'email' => 'foo@php.net', 'full_name' => 'Marco']);
+        $sync     = new UserSynchronizer(['full_name' => 'Marco', 'email' => 'foobarz@gmail.com']);
+        $user     = $sync->synchronize();
+
+        $this->assertEquals($existing->id, $user->id);
+        $this->assertEquals('foobarz@gmail.com', $user->email);
+        $this->assertEquals('foo', $user->name);
+        $this->assertEquals('Marco', $user->full_name);
+    }
 }

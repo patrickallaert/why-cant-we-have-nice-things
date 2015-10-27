@@ -102,7 +102,7 @@ class RequestsGatherer
     protected function createAuthors(Request $request, array $authors)
     {
         foreach ($authors as $key => $author) {
-            $authors[$key] = User::firstOrCreate(['email' => $author])->id;
+            $authors[$key] = (new UserSynchronizer($author))->persist()->id;
         }
 
         $request->authors()->sync($authors);

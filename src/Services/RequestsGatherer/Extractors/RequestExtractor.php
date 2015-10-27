@@ -2,7 +2,7 @@
 namespace History\Services\RequestsGatherer\Extractors;
 
 use DateTime;
-use History\Services\EmailExtractor;
+use History\Services\IdentityExtractor;
 
 class RequestExtractor extends AbstractExtractor
 {
@@ -152,7 +152,7 @@ class RequestExtractor extends AbstractExtractor
     protected function getAuthors(array $informations)
     {
         $authors   = $this->findInformation($informations, '/Author/');
-        $extractor = new EmailExtractor($authors);
+        $extractor = new IdentityExtractor($authors);
 
         return $extractor->extract();
     }

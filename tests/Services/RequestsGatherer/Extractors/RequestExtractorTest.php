@@ -22,7 +22,10 @@ class RequestExtractorTest extends TestCase
             'status'    => 2,
             'condition' => 'Simple Yes/No option. This requires a 2/3 majority.',
             'timestamp' => DateTime::createFromFormat('Y-m-d', '2015-09-13'),
-            'authors'   => ['sean@siobud.com', 'reeze@php.net'],
+            'authors'   => [
+                ['full_name' => 'Sean DuBois', 'email' => 'sean@siobud.com',],
+                ['full_name' => 'Reeze Xia', 'email' => 'reeze@php.net'],
+            ],
             'questions' => [
                 [
                     'name'    => 'Class Constant Visibility',
@@ -49,7 +52,7 @@ class RequestExtractorTest extends TestCase
 
     public function testCanParseAuthors()
     {
-        $html = <<<'HTML'
+        $html         = <<<'HTML'
         Author:
 Foo Bar
 <a>foo@bar.com</a>
@@ -58,19 +61,36 @@ Foo Bar
 Baz Qux, <a>baz@qux.net</a>
 HTML;
         $informations = $this->getInformationsFromInformationBlock($html);
-        $this->assertEquals(['foo@bar.com', 'bar@php.net', 'baz@qux.net'], $informations['authors']);
+        $this->assertEquals([
+            ['full_name' => 'Foo Bar', 'email' => 'foo@bar.com'],
+            ['full_name' => 'Bar Foo', 'email' => 'bar@php.net'],
+            ['full_name' => 'Baz Qux', 'email' => 'baz@qux.net'],
+        ], $informations['authors']);
 
-        $html = <<<'HTML'
+        $html         = <<<'HTML'
 <strong>Author:</strong> <a href="http://www.porcupine.org/wietse/" class="urlextern" title="http://www.porcupine.org/wietse/" rel="nofollow">Wietse Venema (wietse@porcupine.org)</a> <br>
  IBM T.J. Watson Research Center <br>
  Hawthorne, NY, USA
 HTML;
         $informations = $this->getInformationsFromInformationBlock($html);
-        $this->assertEquals(['wietse@porcupine.org'], $informations['authors']);
+        $this->assertEquals([
+            ['full_name' => 'Wietse Venema', 'email' => 'wietse@porcupine.org'],
+        ], $informations['authors']);
 
         $html         = ' Author: Ryusuke Sekiyama &lt;rsky0711 at gmail . com&gt;, Sebastian Deutsch &lt;sebastian.deutsch at 9elements . com&gt;';
         $informations = $this->getInformationsFromInformationBlock($html);
-        $this->assertEquals(['rsky0711@gmail.com', 'sebastian.deutsch@9elements.com'], $informations['authors']);
+        $this->assertEquals([
+            ['full_name' => 'Ryusuke Sekiyama', 'email' => 'rsky0711@gmail.com'],
+            ['full_name' => 'Sebastian Deutsch', 'email' => 'sebastian.deutsch@9elements.com'],
+        ], $informations['authors']);
+    }
+
+    public function testCanParseAuthorsWithoutEmail()
+    {
+        $informations = $this->getInformationsFromInformationBlock('Author: Márcio Almada');
+        $this->assertEquals([
+            ['full_name' => 'Marcio Almada'],
+        ], $informations['authors']);
     }
 
     public function testCanParseConditionsFromProposedVotingChoices()
@@ -139,6 +159,12 @@ HTML;
      */
     protected function getInformationsFromHtml($html)
     {
+        // Wrap in UTF8 if needed
+        if (!strpos($html, 'DOCTYPE')) {
+            $html = '<html><head><meta charset="UTF-8"></head><body>'.$html.'</body></html>';
+        }
+
+        // Create crawler and extract
         $crawler   = new Crawler($html);
         $extractor = new RequestExtractor($crawler);
 

@@ -3,7 +3,7 @@ namespace History\Services\Internals;
 
 use History\Entities\Models\Comment;
 use History\Entities\Models\Request;
-use History\Services\EmailExtractor;
+use History\Services\IdentityExtractor;
 use History\Services\RequestsGatherer\Synchronizers\CommentSynchronizer;
 use History\Services\RequestsGatherer\Synchronizers\UserSynchronizer;
 use Illuminate\Support\Arr;
@@ -164,8 +164,8 @@ class InternalsSynchronizer
     protected function getRelatedUser(array $article)
     {
         // Get user email
-        $extractor = new EmailExtractor($article['from']);
-        $email     = head($extractor->extract());
+        $extractor = new IdentityExtractor($article['from']);
+        $email     = head($extractor->extract())['email'];
 
         // Get user name
         preg_match_all('/\((.+)\)/', $article['from'], $matches);
