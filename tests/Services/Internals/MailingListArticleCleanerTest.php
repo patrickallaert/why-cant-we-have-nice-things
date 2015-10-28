@@ -302,7 +302,7 @@ TEXT
             , $cleaned);
     }
 
-    public function testSomething()
+    public function testCanParseSpecialBoundaries()
     {
         $article = <<<'TEXT'
 Newsgroups: php.internals
@@ -435,6 +435,94 @@ It's a very useful addition with nice explicit semantics and a small
 patch.
 
 +1
+TEXT
+            , $cleaned);
+    }
+
+    public function testProperlyReplacesAllBoundaries()
+    {
+
+        $article = <<<'TEXT'
+Newsgroups: php.internals
+Path: news.php.net
+Xref: news.php.net php.internals:69847
+Return-Path: <nikita.ppv@gmail.com>
+Mailing-List: contact internals-help@lists.php.net; run by ezmlm
+Delivered-To: mailing list internals@lists.php.net
+Received: (qmail 37455 invoked from network); 24 Oct 2013 17:41:32 -0000
+Received: from unknown (HELO lists.php.net) (127.0.0.1)
+  by localhost with SMTP; 24 Oct 2013 17:41:32 -0000
+Authentication-Results: pb1.pair.com header.from=nikita.ppv@gmail.com; sender-id=pass
+Authentication-Results: pb1.pair.com smtp.mail=nikita.ppv@gmail.com; spf=pass; sender-id=pass
+Received-SPF: pass (pb1.pair.com: domain gmail.com designates 209.85.219.48 as permitted sender)
+X-PHP-List-Original-Sender: nikita.ppv@gmail.com
+X-Host-Fingerprint: 209.85.219.48 mail-oa0-f48.google.com
+Received: from [209.85.219.48] ([209.85.219.48:35291] helo=mail-oa0-f48.google.com)
+\tby pb1.pair.com (ecelerity 2.1.1.9-wez r(12769M)) with ESMTP
+\tid 61/CC-10840-CCB59625 for <internals@lists.php.net>; Thu, 24 Oct 2013 13:41:32 -0400
+Received: by mail-oa0-f48.google.com with SMTP id m17so2716562oag.21
+        for <internals@lists.php.net>; Thu, 24 Oct 2013 10:41:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        bh=CMI6M6gyu/1cMTq2zWnlyQwDohBKDYidVud9SYAS0e8=;
+        b=uzVlr30cVswMloi4oRaGrf4ZkuhpZo9pveM+r2k3YG5lcD+ualsvG4XKSQnD3QmMwb
+         0NSNkrjiE+FBY+HW+4J/8oZcZE6yGZv7tSwUgvLKD0lMciJSYifCT8kUSSn4uAjgKHBG
+         zqqlXpKUTbm2RCWQr+OkIqH7iTfMo7qdEGZZ+fYORpgpKp+BIn+rooIWE2B54gNqQSrd
+         wo9PgzyewGbqgry8p1rL2172rS1weGJydxgiLo75KJf5j++eS0ma49fSPBRTPFnlIo8c
+         bhOB45c8Tcgn3wlT+2QeWO1ISdmKSWIIEskxH4DVGehGDl2DJgoNiKce2ZfQ8tbghWIf
+         SC6A==
+MIME-Version: 1.0
+X-Received: by 10.182.149.234 with SMTP id ud10mr1698492obb.73.1382636489775;
+ Thu, 24 Oct 2013 10:41:29 -0700 (PDT)
+Received: by 10.182.54.112 with HTTP; Thu, 24 Oct 2013 10:41:29 -0700 (PDT)
+Date: Thu, 24 Oct 2013 19:41:29 +0200
+Message-ID: <CAF+90c8OgW4Nonaz+HQn+gi4r+AdaEMXsTxCAhn=WO-+aQQsZQ@mail.gmail.com>
+To: PHP internals <internals@lists.php.net>
+Content-Type: multipart/alternative; boundary=001a11348918d3a13704e9802459
+Subject: [RFC] Exceptions in the engine
+From: nikita.ppv@gmail.com (Nikita Popov)
+
+--001a11348918d3a13704e9802459
+Content-Type: text/plain; charset=ISO-8859-1
+
+Hi internals!
+
+I'd like to propose an RFC, which allows the use of exceptions within the
+engine and also allows changing existing fatal errors to exceptions:
+
+    https://wiki.php.net/rfc/engine_exceptions
+
+This topic has been cropping up in the discussions for several of the
+recent RFCs and I think the time has come to consider moving away from
+fatal errors.
+
+Thoughts?
+
+Thanks,
+Nikita
+
+--001a11348918d3a13704e9802459--
+TEXT;
+        $cleaner = new MailingListArticleCleaner();
+        $cleaned = $cleaner->cleanup(explode(PHP_EOL, $article));
+
+        $this->assertEquals(<<<'TEXT'
+Hi internals!
+
+I'd like to propose an RFC, which allows the use of exceptions within the
+engine and also allows changing existing fatal errors to exceptions:
+
+    https://wiki.php.net/rfc/engine_exceptions
+
+This topic has been cropping up in the discussions for several of the
+recent RFCs and I think the time has come to consider moving away from
+fatal errors.
+
+Thoughts?
+
+Thanks,
+Nikita
 TEXT
             , $cleaned);
     }

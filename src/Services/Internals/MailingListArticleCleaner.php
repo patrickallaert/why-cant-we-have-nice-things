@@ -164,10 +164,8 @@ class MailingListArticleCleaner
      */
     private function isBoundary($line)
     {
-        if ($this->boundary
-            && substr($line, 0, 2) === '--'
-            && substr($line, 2, strlen($this->boundary)) === $this->boundary
-        ) {
+        // If the line matches our current boundary
+        if ($this->boundary && strpos($line, '--'.$this->boundary) === 0) {
             $this->inHeaders = true;
 
             if (substr($line, 2 + strlen($this->boundary)) === '--') {
@@ -175,13 +173,12 @@ class MailingListArticleCleaner
                 array_pop($this->boundaries);
                 $this->boundary = end($this->boundaries);
             } else {
-                // Next section: start with no headers, default content type should be
-                // text/plain, but for now ignore that (see rfc 2046  5.1.3)
+                // Next section: start with no headers, default content type
                 $this->headers  = [];
                 $this->mimetype = 'text/plain';
-
-                return true;
             }
+
+            return true;
         }
 
         return false;
