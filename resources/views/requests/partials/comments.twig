@@ -1,0 +1,4 @@
+<h2 id="comments" class="text-center">Comments</h2>
+{% for comment in request.rootComments %}
+    {% include '_partials/comment.twig' %}
+{% endfor %}

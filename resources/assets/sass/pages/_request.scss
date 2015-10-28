@@ -40,6 +40,10 @@
 
     &__text {
         flex: 4;
+
+        h2 {
+            margin: 2rem 0;
+        }
     }
 
     &__contents h1 {

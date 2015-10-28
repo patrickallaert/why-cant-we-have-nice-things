@@ -1,0 +1,30 @@
+<h2 id="votes" class="text-center">Votes</h2>
+{% for question in request.questions %}
+    <div class="table-responsive">
+        <table class="table table-condensed table-striped table-hover">
+            <thead>
+            <tr>
+                <th class="text-center" colspan="2">{{ question.name }} ({{ percentage(question.approval) }} approved)</th>
+            </tr>
+            <tr>
+                <th>User</th>
+                <th class="text-right">Vote</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for vote in question.votes %}
+                <tr>
+                    <td>
+                        <a href="/users/{{ vote.user.id }}">{{ vote.user.display_name }}</a>
+                    </td>
+                    <td class="text-right {{ vote.isPositive() ? 'success' : 'danger' }}">{{ choice(question, vote) }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2" class="text-center lead">No votes yet</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endfor %}
