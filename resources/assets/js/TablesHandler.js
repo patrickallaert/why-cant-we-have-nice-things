@@ -35,7 +35,7 @@ export default class TablesHandler {
         for (let i = 0; i <= tables.length; i++) {
             const rows = this.getRowsArray(tables[i]);
             rows.forEach(row => {
-                const text = row.textContent || row.innerText;
+                const text    = row.textContent || row.innerText;
                 const matches = text.match(new RegExp(event.target.value, 'i'));
                 row.classList.toggle('filtered', !matches);
             });

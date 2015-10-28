@@ -10,7 +10,6 @@ dependencies:
   cache_directories:
     - vendor
   pre:
-    - cp .env.testing .env
     - echo "memory_limit = 1024M" > ~/.phpenv/versions/$(phpenv global)/etc/conf.d/memory.ini
     - echo "always_populate_raw_post_data = -1" > ~/.phpenv/versions/$(phpenv global)/etc/conf.d/post.ini
   override:
@@ -19,6 +18,8 @@ dependencies:
     - composer install --prefer-source --no-interaction
 
 database:
+  pre:
+    - cp .env.testing .env
   override:
     - vendor/bin/phinx migrate
 
@@ -26,3 +27,5 @@ test:
   override:
     - npm run build
     - composer test
+    - npm run lint
+    - composer lint -- --dry-run

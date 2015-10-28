@@ -14,6 +14,6 @@ if (document.querySelector('pre code')) {
 
 if (document.querySelector('.request')) {
     require.ensure([], () => {
-       require('./components/request-navigation');
+        require('./components/request-navigation');
     });
 }

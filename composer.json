@@ -49,6 +49,7 @@
     },
     "scripts": {
         "migrate": "phinx migrate",
+        "lint": "php-cs-fixer fix",
         "test": "phpunit"
     }
 }

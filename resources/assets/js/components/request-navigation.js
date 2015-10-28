@@ -10,16 +10,16 @@ const stickPoint = navigation.offsetTop;
 window.onscroll  = () => {
     const distance = navigation.offsetTop - window.pageYOffset;
     const offset   = window.pageYOffset;
-    const width = (navigation.parentNode.offsetWidth - 35) + 'px';
+    const width    = `${navigation.parentNode.offsetWidth - 35}px`;
 
     if ((distance <= 0) && !stuck) {
         navigation.classList.add('sticky');
         navigation.style.width = width;
-        stuck = true;
+        stuck                  = true;
     } else if (stuck && (offset <= stickPoint)) {
         navigation.classList.remove('sticky');
         navigation.style.width = 'auto';
-        stuck = false;
+        stuck                  = false;
     }
 };
 
