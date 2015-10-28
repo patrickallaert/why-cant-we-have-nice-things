@@ -41,6 +41,13 @@ class InternalsSynchronizer
     protected $parsed;
 
     /**
+     * The existing requests.
+     *
+     * @var array
+     */
+    protected $existingRequests;
+
+    /**
      * The created comments.
      *
      * @var array
@@ -72,13 +79,17 @@ class InternalsSynchronizer
      */
     public function synchronize()
     {
-        $this->parsed = Comment::lists('xref')->all();
+        $this->parsed           = Comment::orderBy('xref', 'DESC')->lists('xref')->all();
+        $this->existingRequests = Request::lists('id', 'name');
 
+        // Start at the last comment we parsed
+        $start = self::FIRST_RFC;
         $count = $this->internals->getTotalNumberArticles();
+        $total = $count - $start;
 
-        $progress = new ProgressBar($this->output, $count / self::CHUNK);
+        $progress = new ProgressBar($this->output, $total / self::CHUNK);
         $progress->start();
-        for ($i = self::FIRST_RFC; $i <= $count; $i += self::CHUNK) {
+        for ($i = $start; $i <= $count; $i += self::CHUNK) {
             $to = $i + (self::CHUNK - 1);
 
             // Process this chunk of articles
@@ -156,11 +167,10 @@ class InternalsSynchronizer
      */
     protected function getRelatedRequest(array $article)
     {
-        $subject          = $article['subject'];
-        $existingRequests = Request::lists('id', 'name');
+        $subject = $article['subject'];
 
         // Try to find the RFC the message's talking about
-        $request = array_get($existingRequests, $subject);
+        $request = array_get($this->existingRequests, $subject);
         if (!$request) {
             return;
         }
