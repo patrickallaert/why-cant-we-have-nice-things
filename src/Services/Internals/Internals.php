@@ -41,7 +41,7 @@ class Internals
      */
     public function getTotalNumberArticles()
     {
-        return $this->group['count'];
+        return $this->group ? $this->group['count'] : 90000;
     }
 
     /**
