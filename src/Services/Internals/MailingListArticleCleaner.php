@@ -3,6 +3,11 @@ namespace History\Services\Internals;
 
 use Illuminate\Support\Arr;
 
+/**
+ * This is an OOP version of the news.php.net code
+ * that can be found here https://git.php.net/?p=web/news.git;a=blob;f=article.php;hb=HEAD
+ * plus a bugfix here or there. Whoever made it is more its author than me.
+ */
 class MailingListArticleCleaner
 {
     /**
@@ -65,7 +70,8 @@ class MailingListArticleCleaner
         $contents = '';
         foreach ($lines as $line) {
 
-            // Skip signature
+            // If we reached the signature, skip
+            // rest of this container
             if ($this->inSignature) {
                 continue;
             }
@@ -76,7 +82,8 @@ class MailingListArticleCleaner
                 continue;
             }
 
-            // If we just hit a boundary, proceed
+            // If we just hit a boundary, reset container
+            // and proceed
             if ($this->isBoundary($line)) {
                 continue;
             }
@@ -158,30 +165,31 @@ class MailingListArticleCleaner
     }
 
     /**
+     * Whether the current line is a boundary
+     *
      * @param string $line
      *
      * @return bool
      */
     private function isBoundary($line)
     {
-        // If the line matches our current boundary
-        if ($this->boundary && strpos($line, '--'.$this->boundary) === 0) {
-            $this->inHeaders = true;
-
-            if (substr($line, 2 + strlen($this->boundary)) === '--') {
-                // End of this container
-                array_pop($this->boundaries);
-                $this->boundary = end($this->boundaries);
-            } else {
-                // Next section: start with no headers, default content type
-                $this->headers  = [];
-                $this->mimetype = 'text/plain';
-            }
-
-            return true;
+        if (!$this->boundary || strpos($line, '--'.$this->boundary) !== 0) {
+            return false;
         }
 
-        return false;
+        $this->inHeaders = true;
+
+        if (substr($line, 2 + strlen($this->boundary)) === '--') {
+            // End of this container
+            array_pop($this->boundaries);
+            $this->boundary = end($this->boundaries);
+        } else {
+            // Next section: start with no headers, default content type
+            $this->headers  = [];
+            $this->mimetype = 'text/plain';
+        }
+
+        return true;
     }
 
     /**
@@ -230,10 +238,7 @@ class MailingListArticleCleaner
     protected function convertToUtf8($string, $charset)
     {
         $converted = iconv($charset ? $charset : 'iso-8859-1', 'utf-8', $string);
-        if ($converted === false) {
-            return $string;
-        }
 
-        return $converted;
+        return $converted === false ? $string : $converted;
     }
 }

@@ -105,7 +105,7 @@ class InternalsSynchronizer
 
         $progress->finish();
 
-        return $this->created;
+        return array_values($this->created);
     }
 
     /**
@@ -116,7 +116,7 @@ class InternalsSynchronizer
     public function processArticle(array $article)
     {
         // If we already synchronized this one, skip it
-        if (in_array($article['xref'], $this->parsed, true)) {
+        if (array_key_exists($article['xref'], $this->parsed)) {
             return;
         }
 
@@ -211,7 +211,7 @@ class InternalsSynchronizer
         // Try to retrieve the comment the reference's about
         try {
             $reference = $this->internals->findArticleFromReference($reference);
-            $comment   = isset($this->parsed[$reference]) ? $this->parsed[$reference] : null;
+            $comment   = $reference && isset($this->parsed[$reference]) ? $this->parsed[$reference] : null;
         } catch (InvalidArgumentException $exception) {
             return;
         }
@@ -246,8 +246,8 @@ class InternalsSynchronizer
 
         // Save comment and append to existing
         $comment                      = $synchronizer->persist();
-        $this->created[]              = $comment;
-        $this->parsed[$comment->xred] = $comment->id;
+        $this->created[$comment->id]  = $comment;
+        $this->parsed[$comment->xref] = $comment->id;
 
         return $comment;
     }

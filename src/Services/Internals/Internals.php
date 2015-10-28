@@ -2,7 +2,6 @@
 namespace History\Services\Internals;
 
 use History\Services\Internals\Commands\Body;
-use History\Services\Internals\Commands\Xpath;
 use Illuminate\Contracts\Cache\Repository;
 use Rvdv\Nntp\Client;
 use SplFixedArray;
@@ -60,7 +59,7 @@ class Internals
     public function getArticles($from, $to)
     {
         return $this->cacheRequest($from.'-'.$to, function () use ($from, $to) {
-            $format = $this->client->overviewFormat()->getResult();
+            $format  = $this->client->overviewFormat()->getResult();
             $command = $this->client->xover($from, $to, $format);
 
             return $command->getResult();
