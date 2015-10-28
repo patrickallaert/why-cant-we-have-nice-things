@@ -2,6 +2,7 @@
 namespace History\Services\RequestsGatherer\Extractors;
 
 use DateTime;
+use Exception;
 use History\Services\IdentityExtractor;
 
 class RequestExtractor extends AbstractExtractor
@@ -61,12 +62,12 @@ class RequestExtractor extends AbstractExtractor
 
         // I'll have my own syntax highlighting, WITH BLACKJACK AND HOOKERS
         $this->crawler->filterXpath('//pre')->each(function ($code) use (&$contents) {
-            $language = str_replace('code ', '', $code->attr('class'));
+            $language    = str_replace('code ', '', $code->attr('class'));
             $newLanguage = $language === 'c' ? 'cpp' : $language;
 
             $unformatted = htmlentities($code->text());
             $unformatted = '<pre><code class="'.$newLanguage.'">'.$unformatted.'</code></pre>';
-            $contents = str_replace('<pre class="code '.$language.'">'.$code->html().'</pre>', $unformatted, $contents);
+            $contents    = str_replace('<pre class="code '.$language.'">'.$code->html().'</pre>', $unformatted, $contents);
         });
 
         return $contents;
@@ -89,8 +90,8 @@ class RequestExtractor extends AbstractExtractor
             }
 
             list(, $label, $value) = $matches;
-            $label                 = $this->cleanWhitespace($label);
-            $value                 = $this->cleanWhitespace($value);
+            $label = $this->cleanWhitespace($label);
+            $value = $this->cleanWhitespace($value);
 
             $informations[$label] = $value;
         }
@@ -186,13 +187,35 @@ class RequestExtractor extends AbstractExtractor
      */
     protected function getRequestTimestamp(array $informations)
     {
+        // Find and cleanup date string
         $text = $this->findInformation($informations, '/(created|date)/i');
-        $date = preg_replace('/(\d{4}[-\/]\d{2}[-\/]\d{2}).*/i', '$1', $text);
+        $date = preg_replace('/\([a-z\-]+\)/i', '', $text);
+        $date = preg_replace('/(\d{4}[-\/]\d{2}[-\/]\d{2}).*/i', '$1', $date);
         $date = str_replace('/', '-', $date);
+        $date = str_replace(',', ' ', $date);
         $date = trim($date);
         $date = $date ?: $text;
 
-        return (new DateTime($date))->setTime(0, 0, 0);
+        $datetime  = null;
+        $fallbacks = [null, 'Y-d-m', 'm-d - Y', 'Y M d'];
+        foreach ($fallbacks as $fallback) {
+            try {
+                $datetime = $fallback
+                    ? DateTime::createFromFormat($fallback, $date)
+                    : new DateTime($date);
+
+                // If we managed to parse the date
+                // stop trying
+                if ($datetime) {
+                    break;
+                }
+            } catch (Exception $exception) {
+                // Else proceed to the next format
+                continue;
+            }
+        }
+
+        return $datetime ? $datetime->setTime(0, 0, 0) : new DateTime();
     }
 
     /**

@@ -8,7 +8,7 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class RequestExtractorTest extends TestCase
 {
-    public function testCanGetRequestName()
+    public function testCanExtractRequest()
     {
         $html         = $this->getDummyPage('rfc');
         $informations = $this->getInformationsFromHtml($html);
@@ -21,7 +21,7 @@ class RequestExtractorTest extends TestCase
             'name'      => 'Support Class Constant Visibility',
             'status'    => 2,
             'condition' => 'Simple Yes/No option. This requires a 2/3 majority.',
-            'timestamp' => DateTime::createFromFormat('Y-m-d', '2015-09-13'),
+            'timestamp' => DateTime::createFromFormat('Y-m-d H:i:s', '2015-09-13 00:00:00'),
             'authors'   => [
                 ['full_name' => 'Sean DuBois', 'email' => 'sean@siobud.com'],
                 ['full_name' => 'Reeze Xia', 'email' => 'reeze@php.net'],
@@ -108,6 +108,24 @@ HTML;
 
         $informations = $this->getInformationsFromInformationBlock('Last update: May 9, 2011');
         $this->assertEquals(DateTime::createFromFormat('Y-m-d H:i:s', '2011-05-09 00:00:00'), $informations['timestamp']);
+
+        $informations = $this->getInformationsFromInformationBlock('Date: June 07, 2010 (re-opened)');
+        $this->assertEquals(DateTime::createFromFormat('Y-m-d H:i:s', '2010-06-07 00:00:00'), $informations['timestamp']);
+
+        $informations = $this->getInformationsFromInformationBlock('Date: April, 16th 2013');
+        $this->assertEquals(DateTime::createFromFormat('Y-m-d H:i:s', '2013-04-16 00:00:00'), $informations['timestamp']);
+
+        $informations = $this->getInformationsFromInformationBlock('Date: 2011-17-07');
+        $this->assertEquals(DateTime::createFromFormat('Y-m-d H:i:s', '2011-07-17 00:00:00'), $informations['timestamp']);
+
+        $informations = $this->getInformationsFromInformationBlock('Date: 07/04 - 2010');
+        $this->assertEquals(DateTime::createFromFormat('Y-m-d H:i:s', '2010-07-04 00:00:00'), $informations['timestamp']);
+
+        $informations = $this->getInformationsFromInformationBlock('Date: 2012 Jan 8');
+        $this->assertEquals(DateTime::createFromFormat('Y-m-d H:i:s', '2012-01-08 00:00:00'), $informations['timestamp']);
+
+        $informations = $this->getInformationsFromInformationBlock('Last update: Fuck you');
+        $this->assertEquals(new DateTime(), $informations['timestamp']);
     }
 
     public function testCanCleanupRequestTitle()

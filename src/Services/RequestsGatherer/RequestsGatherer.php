@@ -94,6 +94,8 @@ class RequestsGatherer
 
         $this->createQuestions($request, $informations['questions']);
         $this->createAuthors($request, $informations['authors']);
+
+        return $request;
     }
 
     /**
