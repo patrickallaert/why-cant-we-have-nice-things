@@ -1,0 +1,23 @@
+<h2 id="versions" class="text-center">Versions</h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Version</th>
+        <th>Changed</th>
+        <th>Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for version in request.versions %}
+        <tr>
+            <td>{{ version.version }}</td>
+            {% if version.created_at.getYear() %}
+                <td>{{ version.name }}</td>
+                <td>{{ version.created_at.toDateString() }}</td>
+            {% else %}
+                <td colspan="2">{{ version.name }}</td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

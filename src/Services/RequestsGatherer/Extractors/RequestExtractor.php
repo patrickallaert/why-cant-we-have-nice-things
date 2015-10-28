@@ -3,7 +3,6 @@ namespace History\Services\RequestsGatherer\Extractors;
 
 use DateTime;
 use DOMText;
-use Exception;
 use History\Services\IdentityExtractor;
 use Minify_HTML;
 use Symfony\Component\DomCrawler\Crawler;
@@ -24,6 +23,7 @@ class RequestExtractor extends AbstractExtractor
         $status             = $this->getStatus($informations);
         $timestamp          = $this->getRequestTimestamp($informations);
         $authors            = $this->getAuthors($informations);
+        $versions           = $this->getVersions();
 
         // Extract questions
         $questions = $this->crawler->filterXpath('//form/table[@class="inline"]')->each(function ($question) {
@@ -38,6 +38,7 @@ class RequestExtractor extends AbstractExtractor
             'authors'   => $authors,
             'timestamp' => $timestamp,
             'questions' => $questions,
+            'versions'  => $versions,
         ];
     }
 
@@ -57,23 +58,9 @@ class RequestExtractor extends AbstractExtractor
             return;
         }
 
-        // Remove voting tables
-        $tables = $contents->filterXPath('//div[form[table[@class="inline"]]]');
-        foreach ($tables as $table) {
-            // Find title next to table div
-            $previous = $table->previousSibling;
-            while ($previous instanceof DOMText) {
-                $previous = $previous->previousSibling;
-            }
-
-            // Remove title
-            if ($previous) {
-                $table->parentNode->removeChild($previous);
-            }
-
-            // Remove table
-            $table->parentNode->removeChild($table);
-        }
+        // Remove voting tables and changelog
+        $this->removeSection($contents, '//div[form[table[@class="inline"]]]');
+        $this->removeSection($contents, '//h2[@id="changelog"]/following-sibling::div');
 
         // Make tables into nice tables
         $contents->filterXPath('//table[@class="inline"]')->each(function (Crawler $table) {
@@ -203,6 +190,16 @@ class RequestExtractor extends AbstractExtractor
     }
 
     /**
+     * Get the RFC's versions.
+     */
+    protected function getVersions()
+    {
+        $crawler = $this->crawler->filterXPath('//h2[@id="changelog"]/following-sibling::div/ul');
+
+        return (new VersionExtractor($crawler))->extract();
+    }
+
+    /**
      * Get the creation/update date of a request.
      * This is pretty dirty since nobody thought about agreeing
      * on a date format so we have a bit of everything.
@@ -264,6 +261,32 @@ class RequestExtractor extends AbstractExtractor
             if (preg_match($matcher, $label)) {
                 return $value;
             }
+        }
+    }
+
+    /**
+     * Remove a section and its title from the contents.
+     *
+     * @param Crawler $contents
+     * @param string  $selector
+     */
+    protected function removeSection(Crawler $contents, $selector)
+    {
+        $sections = $contents->filterXPath($selector);
+        foreach ($sections as $section) {
+            // Find title next to section div
+            $previous = $section->previousSibling;
+            while ($previous instanceof DOMText) {
+                $previous = $previous->previousSibling;
+            }
+
+            // Remove title
+            if ($previous) {
+                $section->parentNode->removeChild($previous);
+            }
+
+            // Remove section
+            $section->parentNode->removeChild($section);
         }
     }
 }

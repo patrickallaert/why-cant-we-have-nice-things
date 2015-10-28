@@ -9,6 +9,7 @@ use History\Services\RequestsGatherer\Extractors\UserExtractor;
 use History\Services\RequestsGatherer\Synchronizers\QuestionSynchronizer;
 use History\Services\RequestsGatherer\Synchronizers\RequestSynchronizer;
 use History\Services\RequestsGatherer\Synchronizers\UserSynchronizer;
+use History\Services\RequestsGatherer\Synchronizers\VersionSynchronizer;
 use History\Services\RequestsGatherer\Synchronizers\VoteSynchronizer;
 use Illuminate\Contracts\Cache\Repository;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -75,6 +76,8 @@ class RequestsGatherer
      * Create a request from an RFC link.
      *
      * @param string $link
+     *
+     * @return Request
      */
     public function createRequest($link)
     {
@@ -92,10 +95,26 @@ class RequestsGatherer
         $synchronizer         = new RequestSynchronizer($informations);
         $request              = $synchronizer->persist();
 
+        $this->createVersions($request, $informations['versions']);
         $this->createQuestions($request, $informations['questions']);
         $this->createAuthors($request, $informations['authors']);
 
         return $request;
+    }
+
+    /**
+     * Create an RFC's versions.
+     *
+     * @param Request $request
+     * @param array   $versions
+     */
+    protected function createVersions(Request $request, array $versions)
+    {
+        foreach ($versions as $version) {
+            $version['request_id'] = $request->id;
+            $synchronizer          = new VersionSynchronizer($version);
+            $synchronizer->persist();
+        }
     }
 
     /**

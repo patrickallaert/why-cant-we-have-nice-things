@@ -44,6 +44,10 @@ class RequestExtractorTest extends TestCase
                     ],
                 ],
             ],
+            'versions' => [
+                ['version' => '0.1', 'name' => 'Initial version', 'timestamp' => false],
+                ['version' => '0.2', 'name' => 'Adopted by Sean DuBois sean@siobud.com', 'timestamp' => false],
+            ],
         ], $informations);
 
         $this->assertNotContains('<pre class="code php">', $contents);
@@ -239,7 +243,7 @@ class="level1"><ul><li>Status: i has voting</li></ul></div><pre>
     bar
 </pre>
 HTML
-, $extractor['contents']);
+            , $extractor['contents']);
     }
 
     public function testCanConvertCodeblocks()
@@ -286,6 +290,32 @@ HTML;
         $this->assertEquals(<<<'HTML'
 <table
 class="table table-striped table-hover"><tbody><tr>Some unrelated table</tr></tbody></table>
+HTML
+            , $extractor['contents']);
+    }
+
+    public function testCanStripChangelogFromContent()
+    {
+        $html = <<<'HTML'
+<div class="page group">
+<p>foobar</p>
+
+<h2 class="sectionedit14" id="changelog">Changelog</h2>
+<div class="level2">
+<ul>
+<li class="level1"><div class="li"> V0.1 Initial version</div>
+</li>
+<li class="level1"><div class="li"> V0.2 Adopted by Sean DuBois <a href="mailto:sean@siobud.com" class="mail" title="sean@siobud.com">sean@siobud.com</a></div>
+</li>
+</ul>
+
+</div>
+</div>
+HTML;
+
+        $extractor = $this->getInformationsFromHtml($html);
+        $this->assertEquals(<<<'HTML'
+<p>foobar</p>
 HTML
             , $extractor['contents']);
     }

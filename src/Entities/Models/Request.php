@@ -76,6 +76,16 @@ class Request extends AbstractModel
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
+    public function versions()
+    {
+        return $this->hasMany(Version::class)->orderBy('version', 'ASC');
+    }
+
+    /**
+     * @codeCoverageIgnore
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function comments()
     {
         return $this->hasMany(Comment::class)->oldest();

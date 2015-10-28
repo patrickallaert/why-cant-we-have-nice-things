@@ -41,6 +41,10 @@
                 {{ request.contents | raw }}
             </section>
 
+            {% if request.versions.count() %}
+                {% include 'requests/partials/versions.twig' %}
+            {% endif %}
+
             {% if request.votes.count() %}
                 {% include 'requests/partials/votes.twig' %}
             {% endif %}
