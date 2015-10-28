@@ -31,8 +31,8 @@ class SyncAllCommand
      */
     protected $commands = [
         'sync:requests',
-        //'sync:internals',
         'sync:stats',
+        'sync:internals',
     ];
 
     /**
