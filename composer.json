@@ -29,12 +29,12 @@
     },
     "require-dev": {
         "fabpot/php-cs-fixer": "^1.10",
+        "league/factory-muffin": "^2.1",
         "maximebf/debugbar": "^1.10",
+        "mockery/mockery": "^0.9.4",
         "phpunit/phpunit": "^5.0",
         "psy/psysh": "^0.5.2",
-        "symfony/var-dumper": "^2.7",
-        "mockery/mockery": "^0.9.4",
-        "league/factory-muffin": "^2.1"
+        "symfony/var-dumper": "^2.7"
     },
     "autoload": {
         "psr-4": {

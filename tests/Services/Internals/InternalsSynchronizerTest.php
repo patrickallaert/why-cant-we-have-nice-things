@@ -10,7 +10,7 @@ class InternalsSynchronizerTest extends TestCase
 {
     public function testCanFetchArticles()
     {
-        $lastArticle    = 41000;
+        $lastArticle    = 40000;
         $numberArticles = ($lastArticle - 40000) / InternalsSynchronizer::CHUNK;
 
         $request = Request::create(['name' => 'foobar']);

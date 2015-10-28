@@ -2,10 +2,12 @@
 namespace History;
 
 use Carbon\Carbon;
+use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Database\Capsule\Manager;
 use League\Container\Container;
 use League\Container\ContainerInterface;
 use Mockery;
+use Mockery\MockInterface;
 use PHPUnit_Framework_TestCase;
 
 abstract class TestCase extends PHPUnit_Framework_TestCase
@@ -44,5 +46,28 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
     protected function getDummyPage($page)
     {
         return file_get_contents(__DIR__.'/_pages/'.$page.'.html');
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    /////////////////////////////// MOCKS ////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+
+    /**
+     * @param array $cached
+     *
+     * @return MockInterface
+     */
+    protected function mockCache(array $cached = [])
+    {
+        $cache = Mockery::mock(Repository::class);
+        $cache->shouldReceive('rememberForever')->andReturnUsing(function ($key, $callback) use ($cached) {
+            if (array_key_exists($key, $cached)) {
+                return $cached[$key];
+            }
+
+            return $callback();
+        });
+
+        return $cache;
     }
 }

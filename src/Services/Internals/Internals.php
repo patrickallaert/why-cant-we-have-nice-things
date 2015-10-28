@@ -3,13 +3,13 @@ namespace History\Services\Internals;
 
 use History\Services\Internals\Commands\Body;
 use Illuminate\Contracts\Cache\Repository;
-use Rvdv\Nntp\Client;
+use Rvdv\Nntp\ClientInterface;
 use SplFixedArray;
 
 class Internals
 {
     /**
-     * @var Client
+     * @var ClientInterface
      */
     protected $client;
 
@@ -31,10 +31,10 @@ class Internals
     /**
      * Internals constructor.
      *
-     * @param Repository $cache
-     * @param Client     $client
+     * @param Repository      $cache
+     * @param ClientInterface $client
      */
-    public function __construct(Repository $cache, Client $client)
+    public function __construct(Repository $cache, ClientInterface $client)
     {
         $this->cache  = $cache;
         $this->client = $client;
@@ -45,6 +45,8 @@ class Internals
      */
     public function getTotalNumberArticles()
     {
+        $this->connectIfNeeded();
+
         return $this->group ? $this->group['count'] : 90000;
     }
 
