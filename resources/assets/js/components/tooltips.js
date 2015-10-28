@@ -1,7 +1,7 @@
 import Tooltip from 'bootstrap.native/lib/tooltip-native';
+import each from '../helpers/each';
 
 // Setup tooltips on each abbr element
-const tooltips = document.querySelectorAll('abbr');
-for (let i = 0; i < tooltips.length; i++) {
-    new Tooltip(tooltips[i], {});
-}
+each('abbr', tooltip => {
+    new Tooltip(tooltip, {});
+});

@@ -1,8 +1,6 @@
+import each from '../helpers/each';
+
 const navigation = document.querySelector('.request__navigation ul');
-const titles     = Reflect.apply(
-    Array.prototype.slice,
-    document.querySelectorAll('h1, h2, h3, h4, h5'), [0]
-);
 
 // Simulate position: sticky
 let stuck        = false;
@@ -25,7 +23,7 @@ window.onscroll  = () => {
 
 // Gather links on the page
 const links = [];
-titles.forEach(title => {
+each('h1, h2, h3, h4, h5', title => {
     const id    = title.getAttribute('id');
     const name  = title.innerText.trim();
     const level = title.tagName.toLowerCase();
