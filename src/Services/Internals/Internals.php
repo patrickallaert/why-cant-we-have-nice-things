@@ -60,7 +60,7 @@ class Internals
     public function getArticles($from, $to)
     {
         return $this->cacheRequest($from.'-'.$to, function () use ($from, $to) {
-            $format  = $this->client->overviewFormat()->getResult();
+            $format = $this->client->overviewFormat()->getResult();
             $command = $this->client->xover($from, $to, $format);
 
             return $command->getResult();
@@ -101,7 +101,7 @@ class Internals
         return $this->cache->rememberForever('xpath.'.$xpath, function () use ($xpath) {
             fputs($this->socket, 'XPATH '.$xpath."\r\n");
             $response = fgets($this->socket, 1024);
-            list ($code, $reference) = explode(' ', $response, 2);
+            list($code, $reference) = explode(' ', $response, 2);
             $reference = str_replace('/', ':', $reference);
             $reference = trim($reference, "\r\n");
 
@@ -114,7 +114,7 @@ class Internals
     //////////////////////////////////////////////////////////////////////
 
     /**
-     * Execute a request and cache it
+     * Execute a request and cache it.
      *
      * @param string   $key
      * @param callable $callback
@@ -131,7 +131,7 @@ class Internals
     }
 
     /**
-     * Connect if needed
+     * Connect if needed.
      */
     protected function connectIfNeeded()
     {

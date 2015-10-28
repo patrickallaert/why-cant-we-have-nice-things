@@ -8,7 +8,6 @@ use History\Console\Commands\Sync\SyncRequestsCommand;
 use History\Console\Commands\Sync\SyncStatsCommand;
 use History\Console\Commands\Tinker;
 use History\Console\Commands\TinkerCommand;
-use History\Providers\SyncInternalsCommandI;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Silly\Application;
 

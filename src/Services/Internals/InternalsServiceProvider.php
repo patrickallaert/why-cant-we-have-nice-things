@@ -24,9 +24,9 @@ class InternalsServiceProvider extends AbstractServiceProvider
     public function register()
     {
         $this->container->share(Internals::class, function () {
-            $cache      = $this->container->get(Repository::class);
+            $cache = $this->container->get(Repository::class);
             $connection = new Connection('news.php.net', 119);
-            $client     = new Client($connection);
+            $client = new Client($connection);
 
             return new Internals($cache, $client);
         });

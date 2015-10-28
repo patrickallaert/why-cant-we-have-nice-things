@@ -52,7 +52,7 @@ class RequestExtractorTest extends TestCase
 
     public function testCanParseAuthors()
     {
-        $html         = <<<'HTML'
+        $html = <<<'HTML'
         Author:
 Foo Bar
 <a>foo@bar.com</a>
@@ -67,7 +67,7 @@ HTML;
             ['full_name' => 'Baz Qux', 'email' => 'baz@qux.net'],
         ], $informations['authors']);
 
-        $html         = <<<'HTML'
+        $html = <<<'HTML'
 <strong>Author:</strong> <a href="http://www.porcupine.org/wietse/" class="urlextern" title="http://www.porcupine.org/wietse/" rel="nofollow">Wietse Venema (wietse@porcupine.org)</a> <br>
  IBM T.J. Watson Research Center <br>
  Hawthorne, NY, USA
@@ -143,7 +143,7 @@ HTML;
 
     public function testIgnoresStatusIfAllPollsAreClosed()
     {
-        $html         = <<<'HTML'
+        $html = <<<'HTML'
 <div class="page group">
     <div class="level1"><ul><li>Status: i has voting</li></ul></div>
 
@@ -160,7 +160,7 @@ HTML;
 
         $this->assertEquals(3, $informations['status']);
 
-        $html         = <<<'HTML'
+        $html = <<<'HTML'
 <div class="page group">
     <div class="level1"><ul><li>Status: i has voting</li></ul></div>
 

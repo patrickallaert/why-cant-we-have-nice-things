@@ -82,12 +82,12 @@ class MailingListArticleCleaner
             }
 
             // If we're not reading text, fuck it
-            if (strlen($this->mimetype) && !in_array($this->mimetype, ['text/plain', 'multipart/signed'])) {
+            if (strlen($this->mimetype) && !in_array($this->mimetype, ['text/plain', 'multipart/signed'], true)) {
                 continue;
             }
 
             // If we just got the signature, stop reading
-            if (preg_match("/^-- ?$/", $line)) {
+            if (preg_match('/^-- ?$/', $line)) {
                 $this->inSignature = true;
                 continue;
             }
@@ -165,12 +165,12 @@ class MailingListArticleCleaner
     private function isBoundary($line)
     {
         if ($this->boundary
-            && substr($line, 0, 2) == '--'
-            && substr($line, 2, strlen($this->boundary)) == $this->boundary
+            && substr($line, 0, 2) === '--'
+            && substr($line, 2, strlen($this->boundary)) === $this->boundary
         ) {
             $this->inHeaders = true;
 
-            if (substr($line, 2 + strlen($this->boundary)) == '--') {
+            if (substr($line, 2 + strlen($this->boundary)) === '--') {
                 // End of this container
                 array_pop($this->boundaries);
                 $this->boundary = end($this->boundaries);
@@ -178,7 +178,7 @@ class MailingListArticleCleaner
                 // Next section: start with no headers, default content type should be
                 // text/plain, but for now ignore that (see rfc 2046  5.1.3)
                 $this->headers  = [];
-                $this->mimetype = "text/plain";
+                $this->mimetype = 'text/plain';
 
                 return true;
             }

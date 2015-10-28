@@ -304,7 +304,6 @@ TEXT
 
     public function testSomething()
     {
-
         $article = <<<'TEXT'
 Newsgroups: php.internals
 Path: news.php.net
