@@ -30,6 +30,5 @@ class RequestsGathererTest extends TestCase
         $request  = $gatherer->createRequest($url);
 
         $this->assertNull($request);
-
     }
 }

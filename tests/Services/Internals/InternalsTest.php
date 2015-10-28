@@ -2,7 +2,6 @@
 namespace History\Services\Internals;
 
 use History\TestCase;
-use Illuminate\Contracts\Cache\Repository;
 use Mockery;
 use Mockery\MockInterface;
 use Rvdv\Nntp\ClientInterface;

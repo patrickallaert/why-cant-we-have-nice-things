@@ -165,7 +165,7 @@ class MailingListArticleCleaner
     }
 
     /**
-     * Whether the current line is a boundary
+     * Whether the current line is a boundary.
      *
      * @param string $line
      *

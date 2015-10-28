@@ -35,7 +35,7 @@ class QuestionSynchronizer extends AbstractSynchronizer
             'request_id' => $this->request->id,
         ]);
 
-        $question->choices = $this->get('choices');
+        $question->choices    = $this->get('choices');
         $question->request_id = $this->request->id;
 
         return $question;

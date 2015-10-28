@@ -441,7 +441,6 @@ TEXT
 
     public function testProperlyReplacesAllBoundaries()
     {
-
         $article = <<<'TEXT'
 Newsgroups: php.internals
 Path: news.php.net
