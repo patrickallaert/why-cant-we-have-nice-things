@@ -65,16 +65,8 @@ class MailingListArticleCleaner
         $contents = '';
         foreach ($lines as $line) {
 
-            // Skip signature and boundaries
-            if (
-                $this->inSignature ||
-                (substr($line, 0, 2) === '--' && !$this->isSignatureBeginning($line))
-            ) {
-                continue;
-            }
-
-            // If we're not reading text, fuck it
-            if (strlen($this->mimetype) && $this->mimetype !== 'text/plain') {
+            // Skip signature
+            if ($this->inSignature) {
                 continue;
             }
 
@@ -84,8 +76,18 @@ class MailingListArticleCleaner
                 continue;
             }
 
+            // If we just hit a boundary, proceed
+            if ($this->isBoundary($line)) {
+                continue;
+            }
+
+            // If we're not reading text, fuck it
+            if (strlen($this->mimetype) && !in_array($this->mimetype, ['text/plain', 'multipart/signed'])) {
+                continue;
+            }
+
             // If we just got the signature, stop reading
-            if ($this->isSignatureBeginning($line)) {
+            if (preg_match("/^-- ?$/", $line)) {
                 $this->inSignature = true;
                 continue;
             }
@@ -139,7 +141,7 @@ class MailingListArticleCleaner
                 $this->charset = trim($matches[2]);
             }
 
-            if (preg_match('/boundary=(["\']?)(.+)\1/is', $this->headers['content-type'], $matches)) {
+            if (preg_match('/boundary=(["\']?)([^;]+)\1/is', $this->headers['content-type'], $matches)) {
                 $this->boundaries[] = trim($matches[2]);
                 $this->boundary     = end($this->boundaries);
             }
@@ -153,6 +155,36 @@ class MailingListArticleCleaner
         // Save encoding for later
         $encoding       = Arr::get($this->headers, 'content-transfer-encoding');
         $this->encoding = strtolower(trim($encoding));
+    }
+
+    /**
+     * @param string $line
+     *
+     * @return bool
+     */
+    private function isBoundary($line)
+    {
+        if ($this->boundary
+            && substr($line, 0, 2) == '--'
+            && substr($line, 2, strlen($this->boundary)) == $this->boundary
+        ) {
+            $this->inHeaders = true;
+
+            if (substr($line, 2 + strlen($this->boundary)) == '--') {
+                // End of this container
+                array_pop($this->boundaries);
+                $this->boundary = end($this->boundaries);
+            } else {
+                // Next section: start with no headers, default content type should be
+                // text/plain, but for now ignore that (see rfc 2046  5.1.3)
+                $this->headers  = [];
+                $this->mimetype = "text/plain";
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -206,15 +238,5 @@ class MailingListArticleCleaner
         }
 
         return $converted;
-    }
-
-    /**
-     * @param string $line
-     *
-     * @return bool
-     */
-    private function isSignatureBeginning($line)
-    {
-        return $line === '-- ';
     }
 }
