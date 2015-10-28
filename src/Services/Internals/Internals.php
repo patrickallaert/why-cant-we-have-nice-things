@@ -25,6 +25,11 @@ class Internals
     private $cache;
 
     /**
+     * @var resource
+     */
+    protected $socket;
+
+    /**
      * Internals constructor.
      *
      * @param Repository $cache
@@ -80,16 +85,27 @@ class Internals
     }
 
     /**
-     * @param string $reference
+     * @param string $xpath
      *
      * @return string
      */
-    public function findArticleFromReference($reference)
+    public function findArticleFromReference($xpath)
     {
-        return $this->cache->rememberForever('xpath-'.$reference, function () use ($reference) {
-            return $this->client
-                ->sendCommand(new Xpath($reference))
-                ->getResult();
+        // Streamed sockets don't play well with XPATH for
+        // some reason so using a simple socket here
+        if (!$this->socket) {
+            //$this->client->disconnect();
+            $this->socket = fsockopen('tcp://news.php.net', 119);
+        }
+
+        return $this->cache->rememberForever('xpath.'.$xpath, function () use ($xpath) {
+            fputs($this->socket, 'XPATH '.$xpath."\r\n");
+            $response = fgets($this->socket, 1024);
+            list ($code, $reference) = explode(' ', $response, 2);
+            $reference = str_replace('/', ':', $reference);
+            $reference = trim($reference, "\r\n");
+
+            return $code === '223' ? $reference : null;
         });
     }
 

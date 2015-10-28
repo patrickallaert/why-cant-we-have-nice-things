@@ -79,7 +79,7 @@ class InternalsSynchronizer
      */
     public function synchronize()
     {
-        $this->parsed           = Comment::orderBy('xref', 'DESC')->lists('xref')->all();
+        $this->parsed           = Comment::orderBy('xref', 'DESC')->lists('id', 'xref')->all();
         $this->existingRequests = Request::lists('id', 'name');
 
         // Start at the last comment we parsed
@@ -88,6 +88,8 @@ class InternalsSynchronizer
         $total = $count - $start;
 
         $progress = new ProgressBar($this->output, $total / self::CHUNK);
+        $progress->setFormat("%message%\n%current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
+        $progress->setMessage('Getting messages');
         $progress->start();
         for ($i = $start; $i <= $count; $i += self::CHUNK) {
             $to = $i + (self::CHUNK - 1);
@@ -95,6 +97,7 @@ class InternalsSynchronizer
             // Process this chunk of articles
             $articles = $this->internals->getArticles($i, $to);
             foreach ($articles as $article) {
+                $progress->setMessage('Getting message '.$article['xref']);
                 $this->processArticle($article);
             }
             $progress->advance();
@@ -201,28 +204,28 @@ class InternalsSynchronizer
     private function getCommentFromReference($references)
     {
         // Just get the last reference cause
-        $references = explode(' ', $references);
-        $reference  = last($references);
-
-        return;
+        $references = explode('>', $references);
+        $references = array_filter($references);
+        $reference  = trim(last($references).'>');
 
         // Try to retrieve the comment the reference's about
         try {
             $reference = $this->internals->findArticleFromReference($reference);
-            $comment   = Comment::where('xref', $reference)->first();
+            $comment   = isset($this->parsed[$reference]) ? $this->parsed[$reference] : null;
         } catch (InvalidArgumentException $exception) {
             return;
         }
 
-        return $comment ? $comment->id : null;
+        return $comment ?: null;
     }
 
     /**
      * Create a comment from a NNTP article.
      *
-     * @param array $article
-     * @param int   $request
-     * @param int   $user
+     * @param array    $article
+     * @param int      $request
+     * @param int      $user
+     * @param int|null $comment
      *
      * @return Comment
      */
@@ -242,9 +245,9 @@ class InternalsSynchronizer
         ]));
 
         // Save comment and append to existing
-        $comment         = $synchronizer->persist();
-        $this->created[] = $comment;
-        $this->parsed[]  = $comment->xref;
+        $comment                      = $synchronizer->persist();
+        $this->created[]              = $comment;
+        $this->parsed[$comment->xred] = $comment->id;
 
         return $comment;
     }
