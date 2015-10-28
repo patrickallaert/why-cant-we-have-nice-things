@@ -9,7 +9,9 @@
         </h4>
     </header>
 
-    {{ comment.parsed_contents|raw }}
+    <div class="comment__body">
+        {{ comment.parsed_contents|raw }}
+    </div>
 </article>
 
 <div class="comment__children">

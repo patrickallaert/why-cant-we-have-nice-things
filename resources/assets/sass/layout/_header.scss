@@ -15,7 +15,7 @@
 
     a {
         color: white;
-        transition: color 0.3s;
+        transition: color $transition;
 
         &:hover {
             color: $color-green;
