@@ -11,6 +11,7 @@
             <th class="text-right"># of votes</th>
             <th class="text-right"># of comments</th>
             <th class="text-right">Approval %</th>
+            <th class="text-center">Version</th>
             <th class="text-center">Last update</th>
             <th class="text-center">Status</th>
         </tr>
@@ -24,6 +25,7 @@
                 <td class="text-right">{{ request.votes.count() }}</td>
                 <td class="text-right">{{ request.comments.count() }}</td>
                 <td class="text-right">{{ percentage(request.approval) }}</td>
+                <td class="text-center">{{ request.versions.first().version }}</td>
                 <td class="text-center">{{ request.created_at.toDateString() }}</td>
                 <td class="text-center {{ ['danger', '', '', '', 'success'][request.status] }}">{{ request.status_label }}</td>
             </tr>

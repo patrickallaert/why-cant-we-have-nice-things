@@ -78,7 +78,7 @@ class Request extends AbstractModel
      */
     public function versions()
     {
-        return $this->hasMany(Version::class)->orderBy('version', 'ASC');
+        return $this->hasMany(Version::class)->orderBy('version', 'DESC');
     }
 
     /**
