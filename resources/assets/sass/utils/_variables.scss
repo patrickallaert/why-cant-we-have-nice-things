@@ -1,10 +1,12 @@
 // Colors
 //////////////////////////////////////////////////////////////////////
 
-$color-grey: #ECF0F1;
-$color-red: #E74C3C;
-$color-green: #2ECC71;
+$color-grey: hsl(192, 15%, 93%);
+$color-red: hsl(5, 80%, 60%);
+$color-green: hsl(145, 60%, 50%);
+$color-blue: hsl(205, 70%, 40%);
 
+$color-header: $color-blue;
 $color-text: lighten(black, 40);
 
 // Font stacks
