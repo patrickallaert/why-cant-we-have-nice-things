@@ -18,6 +18,13 @@ class IdentitityExtractorTest extends TestCase
         ]);
     }
 
+    public function testRemoveTrailingCharacters()
+    {
+        $this->assertExtracted('"Clint Priest" (phpdev at zerocue dot com)', [
+            ['full_name' => 'Clint Priest', 'email' => 'phpdev@zerocue.com'],
+        ]);
+    }
+
     /**
      * @param string $input
      * @param array  $output

@@ -74,7 +74,7 @@ class IdentityExtractor
 
             // Check if email is valid, if not
             // throw it away
-            $email = trim($email, ' /');
+            $email = $this->trimCharacters($email);
             $email = filter_var($email, FILTER_VALIDATE_EMAIL) ? $email : null;
             $names = str_replace($email, '', $names);
 
@@ -92,7 +92,7 @@ class IdentityExtractor
         $names = preg_split('/(,|  |\n)/', $names);
         $names = array_filter($names);
         foreach ($names as $key => $name) {
-            $name = trim($name, ' /');
+            $name = $this->trimCharacters($name);
 
             // Special cases for that one guy who
             // put his whole resume as name and other
@@ -100,11 +100,23 @@ class IdentityExtractor
             if (
                 strpos($name, 'Watson Research') ||
                 strlen($name) <= 3 ||
-                strpos($name, 'http') !== false) {
+                strpos($name, '?') !== false ||
+                strpos($name, 'http') !== false
+            ) {
                 continue;
             }
 
             $this->names[$key] = $name;
         }
+    }
+
+    /**
+     * @param string $string
+     *
+     * @return string
+     */
+    protected function trimCharacters($string)
+    {
+        return trim($string, ' /"=');
     }
 }
