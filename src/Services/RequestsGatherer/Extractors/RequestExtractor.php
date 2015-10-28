@@ -214,34 +214,8 @@ class RequestExtractor extends AbstractExtractor
     protected function getRequestTimestamp(array $informations)
     {
         // Find and cleanup date string
-        $text = $this->findInformation($informations, '/(created|date)/i');
-        $date = preg_replace('/\([a-z\-]+\)/i', '', $text);
-        $date = preg_replace('/(\d{4}[-\/]\d{2}[-\/]\d{2}).*/i', '$1', $date);
-        $date = str_replace('/', '-', $date);
-        $date = str_replace(',', ' ', $date);
-        $date = trim($date);
-        $date = $date ?: $text;
-
-        // Loop over various formats until we
-        // find one that fits
-        $datetime  = null;
-        $fallbacks = [null, 'Y-d-m', 'm-d - Y', 'Y M d'];
-        foreach ($fallbacks as $fallback) {
-            try {
-                $datetime = $fallback
-                    ? DateTime::createFromFormat($fallback, $date)
-                    : new DateTime($date);
-
-                // If we managed to parse the date
-                // stop trying
-                if ($datetime) {
-                    break;
-                }
-            } catch (Exception $exception) {
-                // Else proceed to the next format
-                continue;
-            }
-        }
+        $text           = $this->findInformation($informations, '/(created|date)/i');
+        list($datetime) = $this->parseDate($text);
 
         // Try to grab date from footer
         $footer = $this->crawler->filterXPath('//div[@class="docInfo"]');
