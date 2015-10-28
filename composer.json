@@ -17,6 +17,7 @@
         "league/container": "^2.0",
         "league/route": "2.*@dev",
         "mnapoli/silly": "^1.1",
+        "mrclay/minify": "^2.2",
         "robmorgan/phinx": "^0.4.6",
         "rvdv/nntp": "^0.6.0",
         "symfony/css-selector": "^2.7",

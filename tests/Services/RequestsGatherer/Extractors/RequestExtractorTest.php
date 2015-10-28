@@ -206,6 +206,30 @@ HTML;
         $this->assertEquals(4, $informations['status']);
     }
 
+    public function testMinifiesHtmlContent()
+    {
+        $html = <<<'HTML'
+<div class="page group">
+    <!-- lol -->
+    <div class="level1"><ul><li>Status: i has voting</li></ul></div>
+<pre>
+    foo
+    bar
+</pre>
+</div>
+HTML;
+
+        $extractor = $this->getInformationsFromHtml($html);
+        $this->assertEquals(<<<'HTML'
+<div
+class="level1"><ul><li>Status: i has voting</li></ul></div><pre>
+    foo
+    bar
+</pre>
+HTML
+, $extractor['contents']);
+    }
+
     //////////////////////////////////////////////////////////////////////
     ////////////////////////////// HELPERS ///////////////////////////////
     //////////////////////////////////////////////////////////////////////

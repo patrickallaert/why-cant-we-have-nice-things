@@ -4,6 +4,7 @@ namespace History\Services\RequestsGatherer\Extractors;
 use DateTime;
 use Exception;
 use History\Services\IdentityExtractor;
+use Minify_HTML;
 
 class RequestExtractor extends AbstractExtractor
 {
@@ -69,6 +70,11 @@ class RequestExtractor extends AbstractExtractor
             $unformatted = '<pre><code class="'.$newLanguage.'">'.$unformatted.'</code></pre>';
             $contents    = str_replace('<pre class="code '.$language.'">'.$code->html().'</pre>', $unformatted, $contents);
         });
+
+        // Minify contents
+        $contents = Minify_HTML::minify($contents, [
+            'xhtml' => false,
+        ]);
 
         return $contents;
     }
