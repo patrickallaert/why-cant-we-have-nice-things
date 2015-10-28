@@ -2,6 +2,7 @@
 namespace History\Services\Internals;
 
 use History\Services\Internals\Commands\Body;
+use History\Services\Internals\Commands\Xpath;
 use Illuminate\Contracts\Cache\Repository;
 use Rvdv\Nntp\ClientInterface;
 use SplFixedArray;
@@ -22,11 +23,6 @@ class Internals
      * @var Repository
      */
     private $cache;
-
-    /**
-     * @var resource
-     */
-    protected $socket;
 
     /**
      * Internals constructor.
@@ -92,21 +88,8 @@ class Internals
      */
     public function findArticleFromReference($xpath)
     {
-        // Streamed sockets don't play well with XPATH for
-        // some reason so using a simple socket here
-        if (!$this->socket) {
-            //$this->client->disconnect();
-            $this->socket = fsockopen('tcp://news.php.net', 119);
-        }
-
-        return $this->cache->rememberForever('xpath.'.$xpath, function () use ($xpath) {
-            fputs($this->socket, 'XPATH '.$xpath."\r\n");
-            $response = fgets($this->socket, 1024);
-            list($code, $reference) = explode(' ', $response, 2);
-            $reference = str_replace('/', ':', $reference);
-            $reference = trim($reference, "\r\n");
-
-            return $code === '223' ? $reference : null;
+        return $this->cacheRequest('xpath-'.$xpath, function () use ($xpath) {
+            return $this->client->sendCommand(new Xpath($xpath))->getResult();
         });
     }
 

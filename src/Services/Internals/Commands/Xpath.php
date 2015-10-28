@@ -30,7 +30,7 @@ class Xpath extends Command
     {
         $this->reference = $reference;
 
-        parent::__construct([], true);
+        parent::__construct([]);
     }
 
     /**
