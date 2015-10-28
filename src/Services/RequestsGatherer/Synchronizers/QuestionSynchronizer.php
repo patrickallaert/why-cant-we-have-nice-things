@@ -31,10 +31,11 @@ class QuestionSynchronizer extends AbstractSynchronizer
     {
         $question = Question::firstOrNew([
             'name'       => $this->get('name'),
-            'choices'    => $this->get('choices'),
+            'choices'    => json_encode($this->get('choices')),
             'request_id' => $this->request->id,
         ]);
 
+        $question->choices = $this->get('choices');
         $question->request_id = $this->request->id;
 
         return $question;
