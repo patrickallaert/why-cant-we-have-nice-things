@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "511b283d52de843e23d4c97110752eca",
-    "content-hash": "e32ec9b53c12f43ce5ec2a3c973fad3d",
+    "hash": "d78fe4a3e07edb58e20d68c0b7b3e142",
+    "content-hash": "45b37042076c5dd1c3593edec60fbed6",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1129,16 +1129,16 @@
         },
         {
             "name": "rvdv/nntp",
-            "version": "v0.6.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/RobinvdVleuten/php-nntp.git",
-                "reference": "a232313212212d0c0660497586af1a88e823dbf9"
+                "url": "https://github.com/Anahkiasen/php-nntp.git",
+                "reference": "dcccc6897b960a710c37d7d22583ed2dfb5b77f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RobinvdVleuten/php-nntp/zipball/a232313212212d0c0660497586af1a88e823dbf9",
-                "reference": "a232313212212d0c0660497586af1a88e823dbf9",
+                "url": "https://api.github.com/repos/Anahkiasen/php-nntp/zipball/dcccc6897b960a710c37d7d22583ed2dfb5b77f6",
+                "reference": "dcccc6897b960a710c37d7d22583ed2dfb5b77f6",
                 "shasum": ""
             },
             "require": {
@@ -1158,7 +1158,6 @@
                     "Rvdv\\Nntp\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1169,7 +1168,10 @@
                 }
             ],
             "description": "Client for communicating with servers throught the Network News Transfer Protocol (NNTP) protocol.",
-            "time": "2014-08-20 07:47:40"
+            "support": {
+                "source": "https://github.com/Anahkiasen/php-nntp/tree/master"
+            },
+            "time": "2015-10-28 21:05:07"
         },
         {
             "name": "symfony/config",
@@ -3700,7 +3702,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "league/route": 20
+        "league/route": 20,
+        "rvdv/nntp": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

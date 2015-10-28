@@ -19,7 +19,7 @@
         "mnapoli/silly": "^1.1",
         "mrclay/minify": "^2.2",
         "robmorgan/phinx": "^0.4.6",
-        "rvdv/nntp": "^0.6.0",
+        "rvdv/nntp": "0.7.*@dev",
         "symfony/css-selector": "^2.7",
         "symfony/dom-crawler": "^2.7",
         "symfony/psr-http-message-bridge": "^0.2.0",
@@ -37,6 +37,12 @@
         "psy/psysh": "^0.5.2",
         "symfony/var-dumper": "^2.7"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Anahkiasen/php-nntp"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "History\\": "src"
