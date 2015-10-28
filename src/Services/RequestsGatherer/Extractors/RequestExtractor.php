@@ -2,9 +2,11 @@
 namespace History\Services\RequestsGatherer\Extractors;
 
 use DateTime;
+use DOMText;
 use Exception;
 use History\Services\IdentityExtractor;
 use Minify_HTML;
+use Symfony\Component\DomCrawler\Crawler;
 
 class RequestExtractor extends AbstractExtractor
 {
@@ -17,7 +19,6 @@ class RequestExtractor extends AbstractExtractor
     {
         // Extract Request informations
         $name               = $this->getRequestName();
-        $contents           = $this->getContents();
         $majorityConditions = $this->getMajorityConditions();
         $informations       = $this->getInformations();
         $status             = $this->getStatus($informations);
@@ -31,7 +32,7 @@ class RequestExtractor extends AbstractExtractor
 
         return [
             'name'      => $name,
-            'contents'  => $contents,
+            'contents'  => $this->getContents(),
             'status'    => $status,
             'condition' => $majorityConditions,
             'authors'   => $authors,
@@ -56,27 +57,46 @@ class RequestExtractor extends AbstractExtractor
             return;
         }
 
-        $contents = $contents->html();
+        // Remove voting tables
+        $tables = $contents->filterXPath('//div[form[table[@class="inline"]]]');
+        foreach ($tables as $table) {
+            // Find title next to table div
+            $previous = $table->previousSibling;
+            while ($previous instanceof DOMText) {
+                $previous = $previous->previousSibling;
+            }
+
+            // Remove title
+            if ($previous) {
+                $table->parentNode->removeChild($previous);
+            }
+
+            // Remove table
+            $table->parentNode->removeChild($table);
+        }
 
         // Make tables into nice tables
-        $contents = str_replace('<table class="inline">', '<table class="table table-striped table-hover">', $contents);
+        $contents->filterXPath('//table[@class="inline"]')->each(function (Crawler $table) {
+            $table->getNode(0)->setAttribute('class', 'table table-striped table-hover');
+        });
 
         // I'll have my own syntax highlighting, WITH BLACKJACK AND HOOKERS
-        $this->crawler->filterXpath('//pre')->each(function ($code) use (&$contents) {
-            $language    = str_replace('code ', '', $code->attr('class'));
+        $html = $contents->html();
+        $contents->filterXpath('//pre')->each(function (Crawler $pre) use (&$html) {
+            $language    = str_replace('code ', '', $pre->attr('class'));
             $newLanguage = $language === 'c' ? 'cpp' : $language;
 
-            $unformatted = htmlentities($code->text());
-            $unformatted = '<pre><code class="'.$newLanguage.'">'.$unformatted.'</code></pre>';
-            $contents    = str_replace('<pre class="code '.$language.'">'.$code->html().'</pre>', $unformatted, $contents);
+            $code = htmlentities($pre->text());
+            $code = '<pre><code class="'.$newLanguage.'">'.$code.'</code></pre>';
+            $html = str_replace('<pre class="code '.$language.'">'.$pre->html().'</pre>', $code, $html);
         });
 
         // Minify contents
-        $contents = Minify_HTML::minify($contents, [
+        $html = Minify_HTML::minify($html, [
             'xhtml' => false,
         ]);
 
-        return $contents;
+        return $html;
     }
 
     /**

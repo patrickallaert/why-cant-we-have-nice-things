@@ -230,6 +230,54 @@ HTML
 , $extractor['contents']);
     }
 
+    public function testCanConvertCodeblocks()
+    {
+        $html = <<<'HTML'
+<div class="page group">
+    <pre class="code php">
+    $echo 'lol';
+    </pre>
+</div>
+HTML;
+
+        $extractor = $this->getInformationsFromHtml($html);
+        $this->assertEquals(<<<'HTML'
+<pre><code class="php">
+    $echo 'lol';
+    </code></pre>
+HTML
+            , $extractor['contents']);
+    }
+
+    public function testCanStripVotingTablesFromContent()
+    {
+        $html = <<<'HTML'
+<div class="page group">
+    <table class="inline">
+        <tbody><tr>Some unrelated table</tr></tbody>
+    </table>
+
+    <h2>Voting</h2>
+    <div>
+        <p>lol</p>
+        <p>lol</p>
+        <form>
+            <table class="inline">
+                <tbody><tr><td colspan="8">POOL IS CLOSED</td></tr></tbody>
+            </table>
+        </form>
+    </div>
+</div>
+HTML;
+
+        $extractor = $this->getInformationsFromHtml($html);
+        $this->assertEquals(<<<'HTML'
+<table
+class="table table-striped table-hover"><tbody><tr>Some unrelated table</tr></tbody></table>
+HTML
+            , $extractor['contents']);
+    }
+
     //////////////////////////////////////////////////////////////////////
     ////////////////////////////// HELPERS ///////////////////////////////
     //////////////////////////////////////////////////////////////////////
