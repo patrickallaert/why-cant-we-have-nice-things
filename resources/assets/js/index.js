@@ -9,6 +9,7 @@ import './components/tooltips';
 if (document.querySelector('.request')) {
     require.ensure([], () => {
         require('./components/highlight');
+        require('./components/request-navigation');
         require('./components/comments-folding');
     });
 }
