@@ -222,6 +222,8 @@ class RequestExtractor extends AbstractExtractor
         $date = trim($date);
         $date = $date ?: $text;
 
+        // Loop over various formats until we
+        // find one that fits
         $datetime  = null;
         $fallbacks = [null, 'Y-d-m', 'm-d - Y', 'Y M d'];
         foreach ($fallbacks as $fallback) {
@@ -239,6 +241,13 @@ class RequestExtractor extends AbstractExtractor
                 // Else proceed to the next format
                 continue;
             }
+        }
+
+        // Try to grab date from footer
+        $footer = $this->crawler->filterXPath('//div[@class="docInfo"]');
+        if (!$datetime && $footer->count()) {
+            $datetime = preg_replace('#.*(\d{4}/\d{2}/\d{2}).*#i', '$1', $footer->text());
+            $datetime = DateTime::createFromFormat('Y/m/d', $datetime);
         }
 
         return $datetime ? $datetime->setTime(0, 0, 0) : new DateTime();

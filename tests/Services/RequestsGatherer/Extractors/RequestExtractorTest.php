@@ -128,6 +128,18 @@ HTML;
         $this->assertEquals(new DateTime(), $informations['timestamp']);
     }
 
+    public function testCanGetDateFromFooterIfInvalidFormat()
+    {
+        $html = <<<'HTML'
+<div>
+    <div class="page group"><div class="level1"><ul><li>Date: FUCK YOU</li></ul></div></div>
+    <div class="docInfo"><bdi>rfc/class_const_visibility.txt</bdi> · Last modified: 2015/10/28 16:06 by <bdi>sean-der</bdi></div>
+</div>
+HTML;
+        $informations = $this->getInformationsFromHtml($html);
+        $this->assertEquals(DateTime::createFromFormat('Y-m-d H:i:s', '2015-10-28 00:00:00'), $informations['timestamp']);
+    }
+
     public function testCanCleanupRequestTitle()
     {
         $informations = $this->getInformationsFromHtml('<h1>PHP RFC: Foobar</h1>');
