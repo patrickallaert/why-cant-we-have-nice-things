@@ -24,7 +24,7 @@ class StatisticsComputerTest extends TestCase
 
     public function testCanComputeQuestionStatistics()
     {
-        $request = Request::seed(['condition' => '50%']);
+        $request  = Request::seed(['condition' => '50%']);
         $question = Question::seed(['request_id' => $request->id]);
         Vote::seed(['choice' => 2, 'question_id' => $question->id]);
         Vote::seed(['choice' => 1, 'question_id' => $question->id]);
