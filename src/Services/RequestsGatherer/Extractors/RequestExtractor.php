@@ -186,14 +186,13 @@ class RequestExtractor extends AbstractExtractor
      */
     protected function getRequestTimestamp(array $informations)
     {
-        $date = $this->findInformation($informations, '/(created|date)/i');
-        $date = preg_replace('/(\d{4}[-\/]\d{2}[-\/]\d{2}).*/i', '$1', $date);
+        $text = $this->findInformation($informations, '/(created|date)/i');
+        $date = preg_replace('/(\d{4}[-\/]\d{2}[-\/]\d{2}).*/i', '$1', $text);
         $date = str_replace('/', '-', $date);
         $date = trim($date);
+        $date = $date ?: $text;
 
-        if (strpos($date, '20') === 0) {
-            return DateTime::createFromFormat('Y-m-d', $date);
-        }
+        return (new DateTime($date))->setTime(0, 0, 0);
     }
 
     /**

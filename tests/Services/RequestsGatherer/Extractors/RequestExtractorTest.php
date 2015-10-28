@@ -104,8 +104,10 @@ HTML;
     public function testCanParseWeirdAssDateFormats()
     {
         $informations = $this->getInformationsFromInformationBlock('created at the DaTe   : 2014/01/02 lolmdr©');
+        $this->assertEquals(DateTime::createFromFormat('Y-m-d H:i:s', '2014-01-02 00:00:00'), $informations['timestamp']);
 
-        $this->assertEquals(DateTime::createFromFormat('Y-m-d', '2014-01-02'), $informations['timestamp']);
+        $informations = $this->getInformationsFromInformationBlock('Last update: May 9, 2011');
+        $this->assertEquals(DateTime::createFromFormat('Y-m-d H:i:s', '2011-05-09 00:00:00'), $informations['timestamp']);
     }
 
     public function testCanCleanupRequestTitle()
