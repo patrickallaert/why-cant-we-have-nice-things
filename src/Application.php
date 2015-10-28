@@ -68,7 +68,7 @@ class Application
         // Load dotenv file
         $dotenv = new Dotenv(__DIR__.'/..');
         $dotenv->load();
-        $this->container->add('debug', getenv('APP_ENV') === 'local');
+        $this->container->add('debug', in_array(['local', 'testing'], getenv('APP_ENV')));
 
         // Boot up providers
         foreach ($this->providers as $provider) {
