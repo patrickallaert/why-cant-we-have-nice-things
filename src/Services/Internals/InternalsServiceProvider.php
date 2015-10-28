@@ -24,17 +24,11 @@ class InternalsServiceProvider extends AbstractServiceProvider
     public function register()
     {
         $this->container->share(Internals::class, function () {
-            $cache = $this->container->get(Repository::class);
+            $cache      = $this->container->get(Repository::class);
             $connection = new Connection('news.php.net', 119);
+            $client     = new Client($connection);
 
-            // Create NNTP client
-            $client = new Client($connection);
-            $client->connect();
-
-            // Get php.internals group
-            $group = $client->group('php.internals')->getResult();
-
-            return new Internals($cache, $client, $group);
+            return new Internals($cache, $client);
         });
 
         $this->container->share(InternalsSynchronizer::class, function () {
