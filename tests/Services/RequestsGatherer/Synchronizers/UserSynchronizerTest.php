@@ -67,4 +67,13 @@ class UserSynchronizerTest extends TestCase
         $this->assertEquals($existing->id, $user->id);
         $this->assertEquals('foo@gmail.com', $user->email);
     }
+
+    public function testDoesntUnifyBlankProfiles()
+    {
+        $existing = User::create(['name' => 'foobar', 'email' => '', 'full_name' => '']);
+        $sync     = new UserSynchronizer(['username' => 'foo', 'email' => '', 'full_name' => '']);
+        $user     = $sync->synchronize();
+
+        $this->assertNotEquals($existing->id, $user->id);
+    }
 }

@@ -31,8 +31,12 @@ class UserSynchronizer extends AbstractSynchronizer
         // Try to retrieve user if he's already an author
         $user = new User();
         foreach ($components as list($key, $value)) {
+            if (!$value) {
+                continue;
+            }
+
             $user = $user = User::firstOrNew([$key => $value]);
-            if ($value && $user->exists) {
+            if ($user->exists) {
                 break;
             }
         }
