@@ -54,16 +54,19 @@ class WhoopsMiddleware implements MiddlewareInterface
      * @param Exception $exception
      *
      * @return Response
+     * @throws Exception
      */
     protected function handleException(Exception $exception)
     {
         switch (true) {
-            default:
             case $exception instanceof ModelNotFoundException:
             case $exception instanceof NotFoundException:
                 $page     = $this->twig->render('errors/404.twig');
                 $response = new HtmlResponse($page, 404);
                 break;
+
+            default:
+                throw $exception;
         }
 
         return $response;
