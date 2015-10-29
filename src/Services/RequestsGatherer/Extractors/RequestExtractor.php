@@ -153,7 +153,7 @@ class RequestExtractor extends AbstractExtractor
         // votes then we're voting
         $votes = array_column($questions, 'votes');
         $votes = array_filter(array_map('count', $votes));
-        if ($status < 3 && count($votes)) {
+        if ($status === 2 && count($votes)) {
             $status = 3;
         }
 
