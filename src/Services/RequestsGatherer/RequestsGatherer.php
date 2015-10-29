@@ -108,7 +108,7 @@ class RequestsGatherer
      * @param Request $request
      * @param array   $versions
      */
-    protected function createVersions(Request $request, array $versions)
+    public function createVersions(Request $request, array $versions)
     {
         foreach ($versions as $version) {
             $version['request_id'] = $request->id;
@@ -121,7 +121,7 @@ class RequestsGatherer
      * @param Request $request
      * @param array   $authors
      */
-    protected function createAuthors(Request $request, array $authors)
+    public function createAuthors(Request $request, array $authors)
     {
         foreach ($authors as $key => $author) {
             $authors[$key] = (new UserSynchronizer($author))->persist()->id;
@@ -136,7 +136,7 @@ class RequestsGatherer
      * @param Request $request
      * @param array   $questions
      */
-    protected function createQuestions(Request $request, array $questions)
+    public function createQuestions(Request $request, array $questions)
     {
         foreach ($questions as $informations) {
             $question = new QuestionSynchronizer($informations, $request);
@@ -159,7 +159,7 @@ class RequestsGatherer
      *
      * @return User
      */
-    protected function createUser($username)
+    public function createUser($username)
     {
         // If we already have an user with that username and
         // all his/her infos are filled in, just return it
@@ -171,7 +171,9 @@ class RequestsGatherer
         // Else find his informations and extract them
         $crawler      = $this->getPageCrawler('http://people.php.net/'.$username);
         $extractor    = new UserExtractor($crawler);
-        $synchronizer = new UserSynchronizer($extractor->extract());
+        $attributes   = array_filter($extractor->extract());
+        $attributes   = array_merge(['username' => $username], $attributes);
+        $synchronizer = new UserSynchronizer($attributes);
 
         return $synchronizer->persist();
     }
