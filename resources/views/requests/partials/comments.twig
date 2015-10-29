@@ -1,4 +1,8 @@
 <h2 id="comments" class="text-center">Comments ({{ request.comments.count() }})</h2>
-{% for comment in request.rootComments %}
+{% for comment in comments %}
     {% include '_partials/comment.twig' %}
 {% endfor %}
+
+<div class="text-center">
+    {{ comments.render()|raw }}
+</div>
