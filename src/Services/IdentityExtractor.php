@@ -34,11 +34,11 @@ class IdentityExtractor
     public function extract()
     {
         // Workaround some anti-bot measures
-        $emails = preg_replace('/[<>\(\)]/', '', $this->string);
+        $emails = str_replace('(original)', '', $this->string);
+        $emails = preg_replace('/[<>\(\)]/', '', $emails);
         $emails = str_replace(' . ', '.', $emails);
         $emails = preg_replace('/([. #]at[.# ])/', '@', $emails);
         $emails = preg_replace('/([. #]dot[.# ])/', '.', $emails);
-        $emails = str_replace('(original)', '', $emails);
 
         $names = $this->extractEmails($emails);
         $this->extractNames($names);

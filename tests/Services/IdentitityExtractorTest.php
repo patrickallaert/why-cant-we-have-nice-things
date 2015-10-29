@@ -5,24 +5,50 @@ use History\TestCase;
 
 class IdentitityExtractorTest extends TestCase
 {
-    public function testCanExtractVariousShittyFormats()
+    /**
+     * @dataProvider provideIdentities
+     *
+     * @param string $text
+     * @param array  $identities
+     */
+    public function testCanExtractVariousShittyFormats($text, array $identities)
     {
-        $this->assertExtracted('Clint Priest <phpdev at zerocue dot com>', [
-            ['full_name' => 'Clint Priest', 'email' => 'phpdev@zerocue.com'],
-        ]);
-
-        $this->assertExtracted('Rasmus Schultz rasmus@mindplay.dk, Yasuo Ohgaki yohgaki@ohgaki.net/yohgaki@php.net', [
-            ['full_name' => 'Rasmus Schultz', 'email' => 'rasmus@mindplay.dk'],
-            ['full_name' => 'Yasuo Ohgaki', 'email' => 'yohgaki@ohgaki.net'],
-            ['email'     => 'yohgaki@php.net'],
-        ]);
+        $this->assertExtracted($text, $identities);
     }
 
-    public function testRemoveTrailingCharacters()
+    /**
+     * @return array
+     */
+    public function provideIdentities()
     {
-        $this->assertExtracted('"Clint Priest" (phpdev at zerocue dot com)', [
-            ['full_name' => 'Clint Priest', 'email' => 'phpdev@zerocue.com'],
-        ]);
+        return [
+            [
+                'Clint Priest <phpdev at zerocue dot com>',
+                [
+                    ['full_name' => 'Clint Priest', 'email' => 'phpdev@zerocue.com'],
+                ],
+            ],
+            [
+                'Rasmus Schultz rasmus@mindplay.dk, Yasuo Ohgaki yohgaki@ohgaki.net/yohgaki@php.net',
+                [
+                    ['full_name' => 'Rasmus Schultz', 'email' => 'rasmus@mindplay.dk'],
+                    ['full_name' => 'Yasuo Ohgaki', 'email' => 'yohgaki@ohgaki.net'],
+                    ['email' => 'yohgaki@php.net'],
+                ],
+            ],
+            [
+                '"Clint Priest" (phpdev at zerocue dot com)',
+                [
+                    ['full_name' => 'Clint Priest', 'email' => 'phpdev@zerocue.com'],
+                ],
+            ],
+            [
+                'Anthony Ferrara ircmaxell@php.net (original)',
+                [
+                    ['full_name' => 'Anthony Ferrara', 'email' => 'ircmaxell@php.net'],
+                ]
+            ]
+        ];
     }
 
     /**
