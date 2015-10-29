@@ -1,6 +1,7 @@
 <?php
 namespace History\Http\Controllers;
 
+use History\Entities\Models\Request;
 use History\Entities\Models\User;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -12,8 +13,17 @@ class UsersController extends AbstractController
      */
     public function index()
     {
-        $creators = User::has('requests')->with('requests')->orderBy('success', 'DESC')->get();
+        $creators = User::has('requests')->with('approvedRequests', 'requests')->get();
         $voters   = User::has('votes', '>', 5)->with('requests')->orderBy('hivemind', 'ASC')->get();
+
+        // Sort results
+        $creators = $creators->sortByDesc(function (User $user) {
+           return $user->approvedRequests->count();
+        });
+
+        $voters = $voters->sortBy(function (User $user) {
+           return $user->hivemind * $user->total_votes;
+        });
 
         return $this->views->render('users/index.twig', [
             'creators' => $creators,

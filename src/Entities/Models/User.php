@@ -53,6 +53,16 @@ class User extends AbstractModel
     /**
      * @codeCoverageIgnore
      *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function approvedRequests()
+    {
+        return $this->requests()->where('status', count(Request::STATUS) - 1);
+    }
+
+    /**
+     * @codeCoverageIgnore
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function comments()

@@ -48,6 +48,7 @@
                 <tr>
                     <th>User</th>
                     <th class="text-right">Created RFCs</th>
+                    <th class="text-right">Approved RFCs</th>
                     <th class="text-right"><abbr title="Percentage of created RFCs that got approved">Success %</abbr>
                     </th>
                 </tr>
@@ -59,6 +60,7 @@
                             <a href="/users/{{ user.id }}">{{ user.display_name }}</a>
                         </td>
                         <td class="text-right">{{ user.requests.count() }}</td>
+                        <td class="text-right">{{ user.approvedRequests.count() }}</td>
                         <td class="text-right">{{ percentage(user.success) }}</td>
                     </tr>
                 {% endfor %}
