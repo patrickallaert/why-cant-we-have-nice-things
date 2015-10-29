@@ -43,8 +43,7 @@ class DebugbarServiceProvider extends AbstractServiceProvider
             // Bind QueryCollector to current connection
             /* @var StandardDebugbar $debugbar */
             $connection = $this->container->get(Manager::class)->connection();
-            $connection->listen(function ($query, $bindings, $time) use ($connection) {
-                $debugbar = $this->container->get(StandardDebugBar::class);
+            $connection->listen(function ($query, $bindings, $time) use ($debugbar, $connection) {
                 $collector = $debugbar->getCollector('queries');
                 $collector->addQuery((string) $query, $bindings, $time, $connection);
             });
