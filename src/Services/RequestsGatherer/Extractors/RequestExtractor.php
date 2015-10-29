@@ -154,7 +154,7 @@ class RequestExtractor extends AbstractExtractor
         $votes = array_column($questions, 'votes');
         $votes = array_filter(array_map('count', $votes));
         if ($status < 3 && count($votes)) {
-            return 3;
+            $status = 3;
         }
 
         // If all polls are closed, then we're not voting

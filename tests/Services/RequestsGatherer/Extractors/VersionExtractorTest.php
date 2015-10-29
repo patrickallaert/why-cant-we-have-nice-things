@@ -7,52 +7,74 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class VersionExtractorTest extends TestCase
 {
-    public function testCanExtractVersionNumber()
+    /**
+     * @dataProvider provideVersions
+     *
+     * @param array $versions
+     * @param array $expected
+     */
+    public function testCanExtractVersionNumber(array $versions, array $expected)
     {
-        $versions = $this->extractVersions(['V0.2 foo', 'V0.1 bar']);
-        $this->assertEquals([
-            ['version' => '0.2', 'name' => 'foo', 'timestamp' => false],
-            ['version' => '0.1', 'name' => 'bar', 'timestamp' => false],
-        ], $versions);
-
-        $versions = $this->extractVersions(['v0.2.0 - foo', 'v0.1.0 - bar']);
-        $this->assertEquals([
-            ['version' => '0.2.0', 'name' => 'foo', 'timestamp' => false],
-            ['version' => '0.1.0', 'name' => 'bar', 'timestamp' => false],
-        ], $versions);
-
-        $versions = $this->extractVersions(['Version 0.2: foo', 'Version 0.1: bar']);
-        $this->assertEquals([
-            ['version' => '0.2', 'name' => 'foo', 'timestamp' => false],
-            ['version' => '0.1', 'name' => 'bar', 'timestamp' => false],
-        ], $versions);
-
-        $versions = $this->extractVersions(['foo', 'bar']);
-        $this->assertEquals([
-            ['version' => '2', 'name' => 'foo', 'timestamp' => false],
-            ['version' => '1', 'name' => 'bar', 'timestamp' => false],
-        ], $versions);
+        $versions = $this->extractVersions($versions);
+        $this->assertEquals($expected, $versions);
     }
 
-    public function testCanExtractVersionDate()
+    /**
+     * @return array
+     */
+    public function provideVersions()
     {
-        $versions = $this->extractVersions(['2011-10-10 foo', '2011-10-05 bar']);
-        $this->assertEquals([
-            ['version' => 2, 'name' => 'foo', 'timestamp' => new DateTime('2011-10-10')],
-            ['version' => 1, 'name' => 'bar', 'timestamp' => new DateTime('2011-10-05')],
-        ], $versions);
-
-        $versions = $this->extractVersions(['(2011-10-10): foo', '(2011-10-05): bar']);
-        $this->assertEquals([
-            ['version' => 2, 'name' => 'foo', 'timestamp' => new DateTime('2011-10-10')],
-            ['version' => 1, 'name' => 'bar', 'timestamp' => new DateTime('2011-10-05')],
-        ], $versions);
-
-        $versions = $this->extractVersions(['10/10/2011 - foo', '05/10/2011 -  bar']);
-        $this->assertEquals([
-            ['version' => 2, 'name' => '10/10/2011 - foo', 'timestamp' => new DateTime('2011-10-10')],
-            ['version' => 1, 'name' => '05/10/2011 - bar', 'timestamp' => new DateTime('2011-10-05')],
-        ], $versions);
+        return [
+            [
+                ['V0.2 foo', 'V0.1 bar'],
+                [
+                    ['version' => '0.2', 'name' => 'foo', 'timestamp' => false],
+                    ['version' => '0.1', 'name' => 'bar', 'timestamp' => false],
+                ],
+            ],
+            [
+                ['v0.2.0 - foo', 'v0.1.0 - bar'],
+                [
+                    ['version' => '0.2.0', 'name' => 'foo', 'timestamp' => false],
+                    ['version' => '0.1.0', 'name' => 'bar', 'timestamp' => false],
+                ],
+            ],
+            [
+                ['Version 0.2: foo', 'Version 0.1: bar'],
+                [
+                    ['version' => '0.2', 'name' => 'foo', 'timestamp' => false],
+                    ['version' => '0.1', 'name' => 'bar', 'timestamp' => false],
+                ],
+            ],
+            [
+                ['foo', 'bar'],
+                [
+                    ['version' => '2', 'name' => 'foo', 'timestamp' => false],
+                    ['version' => '1', 'name' => 'bar', 'timestamp' => false],
+                ],
+            ],
+            [
+                ['2011-10-10 foo', '2011-10-05 bar'],
+                [
+                    ['version' => 2, 'name' => 'foo', 'timestamp' => new DateTime('2011-10-10')],
+                    ['version' => 1, 'name' => 'bar', 'timestamp' => new DateTime('2011-10-05')],
+                ],
+            ],
+            [
+                ['(2011-10-10): foo', '(2011-10-05): bar'],
+                [
+                    ['version' => 2, 'name' => 'foo', 'timestamp' => new DateTime('2011-10-10')],
+                    ['version' => 1, 'name' => 'bar', 'timestamp' => new DateTime('2011-10-05')],
+                ],
+            ],
+            [
+                ['10/10/2011 - foo', '05/10/2011 -  bar'],
+                [
+                    ['version' => 2, 'name' => '10/10/2011 - foo', 'timestamp' => new DateTime('2011-10-10')],
+                    ['version' => 1, 'name' => '05/10/2011 - bar', 'timestamp' => new DateTime('2011-10-05')],
+                ],
+            ],
+        ];
     }
 
     /**
