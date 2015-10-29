@@ -13,7 +13,7 @@ trait HasEvents
      */
     public function events()
     {
-        return $this->morphMany(Event::class, 'eventable');
+        return $this->morphMany(Event::class, 'eventable')->latest();
     }
 
     /**
@@ -29,6 +29,7 @@ trait HasEvents
             'metadata' => $metadata,
         ];
 
+        // Assign the entity's timestamps to the event
         if ($type !== 'rfc_status') {
             $attributes = array_merge($attributes, [
                 'created_at' => $this->created_at ?: new DateTime(),

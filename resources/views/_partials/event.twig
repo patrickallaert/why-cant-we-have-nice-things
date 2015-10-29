@@ -1,0 +1,16 @@
+{% set icons = {
+    rfc_created: 'edit',
+    rfc_status: 'history',
+    rfc_version: 'tag',
+    comment_created: 'commenting',
+    vote_up: 'thumbs-up',
+    vote_down: 'thumbs-down',
+} %}
+
+<li class="list-group-item">
+    <i class="fa fa-{{ icons[event.type] }}"></i>
+    <div>
+        {% include "events/events/#{event.type}.twig" %}
+        <time datetime="{{ event.created_at }}">{{ event.created_at.diffForHumans() }}</time>
+    </div>
+</li>

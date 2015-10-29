@@ -10,6 +10,7 @@ class Event extends AbstractModel
         'comment_created',
         'rfc_created',
         'rfc_status',
+        'rfc_version',
         'vote_down',
         'vote_up',
     ];
