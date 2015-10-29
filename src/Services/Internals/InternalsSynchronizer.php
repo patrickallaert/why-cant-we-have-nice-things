@@ -97,6 +97,10 @@ class InternalsSynchronizer
             // Process this chunk of articles
             $articles = $this->internals->getArticles($i, $to);
             foreach ($articles as $article) {
+                if (!$article) {
+                    break;
+                }
+
                 $progress->setMessage('Getting message '.$article['xref']);
                 $this->processArticle($article);
                 $progress->advance();

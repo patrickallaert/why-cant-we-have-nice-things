@@ -5,6 +5,7 @@ use History\Services\Internals\Commands\Body;
 use History\Services\Internals\Commands\Xpath;
 use Illuminate\Contracts\Cache\Repository;
 use Rvdv\Nntp\ClientInterface;
+use Rvdv\Nntp\Command\XpathCommand;
 use SplFixedArray;
 
 class Internals
@@ -57,7 +58,7 @@ class Internals
     public function getArticles($from, $to)
     {
         return $this->cacheRequest($from.'-'.$to, function () use ($from, $to) {
-            $format = $this->client->overviewFormat()->getResult();
+            $format  = $this->client->overviewFormat()->getResult();
             $command = $this->client->xover($from, $to, $format);
 
             return $command->getResult();
@@ -88,9 +89,11 @@ class Internals
      */
     public function findArticleFromReference($xpath)
     {
-        return $this->cacheRequest('xpath-'.$xpath, function () use ($xpath) {
-            return $this->client->sendCommand(new Xpath($xpath))->getResult();
+        $reference = $this->cacheRequest('xpath-'.$xpath, function () use ($xpath) {
+            return $this->client->sendCommand(new XpathCommand($xpath))->getResult();
         });
+
+        return str_replace('/', ':', $reference);
     }
 
     //////////////////////////////////////////////////////////////////////
