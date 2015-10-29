@@ -9,6 +9,13 @@ class Comment extends AbstractModel
     use HasEvents;
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['user', 'children'];
+
+    /**
      * @var array
      */
     protected $fillable = [
