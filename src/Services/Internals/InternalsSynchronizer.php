@@ -87,7 +87,7 @@ class InternalsSynchronizer
         $count = $this->internals->getTotalNumberArticles();
         $total = $count - $start;
 
-        $progress = new ProgressBar($this->output, $total / self::CHUNK);
+        $progress = new ProgressBar($this->output, $total);
         $progress->setFormat("%message%\n%current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
         $progress->setMessage('Getting messages');
         $progress->start();
@@ -99,8 +99,8 @@ class InternalsSynchronizer
             foreach ($articles as $article) {
                 $progress->setMessage('Getting message '.$article['xref']);
                 $this->processArticle($article);
+                $progress->advance();
             }
-            $progress->advance();
         }
 
         $progress->finish();
