@@ -19,7 +19,7 @@ class RequestExtractorTest extends TestCase
 
         $this->assertEquals([
             'name'      => 'Support Class Constant Visibility',
-            'status'    => 2,
+            'status'    => 3,
             'condition' => 'Simple Yes/No option. This requires a 2/3 majority.',
             'timestamp' => DateTime::createFromFormat('Y-m-d H:i:s', '2015-09-13 00:00:00'),
             'authors'   => [
@@ -318,6 +318,14 @@ HTML;
 <p>foobar</p>
 HTML
             , $extractor['contents']);
+    }
+
+    public function testRequestIsVotingIfItHasVotes()
+    {
+        $html         = $this->getDummyPage('rfc');
+        $informations = $this->getInformationsFromHtml($html);
+
+        $this->assertEquals(3, $informations['status']);
     }
 
     //////////////////////////////////////////////////////////////////////

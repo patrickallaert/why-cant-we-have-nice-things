@@ -20,15 +20,11 @@ class RequestExtractor extends AbstractExtractor
         $name               = $this->getRequestName();
         $majorityConditions = $this->getMajorityConditions();
         $informations       = $this->getInformations();
-        $status             = $this->getStatus($informations);
+        $questions          = $this->getQuestions();
+        $status             = $this->getStatus($informations, $questions);
         $timestamp          = $this->getRequestTimestamp($informations);
         $authors            = $this->getAuthors($informations);
         $versions           = $this->getVersions();
-
-        // Extract questions
-        $questions = $this->crawler->filterXpath('//form/table[@class="inline"]')->each(function ($question) {
-            return (new QuestionExtractor($question))->extract();
-        });
 
         return [
             'name'      => $name,
@@ -70,7 +66,7 @@ class RequestExtractor extends AbstractExtractor
         // I'll have my own syntax highlighting, WITH BLACKJACK AND HOOKERS
         $html = $contents->html();
         $contents->filterXpath('//pre')->each(function (Crawler $pre) use (&$html) {
-            $language = str_replace('code ', '', $pre->attr('class'));
+            $language    = str_replace('code ', '', $pre->attr('class'));
             $newLanguage = $language === 'c' ? 'cpp' : $language;
 
             $code = htmlentities($pre->text());
@@ -103,8 +99,8 @@ class RequestExtractor extends AbstractExtractor
             }
 
             list(, $label, $value) = $matches;
-            $label                 = $this->cleanWhitespace($label);
-            $value                 = $this->cleanWhitespace($value);
+            $label = $this->cleanWhitespace($label);
+            $value = $this->cleanWhitespace($value);
 
             $informations[$label] = $value;
         }
@@ -132,7 +128,7 @@ class RequestExtractor extends AbstractExtractor
      *
      * @return int
      */
-    protected function getStatus(array $informations)
+    protected function getStatus(array $informations, array $questions)
     {
         $statusText = $this->findInformation($informations, '/Status/');
         $statuses   = [
@@ -150,6 +146,14 @@ class RequestExtractor extends AbstractExtractor
                 $status = $key;
                 break;
             }
+        }
+
+        // If status say discussion but we have
+        // votes then we're voting
+        $votes = array_column($questions, 'votes');
+        $votes = array_filter(array_map('count', $votes));
+        if ($status < 3 && count($votes)) {
+            return 3;
         }
 
         // If all polls are closed, then we're not voting
@@ -211,7 +215,7 @@ class RequestExtractor extends AbstractExtractor
     protected function getRequestTimestamp(array $informations)
     {
         // Find and cleanup date string
-        $text           = $this->findInformation($informations, '/(created|date)/i');
+        $text = $this->findInformation($informations, '/(created|date)/i');
         list($datetime) = $this->parseDate($text);
 
         // Try to grab date from footer
@@ -241,6 +245,16 @@ class RequestExtractor extends AbstractExtractor
                 return $text;
             }
         }
+    }
+
+    /**
+     * @return array
+     */
+    protected function getQuestions()
+    {
+        return $this->crawler->filterXpath('//form/table[@class="inline"]')->each(function ($question) {
+            return (new QuestionExtractor($question))->extract();
+        });
     }
 
     //////////////////////////////////////////////////////////////////////
