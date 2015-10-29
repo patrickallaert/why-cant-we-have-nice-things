@@ -18,7 +18,6 @@
         "league/route": "2.*@dev",
         "mnapoli/silly": "^1.1",
         "mrclay/minify": "^2.2",
-        "oscarotero/psr7-middlewares": "^3.5",
         "relay/relay": "^1.0",
         "robmorgan/phinx": "^0.4.6",
         "rvdv/nntp": "1.0.*@dev",
