@@ -3,6 +3,7 @@ namespace History\Entities\Models;
 
 use History\Entities\Traits\HasEvents;
 use League\CommonMark\CommonMarkConverter;
+use LogicException;
 
 class Comment extends AbstractModel
 {
@@ -67,6 +68,10 @@ class Comment extends AbstractModel
      */
     public function getParsedContentsAttribute()
     {
-        return (new CommonMarkConverter())->convertToHtml($this->contents);
+        try {
+            return (new CommonMarkConverter())->convertToHtml($this->contents);
+        } catch (LogicException $exception) {
+            return $this->contents;
+        }
     }
 }
