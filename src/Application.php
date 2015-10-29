@@ -1,13 +1,16 @@
 <?php
 namespace History;
 
+use DebugBar\StandardDebugBar;
 use Dotenv\Dotenv;
+use Exception;
 use History\Console\ConsoleServiceProvider;
 use History\Http\Providers\ErrorsServiceProvider;
 use History\Http\Providers\RoutingServiceProvider;
 use History\Http\Providers\TwigServiceProvider;
 use History\Providers\CacheServiceProvider;
 use History\Providers\DatabaseServiceProvider;
+use History\Providers\DebugbarServiceProvider;
 use History\Providers\GravatarServiceProvider;
 use History\Providers\PathsServiceProvider;
 use History\Services\Internals\InternalsServiceProvider;
@@ -27,6 +30,9 @@ use Twig_Environment;
 use Whoops\Run;
 use Zend\Diactoros\Response\SapiEmitter;
 
+/**
+ * @method get
+ */
 class Application
 {
     /**
@@ -56,6 +62,13 @@ class Application
     ];
 
     /**
+     * @var array
+     */
+    protected $localProviders = [
+        DebugbarServiceProvider::class,
+    ];
+
+    /**
      * @param ContainerInterface|null $container
      */
     public function __construct(ContainerInterface $container = null)
@@ -68,16 +81,31 @@ class Application
         // Load dotenv file
         $dotenv = new Dotenv(__DIR__.'/..');
         $dotenv->load();
-        $this->container->add('debug', in_array(getenv('APP_ENV'), ['local', 'testing'], true));
 
-        // Boot up providers
-        foreach ($this->providers as $provider) {
-            $this->container->addServiceProvider($provider);
-        }
+        // Bind global debug mode
+        $debug = in_array(getenv('APP_ENV'), ['local', 'testing'], true);
+        $this->container->add('debug', $debug);
+
+        // Register providers
+        $this->registerProviders();
+    }
+
+    /**
+     * Register the application's service providers.
+     */
+    protected function registerProviders()
+    {
+        // Register providers
+        array_map([$this->container, 'addServiceProvider'], $this->providers);
 
         // Boot database and Whoops
         $this->container->get(Manager::class);
         $this->container->get(Run::class);
+
+        // Register local providers
+        if ($this->container->get('debug')) {
+            array_map([$this->container, 'addServiceProvider'], $this->localProviders);
+        }
     }
 
     /**
@@ -102,17 +130,42 @@ class Application
         $factory  = new DiactorosFactory();
         $request  = $factory->createRequest($request);
         $response = $factory->createResponse(new Response(''));
-        $error    = $this->container->get(Twig_Environment::class)->render('errors/404.twig');
+
+        // Collect data for Debugbar before rendering
+        if ($this->container->get('debug')) {
+            $this->container->get(StandardDebugBar::class);
+        }
 
         try {
             $response = $dispatcher->dispatch($request, $response);
-        } catch (ModelNotFoundException $exception) {
-            $response = $factory->createResponse(new Response($error));
-        } catch (NotFoundException $exception) {
-            $response = $factory->createResponse(new Response($error));
+        } catch (Exception $exception) {
+            $response = $this->handleError($exception);
         }
 
         (new SapiEmitter())->emit($response);
+    }
+
+    /**
+     * Handle an exception.
+     *
+     * @param Exception $exception
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
+    protected function handleError(Exception $exception)
+    {
+        $factory = new DiactorosFactory();
+        $twig    = $this->container->get(Twig_Environment::class);
+
+        switch (true) {
+            default:
+            case $exception instanceof ModelNotFoundException:
+            case $exception instanceof NotFoundException:
+                $error = $twig->render('errors/404.twig');
+                break;
+        }
+
+        return $factory->createResponse(new Response($error));
     }
 
     /**

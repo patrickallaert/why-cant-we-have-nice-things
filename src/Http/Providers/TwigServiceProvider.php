@@ -1,6 +1,7 @@
 <?php
 namespace History\Http\Providers;
 
+use DebugBar\Bridge\Twig\TraceableTwigEnvironment;
 use History\Application;
 use History\Entities\Models\Question;
 use History\Entities\Models\Vote;
@@ -46,6 +47,11 @@ class TwigServiceProvider extends AbstractServiceProvider
             // Configure Twig
             $this->registerGlobalVariables($twig);
             $this->addTwigExtensions($twig);
+
+            // Make traceable in local
+            if ($debug) {
+                $twig = new TraceableTwigEnvironment($twig);
+            }
 
             return $twig;
         });

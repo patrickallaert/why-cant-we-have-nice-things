@@ -9,6 +9,9 @@
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.png">
     <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{{ assets.main.css }}">
+    {% if debugbar %}
+        <link rel="stylesheet" href="/builds/debugbar.css">
+    {% endif %}
 </head>
 <body>
     {% include '_layouts/partials/header.twig' %}
@@ -30,5 +33,9 @@
 
     <script src="{{ assets.main.js }}"></script>
     {% include '_layouts/partials/analytics.twig' %}
+    {% if debugbar %}
+        <script src="/builds/debugbar.js"></script>
+        {{ debugbar.render()|raw }}
+    {% endif %}
 </body>
 </html>
