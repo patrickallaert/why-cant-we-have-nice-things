@@ -15,6 +15,7 @@ class WhoopsMiddleware implements MiddlewareInterface
      * @var
      */
     private $twig;
+
     /**
      * @var Run
      */
@@ -54,8 +55,8 @@ class WhoopsMiddleware implements MiddlewareInterface
      * @param Exception $exception
      *
      * @throws Exception
-     * @return Response
      *
+     * @return Response
      */
     protected function handleException(Exception $exception)
     {
