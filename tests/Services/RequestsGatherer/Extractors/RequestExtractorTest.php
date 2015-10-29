@@ -265,6 +265,25 @@ HTML
             , $extractor['contents']);
     }
 
+    public function testAssumesNonHintedCodeblocksArePhp()
+    {
+        $html = <<<'HTML'
+<div class="page group">
+    <pre class="code">
+    $echo 'lol';
+    </pre>
+</div>
+HTML;
+
+        $extractor = $this->getInformationsFromHtml($html);
+        $this->assertEquals(<<<'HTML'
+<pre><code class="php">
+    $echo 'lol';
+    </code></pre>
+HTML
+            , $extractor['contents']);
+    }
+
     public function testCanStripVotingTablesFromContent()
     {
         $html = <<<'HTML'

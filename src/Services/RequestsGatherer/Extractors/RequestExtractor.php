@@ -66,12 +66,13 @@ class RequestExtractor extends AbstractExtractor
         // I'll have my own syntax highlighting, WITH BLACKJACK AND HOOKERS
         $html = $contents->html();
         $contents->filterXpath('//pre')->each(function (Crawler $pre) use (&$html) {
-            $language = str_replace('code ', '', $pre->attr('class'));
-            $newLanguage = $language === 'c' ? 'cpp' : $language;
+            $language = str_replace('code', '', $pre->attr('class'));
+            $newLanguage = $language === ' c' ? 'cpp' : trim($language);
+            $newLanguage = $newLanguage ?: 'php';
 
             $code = htmlentities($pre->text());
             $code = '<pre><code class="'.$newLanguage.'">'.$code.'</code></pre>';
-            $html = str_replace('<pre class="code '.$language.'">'.$pre->html().'</pre>', $code, $html);
+            $html = str_replace('<pre class="code'.$language.'">'.$pre->html().'</pre>', $code, $html);
         });
 
         // Minify contents
