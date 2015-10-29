@@ -20,7 +20,7 @@ use Illuminate\Database\Capsule\Manager;
 use Interop\Container\ContainerInterface;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
-use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Relay\RelayBuilder;
 use Silly\Application as Console;
 use Zend\Diactoros\Response;
@@ -123,7 +123,7 @@ class Application
     public function run()
     {
         // Create Request and Response
-        $request  = $this->container->get(RequestInterface::class);
+        $request  = $this->container->get(ServerRequestInterface::class);
         $response = new Response();
 
         // Collect data for Debugbar before rendering

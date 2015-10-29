@@ -84,8 +84,9 @@ class TwigServiceProvider extends AbstractServiceProvider
         $twig->addGlobal('app_name', Application::NAME);
         $twig->addGlobal('gravatar', $this->container->get(Gravatar::class));
 
+        /** @var ServerRequestInterface $request */
         $request = $this->container->get(ServerRequestInterface::class);
-        $twig->addGlobal('current_uri', $request->getPathInfo());
+        $twig->addGlobal('current_uri', $request->getUri()->getPath());
         $twig->addGlobal('precision', self::PRECISION);
         $twig->addGlobal('assets', $this->getWebpackAssets());
 
