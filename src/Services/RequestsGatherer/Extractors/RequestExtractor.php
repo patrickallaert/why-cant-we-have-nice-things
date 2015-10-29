@@ -66,7 +66,7 @@ class RequestExtractor extends AbstractExtractor
         // I'll have my own syntax highlighting, WITH BLACKJACK AND HOOKERS
         $html = $contents->html();
         $contents->filterXpath('//pre')->each(function (Crawler $pre) use (&$html) {
-            $language    = str_replace('code ', '', $pre->attr('class'));
+            $language = str_replace('code ', '', $pre->attr('class'));
             $newLanguage = $language === 'c' ? 'cpp' : $language;
 
             $code = htmlentities($pre->text());
@@ -99,8 +99,8 @@ class RequestExtractor extends AbstractExtractor
             }
 
             list(, $label, $value) = $matches;
-            $label = $this->cleanWhitespace($label);
-            $value = $this->cleanWhitespace($value);
+            $label                 = $this->cleanWhitespace($label);
+            $value                 = $this->cleanWhitespace($value);
 
             $informations[$label] = $value;
         }
@@ -215,7 +215,7 @@ class RequestExtractor extends AbstractExtractor
     protected function getRequestTimestamp(array $informations)
     {
         // Find and cleanup date string
-        $text = $this->findInformation($informations, '/(created|date)/i');
+        $text           = $this->findInformation($informations, '/(created|date)/i');
         list($datetime) = $this->parseDate($text);
 
         // Try to grab date from footer

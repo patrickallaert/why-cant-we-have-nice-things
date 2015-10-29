@@ -41,10 +41,10 @@ class DebugbarServiceProvider extends AbstractServiceProvider
             $twig->addGlobal('debugbar', $renderer);
 
             // Bind QueryCollector to current connection
-            /** @var StandardDebugbar $debugbar */
+            /* @var StandardDebugbar $debugbar */
             $connection = $this->container->get(Manager::class)->connection();
             $connection->listen(function ($query, $bindings, $time) use ($connection) {
-                $debugbar  = $this->container->get(StandardDebugBar::class);
+                $debugbar = $this->container->get(StandardDebugBar::class);
                 $collector = $debugbar->getCollector('queries');
                 $collector->addQuery((string) $query, $bindings, $time, $connection);
             });

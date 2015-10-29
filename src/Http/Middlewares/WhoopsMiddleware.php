@@ -53,8 +53,9 @@ class WhoopsMiddleware implements MiddlewareInterface
      *
      * @param Exception $exception
      *
-     * @return Response
      * @throws Exception
+     * @return Response
+     *
      */
     protected function handleException(Exception $exception)
     {

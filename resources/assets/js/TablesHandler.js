@@ -1,3 +1,5 @@
+import {each, nodelistToArray} from './helpers';
+
 export default class TablesHandler {
 
     cellIndex = 0;
@@ -9,10 +11,9 @@ export default class TablesHandler {
      */
     enable() {
         // Bind sorting
-        const headings = document.getElementsByTagName('th');
-        for (let i = 0; i < headings.length; i++) {
-            headings[i].onclick = this.onClickEvent.bind(this);
-        }
+        each('th', heading => {
+            heading.onclick = this.onClickEvent.bind(this);
+        });
 
         // Bind search if present
         const search = document.getElementById('search');
@@ -31,15 +32,11 @@ export default class TablesHandler {
      * @param {Event} event
      */
     search(event) {
-        const tables = document.querySelectorAll('tbody');
-        for (let i = 0; i <= tables.length; i++) {
-            const rows = this.getRowsArray(tables[i]);
-            rows.forEach(row => {
-                const text    = row.textContent || row.innerText;
-                const matches = text.match(new RegExp(event.target.value, 'i'));
-                row.classList.toggle('filtered', !matches);
-            });
-        }
+        each('tbody tr', row => {
+            const text    = row.textContent || row.innerText;
+            const matches = text.match(new RegExp(event.target.value, 'i'));
+            row.classList.toggle('filtered', !matches);
+        });
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -103,7 +100,7 @@ export default class TablesHandler {
         this.cellIndex = this.th.cellIndex;
         const tbody    = this.th.offsetParent.querySelector('tbody');
 
-        let rows = this.getRowsArray(tbody);
+        let rows = nodelistToArray(tbody.rows);
         if (rows) {
             rows = rows.sort(this.sort.bind(this));
             if (this.order) {
@@ -129,17 +126,6 @@ export default class TablesHandler {
      */
     getText(row) {
         return row.cells.item(this.cellIndex).textContent.toLowerCase();
-    }
-
-    /**
-     * Get the rows of a table
-     *
-     * @param {object} tbody
-     *
-     * @returns {Array}
-     */
-    getRowsArray(tbody) {
-        return Reflect.apply(Array.prototype.slice, tbody.rows, [0]);
     }
 
     /**

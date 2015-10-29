@@ -35,8 +35,8 @@ class TwigServiceProvider extends AbstractServiceProvider
     {
         $this->container->share(Twig_Environment::class, function () {
             $loader = new Twig_Loader_Filesystem($this->container->get('paths.views'));
-            $debug  = $this->container->get('debug');
-            $twig   = new Twig_Environment($loader, [
+            $debug = $this->container->get('debug');
+            $twig = new Twig_Environment($loader, [
                 'debug'            => $debug,
                 'auto_reload'      => $debug,
                 'strict_variables' => false,

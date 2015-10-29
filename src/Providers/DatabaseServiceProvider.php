@@ -1,7 +1,6 @@
 <?php
 namespace History\Providers;
 
-use DebugBar\StandardDebugBar;
 use History\Entities\Models\Comment;
 use History\Entities\Models\Request;
 use History\Entities\Models\Version;

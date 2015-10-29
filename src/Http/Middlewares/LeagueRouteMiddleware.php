@@ -1,7 +1,6 @@
 <?php
 namespace History\Http\Middlewares;
 
-use League\Route\Route;
 use League\Route\RouteCollection;
 use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;

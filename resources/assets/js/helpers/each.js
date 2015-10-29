@@ -1,3 +1,5 @@
+import nodelistToArray from './nodelistToArray';
+
 /**
  * Executes a forEeach on a QuerySelector
  *
@@ -7,9 +9,7 @@
  * @return {void}
  */
 export default function each(selector, callback) {
-    if (typeof(selector) === 'string') {
-        selector = document.querySelectorAll(selector);
-    }
+    const nodeList = nodelistToArray(selector);
 
-    [].forEach.call(selector, callback);
+    return Reflect.apply(Array.prototype.forEach, nodeList, [callback]);
 }
