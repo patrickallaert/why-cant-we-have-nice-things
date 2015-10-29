@@ -2,6 +2,7 @@
 namespace History\Entities\Models;
 
 use History\Entities\Traits\HasEvents;
+use Illuminate\Support\Arr;
 
 class Vote extends AbstractModel
 {
@@ -62,10 +63,23 @@ class Vote extends AbstractModel
     //////////////////////////////////////////////////////////////////////
 
     /**
+     * Get the textual representation of a choice
+     *
+     * @return string
+     */
+    public function getAnswerAttribute()
+    {
+        $choices = $this->question ? $this->question->choices : [];
+        $choice = Arr::get($choices, $this->choice - 1, $this->choice);
+
+        return ucfirst($choice);
+    }
+
+    /**
      * @return bool
      */
     public function isPositive()
     {
-        return $this->question && $this->choice < count($this->question->choices);
+        return !preg_match("/(no|don't|keep|none|do not)/i", $this->answer);
     }
 }
