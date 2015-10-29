@@ -1,13 +1,18 @@
 <?php
 namespace History\Entities\Models;
 
+use History\Entities\Traits\HasSlug;
+
 class User extends AbstractModel
 {
+    use HasSlug;
+
     /**
      * @var array
      */
     protected $fillable = [
         'name',
+        'slug',
         'full_name',
         'email',
         'contributions',
@@ -25,6 +30,14 @@ class User extends AbstractModel
     protected $casts = [
         'contributions' => 'array',
     ];
+
+    /**
+     * @return string
+     */
+    public function getSlugSource()
+    {
+        return $this->getDisplayNameAttribute();
+    }
 
     //////////////////////////////////////////////////////////////////////
     //////////////////////////// RELATIONSHIPS ///////////////////////////

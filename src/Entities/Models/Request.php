@@ -2,10 +2,12 @@
 namespace History\Entities\Models;
 
 use History\Entities\Traits\HasEvents;
+use History\Entities\Traits\HasSlug;
 
 class Request extends AbstractModel
 {
     use HasEvents;
+    use HasSlug;
 
     /**
      * @var array
@@ -23,6 +25,7 @@ class Request extends AbstractModel
      */
     protected $fillable = [
         'name',
+        'slug',
         'contents',
         'link',
         'condition',

@@ -24,6 +24,7 @@ class CreateRequestsTable extends AbstractMigration
     {
         $this->table('requests')
              ->addColumn('name', 'string')
+             ->addColumn('slug', 'string', ['null' => true])
              ->addColumn('contents', 'text')
              ->addColumn('link', 'string')
              ->addColumn('condition', 'text', ['null' => true])

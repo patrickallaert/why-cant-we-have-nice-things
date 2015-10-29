@@ -24,4 +24,12 @@ class RequestObserver
             ]);
         }
     }
+
+    /**
+     * @param Request $request
+     */
+    public function saving(Request $request)
+    {
+        $request->sluggify();
+    }
 }

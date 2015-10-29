@@ -24,6 +24,7 @@ class CreateUsersTable extends AbstractMigration
     {
         $this->table('users')
              ->addColumn('name', 'string', ['null' => true])
+             ->addColumn('slug', 'string', ['null' => true])
              ->addColumn('full_name', 'string', ['null' => true])
              ->addColumn('email', 'string', ['null' => true])
              ->addColumn('contributions', 'text')

@@ -3,10 +3,12 @@ namespace History\Providers;
 
 use History\Entities\Models\Comment;
 use History\Entities\Models\Request;
+use History\Entities\Models\User;
 use History\Entities\Models\Version;
 use History\Entities\Models\Vote;
 use History\Entities\Observers\CommentObserver;
 use History\Entities\Observers\RequestObserver;
+use History\Entities\Observers\UserObserver;
 use History\Entities\Observers\VersionObserver;
 use History\Entities\Observers\VoteObserver;
 use Illuminate\Container\Container;
@@ -35,10 +37,11 @@ class DatabaseServiceProvider extends AbstractServiceProvider
             $database = $this->createDatabase();
 
             // Configure observers
-            Vote::observe(new VoteObserver());
-            Request::observe(new RequestObserver());
             Comment::observe(new CommentObserver());
+            Request::observe(new RequestObserver());
+            User::observe(new UserObserver());
             Version::observe(new VersionObserver());
+            Vote::observe(new VoteObserver());
 
             // Load factories if they aren't already
             if ($this->container->get('debug')) {
