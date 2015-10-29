@@ -30,7 +30,7 @@ class DebugbarServiceProvider extends AbstractServiceProvider
             // Create Debugbar
             $debugbar = new StandardDebugBar();
             $debugbar->addCollector(new QueryCollector());
-            $debugbar->addCollector(new TwigCollector($twig));
+            //$debugbar->addCollector(new TwigCollector($twig));
 
             // Publish assets
             $renderer = $debugbar->getJavascriptRenderer();

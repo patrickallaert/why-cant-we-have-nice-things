@@ -3,8 +3,9 @@ namespace History;
 
 use DebugBar\StandardDebugBar;
 use Dotenv\Dotenv;
-use Exception;
 use History\Console\ConsoleServiceProvider;
+use History\Http\Middlewares\LeagueRouteMiddleware;
+use History\Http\Middlewares\WhoopsMiddleware;
 use History\Http\Providers\ErrorsServiceProvider;
 use History\Http\Providers\RoutingServiceProvider;
 use History\Http\Providers\TwigServiceProvider;
@@ -16,18 +17,13 @@ use History\Providers\PathsServiceProvider;
 use History\Services\Internals\InternalsServiceProvider;
 use History\Services\RequestsGatherer\RequestsGathererServiceProvider;
 use Illuminate\Database\Capsule\Manager;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Interop\Container\ContainerInterface;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
-use League\Route\Http\Exception\NotFoundException;
-use League\Route\RouteCollection;
+use Psr\Http\Message\RequestInterface;
+use Relay\RelayBuilder;
 use Silly\Application as Console;
-use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Twig_Environment;
-use Whoops\Run;
+use Zend\Diactoros\Response;
 use Zend\Diactoros\Response\SapiEmitter;
 
 /**
@@ -69,6 +65,14 @@ class Application
     ];
 
     /**
+     * @var array
+     */
+    protected $middlewares = [
+        WhoopsMiddleware::class,
+        LeagueRouteMiddleware::class,
+    ];
+
+    /**
      * @param ContainerInterface|null $container
      */
     public function __construct(ContainerInterface $container = null)
@@ -96,15 +100,12 @@ class Application
     protected function registerProviders()
     {
         // Register providers
-        array_map([$this->container, 'addServiceProvider'], $this->providers);
-
-        // Boot database and Whoops
+        array_walk($this->providers, [$this->container, 'addServiceProvider']);
         $this->container->get(Manager::class);
-        $this->container->get(Run::class);
 
         // Register local providers
         if ($this->container->get('debug')) {
-            array_map([$this->container, 'addServiceProvider'], $this->localProviders);
+            array_walk($this->localProviders, [$this->container, 'addServiceProvider']);
         }
     }
 
@@ -121,51 +122,21 @@ class Application
      */
     public function run()
     {
-        /* @type RouteCollection $dispatcher */
-        /* @type Request $request */
-        $dispatcher = $this->container->get(RouteCollection::class);
-        $request    = $this->container->get(Request::class);
-
-        // Convert to PSR7 objects
-        $factory  = new DiactorosFactory();
-        $request  = $factory->createRequest($request);
-        $response = $factory->createResponse(new Response(''));
+        // Create Request and Response
+        $request  = $this->container->get(RequestInterface::class);
+        $response = new Response();
 
         // Collect data for Debugbar before rendering
         if ($this->container->get('debug')) {
             $this->container->get(StandardDebugBar::class);
         }
 
-        try {
-            $response = $dispatcher->dispatch($request, $response);
-        } catch (Exception $exception) {
-            $response = $this->handleError($exception);
-        }
+        // Apply middlewares
+        $builder  = new RelayBuilder([$this->container, 'get']);
+        $relay    = $builder->newInstance($this->middlewares);
+        $response = $relay($request, $response);
 
         (new SapiEmitter())->emit($response);
-    }
-
-    /**
-     * Handle an exception.
-     *
-     * @param Exception $exception
-     *
-     * @return \Psr\Http\Message\ResponseInterface
-     */
-    protected function handleError(Exception $exception)
-    {
-        $factory = new DiactorosFactory();
-        $twig    = $this->container->get(Twig_Environment::class);
-
-        switch (true) {
-            default:
-            case $exception instanceof ModelNotFoundException:
-            case $exception instanceof NotFoundException:
-                $error = $twig->render('errors/404.twig');
-                break;
-        }
-
-        return $factory->createResponse(new Response($error));
     }
 
     /**

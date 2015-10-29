@@ -7,7 +7,8 @@ use History\Http\Controllers\RequestsController;
 use History\Http\Controllers\UsersController;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Route\RouteCollection;
-use Symfony\Component\HttpFoundation\Request;
+use Psr\Http\Message\ServerRequestInterface;
+use Zend\Diactoros\ServerRequestFactory;
 
 class RoutingServiceProvider extends AbstractServiceProvider
 {
@@ -16,7 +17,7 @@ class RoutingServiceProvider extends AbstractServiceProvider
      */
     protected $provides = [
         RouteCollection::class,
-        Request::class,
+        ServerRequestInterface::class,
     ];
 
     /**
@@ -26,8 +27,14 @@ class RoutingServiceProvider extends AbstractServiceProvider
      */
     public function register()
     {
-        $this->container->share(Request::class, function () {
-            return Request::createFromGlobals();
+        $this->container->share(ServerRequestInterface::class, function () {
+            return ServerRequestFactory::fromGlobals(
+                $_SERVER,
+                $_GET,
+                $_POST,
+                $_COOKIE,
+                $_FILES
+            );
         });
 
         $this->container->share(RouteCollection::class, function () {

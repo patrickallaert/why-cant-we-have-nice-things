@@ -1,12 +1,11 @@
 <?php
 namespace History\Http\Providers;
 
-use DebugBar\Bridge\Twig\TraceableTwigEnvironment;
 use History\Application;
 use History\Entities\Models\Question;
 use History\Entities\Models\Vote;
 use League\Container\ServiceProvider\AbstractServiceProvider;
-use Symfony\Component\HttpFoundation\Request;
+use Psr\Http\Message\ServerRequestInterface;
 use thomaswelton\GravatarLib\Gravatar;
 use Twig_Environment;
 use Twig_Extension_Debug;
@@ -36,8 +35,8 @@ class TwigServiceProvider extends AbstractServiceProvider
     {
         $this->container->share(Twig_Environment::class, function () {
             $loader = new Twig_Loader_Filesystem($this->container->get('paths.views'));
-            $debug = $this->container->get('debug');
-            $twig = new Twig_Environment($loader, [
+            $debug  = $this->container->get('debug');
+            $twig   = new Twig_Environment($loader, [
                 'debug'            => $debug,
                 'auto_reload'      => $debug,
                 'strict_variables' => false,
@@ -50,7 +49,7 @@ class TwigServiceProvider extends AbstractServiceProvider
 
             // Make traceable in local
             if ($debug) {
-                $twig = new TraceableTwigEnvironment($twig);
+                //$twig = new TraceableTwigEnvironment($twig);
             }
 
             return $twig;
@@ -85,7 +84,7 @@ class TwigServiceProvider extends AbstractServiceProvider
         $twig->addGlobal('app_name', Application::NAME);
         $twig->addGlobal('gravatar', $this->container->get(Gravatar::class));
 
-        $request = $this->container->get(Request::class);
+        $request = $this->container->get(ServerRequestInterface::class);
         $twig->addGlobal('current_uri', $request->getPathInfo());
         $twig->addGlobal('precision', self::PRECISION);
         $twig->addGlobal('assets', $this->getWebpackAssets());
