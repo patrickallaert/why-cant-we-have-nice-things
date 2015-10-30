@@ -65,14 +65,6 @@ class Application
     ];
 
     /**
-     * @var array
-     */
-    protected $middlewares = [
-        WhoopsMiddleware::class,
-        LeagueRouteMiddleware::class,
-    ];
-
-    /**
      * @param ContainerInterface|null $container
      */
     public function __construct(ContainerInterface $container = null)
@@ -126,14 +118,20 @@ class Application
         $request  = $this->container->get(ServerRequestInterface::class);
         $response = new Response();
 
+        $middlewares = [
+            LeagueRouteMiddleware::class,
+        ];
+
         // Collect data for Debugbar before rendering
-        if ($this->container->get('debug')) {
+        $debug = $this->container->get('debug');
+        if ($debug) {
             $this->container->get(StandardDebugBar::class);
+            array_unshift($middlewares, WhoopsMiddleware::class);
         }
 
         // Apply middlewares
         $builder  = new RelayBuilder([$this->container, 'get']);
-        $relay    = $builder->newInstance($this->middlewares);
+        $relay    = $builder->newInstance($middlewares);
         $response = $relay($request, $response);
 
         (new SapiEmitter())->emit($response);
