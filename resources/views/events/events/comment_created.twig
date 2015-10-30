@@ -1,2 +1,2 @@
 <a href="{{ url('users.show', event.eventable.user.identifier) }}">{{ event.eventable.user.display_name }}</a>
-commented on <a href="{{ url('requests.show', event.eventable.request.identifier) }}">{{ event.eventable.request.name }}</a>
+commented on <a href="{{ url('requests.show', event.eventable.request.identifier) }}#{{ event.eventable.xref }}">{{ event.eventable.request.name }}</a>
