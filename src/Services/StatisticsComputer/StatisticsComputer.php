@@ -19,20 +19,17 @@ class StatisticsComputer
         $yesVotes   = $user->votes->filter(function (Vote $vote) {
             return $vote->isPositive();
         })->count();
-        $noVotes = $totalVotes - $yesVotes;
+        $noVotes    = $totalVotes - $yesVotes;
 
-        $hivemind       = $this->computeHivemind($user);
-        $passedRequests = $user->requests->filter(function (Request $request) {
-            return $request->status === (count(Request::STATUS) - 1);
-        });
-
+        $hivemind        = $this->computeHivemind($user);
+        $passedRequests  = $user->approvedRequests->count();
         $createdRequests = $user->requests->count();
 
         return [
             'yes_votes'   => $yesVotes,
             'no_votes'    => $noVotes,
             'total_votes' => $totalVotes,
-            'success'     => $createdRequests ? $passedRequests->count() / $createdRequests : 0,
+            'success'     => $createdRequests ? $passedRequests / $createdRequests : 0,
             'approval'    => $totalVotes ? $yesVotes / $totalVotes : 0,
             'hivemind'    => $hivemind,
         ];

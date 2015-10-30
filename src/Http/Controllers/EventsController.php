@@ -2,6 +2,7 @@
 namespace History\Http\Controllers;
 
 use History\Entities\Models\Event;
+use History\Entities\Models\Request;
 use Illuminate\Support\Fluent;
 use Psr\Http\Message\ServerRequestInterface;
 

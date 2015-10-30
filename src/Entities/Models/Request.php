@@ -10,6 +10,16 @@ class Request extends AbstractModel
     use HasSlug;
 
     /**
+     * @var integer
+     */
+    const VOTING = 3;
+
+    /**
+     * @var integer
+     */
+    const APPROVED = 4;
+
+    /**
      * @var array
      */
     const STATUS = [

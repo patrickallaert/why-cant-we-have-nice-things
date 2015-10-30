@@ -70,7 +70,7 @@ class User extends AbstractModel
      */
     public function approvedRequests()
     {
-        return $this->requests()->where('status', count(Request::STATUS) - 1);
+        return $this->requests()->where('status', Request::APPROVED);
     }
 
     /**
