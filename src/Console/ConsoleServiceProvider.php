@@ -8,8 +8,10 @@ use History\Console\Commands\Sync\SyncRequestsCommand;
 use History\Console\Commands\Sync\SyncStatsCommand;
 use History\Console\Commands\Tinker;
 use History\Console\Commands\TinkerCommand;
+use Illuminate\Contracts\Cache\Repository;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Silly\Application;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class ConsoleServiceProvider extends AbstractServiceProvider
 {
@@ -38,6 +40,10 @@ class ConsoleServiceProvider extends AbstractServiceProvider
             $app->command('sync:requests', SyncRequestsCommand::class)->descriptions('Sync the RFCs from the wiki');
             $app->command('sync:internals', SyncInternalsCommand::class)->descriptions('Sync the mailing list');
             $app->command('sync:stats', SyncStatsCommand::class)->descriptions('Sync the entities statistics');
+            $app->command('cache:clear', function (OutputInterface $output) {
+                $this->container->get(Repository::class)->flush();
+                $output->writeln('<info>Cache cleared</info>');
+            });
 
             return $app;
         });
