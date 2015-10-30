@@ -1,4 +1,4 @@
 {% for key, author in event.eventable.authors %}
-    <a href="{{ url('users', author.id) }}">{{ author.display_name }}</a>{% if (key + 1) < event.eventable.authors.count() %},{% endif %}
+    <a href="{{ url('users.show', author.id) }}">{{ author.display_name }}</a>{% if (key + 1) < event.eventable.authors.count() %},{% endif %}
 {% endfor %}
- created <a href="{{ url('requests', event.eventable.id) }}">{{ event.eventable.name }}</a>
+ created <a href="{{ url('requests.show', event.eventable.id) }}">{{ event.eventable.name }}</a>
