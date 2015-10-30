@@ -14,10 +14,12 @@
     "eslint": "^1.7.3",
     "eslint-config-madewithlove": "^1.0.1",
     "madewithlove-webpack-config": "^1.1.0",
-    "webpack": "^1.12.2"
+    "webpack": "^1.12.2",
+    "webpack-dev-server": "^1.12.1"
   },
   "scripts": {
     "build": "webpack --progress",
-    "lint": "eslint resources/assets/js"
+    "lint": "eslint resources/assets/js",
+    "start": "webpack-dev-server --inline --progress"
   }
 }
