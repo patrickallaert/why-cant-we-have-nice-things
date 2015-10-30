@@ -32,7 +32,7 @@ class SyncAllCommand
     protected $commands = [
         'sync:requests',
         'sync:stats',
-        //'sync:internals',
+        'sync:internals',
     ];
 
     /**
