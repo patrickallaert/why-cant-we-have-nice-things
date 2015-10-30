@@ -18,6 +18,9 @@ class VoteTest extends TestCase
             ['Keep original implementation', false],
             ["Don't integrate stuff", false],
             ['None', false],
+            ['Allow synonyms', true],
+            ['No woman no cry', false],
+            ['Nonobstant la congolexicomatisation des lois du marchés', true],
         ];
     }
 

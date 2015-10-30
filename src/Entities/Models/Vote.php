@@ -80,6 +80,6 @@ class Vote extends AbstractModel
      */
     public function isPositive()
     {
-        return !preg_match("/(no|don't|keep|none|do not)/i", $this->answer);
+        return !preg_match("/(\s|^)(no|don't|keep|none|do not)(\s|$)/i", $this->answer);
     }
 }
