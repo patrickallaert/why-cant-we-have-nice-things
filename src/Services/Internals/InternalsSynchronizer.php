@@ -125,7 +125,7 @@ class InternalsSynchronizer
         }
 
         // If the article is not about RFCs, fuck off
-        if (strpos($article['subject'], 'RFC') === false) {
+        if (!preg_match('/(RFC|VOTE)/i', $article['subject'])) {
             return;
         }
 

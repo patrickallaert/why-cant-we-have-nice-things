@@ -18,13 +18,28 @@ class InternalsSynchronizerTest extends TestCase
 
         $internals = Mockery::mock(Internals::class);
         $internals->shouldReceive('getTotalNumberArticles')->once()->andReturn($lastArticle);
-        $internals->shouldReceive('getArticleBody')->once()->with(1)->andReturn('foobar');
-        $internals->shouldReceive('findArticleFromReference')->once()->andReturn();
+        $internals->shouldReceive('getArticleBody')->times(2)->andReturn('foobar');
+        $internals->shouldReceive('findArticleFromReference')->times(2)->andReturn();
         $internals->shouldReceive('getArticles')->times($numberArticles + 1)->andReturn([
             ['xref' => 1, 'subject' => 'foobar'],
-            ['xref' => 1, 'subject' => '[RFC] poopy'],
             [
                 'xref'       => 'php.internals:2321321',
+                'number'     => 2,
+                'subject'    => '[VOTE] foobar',
+                'from'       => 'Maxime Fabre (foo@bar.com)',
+                'references' => '',
+                'date'       => '2011-01-01 01:01:01',
+            ],
+            [
+                'xref'       => 'php.internals:2321322',
+                'number'     => 3,
+                'subject'    => 'foobar RFC',
+                'from'       => 'Maxime Fabre (foo@bar.com)',
+                'references' => '',
+                'date'       => '2011-01-01 01:01:01',
+            ],
+            [
+                'xref'       => 'php.internals:2321324',
                 'number'     => 1,
                 'subject'    => '[RFC] foobar',
                 'from'       => 'Maxime Fabre (foo@bar.com)',
@@ -36,7 +51,7 @@ class InternalsSynchronizerTest extends TestCase
         $sync    = new InternalsSynchronizer($internals);
         $created = $sync->synchronize();
 
-        $this->assertCount(1, $created);
+        $this->assertCount(2, $created);
         $this->assertEquals([
             'xref'       => 'php.internals:2321321',
             'name'       => 'foobar',
