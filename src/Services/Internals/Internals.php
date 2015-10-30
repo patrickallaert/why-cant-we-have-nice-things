@@ -57,11 +57,11 @@ class Internals
      */
     public function getArticles($from, $to)
     {
-        return $this->cacheRequest($from.'-'.$to, function () use ($from, $to) {
+        return $this->cacheRequest('internals:xover:'.$from.'-'.$to, function () use ($from, $to) {
             $format = $this->client->overviewFormat()->getResult();
             $command = $this->client->xover($from, $to, $format);
 
-            return $command->getResult();
+            return (array) $command->getResult();
         });
     }
 
@@ -73,7 +73,7 @@ class Internals
     public function getArticleBody($article)
     {
         $cleaner = new MailingListArticleCleaner();
-        $article = $this->cacheRequest('body-'.$article, function () use ($article) {
+        $article = $this->cacheRequest('internals:body:'.$article, function () use ($article) {
             return $this->client
                 ->sendCommand(new Body($article))
                 ->getResult();
@@ -89,7 +89,7 @@ class Internals
      */
     public function findArticleFromReference($xpath)
     {
-        $reference = $this->cacheRequest('xpath-'.$xpath, function () use ($xpath) {
+        $reference = $this->cacheRequest('internals:xpath:'.$xpath, function () use ($xpath) {
             return $this->client->sendCommand(new XpathCommand($xpath))->getResult();
         });
 
