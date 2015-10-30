@@ -14,6 +14,7 @@
         "illuminate/events": "^5.1",
         "illuminate/filesystem": "^5.1",
         "illuminate/pagination": "^5.1",
+        "illuminate/redis": "^5.1",
         "league/commonmark": "^0.11.3",
         "league/container": "^2.0",
         "league/route": "2.*@dev",
