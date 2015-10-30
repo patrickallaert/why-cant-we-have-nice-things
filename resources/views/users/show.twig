@@ -66,7 +66,7 @@
                 {% for vote in user.votes %}
                     <tr>
                         <td>
-                            <a href="/requests/{{ vote.question.request.id }}">{{ vote.question.request.name }}</a>
+                            <a href="{{ url('requests.show', vote.question.request.identifier) }}">{{ vote.question.request.name }}</a>
                         </td>
                         <td>{{ vote.question.name }}</td>
                         <td class="text-right">{{ choice(vote.question, vote) }}</td>

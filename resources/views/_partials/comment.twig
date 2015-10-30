@@ -4,7 +4,7 @@
             <img src="{{ gravatar.setAvatarSize(50).get(comment.user.email) }}" alt="...">
         </figure>
         <h4>
-            <a href="/users/{{ comment.user_id }}">{{ comment.user.display_name }}</a><br>
+            <a href="{{ url('users.show', comment.user.identifier) }}">{{ comment.user.display_name }}</a><br>
             <small>{{ comment.created_at.toDateTimeString() }}</small>
         </h4>
     </header>

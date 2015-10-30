@@ -10,6 +10,14 @@ abstract class AbstractModel extends Model
     use Fakable;
 
     /**
+     * @return string
+     */
+    public function getIdentifierAttribute()
+    {
+        return $this->slug ?: $this->id;
+    }
+
+    /**
      * @param array $models
      *
      * @return Collection

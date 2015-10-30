@@ -4,6 +4,7 @@ namespace History\Http\Providers;
 use History\Application;
 use History\Entities\Models\Question;
 use History\Entities\Models\Vote;
+use History\Services\UrlGenerator;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Psr\Http\Message\ServerRequestInterface;
 use thomaswelton\GravatarLib\Gravatar;
@@ -65,6 +66,10 @@ class TwigServiceProvider extends AbstractServiceProvider
     {
         $twig->addExtension(new Twig_Extension_Debug());
 
+        $twig->addFunction(new Twig_SimpleFunction('url', function ($action, $parameters) {
+            return $this->container->get(UrlGenerator::class)->to($action, $parameters);
+        }));
+
         $twig->addFunction(new Twig_SimpleFunction('percentage', function ($number) {
             return round($number * 100, self::PRECISION).'%';
         }));
@@ -81,6 +86,8 @@ class TwigServiceProvider extends AbstractServiceProvider
      */
     private function registerGlobalVariables(Twig_Environment $twig)
     {
+        $url = $this->container->get(UrlGenerator::class);
+
         $twig->addGlobal('app_name', Application::NAME);
         $twig->addGlobal('gravatar', $this->container->get(Gravatar::class));
 
@@ -91,10 +98,10 @@ class TwigServiceProvider extends AbstractServiceProvider
         $twig->addGlobal('assets', $this->getWebpackAssets());
 
         $twig->addGlobal('navigation', [
-            ['uri' => '/users', 'label' => 'Users'],
-            ['uri' => '/events', 'label' => 'Timeline'],
-            ['uri' => '/requests', 'label' => 'RFCs'],
-            ['uri' => '/about', 'label' => 'About'],
+            ['uri' => $url->to('users.index'), 'label' => 'Users'],
+            ['uri' => $url->to('events.index'), 'label' => 'Timeline'],
+            ['uri' => $url->to('requests.index'), 'label' => 'RFCs'],
+            ['uri' => $url->to('pages.about'), 'label' => 'About'],
         ]);
     }
 

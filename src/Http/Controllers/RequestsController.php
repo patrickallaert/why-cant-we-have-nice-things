@@ -39,7 +39,7 @@ class RequestsController extends AbstractController
      */
     public function show(ServerRequestInterface $serverRequest, ResponseInterface $response, $parameters)
     {
-        $request  = Request::with('questions.votes.user')->findOrFail($parameters['request']);
+        $request  = Request::with('questions.votes.user')->where('slug', $parameters['request'])->firstOrFail();
         $comments = $this->paginate($request->rootComments(), $serverRequest, 25);
 
         return $this->views->render('requests/show.twig', [

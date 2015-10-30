@@ -1,2 +1,2 @@
-<a href="/requests/{{ event.eventable.id }}">{{ event.eventable.name }}</a>
+<a href="{{ url('requests.show', event.eventable.identifier) }}">{{ event.eventable.name }}</a>
 is now <strong>{{ event.eventable.statusLabel(event.metadata.new_status)|lower }}</strong>

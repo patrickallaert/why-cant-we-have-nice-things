@@ -26,7 +26,7 @@
                 {% for user in voters %}
                     <tr>
                         <td>
-                            <a href="/users/{{ user.id }}">{{ user.display_name }}</a>
+                            <a href="{{ url('users.show', user.identifier) }}">{{ user.display_name }}</a>
                         </td>
                         <td class="text-right">{{ user.yes_votes }}</td>
                         <td class="text-right">{{ user.no_votes }}</td>
@@ -57,7 +57,7 @@
                 {% for user in creators %}
                     <tr>
                         <td>
-                            <a href="/users/{{ user.id }}">{{ user.display_name }}</a>
+                            <a href="{{ url('users.show', user.identifier) }}">{{ user.display_name }}</a>
                         </td>
                         <td class="text-right">{{ user.requests.count() }}</td>
                         <td class="text-right">{{ user.approvedRequests.count() }}</td>

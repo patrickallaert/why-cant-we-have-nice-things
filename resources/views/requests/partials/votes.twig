@@ -15,7 +15,7 @@
             {% for vote in question.votes %}
                 <tr>
                     <td>
-                        <a href="/users/{{ vote.user.id }}">{{ vote.user.display_name }}</a>
+                        <a href="{{ url('users.show', vote.user.identifier) }}">{{ vote.user.display_name }}</a>
                     </td>
                     <td class="text-right {{ vote.isPositive() ? 'success' : 'danger' }}">{{ choice(question, vote) }}</td>
                 </tr>
