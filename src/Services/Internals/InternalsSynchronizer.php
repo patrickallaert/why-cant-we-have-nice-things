@@ -160,6 +160,7 @@ class InternalsSynchronizer
     {
         return trim(strtr($subject, [
             'Re:'          => null,
+            'RFC'          => null,
             '[RFC]'        => null,
             '[DISCUSSION]' => null,
             '[PHP-DEV]'    => null,

@@ -2,6 +2,7 @@
 namespace History\Services\RequestsGatherer\Synchronizers;
 
 use DateTime;
+use Exception;
 use History\Entities\Models\Comment;
 use History\Services\RequestsGatherer\AbstractModel;
 
@@ -14,7 +15,13 @@ class CommentSynchronizer extends AbstractSynchronizer
      */
     public function synchronize()
     {
-        $datetime = new DateTime($this->get('date'));
+        try {
+            $datetime = $this->get('date');
+            $datetime = str_replace('(GMT Daylight Time)', '', $datetime);
+            $datetime = new DateTime($datetime);
+        } catch (Exception $exception) {
+            $datetime = new DateTime();
+        }
 
         // If we already synchronized this one, skip it
         $comment = Comment::firstOrNew(['xref' => $this->get('xref')]);

@@ -18,14 +18,14 @@ class InternalsSynchronizerTest extends TestCase
 
         $internals = Mockery::mock(Internals::class);
         $internals->shouldReceive('getTotalNumberArticles')->once()->andReturn($lastArticle);
-        $internals->shouldReceive('getArticleBody')->times(2)->andReturn('foobar');
-        $internals->shouldReceive('findArticleFromReference')->times(2)->andReturn();
+        $internals->shouldReceive('getArticleBody')->times(3)->andReturn('foobar');
+        $internals->shouldReceive('findArticleFromReference')->times(3)->andReturn();
         $internals->shouldReceive('getArticles')->times($numberArticles + 1)->andReturn([
             ['xref' => 1, 'subject' => 'foobar'],
             [
                 'xref'       => 'php.internals:2321321',
                 'number'     => 2,
-                'subject'    => '[VOTE] foobar',
+                'subject'    => '[VOTE] foobar RFC',
                 'from'       => 'Maxime Fabre (foo@bar.com)',
                 'references' => '',
                 'date'       => '2011-01-01 01:01:01',
@@ -51,7 +51,7 @@ class InternalsSynchronizerTest extends TestCase
         $sync    = new InternalsSynchronizer($internals);
         $created = $sync->synchronize();
 
-        $this->assertCount(2, $created);
+        $this->assertCount(3, $created);
         $this->assertEquals([
             'xref'       => 'php.internals:2321321',
             'name'       => 'foobar',
