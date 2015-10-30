@@ -10,7 +10,12 @@
 <li class="list-group-item">
     <i class="fa fa-{{ icons[event.type] }}"></i>
     <div>
-        {% include "events/events/#{event.type}.twig" %}
-        <time datetime="{{ event.created_at }}">{{ event.created_at.diffForHumans() }}</time>
+        <h4 class="list-group-item-heading">
+            {{ event.type|replace({_: ' '}) }}
+            <time datetime="{{ event.created_at }}">{{ event.created_at.diffForHumans() }}</time>
+        </h4>
+        <div class="list-group-item-text">
+            {% include "events/events/#{event.type}.twig" %}
+        </div>
     </div>
 </li>
