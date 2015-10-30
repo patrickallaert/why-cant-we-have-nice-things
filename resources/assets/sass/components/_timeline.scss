@@ -10,7 +10,16 @@
 
     &__filter {
         width: $page-width;
-        margin: 0 auto 3rem;
+        margin: 0 auto 1rem;
+    }
+
+    .panel {
+        width: $page-width;
+        margin: 0;
+
+        &-body {
+            margin-bottom: 0;
+        }
     }
 
     .list-group-item {
@@ -19,7 +28,6 @@
         border-radius: 0.25em;
         display: flex;
         align-items: center;
-        border: none;
         width: $page-width;
         border: 1px solid $color-grey;
         border-bottom-width: 4px;

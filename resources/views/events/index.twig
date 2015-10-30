@@ -1,13 +1,32 @@
 {% extends '_layouts/layout.twig' %}
-{% set title = 'Latest events' %}
+{% set title = "What's happening in PHP" %}
 
 {% set filters = {
-    Votes: ['vote_up', 'vote_down'],
-    Comments: ['comment_created'],
-    RFCs: ['rfc_created', 'rfc_status', 'rfc_version'],
+Votes: ['vote_up', 'vote_down'],
+Comments: ['comment_created'],
+RFCs: ['rfc_created', 'rfc_status', 'rfc_version'],
 } %}
 
 {% block content %}
+    {% if voting.count() %}
+        <div class="timeline">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Currently in voting</h3>
+                </div>
+                <ul class="panel-body list-unstyled">
+                    {% for request in voting %}
+                        <li>
+                            <a href="{{ url('requests.show', request.identiifer) }}">{{ request.name }}</a>
+                            currently approved at {{ percentage(request.approval) }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <hr>
+    {% endif %}
+
     <div class="timeline__filter btn-group btn-group-justified btn-group-sm">
         <a class="btn btn-default disabled">Filter events</a>
         <a href="{{ url('events.index') }}" class="btn {{ 'types[]' in current_uri ? 'btn-default' : 'btn-primary' }}">All</a>
