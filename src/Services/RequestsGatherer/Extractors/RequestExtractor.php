@@ -237,13 +237,16 @@ class RequestExtractor extends AbstractExtractor
     protected function getMajorityConditions()
     {
         $locations = [
-            '*[@id="proposed_voting_choices"]/following-sibling::div',
-            '*[@id="vote"]/following-sibling::div/p',
+            'proposed_voting_choices',
+            'voting',
+            'voting1',
+            'votes',
+            'vote',
         ];
 
         foreach ($locations as $location) {
-            if ($text = $this->extractText($location)) {
-                return $text;
+            if ($text = $this->extractText('*[@id="' .$location. '"]/following-sibling::div')) {
+                return strpos($text, '2/3') !== false ? '2/3' : '50%+1';
             }
         }
     }

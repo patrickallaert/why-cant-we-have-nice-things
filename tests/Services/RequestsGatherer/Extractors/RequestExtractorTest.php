@@ -20,7 +20,7 @@ class RequestExtractorTest extends TestCase
         $this->assertEquals([
             'name'      => 'Support Class Constant Visibility',
             'status'    => 3,
-            'condition' => 'Simple Yes/No option. This requires a 2/3 majority.',
+            'condition' => '2/3',
             'timestamp' => DateTime::createFromFormat('Y-m-d H:i:s', '2015-09-13 00:00:00'),
             'authors'   => [
                 ['full_name' => 'Sean DuBois', 'email' => 'sean@siobud.com'],
@@ -99,10 +99,10 @@ HTML;
 
     public function testCanParseConditionsFromProposedVotingChoices()
     {
-        $html         = '<div id="proposed_voting_choices"></div><div>Requires a 2/3 majority</div>';
+        $html         = '<div id="proposed_voting_choices"></div><div><p>I like butts</p><p>Requires a 2/3 majority</p></div>';
         $informations = $this->getInformationsFromHtml($html);
 
-        $this->assertEquals('Requires a 2/3 majority', $informations['condition']);
+        $this->assertEquals('2/3', $informations['condition']);
     }
 
     /**
