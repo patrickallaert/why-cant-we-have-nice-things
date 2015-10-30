@@ -5,7 +5,9 @@ use History\Http\Controllers\EventsController;
 use History\Http\Controllers\PagesController;
 use History\Http\Controllers\RequestsController;
 use History\Http\Controllers\UsersController;
+use History\Services\UrlGenerator;
 use League\Container\ServiceProvider\AbstractServiceProvider;
+use League\Route\Route;
 use League\Route\RouteCollection;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\ServerRequestFactory;
@@ -18,7 +20,13 @@ class RoutingServiceProvider extends AbstractServiceProvider
     protected $provides = [
         RouteCollection::class,
         ServerRequestInterface::class,
+        UrlGenerator::class,
     ];
+
+    /**
+     * @var Route[]
+     */
+    protected $routes;
 
     /**
      * Use the register method to register items with the container via the
@@ -41,18 +49,25 @@ class RoutingServiceProvider extends AbstractServiceProvider
             $routes = new RouteCollection($this->container);
 
             // Register routes
-            $routes->map('GET', '/', UsersController::class.'::index');
-            $routes->map('GET', 'users', UsersController::class.'::index');
-            $routes->map('GET', 'users/{user}', UsersController::class.'::show');
-
-            $routes->map('GET', 'requests', RequestsController::class.'::index');
-            $routes->map('GET', 'requests/{request}', RequestsController::class.'::show');
-
-            $routes->map('GET', 'events', EventsController::class.'::index');
-
-            $routes->map('GET', 'about', PagesController::class.'::about');
+            $this->routes = [
+                $routes->get('users', UsersController::class.'::index'),
+                $routes->get('/', UsersController::class.'::index'),
+                $routes->get('users/{user}', UsersController::class.'::show'),
+                $routes->get('about', PagesController::class.'::about'),
+                $routes->get('events', EventsController::class.'::index'),
+                $routes->get('requests', RequestsController::class.'::index'),
+                $routes->get('requests/{request}', RequestsController::class.'::show'),
+            ];
 
             return $routes;
+        });
+
+        // Since RouteCollection doesn't have a getRoutes we collect the
+        // Route instances ourselves and pass them to the UrlGenerator
+        $this->container->share(UrlGenerator::class, function () {
+            $this->container->get(RouteCollection::class);
+
+            return new UrlGenerator($this->routes);
         });
     }
 }
