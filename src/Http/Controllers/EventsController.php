@@ -25,6 +25,7 @@ class EventsController extends AbstractController
         }
 
         return $this->views->render('events/index.twig', [
+            'filter' => $types,
             'events' => $this->paginate($events, $request),
         ]);
     }

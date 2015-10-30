@@ -25,6 +25,6 @@
     </ul>
 
     <div class="text-center">
-        {{ events.render() | raw }}
+        {{ events.appends({types: filter}).render() | raw }}
     </div>
 {% endblock %}
