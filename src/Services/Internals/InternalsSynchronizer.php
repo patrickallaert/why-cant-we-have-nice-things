@@ -88,8 +88,10 @@ class InternalsSynchronizer
         $total = $count - $start;
 
         $progress = new ProgressBar($this->output, $total);
-        $progress->setFormat("%message%\n%current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
+        $format = $progress->getFormatDefinition('very_verbose');
+        $progress->setFormat("%message%\n".$format);
         $progress->setMessage('Getting messages');
+        $progress->setRedrawFrequency(350);
         $progress->start();
         for ($i = $start; $i <= $count; $i += self::CHUNK) {
             $to = $i + (self::CHUNK - 1);
