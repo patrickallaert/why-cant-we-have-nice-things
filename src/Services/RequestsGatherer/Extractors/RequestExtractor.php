@@ -245,7 +245,7 @@ class RequestExtractor extends AbstractExtractor
         ];
 
         foreach ($locations as $location) {
-            if ($text = $this->extractText('*[@id="' .$location. '"]/following-sibling::div')) {
+            if ($text = $this->extractText('*[@id="'.$location.'"]/following-sibling::div')) {
                 return strpos($text, '2/3') !== false ? '2/3' : '50%+1';
             }
         }

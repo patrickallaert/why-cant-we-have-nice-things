@@ -1,7 +1,23 @@
 {% extends '_layouts/layout.twig' %}
 {% set title = 'Latest events' %}
 
+{% set filters = {
+    Votes: ['vote_up', 'vote_down'],
+    Comments: ['comment_created'],
+    RFCs: ['rfc_created', 'rfc_status', 'rfc_version'],
+} %}
+
 {% block content %}
+    <div class="timeline__filter btn-group btn-group-justified btn-group-sm">
+        <a class="btn btn-default disabled">Filter events</a>
+        <a href="{{ url('events.index') }}" class="btn {{ 'types[]' in current_uri ? 'btn-default' : 'btn-primary' }}">All</a>
+        {% for label, filter in filters %}
+            {% set filter = "types[]=#{filter|join('&types[]=')}" %}
+            {% set active_class = filter in current_uri ? 'btn-primary' : 'btn-default' %}
+            <a href="{{ url('events.index') }}?{{ filter }}" class="btn {{ active_class }}">{{ label }}</a>
+        {% endfor %}
+    </div>
+
     <ul class="list-group timeline">
         {% for event in events %}
             {% include '_partials/event.twig' %}

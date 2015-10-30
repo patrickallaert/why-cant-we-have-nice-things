@@ -1,10 +1,11 @@
 .timeline {
     $decorators-color: lighten(black, 70);
+    $page-width: 35%;
 
     display: flex;
     flex-direction: column;
     width: auto;
-    padding-left: 30%;
+    align-items: center;
 
     .list-group-item {
         margin: 1.5rem 0;
@@ -12,6 +13,7 @@
         display: flex;
         align-items: center;
         border: none;
+        width: $page-width;
 
         &:before {
             content: '';
@@ -62,5 +64,10 @@
     time {
         display: block;
         color: $decorators-color;
+    }
+
+    &__filter {
+        width: $page-width;
+        margin: 0 auto 3rem;
     }
 }

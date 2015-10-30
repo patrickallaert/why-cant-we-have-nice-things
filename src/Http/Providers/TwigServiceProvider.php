@@ -66,7 +66,7 @@ class TwigServiceProvider extends AbstractServiceProvider
     {
         $twig->addExtension(new Twig_Extension_Debug());
 
-        $twig->addFunction(new Twig_SimpleFunction('url', function ($action, $parameters) {
+        $twig->addFunction(new Twig_SimpleFunction('url', function ($action, $parameters = []) {
             return $this->container->get(UrlGenerator::class)->to($action, $parameters);
         }));
 
@@ -93,7 +93,8 @@ class TwigServiceProvider extends AbstractServiceProvider
 
         /** @var ServerRequestInterface $request */
         $request = $this->container->get(ServerRequestInterface::class);
-        $twig->addGlobal('current_uri', $request->getUri()->getPath());
+        $uri     = $request->getUri()->getPath().'?'.urldecode($request->getUri()->getQuery());
+        $twig->addGlobal('current_uri', $uri);
         $twig->addGlobal('precision', self::PRECISION);
         $twig->addGlobal('assets', $this->getWebpackAssets());
 
