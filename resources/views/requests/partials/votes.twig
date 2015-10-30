@@ -1,4 +1,5 @@
 <h2 id="votes" class="text-center">Votes</h2>
+<p class="text-center lead">An option needs {{ '2/3' in request.condition ? '2/3' : '50%+1' }} votes to win</p>
 {% for question in request.questions %}
     <div class="table-responsive">
         <table class="table table-condensed table-striped table-hover">
