@@ -4,5 +4,5 @@
 {% endfor %}
 
 <div class="text-center">
-    {{ comments.render()|raw }}
+    {{ comments.fragment('comments').render()|raw }}
 </div>
