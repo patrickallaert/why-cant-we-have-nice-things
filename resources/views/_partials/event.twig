@@ -11,7 +11,7 @@
     <i class="fa fa-{{ icons[event.type] }}"></i>
     <div>
         <h4 class="list-group-item-heading">
-            {{ event.type|replace({_: ' '}) }}
+            {{ event.type|replace({_: ' ', rfc: 'RFC'}) }}
             <time datetime="{{ event.created_at }}">{{ event.created_at.diffForHumans() }}</time>
         </h4>
         <div class="list-group-item-text">
