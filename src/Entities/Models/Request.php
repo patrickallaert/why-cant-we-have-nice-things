@@ -10,12 +10,12 @@ class Request extends AbstractModel
     use HasSlug;
 
     /**
-     * @var integer
+     * @var int
      */
     const VOTING = 3;
 
     /**
-     * @var integer
+     * @var int
      */
     const APPROVED = 4;
 

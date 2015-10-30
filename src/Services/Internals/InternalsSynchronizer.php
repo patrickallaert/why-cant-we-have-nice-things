@@ -88,7 +88,7 @@ class InternalsSynchronizer
         $total = $count - $start;
 
         $progress = new ProgressBar($this->output, $total);
-        $format = $progress->getFormatDefinition('very_verbose');
+        $format   = $progress->getFormatDefinition('very_verbose');
         $progress->setFormat("%message%\n".$format);
         $progress->setMessage('Getting messages');
         $progress->setRedrawFrequency(350);

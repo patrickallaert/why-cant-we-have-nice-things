@@ -2,7 +2,6 @@
 namespace History\Providers;
 
 use Barryvdh\Debugbar\DataCollector\QueryCollector;
-use DebugBar\Bridge\Twig\TwigCollector;
 use DebugBar\StandardDebugBar;
 use Illuminate\Database\Capsule\Manager;
 use League\Container\ServiceProvider\AbstractServiceProvider;

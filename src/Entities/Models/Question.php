@@ -17,7 +17,7 @@ class Question extends AbstractModel
      * @var array
      */
     protected $casts = [
-      'choices' => 'array',
+        'choices' => 'array',
     ];
 
     //////////////////////////////////////////////////////////////////////

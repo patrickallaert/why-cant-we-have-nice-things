@@ -11,7 +11,7 @@ class VersionObserver
     public function created(Version $version)
     {
         $version->request->registerEvent('rfc_version', [
-           'version' => $version->version,
+            'version' => $version->version,
         ]);
     }
 }

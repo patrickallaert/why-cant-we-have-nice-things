@@ -21,7 +21,7 @@ class Vote extends AbstractModel
      * @var array
      */
     protected $casts = [
-      'choice' => 'integer',
+        'choice' => 'integer',
     ];
 
     //////////////////////////////////////////////////////////////////////

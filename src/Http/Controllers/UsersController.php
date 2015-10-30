@@ -1,7 +1,6 @@
 <?php
 namespace History\Http\Controllers;
 
-use History\Entities\Models\Request;
 use History\Entities\Models\User;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -18,11 +17,11 @@ class UsersController extends AbstractController
 
         // Sort results
         $creators = $creators->sortByDesc(function (User $user) {
-           return $user->approvedRequests->count();
+            return $user->approvedRequests->count();
         });
 
         $voters = $voters->sortBy(function (User $user) {
-           return $user->hivemind * $user->total_votes;
+            return $user->hivemind * $user->total_votes;
         });
 
         return $this->views->render('users/index.twig', [
@@ -40,7 +39,13 @@ class UsersController extends AbstractController
      */
     public function show(ServerRequestInterface $request, ResponseInterface $response, $parameters)
     {
-        $with = ['votes.question.request', 'votes.question.votes', 'requests.versions', 'requests.comments', 'requests.votes'];
+        $with = [
+            'votes.question.request',
+            'votes.question.votes',
+            'requests.versions',
+            'requests.comments',
+            'requests.votes',
+        ];
         $user = User::with($with)->where('slug', $parameters['user'])->firstOrFail();
 
         return $this->views->render('users/show.twig', [
