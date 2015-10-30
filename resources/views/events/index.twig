@@ -17,7 +17,7 @@ RFCs: ['rfc_created', 'rfc_status', 'rfc_version'],
                 <ul class="panel-body list-unstyled">
                     {% for request in voting %}
                         <li>
-                            <a href="{{ url('requests.show', request.identiifer) }}">{{ request.name }}</a>
+                            <a href="{{ url('requests.show', request.identifier) }}">{{ request.name }}</a>
                             currently approved at {{ percentage(request.approval) }}
                         </li>
                     {% endfor %}
