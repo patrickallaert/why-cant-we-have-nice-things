@@ -44,7 +44,7 @@ class RequestExtractorTest extends TestCase
                     ],
                 ],
             ],
-            'versions'  => [
+            'versions' => [
                 ['version' => '0.1', 'name' => 'Initial version', 'timestamp' => false],
                 ['version' => '0.2', 'name' => 'Adopted by Sean DuBois sean@siobud.com', 'timestamp' => false],
             ],
@@ -56,7 +56,7 @@ class RequestExtractorTest extends TestCase
 
     public function testCanParseAuthors()
     {
-        $html         = <<<'HTML'
+        $html = <<<'HTML'
         Author:
 Foo Bar
 <a>foo@bar.com</a>
@@ -71,7 +71,7 @@ HTML;
             ['full_name' => 'Baz Qux', 'email' => 'baz@qux.net'],
         ], $informations['authors']);
 
-        $html         = <<<'HTML'
+        $html = <<<'HTML'
 <strong>Author:</strong> <a href="http://www.porcupine.org/wietse/" class="urlextern" title="http://www.porcupine.org/wietse/" rel="nofollow">Wietse Venema (wietse@porcupine.org)</a> <br>
  IBM T.J. Watson Research Center <br>
  Hawthorne, NY, USA
@@ -120,7 +120,7 @@ HTML;
 
     public function testCanGetDateFromFooterIfInvalidFormat()
     {
-        $html         = <<<'HTML'
+        $html = <<<'HTML'
 <div>
     <div class="page group"><div class="level1"><ul><li>Date: FUCK YOU</li></ul></div></div>
     <div class="docInfo"><bdi>rfc/class_const_visibility.txt</bdi> · Last modified: 2015/10/28 16:06 by <bdi>sean-der</bdi></div>
@@ -145,8 +145,8 @@ HTML;
     /**
      * @dataProvider provideStatuses
      *
-     * @param string  $text
-     * @param integer $status
+     * @param string $text
+     * @param int    $status
      */
     public function testCanParseStatus($text, $status)
     {
@@ -156,7 +156,7 @@ HTML;
 
     public function testIgnoresStatusIfAllPollsAreClosed()
     {
-        $html         = <<<'HTML'
+        $html = <<<'HTML'
 <div class="page group">
     <div class="level1"><ul><li>Status: i has voting</li></ul></div>
 
@@ -173,7 +173,7 @@ HTML;
 
         $this->assertEquals(3, $informations['status']);
 
-        $html         = <<<'HTML'
+        $html = <<<'HTML'
 <div class="page group">
     <div class="level1"><ul><li>Status: i has voting</li></ul></div>
 

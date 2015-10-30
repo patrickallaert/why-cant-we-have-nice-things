@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 trait HasSlug
 {
     /**
-     * Refresh the model's slug
+     * Refresh the model's slug.
      */
     public function sluggify()
     {

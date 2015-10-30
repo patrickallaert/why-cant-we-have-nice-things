@@ -6,7 +6,7 @@ use InvalidArgumentException;
 use League\Route\Route;
 
 /**
- * A disgusting URL generator for league/route
+ * A disgusting URL generator for league/route.
  */
 class UrlGenerator
 {
