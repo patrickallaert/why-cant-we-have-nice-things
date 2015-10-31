@@ -30,9 +30,11 @@ class SyncMetadataCommand extends AbstractCommand
      */
     protected function run()
     {
+        $this->output->title('Refreshing metadata');
+
         // Only get users with holes in their informations
         $users = User::whereNull('company')->orWhereNull('full_name')->orWhereNull('name')->orWhereNull('email')->get();
-        $this->progressIterator($users, function (User $user) {
+        $this->output->progressIterator($users, function (User $user) {
             try {
                 $search = $this->github->searchUser($user);
             } catch (Exception $exception) {

@@ -1,6 +1,7 @@
 <?php
 namespace History\Services\Internals;
 
+use History\Console\HistoryStyle;
 use History\Entities\Models\Comment;
 use History\Entities\Models\Request;
 use History\Services\IdentityExtractor;
@@ -9,7 +10,6 @@ use History\Services\RequestsGatherer\Synchronizers\UserSynchronizer;
 use Rvdv\Nntp\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class InternalsSynchronizer
 {
@@ -29,7 +29,7 @@ class InternalsSynchronizer
     protected $internals;
 
     /**
-     * @var OutputInterface
+     * @var HistoryStyle
      */
     protected $output;
 
@@ -66,9 +66,9 @@ class InternalsSynchronizer
     }
 
     /**
-     * @param OutputInterface $output
+     * @param HistoryStyle $output
      */
-    public function setOutput(OutputInterface $output)
+    public function setOutput(HistoryStyle $output)
     {
         $this->output = $output;
     }
@@ -87,7 +87,7 @@ class InternalsSynchronizer
         $count = $this->internals->getTotalNumberArticles();
         $total = $count - $start;
 
-        $progress = new ProgressBar($this->output, $total);
+        $progress = $this->output->createProgressBar($total);
         $format   = $progress->getFormatDefinition('very_verbose');
         $progress->setFormat("%message%\n".$format);
         $progress->setMessage('Getting messages');

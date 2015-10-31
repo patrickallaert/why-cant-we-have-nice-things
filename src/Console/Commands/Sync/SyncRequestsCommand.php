@@ -1,7 +1,10 @@
 <?php
 namespace History\Console\Commands\Sync;
 
+use Cron\CronExpression;
 use History\Console\Commands\AbstractCommand;
+use History\Console\Commands\foo;
+use History\Console\Commands\ScheduledInterface;
 use History\Services\RequestsGatherer\RequestsGatherer;
 
 class SyncRequestsCommand extends AbstractCommand
@@ -26,7 +29,7 @@ class SyncRequestsCommand extends AbstractCommand
      */
     public function run()
     {
-        $this->comment('Refreshing requests');
+        $this->output->title('Refreshing requests');
         $this->gatherer->setOutput($this->output);
         $this->gatherer->createRequests();
     }

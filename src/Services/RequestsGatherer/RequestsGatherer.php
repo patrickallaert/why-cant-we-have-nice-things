@@ -1,6 +1,7 @@
 <?php
 namespace History\Services\RequestsGatherer;
 
+use History\Console\HistoryStyle;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
 use History\Services\RequestsGatherer\Extractors\RequestExtractor;
@@ -31,7 +32,7 @@ class RequestsGatherer
     protected $cache;
 
     /**
-     * @var OutputInterface
+     * @var HistoryStyle
      */
     protected $output;
 
@@ -45,9 +46,9 @@ class RequestsGatherer
     }
 
     /**
-     * @param OutputInterface $output
+     * @param HistoryStyle $output
      */
-    public function setOutput(OutputInterface $output)
+    public function setOutput(HistoryStyle $output)
     {
         $this->output = $output;
     }
@@ -70,13 +71,9 @@ class RequestsGatherer
 
         $created  = [];
         $requests = (new RequestsExtractor($crawler))->extract();
-        $progress = new ProgressBar($this->output, count($requests));
-        foreach ($requests as $request) {
+        $this->output->progressIterator($requests, function ($request) use (&$created) {
             $created[] = $this->createRequest(static::DOMAIN.$request);
-            $progress->advance();
-        }
-
-        $progress->finish();
+        });
 
         return $created;
     }

@@ -24,7 +24,7 @@ class SyncInternalsCommand extends AbstractCommand
      */
     public function run()
     {
-        $this->comment('Refreshing internal comments');
+        $this->output->title('Refreshing internal comments');
         $this->internals->setOutput($this->output);
         $this->internals->synchronize();
     }
