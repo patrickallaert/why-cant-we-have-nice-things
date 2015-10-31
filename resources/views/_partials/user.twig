@@ -2,6 +2,13 @@
     <img class="img-circle" src="{{ gravatar.get(user.email) }}" alt="">
     <h2>
         <a href="{{ url('users.show', user.identifier) }}">{{ user.display_name }}</a><br>
-        <small>{{ user.full_name }}</small>
     </h2>
+    <h3>
+        {{ user.full_name }}
+        {% if user.company %}, from <strong>{{ user.company }}</strong>{% endif %}
+    </h3>
+    <div class="btn-group">
+        <a target="_blank" class="btn btn-default btn-xs" href="http://people.php.net/{{ user.name }}"><i class="fa fa-book"></i> PHP</a>
+        {% if user.github_id %}<a target="_blank" class="btn btn-default btn-xs" href="https://github.com/{{ user.github_id }}"><i class="fa fa-github"></i> Github</a>{% endif %}
+    </div>
 </figure>
