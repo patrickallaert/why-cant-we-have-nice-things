@@ -25,7 +25,7 @@ class GraphicsGeneratorTest extends TestCase
         ];
 
         // Seed dummy data
-        $user = User::seed();
+        $user     = User::seed();
         $question = Question::seed();
         foreach ($months as $key => $month) {
             $choice = $key < 2 ? 1 : 2;
