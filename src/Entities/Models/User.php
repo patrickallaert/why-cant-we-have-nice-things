@@ -50,7 +50,7 @@ class User extends AbstractModel
      */
     public function votes()
     {
-        return $this->hasMany(Vote::class);
+        return $this->hasMany(Vote::class)->oldest();
     }
 
     /**

@@ -44,6 +44,13 @@
         </li>
     </ul>
 
+    {% if user.total_votes %}
+        <figure class="graph">
+            <canvas height="75" id="chart"></canvas>
+            <figcaption>Positivity over time</figcaption>
+        </figure>
+    {% endif %}
+
     {% if user.requests.count() %}
         {% include '_partials/tables/requests.twig' with {requests: user.requests, table_name: 'Created RFCs'} %}
     {% endif %}
@@ -51,4 +58,8 @@
     {% if user.votes.count() %}
         {% include 'users/partials/votes.twig' %}
     {% endif %}
+{% endblock %}
+
+{% block js %}
+    <script>var chartData = {{ chart|json_encode|raw }}</script>
 {% endblock %}

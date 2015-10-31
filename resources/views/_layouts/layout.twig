@@ -31,6 +31,7 @@
 
     {% include '_layouts/partials/footer.twig' %}
 
+    {% block js %}{% endblock %}
     <script src="{{ assets.main.js }}"></script>
     {% include '_layouts/partials/analytics.twig' %}
     {% if debugbar %}

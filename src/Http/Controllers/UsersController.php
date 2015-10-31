@@ -2,6 +2,7 @@
 namespace History\Http\Controllers;
 
 use History\Entities\Models\User;
+use History\Services\Graphs\GraphicsGenerator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -46,10 +47,12 @@ class UsersController extends AbstractController
             'requests.comments',
             'requests.votes',
         ];
+
         $user = User::with($with)->where('slug', $parameters['user'])->firstOrFail();
 
         return $this->views->render('users/show.twig', [
-            'user' => $user,
+            'user'  => $user,
+            'chart' => (new GraphicsGenerator())->computePositiveness($user),
         ]);
     }
 }

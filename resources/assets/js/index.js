@@ -13,3 +13,9 @@ if (document.querySelector('.request')) {
         require('./components/comments-folding');
     });
 }
+
+if (document.querySelector('canvas')) {
+    require.ensure([], () => {
+        require('./components/charts');
+    });
+}

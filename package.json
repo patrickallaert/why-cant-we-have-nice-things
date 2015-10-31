@@ -6,6 +6,7 @@
     "bootstrap-sass": "^3.3.5",
     "bootstrap.native": "^0.9.7-npmfix.1",
     "bootswatch": "^3.3.5",
+    "chart.js": "^1.0.2",
     "font-awesome": "^4.4.0",
     "highlight.js": "^8.9.1"
   },
