@@ -35,6 +35,7 @@ class CreateUsersTable extends AbstractMigration
              ->addColumn('approval', 'float')
              ->addColumn('success', 'float')
              ->addColumn('hivemind', 'float')
+             ->addColumn('github_id', 'string', ['null' => true])
              ->addColumn('created_at', 'datetime')
              ->addColumn('updated_at', 'datetime')
              ->create();
