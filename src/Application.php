@@ -14,6 +14,7 @@ use History\Providers\DatabaseServiceProvider;
 use History\Providers\DebugbarServiceProvider;
 use History\Providers\GravatarServiceProvider;
 use History\Providers\PathsServiceProvider;
+use History\Services\Github\GithubServiceProvider;
 use History\Services\Internals\InternalsServiceProvider;
 use History\Services\RequestsGatherer\RequestsGathererServiceProvider;
 use Illuminate\Database\Capsule\Manager;
@@ -55,6 +56,7 @@ class Application
         ErrorsServiceProvider::class,
         GravatarServiceProvider::class,
         InternalsServiceProvider::class,
+        GithubServiceProvider::class,
     ];
 
     /**

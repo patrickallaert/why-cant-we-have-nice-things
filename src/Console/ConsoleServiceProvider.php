@@ -4,6 +4,7 @@ namespace History\Console;
 use History\Console\Commands\SeedCommand;
 use History\Console\Commands\Sync\SyncAllCommand;
 use History\Console\Commands\Sync\SyncInternalsCommand;
+use History\Console\Commands\Sync\SyncMetadataCommand;
 use History\Console\Commands\Sync\SyncRequestsCommand;
 use History\Console\Commands\Sync\SyncStatsCommand;
 use History\Console\Commands\Tinker;
@@ -40,6 +41,7 @@ class ConsoleServiceProvider extends AbstractServiceProvider
             $app->command('sync:requests', SyncRequestsCommand::class)->descriptions('Sync the RFCs from the wiki');
             $app->command('sync:internals', SyncInternalsCommand::class)->descriptions('Sync the mailing list');
             $app->command('sync:stats', SyncStatsCommand::class)->descriptions('Sync the entities statistics');
+            $app->command('sync:metadata', SyncMetadataCommand::class)->descriptions('Sync additional metadata');
             $app->command('cache:clear', function (OutputInterface $output) {
                 $this->container->get(Repository::class)->flush();
                 $output->writeln('<info>Cache cleared</info>');
