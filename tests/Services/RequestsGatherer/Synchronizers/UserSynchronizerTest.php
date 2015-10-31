@@ -13,6 +13,7 @@ class UserSynchronizerTest extends TestCase
             'email'         => 'foo@bar.com',
             'full_name'     => 'Foo Bar',
             'contributions' => ['foo', 'bar'],
+            'company'       => 'Zend',
         ]);
 
         $user = $sync->synchronize();
@@ -22,6 +23,7 @@ class UserSynchronizerTest extends TestCase
             'email'         => 'foo@bar.com',
             'full_name'     => 'Foo Bar',
             'contributions' => ['foo', 'bar'],
+            'company'       => 'Zend',
         ], $user->toArray());
     }
 
@@ -75,5 +77,14 @@ class UserSynchronizerTest extends TestCase
         $user     = $sync->synchronize();
 
         $this->assertNotEquals($existing->id, $user->id);
+    }
+
+    public function testKnowsHowToReassignFullnames()
+    {
+        $sync = new UserSynchronizer(['username' => 'Maxime Fabre']);
+        $user = $sync->synchronize();
+
+        $this->assertEquals('Maxime Fabre', $user->full_name);
+        $this->assertNull($user->name);
     }
 }

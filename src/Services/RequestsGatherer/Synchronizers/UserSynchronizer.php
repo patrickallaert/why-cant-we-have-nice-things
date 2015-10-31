@@ -14,7 +14,14 @@ class UserSynchronizer extends AbstractSynchronizer
         $username = $this->get('username');
         $fullName = $this->get('full_name');
 
+        // If the username contains a space, it's most likely a name
+        if (!$fullName && strpos($username, ' ') !== false) {
+            $fullName   = $username;
+            $username   = null;
+        }
+
         $components = [
+            ['id', $this->get('id')],
             ['name', $username],
             ['email', $email],
             ['email', preg_replace('/@(.+)/', '@php.net', $email)],
