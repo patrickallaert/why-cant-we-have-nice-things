@@ -4,6 +4,9 @@ namespace History\Entities\Models;
 use History\Entities\Traits\HasEvents;
 use Illuminate\Support\Arr;
 
+/**
+ * @property integer choice
+ */
 class Vote extends AbstractModel
 {
     use HasEvents;

@@ -3,6 +3,11 @@ namespace History\Entities\Models;
 
 use History\Entities\Traits\HasEvents;
 
+
+/**
+ * @property string name
+ * @property string version
+ */
 class Version extends AbstractModel
 {
     use HasEvents;

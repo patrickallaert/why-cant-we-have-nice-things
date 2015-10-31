@@ -4,6 +4,15 @@ namespace History\Entities\Models;
 use History\Entities\Traits\HasEvents;
 use History\Entities\Traits\HasSlug;
 
+/**
+ * @property string name
+ * @property string slug
+ * @property string contents
+ * @property string link
+ * @property string condition
+ * @property float approval
+ * @property integer status
+ */
 class Request extends AbstractModel
 {
     use HasEvents;

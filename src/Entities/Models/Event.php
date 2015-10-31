@@ -1,6 +1,10 @@
 <?php
 namespace History\Entities\Models;
 
+/**
+ * @property string type
+ * @property array metadata
+ */
 class Event extends AbstractModel
 {
     /**

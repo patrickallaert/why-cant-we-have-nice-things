@@ -39,7 +39,7 @@ class Application
     const NAME = "Why can't we have nice things";
 
     /**
-     * @var ContainerInterface
+     * @var Container
      */
     protected $container;
 
@@ -67,9 +67,9 @@ class Application
     ];
 
     /**
-     * @param ContainerInterface|null $container
+     * @param Container|null $container
      */
-    public function __construct(ContainerInterface $container = null)
+    public function __construct(Container $container = null)
     {
         // Configure container
         $this->container = $container ?: new Container();

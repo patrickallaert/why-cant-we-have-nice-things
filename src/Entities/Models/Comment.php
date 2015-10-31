@@ -5,6 +5,11 @@ use History\Entities\Traits\HasEvents;
 use League\CommonMark\CommonMarkConverter;
 use LogicException;
 
+/**
+ * @property string name
+ * @property string contents
+ * @property string xref
+ */
 class Comment extends AbstractModel
 {
     use HasEvents;

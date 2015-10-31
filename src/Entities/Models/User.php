@@ -3,6 +3,21 @@ namespace History\Entities\Models;
 
 use History\Entities\Traits\HasSlug;
 
+/**
+ * @property string name
+ * @property string slug
+ * @property string full_name
+ * @property string email
+ * @property string company
+ * @property string[] contributions
+ * @property integer yes_votes
+ * @property integer no_votes
+ * @property integer total_votes
+ * @property float approval
+ * @property float success
+ * @property float hivemind
+ * @property string github_id
+ */
 class User extends AbstractModel
 {
     use HasSlug;
