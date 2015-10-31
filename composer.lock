@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "23a81a5fed806c243b702e89d05ba6e0",
-    "content-hash": "1a05978a0e0073aafb0e37dc1db70d96",
+    "hash": "e08d5a6a63aed8a4423f8f2407baba0e",
+    "content-hash": "7f5584e4e136423b415ff12bc55be768",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -214,6 +214,33 @@
                 "zf2"
             ],
             "time": "2015-06-29 05:42:04"
+        },
+        {
+            "name": "franzl/whoops-middleware",
+            "version": "0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/franzliedke/whoops-middleware.git",
+                "reference": "b7630ee687a6f49192b6b56d4795d36000120cd7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/franzliedke/whoops-middleware/zipball/b7630ee687a6f49192b6b56d4795d36000120cd7",
+                "reference": "b7630ee687a6f49192b6b56d4795d36000120cd7",
+                "shasum": ""
+            },
+            "require": {
+                "filp/whoops": "^1.1",
+                "zendframework/zend-diactoros": "^1.1@dev"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Franzl\\Middleware\\Whoops\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2015-10-31 11:25:43"
         },
         {
             "name": "guzzle/guzzle",

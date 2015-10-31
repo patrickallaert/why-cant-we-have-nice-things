@@ -25,7 +25,7 @@ class InternalsCommand extends AbstractCommand
     public function run()
     {
         $this->output->title('Refreshing internal comments');
-        
+
         $this->internals->setOutput($this->output);
         $this->internals->synchronize();
     }

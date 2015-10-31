@@ -3,10 +3,10 @@ namespace History;
 
 use DebugBar\StandardDebugBar;
 use Dotenv\Dotenv;
+use Franzl\Middleware\Whoops\Middleware as WhoopsMiddleware;
 use History\Console\ConsoleServiceProvider;
+use History\Http\Middlewares\ErrorsMiddleware;
 use History\Http\Middlewares\LeagueRouteMiddleware;
-use History\Http\Middlewares\WhoopsMiddleware;
-use History\Http\Providers\ErrorsServiceProvider;
 use History\Http\Providers\RoutingServiceProvider;
 use History\Http\Providers\TwigServiceProvider;
 use History\Providers\CacheServiceProvider;
@@ -53,7 +53,6 @@ class Application
         TwigServiceProvider::class,
         DatabaseServiceProvider::class,
         ConsoleServiceProvider::class,
-        ErrorsServiceProvider::class,
         GravatarServiceProvider::class,
         InternalsServiceProvider::class,
         GithubServiceProvider::class,
@@ -120,7 +119,10 @@ class Application
         $debug = $this->container->get('debug');
         if ($debug) {
             $this->container->get(StandardDebugBar::class);
-            array_unshift($middlewares, WhoopsMiddleware::class);
+            $middlewares = array_merge([
+                WhoopsMiddleware::class,
+                ErrorsMiddleware::class,
+            ], $middlewares);
         }
 
         // Apply middlewares

@@ -2,6 +2,8 @@
 namespace History\Http\Middlewares;
 
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use League\Route\Http\Exception\NotFoundException;
 use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Relay\MiddlewareInterface;
@@ -9,7 +11,7 @@ use Twig_Environment;
 use Whoops\Run;
 use Zend\Diactoros\Response\HtmlResponse;
 
-class WhoopsMiddleware implements MiddlewareInterface
+class ErrorsMiddleware implements MiddlewareInterface
 {
     /**
      * @var
@@ -17,20 +19,14 @@ class WhoopsMiddleware implements MiddlewareInterface
     private $twig;
 
     /**
-     * @var Run
-     */
-    private $whoops;
-
-    /**
-     * WhoopsMiddleware constructor.
+     * ErrorsMiddleware constructor.
      *
      * @param Run              $whoops
      * @param Twig_Environment $twig
      */
-    public function __construct(Run $whoops, Twig_Environment $twig)
+    public function __construct(Twig_Environment $twig)
     {
-        $this->twig   = $twig;
-        $this->whoops = $whoops;
+        $this->twig = $twig;
     }
 
     /**
