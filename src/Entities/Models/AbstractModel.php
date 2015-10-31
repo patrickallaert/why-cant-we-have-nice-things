@@ -42,4 +42,14 @@ abstract class AbstractModel extends Model
 
         return parent::__isset($key);
     }
+
+    /**
+     * Save only if attributes were changed.
+     */
+    public function saveIfDirty()
+    {
+        if ($this->isDirty()) {
+            $this->save();
+        }
+    }
 }

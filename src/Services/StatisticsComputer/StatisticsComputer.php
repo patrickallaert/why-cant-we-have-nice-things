@@ -29,9 +29,9 @@ class StatisticsComputer
             'yes_votes'   => $yesVotes,
             'no_votes'    => $noVotes,
             'total_votes' => $totalVotes,
-            'success'     => $createdRequests ? $passedRequests / $createdRequests : 0,
-            'approval'    => $totalVotes ? $yesVotes / $totalVotes : 0,
-            'hivemind'    => $hivemind,
+            'success'     => $this->roundToFloatLimit($createdRequests ? $passedRequests / $createdRequests : 0),
+            'approval'    => $this->roundToFloatLimit($totalVotes ? $yesVotes / $totalVotes : 0),
+            'hivemind'    => $this->roundToFloatLimit($hivemind),
         ];
     }
 
@@ -54,8 +54,8 @@ class StatisticsComputer
         }
 
         return [
-            'approval' => $approval,
-            'passed'   => $this->hasPassed($question, $approval),
+            'approval' => $this->roundToFloatLimit($approval),
+            'passed'   => (int) $this->hasPassed($question, $approval),
         ];
     }
 
@@ -71,7 +71,7 @@ class StatisticsComputer
         });
 
         return [
-            'approval' => $approvals->average(),
+            'approval' => $this->roundToFloatLimit($approvals->average()),
         ];
     }
 
@@ -127,5 +127,18 @@ class StatisticsComputer
         $hivemind = $hivemind / $user->votes->count();
 
         return $hivemind;
+    }
+
+    /**
+     * Round a float to its truncated SQL version to avoid
+     * false dirty positives.
+     *
+     * @param float $number
+     *
+     * @return float
+     */
+    protected function roundToFloatLimit($number)
+    {
+        return round($number, 6);
     }
 }

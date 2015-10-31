@@ -28,9 +28,7 @@ abstract class AbstractSynchronizer implements SynchronizerInterface
     public function persist()
     {
         $entity = $this->synchronize();
-        if ($entity->isDirty()) {
-            $entity->save();
-        }
+        $entity->saveIfDirty();
 
         return $entity;
     }

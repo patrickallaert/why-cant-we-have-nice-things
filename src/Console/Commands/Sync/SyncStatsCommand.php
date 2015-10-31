@@ -27,23 +27,23 @@ class SyncStatsCommand extends AbstractCommand
      */
     public function run()
     {
-        $users     = User::with('votes.question', 'requests')->get();
+        $users     = User::with('votes.question.votes', 'requests')->get();
         $questions = Question::with('votes')->get();
         $requests  = Request::with('questions.votes')->get();
 
         $this->comment('Refreshing User statistics');
         $this->progressIterator($users, function (User $user) {
-            $user->update($this->computer->forUser($user));
+            $user->fill($this->computer->forUser($user))->saveIfDirty();
         });
 
         $this->comment('Refreshing Question statistics');
         $this->progressIterator($questions, function (Question $question) {
-            $question->update($this->computer->forQuestion($question));
+            $question->fill($this->computer->forQuestion($question))->saveIfDirty();
         });
 
         $this->comment('Refreshing Request statistics');
         $this->progressIterator($requests, function (Request $request) {
-            $request->update($this->computer->forRequest($request));
+            $request->fill($this->computer->forRequest($request))->saveIfDirty();
         });
     }
 }
