@@ -43,8 +43,8 @@ class SyncMetadataCommand extends AbstractCommand
 
             // If we have results, find informations about
             // the first returned user
-            if ($search['total_count']) {
-                $githubLogin  = $search['items'][0]['login'];
+            if ($search && $search['total_count']) {
+                $githubLogin = $search['items'][0]['login'];
                 $informations = $this->github->getUserInformations($githubLogin);
                 $informations = new Fluent($informations);
                 $synchronizer = new UserSynchronizer([
@@ -56,7 +56,7 @@ class SyncMetadataCommand extends AbstractCommand
                 ]);
 
                 // Save Github ID for later use
-                $user            = $synchronizer->persist();
+                $user = $synchronizer->persist();
                 $user->github_id = $githubLogin;
                 $user->save();
             }

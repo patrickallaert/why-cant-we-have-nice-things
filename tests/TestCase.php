@@ -4,8 +4,6 @@ namespace History;
 use Carbon\Carbon;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Database\Capsule\Manager;
-use League\Container\Container;
-use League\Container\ContainerInterface;
 use Mockery;
 use Mockery\MockInterface;
 use PHPUnit_Framework_TestCase;

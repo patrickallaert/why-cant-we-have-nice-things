@@ -16,8 +16,8 @@ class UserSynchronizer extends AbstractSynchronizer
 
         // If the username contains a space, it's most likely a name
         if (!$fullName && strpos($username, ' ') !== false) {
-            $fullName   = $username;
-            $username   = null;
+            $fullName = $username;
+            $username = null;
         }
 
         $components = [

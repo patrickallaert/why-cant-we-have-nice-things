@@ -18,13 +18,11 @@ class GithubServiceProvider extends AbstractServiceProvider
      * Use the register method to register items with the container via the
      * protected $this->container property or the `getContainer` method
      * from the ContainerAwareTrait.
-     *
-     * @return void
      */
     public function register()
     {
         $this->container->share(Github::class, function () {
-            $cache  = $this->container->get(Repository::class);
+            $cache = $this->container->get(Repository::class);
             $client = new Client();
             $client->authenticate(getenv('GITHUB_ID'), getenv('GITHUB_SECRET'), Client::AUTH_URL_CLIENT_ID);
 
