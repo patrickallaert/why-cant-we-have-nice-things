@@ -33,7 +33,7 @@ class VoteExtractor extends AbstractExtractor
         return [
             'user_id'    => $this->replaceFullnamesByUsernames($user),
             'choice'     => $voted,
-            'created_at' => DateTime::createFromFormat('Y/m/d H:i', $time, new DateTimeZone('UTC')),
+            'timestamps' => DateTime::createFromFormat('Y/m/d H:i', $time, new DateTimeZone('UTC')),
         ];
     }
 
