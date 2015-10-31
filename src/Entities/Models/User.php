@@ -10,9 +10,9 @@ use History\Entities\Traits\HasSlug;
  * @property string email
  * @property string company
  * @property string[] contributions
- * @property integer yes_votes
- * @property integer no_votes
- * @property integer total_votes
+ * @property int yes_votes
+ * @property int no_votes
+ * @property int total_votes
  * @property float approval
  * @property float success
  * @property float hivemind

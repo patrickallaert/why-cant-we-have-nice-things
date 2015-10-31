@@ -11,7 +11,7 @@ use History\Entities\Traits\HasSlug;
  * @property string link
  * @property string condition
  * @property float approval
- * @property integer status
+ * @property int status
  */
 class Request extends AbstractModel
 {

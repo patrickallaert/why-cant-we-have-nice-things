@@ -20,7 +20,7 @@ trait Fakable
     /**
      * Seed a fake instance of the model.
      *
-     * @param integer|array $args
+     * @param int|array $args
      *
      * @return static
      */

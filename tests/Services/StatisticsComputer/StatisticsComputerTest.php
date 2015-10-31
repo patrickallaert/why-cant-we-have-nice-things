@@ -87,13 +87,13 @@ class StatisticsComputerTest extends TestCase
         Vote::seed(['choice' => 2, 'question_id' => $question->id]);
         Vote::seed(['choice' => 2, 'question_id' => $question->id]);
 
-        $user                   = new User([]);
-        $user->votes            = new Collection([
+        $user        = new User([]);
+        $user->votes = new Collection([
             (new Vote(['choice' => 1]))->setAttribute('question', $question),
             (new Vote(['choice' => 2]))->setAttribute('question', $question),
             (new Vote(['choice' => 2]))->setAttribute('question', $question),
         ]);
-        $user->requests         = new Collection([
+        $user->requests = new Collection([
             new Request(['status' => 4]),
             new Request(['status' => 4]),
         ]);
