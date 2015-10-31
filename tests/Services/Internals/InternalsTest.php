@@ -13,7 +13,7 @@ class InternalsTest extends TestCase
     {
         $internals = $this->mockInternals();
 
-        $total = $internals->getTotalNumberArticles();
+        $internals->getTotalNumberArticles();
         $total = $internals->getTotalNumberArticles();
 
         $this->assertEquals(25, $total);

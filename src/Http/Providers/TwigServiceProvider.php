@@ -48,11 +48,6 @@ class TwigServiceProvider extends AbstractServiceProvider
             $this->registerGlobalVariables($twig);
             $this->addTwigExtensions($twig);
 
-            // Make traceable in local
-            if ($debug) {
-                //$twig = new TraceableTwigEnvironment($twig);
-            }
-
             return $twig;
         });
     }

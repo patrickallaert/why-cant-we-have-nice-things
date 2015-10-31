@@ -22,25 +22,13 @@ class StatisticsComputerTest extends TestCase
         $this->computer = new StatisticsComputer();
     }
 
-    public function testCanComputeQuestionStatistics()
-    {
-        $request  = Request::seed(['condition' => '50%']);
-        $question = Question::seed(['request_id' => $request->id]);
-        Vote::seed(['choice' => 2, 'question_id' => $question->id]);
-        Vote::seed(['choice' => 1, 'question_id' => $question->id]);
-        Vote::seed(['choice' => 1, 'question_id' => $question->id]);
-
-        $stats = $this->computer->forQuestion($question);
-        $this->assertEquals([
-            'approval' => round(2 / 3, 6),
-            'passed'   => true,
-        ], $stats);
-    }
-
-    public function testCanComputeDependingOnMajorityConditions()
+    /**
+     * @dataProvider provideConditions
+     */
+    public function testCanComputeDependingOnMajorityConditions($condition, $passed)
     {
         $question          = Question::seed();
-        $question->request = new Request(['condition' => '2/3']);
+        $question->request = new Request(['condition' => $condition]);
         Vote::seed(['choice' => 2, 'question_id' => $question->id]);
         Vote::seed(['choice' => 1, 'question_id' => $question->id]);
         Vote::seed(['choice' => 1, 'question_id' => $question->id]);
@@ -48,7 +36,7 @@ class StatisticsComputerTest extends TestCase
         $stats = $this->computer->forQuestion($question);
         $this->assertEquals([
             'approval' => round(2 / 3, 6),
-            'passed'   => false,
+            'passed'   => $passed,
         ], $stats);
     }
 
@@ -99,13 +87,13 @@ class StatisticsComputerTest extends TestCase
         Vote::seed(['choice' => 2, 'question_id' => $question->id]);
         Vote::seed(['choice' => 2, 'question_id' => $question->id]);
 
-        $user        = new User([]);
-        $user->votes = new Collection([
+        $user                   = new User([]);
+        $user->votes            = new Collection([
             (new Vote(['choice' => 1]))->setAttribute('question', $question),
             (new Vote(['choice' => 2]))->setAttribute('question', $question),
             (new Vote(['choice' => 2]))->setAttribute('question', $question),
         ]);
-        $user->requests = new Collection([
+        $user->requests         = new Collection([
             new Request(['status' => 4]),
             new Request(['status' => 4]),
         ]);
@@ -138,5 +126,16 @@ class StatisticsComputerTest extends TestCase
             'success'     => 0,
             'hivemind'    => 0,
         ], $stats);
+    }
+
+    /**
+     * @return array
+     */
+    public function provideConditions()
+    {
+        return [
+            ['2/3', false],
+            ['50%+1', true],
+        ];
     }
 }

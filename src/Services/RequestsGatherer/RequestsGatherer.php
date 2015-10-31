@@ -2,6 +2,7 @@
 namespace History\Services\RequestsGatherer;
 
 use History\Console\HistoryStyle;
+use History\Entities\Models\Question;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
 use History\Entities\Synchronizers\QuestionSynchronizer;
@@ -98,8 +99,9 @@ class RequestsGatherer
         // and update its informations
         $informations['link'] = $link;
         $synchronizer         = new RequestSynchronizer($informations);
-        $request              = $synchronizer->persist();
+        $request = $synchronizer->persist();
 
+        /** @var Request $request */
         $this->createVersions($request, $informations['versions']);
         $this->createQuestions($request, $informations['questions']);
         $this->createAuthors($request, $informations['authors']);
@@ -147,6 +149,7 @@ class RequestsGatherer
             $question = new QuestionSynchronizer($informations, $request);
             $question = $question->persist();
 
+            /** @var Question $question */
             // Sanitize vote structure
             $votes = $informations['votes'];
             foreach ($votes as $vote) {

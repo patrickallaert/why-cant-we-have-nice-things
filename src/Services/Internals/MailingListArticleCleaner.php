@@ -130,7 +130,12 @@ class MailingListArticleCleaner
             return;
         }
 
-        @list($key, $value) = explode(': ', $line, 2);
+        $header = explode(': ', $line, 2);
+        if (count($header) !== 2) {
+            return;
+        }
+
+        list($key, $value) = $header;
         if ($key && $value) {
             $this->headerKey                 = strtolower($key);
             $this->headers[$this->headerKey] = $value;

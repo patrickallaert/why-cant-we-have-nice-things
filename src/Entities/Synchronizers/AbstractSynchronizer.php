@@ -56,7 +56,7 @@ abstract class AbstractSynchronizer
      * Get the criterias against which an existing
      * entity will be matched.
      *
-     * @return array[][]
+     * @return array
      */
     abstract protected function getMatchers();
 
