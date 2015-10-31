@@ -44,11 +44,17 @@ class UserSynchronizer extends AbstractSynchronizer
         // Do not replace the user's email if it is more valid than the one we have or
         // if we don't even have one
         $shouldReplaceEmail = $email && (!$user->email || strpos($user->email, '@php.net'));
+        $email              = $shouldReplaceEmail ? $email : $user->email;
+
+        // If the user has an email in @zend.com we can
+        // probably assume he works at Zend
+        $company = strpos($email, '@zend') !== false ? 'Zend' : $this->get('company');
 
         // Fill-in informations
         $user->name          = $user->name ?: $username;
         $user->full_name     = $user->full_name ?: $fullName;
-        $user->email         = $shouldReplaceEmail ? $email : $user->email;
+        $user->company       = $user->company ?: $company;
+        $user->email         = $email;
         $user->contributions = $user->contributions ?: ($this->get('contributions') ?: []);
 
         return $user;
