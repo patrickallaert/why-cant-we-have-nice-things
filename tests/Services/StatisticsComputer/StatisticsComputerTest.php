@@ -32,7 +32,7 @@ class StatisticsComputerTest extends TestCase
 
         $stats = $this->computer->forQuestion($question);
         $this->assertEquals([
-            'approval' => 2 / 3,
+            'approval' => round(2 / 3, 6),
             'passed'   => true,
         ], $stats);
     }
@@ -47,7 +47,7 @@ class StatisticsComputerTest extends TestCase
 
         $stats = $this->computer->forQuestion($question);
         $this->assertEquals([
-            'approval' => 2 / 3,
+            'approval' => round(2 / 3, 6),
             'passed'   => false,
         ], $stats);
     }
@@ -118,9 +118,9 @@ class StatisticsComputerTest extends TestCase
             'yes_votes'   => 1,
             'no_votes'    => 2,
             'total_votes' => 3,
-            'approval'    => 1 / 3,
-            'success'     => 1 / 2,
-            'hivemind'    => 2 / 3,
+            'approval'    => round(1 / 3, 6),
+            'success'     => round(1 / 2, 6),
+            'hivemind'    => round(2 / 3, 6),
         ], $stats);
     }
 

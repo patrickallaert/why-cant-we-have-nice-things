@@ -26,10 +26,10 @@ class GraphicsGeneratorTest extends TestCase
 
         // Seed dummy data
         $user = User::seed();
-        Question::seed();
+        $question = Question::seed();
         foreach ($months as $key => $month) {
             $choice = $key < 2 ? 1 : 2;
-            Vote::seed(['user_id' => $user->id, 'question_id' => 1, 'choice' => $choice, 'created_at' => $month]);
+            Vote::seed(['user_id' => $user->id, 'question_id' => $question->id, 'choice' => $choice, 'created_at' => $month]);
         }
 
         // Compute graph data
