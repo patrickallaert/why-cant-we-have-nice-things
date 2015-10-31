@@ -20,6 +20,9 @@ abstract class AbstractCommand
     public function __invoke(OutputInterface $output)
     {
         $this->wrapOutput($output);
+
+        // We don't define run as abstract so
+        // we can overload arguments
         $this->run();
     }
 

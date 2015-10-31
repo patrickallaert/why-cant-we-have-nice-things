@@ -7,7 +7,7 @@ use History\Entities\Models\Request;
 use History\Entities\Models\User;
 use History\Services\StatisticsComputer\StatisticsComputer;
 
-class SyncStatsCommand extends AbstractCommand
+class StatsCommand extends AbstractCommand
 {
     /**
      * @var StatisticsComputer
@@ -28,6 +28,8 @@ class SyncStatsCommand extends AbstractCommand
     public function run()
     {
         $this->output->title('Refreshing statistics');
+
+        // Fetch the entities to refresh
         $users     = User::with('votes.question.votes', 'requests')->get();
         $questions = Question::with('votes')->get();
         $requests  = Request::with('questions.votes')->get();

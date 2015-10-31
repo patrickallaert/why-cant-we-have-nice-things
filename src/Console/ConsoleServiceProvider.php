@@ -3,10 +3,10 @@ namespace History\Console;
 
 use History\Console\Commands\ScheduledCommand;
 use History\Console\Commands\SeedCommand;
-use History\Console\Commands\Sync\SyncInternalsCommand;
-use History\Console\Commands\Sync\SyncMetadataCommand;
-use History\Console\Commands\Sync\SyncRequestsCommand;
-use History\Console\Commands\Sync\SyncStatsCommand;
+use History\Console\Commands\Sync\InternalsCommand;
+use History\Console\Commands\Sync\MetadataCommand;
+use History\Console\Commands\Sync\RequestsCommand;
+use History\Console\Commands\Sync\StatsCommand;
 use History\Console\Commands\Tinker;
 use History\Console\Commands\TinkerCommand;
 use Illuminate\Contracts\Cache\Repository;
@@ -35,10 +35,10 @@ class ConsoleServiceProvider extends AbstractServiceProvider
             $app->useContainer($this->container);
 
             // Register commands
-            $app->command('sync:requests', SyncRequestsCommand::class)->descriptions('Sync the RFCs from the wiki');
-            $app->command('sync:internals', SyncInternalsCommand::class)->descriptions('Sync the mailing list');
-            $app->command('sync:stats', SyncStatsCommand::class)->descriptions('Sync the entities statistics');
-            $app->command('sync:metadata', SyncMetadataCommand::class)->descriptions('Sync additional metadata');
+            $app->command('sync:requests', RequestsCommand::class)->descriptions('Sync the RFCs from the wiki');
+            $app->command('sync:internals', InternalsCommand::class)->descriptions('Sync the mailing list');
+            $app->command('sync:stats', StatsCommand::class)->descriptions('Sync the entities statistics');
+            $app->command('sync:metadata', MetadataCommand::class)->descriptions('Sync additional metadata');
 
             $app->command('seed', SeedCommand::class)->descriptions('Seed the database with dummy data');
             $app->command('tinker', TinkerCommand::class)->descriptions('Tinker with the app');

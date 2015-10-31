@@ -2,6 +2,7 @@
 namespace History\Console\Commands;
 
 use Cron\CronExpression;
+use Exception;
 use Illuminate\Contracts\Cache\Repository;
 use Silly\Application;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -31,6 +32,12 @@ class ScheduledCommand extends AbstractCommand
         $this->cache   = $cache;
     }
 
+    /**
+     * @param bool            $scratch
+     * @param OutputInterface $output
+     *
+     * @throws Exception
+     */
     public function run($scratch, OutputInterface $output)
     {
         $this->wrapOutput($output);

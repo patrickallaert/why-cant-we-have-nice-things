@@ -4,7 +4,7 @@ namespace History\Console\Commands\Sync;
 use History\Console\Commands\AbstractCommand;
 use History\Services\Internals\InternalsSynchronizer;
 
-class SyncInternalsCommand extends AbstractCommand
+class InternalsCommand extends AbstractCommand
 {
     /**
      * @var InternalsSynchronizer
@@ -25,6 +25,7 @@ class SyncInternalsCommand extends AbstractCommand
     public function run()
     {
         $this->output->title('Refreshing internal comments');
+        
         $this->internals->setOutput($this->output);
         $this->internals->synchronize();
     }

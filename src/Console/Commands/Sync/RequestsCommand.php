@@ -4,7 +4,7 @@ namespace History\Console\Commands\Sync;
 use History\Console\Commands\AbstractCommand;
 use History\Services\RequestsGatherer\RequestsGatherer;
 
-class SyncRequestsCommand extends AbstractCommand
+class RequestsCommand extends AbstractCommand
 {
     /**
      * @var RequestsGatherer
@@ -12,7 +12,7 @@ class SyncRequestsCommand extends AbstractCommand
     protected $gatherer;
 
     /**
-     * SyncRequestsCommand constructor.
+     * RequestsCommand constructor.
      *
      * @param RequestsGatherer $gatherer
      */
@@ -27,6 +27,7 @@ class SyncRequestsCommand extends AbstractCommand
     public function run()
     {
         $this->output->title('Refreshing requests');
+
         $this->gatherer->setOutput($this->output);
         $this->gatherer->createRequests();
     }

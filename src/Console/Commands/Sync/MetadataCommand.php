@@ -8,7 +8,7 @@ use History\Services\Github\Github;
 use History\Services\RequestsGatherer\Synchronizers\UserSynchronizer;
 use Illuminate\Support\Fluent;
 
-class SyncMetadataCommand extends AbstractCommand
+class MetadataCommand extends AbstractCommand
 {
     /**
      * @var Github
@@ -16,7 +16,7 @@ class SyncMetadataCommand extends AbstractCommand
     protected $github;
 
     /**
-     * SyncMetadataCommand constructor.
+     * MetadataCommand constructor.
      *
      * @param Github $github
      */
