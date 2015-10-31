@@ -1,10 +1,7 @@
 <?php
 namespace History\Console\Commands\Sync;
 
-use Cron\CronExpression;
 use History\Console\Commands\AbstractCommand;
-use History\Console\Commands\foo;
-use History\Console\Commands\ScheduledInterface;
 use History\Services\RequestsGatherer\RequestsGatherer;
 
 class SyncRequestsCommand extends AbstractCommand

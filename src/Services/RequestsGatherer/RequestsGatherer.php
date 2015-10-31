@@ -14,9 +14,7 @@ use History\Services\RequestsGatherer\Synchronizers\VersionSynchronizer;
 use History\Services\RequestsGatherer\Synchronizers\VoteSynchronizer;
 use Illuminate\Contracts\Cache\Repository;
 use InvalidArgumentException;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DomCrawler\Crawler;
 
 class RequestsGatherer

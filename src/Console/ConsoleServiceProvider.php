@@ -3,7 +3,6 @@ namespace History\Console;
 
 use History\Console\Commands\ScheduledCommand;
 use History\Console\Commands\SeedCommand;
-use History\Console\Commands\Sync\SyncAllCommand;
 use History\Console\Commands\Sync\SyncInternalsCommand;
 use History\Console\Commands\Sync\SyncMetadataCommand;
 use History\Console\Commands\Sync\SyncRequestsCommand;

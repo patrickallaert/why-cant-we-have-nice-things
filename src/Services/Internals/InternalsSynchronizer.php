@@ -8,7 +8,6 @@ use History\Services\IdentityExtractor;
 use History\Services\RequestsGatherer\Synchronizers\CommentSynchronizer;
 use History\Services\RequestsGatherer\Synchronizers\UserSynchronizer;
 use Rvdv\Nntp\Exception\InvalidArgumentException;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\NullOutput;
 
 class InternalsSynchronizer

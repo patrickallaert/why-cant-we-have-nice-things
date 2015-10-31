@@ -28,7 +28,7 @@ class ScheduledCommand extends AbstractCommand
     public function __construct(Application $console, Repository $cache)
     {
         $this->console = $console;
-        $this->cache = $cache;
+        $this->cache   = $cache;
     }
 
     public function run($scratch, OutputInterface $output)
