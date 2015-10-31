@@ -15,6 +15,11 @@
 
         figure {
             margin-right: 1em;
+            max-width: 50px;
+
+            img {
+                max-width: 100%;
+            }
         }
     }
 
