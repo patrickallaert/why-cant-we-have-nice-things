@@ -47,7 +47,10 @@ abstract class AbstractCommand
     {
         $progress = new ProgressBar($this->output, count($entries));
         foreach ($entries as $entry) {
-            $callback($entry);
+            if ($callback($entry) === false) {
+                return;
+            }
+
             $progress->advance();
         }
 
