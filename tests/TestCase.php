@@ -12,17 +12,10 @@ use PHPUnit_Framework_TestCase;
 
 abstract class TestCase extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $app;
-
     public function setUp()
     {
-        // Create app
-        $container = new Container();
-        $app       = new Application($container);
-        $this->app = $app->getContainer();
+        // Boot up application
+        new Application();
 
         // Mock current time
         Carbon::setTestNow(new Carbon('2011-01-01 01:01:01'));

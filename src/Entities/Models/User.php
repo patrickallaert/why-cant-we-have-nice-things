@@ -15,6 +15,7 @@ class User extends AbstractModel
         'slug',
         'full_name',
         'email',
+        'company',
         'contributions',
         'yes_votes',
         'no_votes',

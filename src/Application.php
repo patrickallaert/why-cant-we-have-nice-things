@@ -102,14 +102,6 @@ class Application
     }
 
     /**
-     * @return ContainerInterface
-     */
-    public function getContainer()
-    {
-        return $this->container;
-    }
-
-    /**
      * Run the application.
      */
     public function run()
