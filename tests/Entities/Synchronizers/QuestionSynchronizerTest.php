@@ -1,5 +1,5 @@
 <?php
-namespace History\Services\RequestsGatherer\Synchronizers;
+namespace History\Entities\Synchronizers;
 
 use History\Entities\Models\Question;
 use History\Entities\Models\Request;

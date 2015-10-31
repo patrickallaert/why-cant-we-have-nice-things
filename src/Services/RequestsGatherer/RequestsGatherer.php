@@ -4,16 +4,17 @@ namespace History\Services\RequestsGatherer;
 use History\Console\HistoryStyle;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
+use History\Entities\Synchronizers\QuestionSynchronizer;
+use History\Entities\Synchronizers\RequestSynchronizer;
+use History\Entities\Synchronizers\UserSynchronizer;
+use History\Entities\Synchronizers\VersionSynchronizer;
+use History\Entities\Synchronizers\VoteSynchronizer;
 use History\Services\RequestsGatherer\Extractors\RequestExtractor;
 use History\Services\RequestsGatherer\Extractors\RequestsExtractor;
 use History\Services\RequestsGatherer\Extractors\UserExtractor;
-use History\Services\RequestsGatherer\Synchronizers\QuestionSynchronizer;
-use History\Services\RequestsGatherer\Synchronizers\RequestSynchronizer;
-use History\Services\RequestsGatherer\Synchronizers\UserSynchronizer;
-use History\Services\RequestsGatherer\Synchronizers\VersionSynchronizer;
-use History\Services\RequestsGatherer\Synchronizers\VoteSynchronizer;
 use Illuminate\Contracts\Cache\Repository;
 use InvalidArgumentException;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -40,7 +41,7 @@ class RequestsGatherer
     public function __construct(Repository $cache)
     {
         $this->cache  = $cache;
-        $this->output = new NullOutput();
+        $this->output = new HistoryStyle(new ArrayInput([]), new NullOutput());
     }
 
     /**
@@ -182,7 +183,7 @@ class RequestsGatherer
         }
 
         // Merge attributes
-        $attributes   = array_merge(['username' => $username], $attributes);
+        $attributes   = array_merge(['name' => $username], $attributes);
         $synchronizer = new UserSynchronizer($attributes);
 
         return $synchronizer->persist();

@@ -4,8 +4,8 @@ namespace History\Console\Commands\Sync;
 use Exception;
 use History\Console\Commands\AbstractCommand;
 use History\Entities\Models\User;
+use History\Entities\Synchronizers\UserSynchronizer;
 use History\Services\Github\Github;
-use History\Services\RequestsGatherer\Synchronizers\UserSynchronizer;
 use Illuminate\Support\Fluent;
 
 class MetadataCommand extends AbstractCommand
@@ -51,7 +51,7 @@ class MetadataCommand extends AbstractCommand
                 $informations = new Fluent($informations);
                 $synchronizer = new UserSynchronizer([
                     'id'        => $user->id,
-                    'username'  => $user->name ?: $informations->login,
+                    'name'      => $user->name ?: $informations->login,
                     'email'     => $user->email ?: $informations->email,
                     'company'   => $user->company ?: $informations->company,
                     'full_name' => $user->full_name ?: $informations->full_name,

@@ -1,5 +1,5 @@
 <?php
-namespace History\Services\RequestsGatherer\Synchronizers;
+namespace History\Entities\Synchronizers;
 
 use DateTime;
 use History\Entities\Models\Question;
@@ -17,7 +17,7 @@ class VoteSynchronizerTest extends TestCase
         $time = new DateTime();
         $sync = new VoteSynchronizer([
             'choice'     => 2,
-            'created_at' => $time,
+            'timestamps' => $time,
         ], $question, $user);
 
         $vote = $sync->synchronize();
@@ -35,20 +35,14 @@ class VoteSynchronizerTest extends TestCase
     {
         $existing = Vote::seed();
 
-        $user     = new User();
-        $user->id = $existing->user_id;
-
-        $question     = new Question();
-        $question->id = $existing->question_id;
-
         $time = new DateTime();
         $sync = new VoteSynchronizer([
             'choice'     => 2,
-            'created_at' => $time,
-        ], $question, $user);
+            'timestamps' => $time,
+        ], $existing->question, $existing->user);
 
         $vote = $sync->persist();
-        $this->assertEquals($vote->id, $existing->id);
+        $this->assertEquals($existing->id, $vote->id);
         $this->assertEquals(2, $vote->choice);
     }
 }

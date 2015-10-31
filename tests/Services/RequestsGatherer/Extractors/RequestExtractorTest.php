@@ -18,11 +18,11 @@ class RequestExtractorTest extends TestCase
         unset($informations['contents']);
 
         $this->assertEquals([
-            'name'      => 'Support Class Constant Visibility',
-            'status'    => 3,
-            'condition' => '2/3',
-            'timestamp' => DateTime::createFromFormat('Y-m-d H:i:s', '2015-09-13 00:00:00'),
-            'authors'   => [
+            'name'       => 'Support Class Constant Visibility',
+            'status'     => 3,
+            'condition'  => '2/3',
+            'timestamps' => DateTime::createFromFormat('Y-m-d H:i:s', '2015-09-13 00:00:00'),
+            'authors'    => [
                 ['full_name' => 'Sean DuBois', 'email' => 'sean@siobud.com'],
                 ['full_name' => 'Reeze Xia', 'email' => 'reeze@php.net'],
             ],
@@ -45,8 +45,8 @@ class RequestExtractorTest extends TestCase
                 ],
             ],
             'versions' => [
-                ['version' => '0.1', 'name' => 'Initial version', 'timestamp' => false],
-                ['version' => '0.2', 'name' => 'Adopted by Sean DuBois sean@siobud.com', 'timestamp' => false],
+                ['version' => '0.1', 'name' => 'Initial version', 'timestamps' => false],
+                ['version' => '0.2', 'name' => 'Adopted by Sean DuBois sean@siobud.com', 'timestamps' => false],
             ],
         ], $informations);
 
@@ -115,7 +115,7 @@ HTML;
     {
         $informations = $this->getInformationsFromInformationBlock($text);
         $matcher      = $date instanceof DateTime ? $date : DateTime::createFromFormat('Y-m-d H:i:s', $date);
-        $this->assertEquals($matcher->format('Y-m-d'), $informations['timestamp']->format('Y-m-d'));
+        $this->assertEquals($matcher->format('Y-m-d'), $informations['timestamps']->format('Y-m-d'));
     }
 
     public function testCanGetDateFromFooterIfInvalidFormat()
@@ -127,7 +127,7 @@ HTML;
 </div>
 HTML;
         $informations = $this->getInformationsFromHtml($html);
-        $this->assertEquals(DateTime::createFromFormat('Y-m-d H:i:s', '2015-10-28 00:00:00'), $informations['timestamp']);
+        $this->assertEquals(DateTime::createFromFormat('Y-m-d H:i:s', '2015-10-28 00:00:00'), $informations['timestamps']);
     }
 
     /**

@@ -1,5 +1,5 @@
 <?php
-namespace History\Services\RequestsGatherer\Synchronizers;
+namespace History\Entities\Synchronizers;
 
 use History\Entities\Models\User;
 use History\TestCase;
@@ -9,7 +9,7 @@ class UserSynchronizerTest extends TestCase
     public function testCanSynchronizerUser()
     {
         $sync = new UserSynchronizer([
-            'username'      => 'foobar',
+            'name'          => 'foobar',
             'email'         => 'foo@bar.com',
             'full_name'     => 'Foo Bar',
             'contributions' => ['foo', 'bar'],
@@ -35,7 +35,7 @@ class UserSynchronizerTest extends TestCase
         $this->assertEquals($existing->id, $user->id);
 
         $existing = User::create(['name' => 'foobar']);
-        $sync     = new UserSynchronizer(['username' => 'foobar']);
+        $sync     = new UserSynchronizer(['name' => 'foobar']);
         $user     = $sync->synchronize();
         $this->assertEquals($existing->id, $user->id);
     }
@@ -63,7 +63,7 @@ class UserSynchronizerTest extends TestCase
     public function testNeverOverwriteWithPhpEmail()
     {
         $existing = User::create(['name' => 'foo', 'email' => 'foo@gmail.com']);
-        $sync     = new UserSynchronizer(['username' => 'foo', 'email' => 'foo@php.net']);
+        $sync     = new UserSynchronizer(['name' => 'foo', 'email' => 'foo@php.net']);
         $user     = $sync->synchronize();
 
         $this->assertEquals($existing->id, $user->id);
@@ -73,7 +73,7 @@ class UserSynchronizerTest extends TestCase
     public function testDoesntUnifyBlankProfiles()
     {
         $existing = User::create(['name' => 'foobar', 'email' => '', 'full_name' => '']);
-        $sync     = new UserSynchronizer(['username' => 'foo', 'email' => '', 'full_name' => '']);
+        $sync     = new UserSynchronizer(['name' => 'foo', 'email' => '', 'full_name' => '']);
         $user     = $sync->synchronize();
 
         $this->assertNotEquals($existing->id, $user->id);
@@ -81,7 +81,7 @@ class UserSynchronizerTest extends TestCase
 
     public function testKnowsHowToReassignFullnames()
     {
-        $sync = new UserSynchronizer(['username' => 'Maxime Fabre']);
+        $sync = new UserSynchronizer(['name' => 'Maxime Fabre']);
         $user = $sync->synchronize();
 
         $this->assertEquals('Maxime Fabre', $user->full_name);

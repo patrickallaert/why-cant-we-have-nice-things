@@ -27,14 +27,14 @@ class RequestExtractor extends AbstractExtractor
         $versions           = $this->getVersions();
 
         return [
-            'name'      => $name,
-            'contents'  => $this->getContents(),
-            'status'    => $status,
-            'condition' => $majorityConditions,
-            'authors'   => $authors,
-            'timestamp' => $timestamp,
-            'questions' => $questions,
-            'versions'  => $versions,
+            'name'       => $name,
+            'contents'   => $this->getContents(),
+            'status'     => $status,
+            'condition'  => $majorityConditions,
+            'authors'    => $authors,
+            'timestamps' => $timestamp,
+            'questions'  => $questions,
+            'versions'   => $versions,
         ];
     }
 

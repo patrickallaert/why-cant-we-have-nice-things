@@ -29,9 +29,9 @@ class VersionExtractor extends AbstractExtractor
             $name              = trim($name, ' -():');
 
             $versions[$key] = [
-                'version'   => $version,
-                'name'      => $name,
-                'timestamp' => $date,
+                'version'    => $version,
+                'name'       => $name,
+                'timestamps' => $date,
             ];
         }
 

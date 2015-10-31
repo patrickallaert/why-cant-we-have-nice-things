@@ -28,50 +28,50 @@ class VersionExtractorTest extends TestCase
             [
                 ['V0.2 foo', 'V0.1 bar'],
                 [
-                    ['version' => '0.2', 'name' => 'foo', 'timestamp' => false],
-                    ['version' => '0.1', 'name' => 'bar', 'timestamp' => false],
+                    ['version' => '0.2', 'name' => 'foo', 'timestamps' => false],
+                    ['version' => '0.1', 'name' => 'bar', 'timestamps' => false],
                 ],
             ],
             [
                 ['v0.2.0 - foo', 'v0.1.0 - bar'],
                 [
-                    ['version' => '0.2.0', 'name' => 'foo', 'timestamp' => false],
-                    ['version' => '0.1.0', 'name' => 'bar', 'timestamp' => false],
+                    ['version' => '0.2.0', 'name' => 'foo', 'timestamps' => false],
+                    ['version' => '0.1.0', 'name' => 'bar', 'timestamps' => false],
                 ],
             ],
             [
                 ['Version 0.2: foo', 'Version 0.1: bar'],
                 [
-                    ['version' => '0.2', 'name' => 'foo', 'timestamp' => false],
-                    ['version' => '0.1', 'name' => 'bar', 'timestamp' => false],
+                    ['version' => '0.2', 'name' => 'foo', 'timestamps' => false],
+                    ['version' => '0.1', 'name' => 'bar', 'timestamps' => false],
                 ],
             ],
             [
                 ['foo', 'bar'],
                 [
-                    ['version' => '2', 'name' => 'foo', 'timestamp' => false],
-                    ['version' => '1', 'name' => 'bar', 'timestamp' => false],
+                    ['version' => '2', 'name' => 'foo', 'timestamps' => false],
+                    ['version' => '1', 'name' => 'bar', 'timestamps' => false],
                 ],
             ],
             [
                 ['2011-10-10 foo', '2011-10-05 bar'],
                 [
-                    ['version' => 2, 'name' => 'foo', 'timestamp' => new DateTime('2011-10-10')],
-                    ['version' => 1, 'name' => 'bar', 'timestamp' => new DateTime('2011-10-05')],
+                    ['version' => 2, 'name' => 'foo', 'timestamps' => new DateTime('2011-10-10')],
+                    ['version' => 1, 'name' => 'bar', 'timestamps' => new DateTime('2011-10-05')],
                 ],
             ],
             [
                 ['(2011-10-10): foo', '(2011-10-05): bar'],
                 [
-                    ['version' => 2, 'name' => 'foo', 'timestamp' => new DateTime('2011-10-10')],
-                    ['version' => 1, 'name' => 'bar', 'timestamp' => new DateTime('2011-10-05')],
+                    ['version' => 2, 'name' => 'foo', 'timestamps' => new DateTime('2011-10-10')],
+                    ['version' => 1, 'name' => 'bar', 'timestamps' => new DateTime('2011-10-05')],
                 ],
             ],
             [
                 ['10/10/2011 - foo', '05/10/2011 -  bar'],
                 [
-                    ['version' => 2, 'name' => '10/10/2011 - foo', 'timestamp' => new DateTime('2011-10-10')],
-                    ['version' => 1, 'name' => '05/10/2011 - bar', 'timestamp' => new DateTime('2011-10-05')],
+                    ['version' => 2, 'name' => '10/10/2011 - foo', 'timestamps' => new DateTime('2011-10-10')],
+                    ['version' => 1, 'name' => '05/10/2011 - bar', 'timestamps' => new DateTime('2011-10-05')],
                 ],
             ],
         ];

@@ -13,7 +13,7 @@ class UserExtractorTest extends TestCase
         $extractor = new UserExtractor($crawler);
 
         $this->assertEquals([
-            'username'      => 'anahkiasen',
+            'name'          => 'anahkiasen',
             'full_name'     => 'Maxime Fabre',
             'email'         => 'foo@bar.com',
             'contributions' => ['pear/packages', 'pear/peardoc'],

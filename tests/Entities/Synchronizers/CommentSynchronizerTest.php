@@ -1,5 +1,5 @@
 <?php
-namespace History\Services\RequestsGatherer\Synchronizers;
+namespace History\Entities\Synchronizers;
 
 use History\TestCase;
 
@@ -12,7 +12,6 @@ class CommentSynchronizerTest extends TestCase
             'subject'  => 'foobar',
             'contents' => 'foobar',
             'user_id'  => 1,
-            'date'     => 'fuck you (GMT Daylight Time)',
         ]);
 
         $comment = $sync->synchronize();

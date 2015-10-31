@@ -1,13 +1,17 @@
 <?php
 namespace History\Services\Internals;
 
+use Carbon\Carbon;
+use DateTime;
+use Exception;
 use History\Console\HistoryStyle;
 use History\Entities\Models\Comment;
 use History\Entities\Models\Request;
+use History\Entities\Synchronizers\CommentSynchronizer;
+use History\Entities\Synchronizers\UserSynchronizer;
 use History\Services\IdentityExtractor;
-use History\Services\RequestsGatherer\Synchronizers\CommentSynchronizer;
-use History\Services\RequestsGatherer\Synchronizers\UserSynchronizer;
 use Rvdv\Nntp\Exception\InvalidArgumentException;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 
 class InternalsSynchronizer
@@ -61,7 +65,7 @@ class InternalsSynchronizer
     public function __construct(Internals $internals)
     {
         $this->internals = $internals;
-        $this->output    = new NullOutput();
+        $this->output    = new HistoryStyle(new ArrayInput([]), new NullOutput());
     }
 
     /**
@@ -243,11 +247,21 @@ class InternalsSynchronizer
             return;
         }
 
+        // Normalize date
+        try {
+            $datetime = $article['date'];
+            $datetime = str_replace('(GMT Daylight Time)', '', $datetime);
+            $datetime = new DateTime($datetime);
+        } catch (Exception $exception) {
+            $datetime = Carbon::now();
+        }
+
         $synchronizer = new CommentSynchronizer(array_merge($article, [
             'contents'   => $contents,
             'comment_id' => $comment,
             'request_id' => $request,
             'user_id'    => $user,
+            'timestamps' => $datetime,
         ]));
 
         // Save comment and append to existing
