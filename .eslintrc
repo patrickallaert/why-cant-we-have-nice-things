@@ -1,6 +1,7 @@
 extends: 'madewithlove'
 rules:
     id-length: [2, {"exceptions": ["i", "a", "b"]}]
+    new-cap: [2, {"capIsNewExceptions": ["Line"]}]
     no-new: 0
     no-magic-numbers: 0
     no-loop-func: 0
