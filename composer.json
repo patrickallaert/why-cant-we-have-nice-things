@@ -23,6 +23,7 @@
         "mnapoli/silly": "^1.1",
         "mrclay/minify": "^2.2",
         "mtdowling/cron-expression": "^1.0",
+        "oscarotero/psr7-middlewares": "^3.6",
         "relay/relay": "^1.0",
         "robmorgan/phinx": "^0.4.6",
         "rvdv/nntp": "1.0.*@dev",

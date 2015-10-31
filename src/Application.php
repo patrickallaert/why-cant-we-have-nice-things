@@ -22,6 +22,7 @@ use Interop\Container\ContainerInterface;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr7Middlewares\Middleware\When;
 use Relay\RelayBuilder;
 use Silly\Application as Console;
 use Zend\Diactoros\Response;
@@ -111,22 +112,19 @@ class Application
         $request  = $this->container->get(ServerRequestInterface::class);
         $response = new Response();
 
+        $debug = $this->container->get('debug');
+        $this->container->get(StandardDebugBar::class);
         $middlewares = [
+            new When($debug, new WhoopsMiddleware()),
+            new When($debug, $this->container->get(ErrorsMiddleware::class)),
             LeagueRouteMiddleware::class,
         ];
 
-        // Collect data for Debugbar before rendering
-        $debug = $this->container->get('debug');
-        if ($debug) {
-            $this->container->get(StandardDebugBar::class);
-            $middlewares = array_merge([
-                WhoopsMiddleware::class,
-                ErrorsMiddleware::class,
-            ], $middlewares);
-        }
-
         // Apply middlewares
-        $builder  = new RelayBuilder([$this->container, 'get']);
+        $builder = new RelayBuilder(function ($callable) {
+            return is_string($callable) ? $this->container->get($callable) : $callable;
+        });
+
         $relay    = $builder->newInstance($middlewares);
         $response = $relay($request, $response);
 
