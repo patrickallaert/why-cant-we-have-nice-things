@@ -107,7 +107,10 @@ class StatisticsComputerTest extends TestCase
         ]);
         $user->requests = new Collection([
             new Request(['status' => 4]),
-            new Request(['status' => 0]),
+            new Request(['status' => 4]),
+        ]);
+        $user->approvedRequests = new Collection([
+            new Request(['status' => 4]),
         ]);
 
         $stats = $this->computer->forUser($user);

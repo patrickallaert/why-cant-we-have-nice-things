@@ -66,9 +66,9 @@ class GraphicsGenerator
             'labels'   => array_values($labels),
             'datasets' => [
                 [
-                    'fillColor' => '#33cc73',
+                    'fillColor'   => '#33cc73',
                     'strokeColor' => '#279B57',
-                    'data'      => array_values($values),
+                    'data'        => array_values($values),
                 ],
             ],
         ];

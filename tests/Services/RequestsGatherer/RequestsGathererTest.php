@@ -45,4 +45,14 @@ class RequestsGathererTest extends TestCase
         $this->assertInstanceOf(User::class, $user);
         $this->assertEquals('foobar', $user->name);
     }
+
+    public function testDoesntCrashOnInvalidCrawler()
+    {
+        $cache = $this->mockCache([
+            'http://people.php.net/foobar' => false,
+        ]);
+
+        $gatherer = new RequestsGatherer($cache);
+        $user     = $gatherer->createUser('foobar');
+    }
 }

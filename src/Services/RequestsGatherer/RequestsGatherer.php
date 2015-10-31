@@ -12,6 +12,7 @@ use History\Services\RequestsGatherer\Synchronizers\UserSynchronizer;
 use History\Services\RequestsGatherer\Synchronizers\VersionSynchronizer;
 use History\Services\RequestsGatherer\Synchronizers\VoteSynchronizer;
 use Illuminate\Contracts\Cache\Repository;
+use InvalidArgumentException;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -60,9 +61,12 @@ class RequestsGatherer
      */
     public function createRequests()
     {
-        $crawler  = $this->getPageCrawler(static::DOMAIN.'/rfc');
-        $requests = (new RequestsExtractor($crawler))->extract();
+        $crawler = $this->getPageCrawler(static::DOMAIN.'/rfc');
+        if (!$crawler) {
+            return;
+        }
 
+        $requests = (new RequestsExtractor($crawler))->extract();
         $progress = new ProgressBar($this->output, count($requests));
         foreach ($requests as $request) {
             $this->createRequest(static::DOMAIN.$request);
@@ -168,10 +172,16 @@ class RequestsGatherer
             return $existing;
         }
 
-        // Else find his informations and extract them
-        $crawler      = $this->getPageCrawler('http://people.php.net/'.$username);
-        $extractor    = new UserExtractor($crawler);
-        $attributes   = array_filter($extractor->extract());
+        try {
+            // Else find his informations and extract them
+            $crawler    = $this->getPageCrawler('http://people.php.net/'.$username);
+            $extractor  = new UserExtractor($crawler);
+            $attributes = array_filter($extractor->extract());
+        } catch (InvalidArgumentException $exception) {
+            $attributes = [];
+        }
+
+        // Merge attributes
         $attributes   = array_merge(['username' => $username], $attributes);
         $synchronizer = new UserSynchronizer($attributes);
 
