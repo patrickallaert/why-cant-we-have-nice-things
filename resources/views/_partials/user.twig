@@ -1,5 +1,5 @@
 <figure class="user">
-    <img class="img-circle" src="{{ gravatar.get(user.email) }}" alt="">
+    <img class="img-circle" src="{{ user.avatar() }}" alt="">
     <h2>
         <a href="{{ url('users.show', user.identifier) }}">{{ user.display_name }}</a><br>
     </h2>

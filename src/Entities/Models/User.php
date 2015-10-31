@@ -2,6 +2,7 @@
 namespace History\Entities\Models;
 
 use History\Entities\Traits\HasSlug;
+use thomaswelton\GravatarLib\Gravatar;
 
 /**
  * @property string name
@@ -109,6 +110,20 @@ class User extends AbstractModel
     public function getDisplayNameAttribute()
     {
         return head(array_filter([$this->name, $this->full_name, $this->email]));
+    }
+
+    /**
+     * @param int $size
+     *
+     * @return string
+     */
+    public function avatar($size = 200)
+    {
+        $gravatar = new Gravatar();
+        $gravatar->setAvatarSize($size);
+        $gravatar->setDefaultImage($this->github_avatar ?: 'retro');
+
+        return $gravatar->buildGravatarURL($this->email);
     }
 
     /**

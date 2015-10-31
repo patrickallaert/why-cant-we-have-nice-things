@@ -1,7 +1,7 @@
 <article class="comment" id="{{ comment.xref }}">
     <header class="comment__header">
         <figure>
-            <img src="{{ gravatar.setAvatarSize(50).get(comment.user.email) }}" alt="...">
+            <img src="{{ comment.user.avatar(50) }}" alt="...">
         </figure>
         <h4>
             <a href="{{ url('users.show', comment.user.identifier) }}">{{ comment.user.display_name }}</a><br>

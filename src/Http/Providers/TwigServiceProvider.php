@@ -7,7 +7,6 @@ use History\Entities\Models\Vote;
 use History\Services\UrlGenerator;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Psr\Http\Message\ServerRequestInterface;
-use thomaswelton\GravatarLib\Gravatar;
 use Twig_Environment;
 use Twig_Extension_Debug;
 use Twig_Loader_Filesystem;
@@ -84,7 +83,6 @@ class TwigServiceProvider extends AbstractServiceProvider
         $url = $this->container->get(UrlGenerator::class);
 
         $twig->addGlobal('app_name', Application::NAME);
-        $twig->addGlobal('gravatar', $this->container->get(Gravatar::class));
 
         /** @var ServerRequestInterface $request */
         $request = $this->container->get(ServerRequestInterface::class);

@@ -46,19 +46,20 @@ class MetadataCommand extends AbstractCommand
             // If we have results, find informations about
             // the first returned user
             if ($search && $search['total_count']) {
-                $githubLogin = $search['items'][0]['login'];
+                $githubLogin  = $search['items'][0]['login'];
                 $informations = $this->github->getUserInformations($githubLogin);
                 $informations = new Fluent($informations);
                 $synchronizer = new UserSynchronizer([
-                    'id'        => $user->id,
-                    'name'      => $user->name ?: $informations->login,
-                    'email'     => $user->email ?: $informations->email,
-                    'company'   => $user->company ?: $informations->company,
-                    'full_name' => $user->full_name ?: $informations->full_name,
+                    'id'            => $user->id,
+                    'name'          => $user->name ?: $informations->login,
+                    'email'         => $user->email ?: $informations->email,
+                    'company'       => $user->company ?: $informations->company,
+                    'full_name'     => $user->full_name ?: $informations->full_name,
+                    'github_avatar' => $informations->avatar_url,
                 ]);
 
                 // Save Github ID for later use
-                $user = $synchronizer->persist();
+                $user            = $synchronizer->persist();
                 $user->github_id = $githubLogin;
                 $user->save();
             }

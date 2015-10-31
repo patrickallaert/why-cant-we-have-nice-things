@@ -57,9 +57,9 @@ class UserSynchronizer extends AbstractSynchronizer
 
         $matchers = [
             ['id' => $this->informations->get('id')],
-            ['name'      => $username],
-            ['email'     => $email],
-            ['email'     => preg_replace('/@(.+)/', '@php.net', $email)],
+            ['name' => $username],
+            ['email' => $email],
+            ['email' => preg_replace('/@(.+)/', '@php.net', $email)],
             ['full_name' => $fullName],
         ];
 
@@ -89,6 +89,7 @@ class UserSynchronizer extends AbstractSynchronizer
             'full_name'     => $this->informations->get('full_name'),
             'contributions' => $this->informations->get('contributions') ?: [],
             'company'       => $this->informations->get('company'),
+            'github_avatar' => $this->informations->get('github_avatar'),
         ];
     }
 }
