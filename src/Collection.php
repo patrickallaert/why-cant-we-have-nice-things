@@ -16,18 +16,6 @@ class Collection extends \Illuminate\Database\Eloquent\Collection
     }
 
     /**
-     * @param string|callable $groupBy
-     *
-     * @return static
-     */
-    public function groupByCounts($groupBy)
-    {
-        return $this->groupBy($groupBy)->map(function ($entries) {
-            return $entries->count();
-        });
-    }
-
-    /**
      * Filter the collection by an attribute.
      *
      * @param string $attribute

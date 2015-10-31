@@ -1,6 +1,7 @@
 <?php
 namespace History\Services\RequestsGatherer\Synchronizers;
 
+use Carbon\Carbon;
 use DateTime;
 use Exception;
 use History\Entities\Models\Comment;
@@ -20,7 +21,7 @@ class CommentSynchronizer extends AbstractSynchronizer
             $datetime = str_replace('(GMT Daylight Time)', '', $datetime);
             $datetime = new DateTime($datetime);
         } catch (Exception $exception) {
-            $datetime = new DateTime();
+            $datetime = Carbon::now();
         }
 
         // If we already synchronized this one, skip it
@@ -32,8 +33,7 @@ class CommentSynchronizer extends AbstractSynchronizer
         $comment->request_id = $this->get('request_id');
         $comment->comment_id = $comment->comment_id ?: $this->get('comment_id');
         $comment->user_id    = $this->get('user_id');
-        $comment->created_at = $datetime;
-        $comment->updated_at = $datetime;
+        $this->updateTimestamps($comment, $datetime);
 
         return $comment;
     }

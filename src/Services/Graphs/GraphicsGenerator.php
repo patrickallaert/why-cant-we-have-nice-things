@@ -5,8 +5,24 @@ use History\Collection;
 use History\Entities\Models\User;
 use History\Entities\Models\Vote;
 
+/**
+ * Computes graph data for Chart.js.
+ */
 class GraphicsGenerator
 {
+    /**
+     * @var bool
+     */
+    protected $round = false;
+
+    /**
+     * @param bool $round
+     */
+    public function setRound($round)
+    {
+        $this->round = $round;
+    }
+
     /**
      * @param User $user
      *
@@ -21,7 +37,7 @@ class GraphicsGenerator
             ++$total;
             $positiveness += (int) $vote->isPositive();
 
-            return [$vote->created_at->format('Y-m'), round($positiveness / $total, 2)];
+            return [$vote->created_at->format('Y-m'), $positiveness / $total];
         });
     }
 
@@ -38,12 +54,13 @@ class GraphicsGenerator
         $labels = [];
         foreach ($dataset as $key => $value) {
             list($label, $value) = $callback($value);
+            $value               = $this->round ? round($value, 2) : $value;
             $labels[]            = $label;
             $values[]            = $value;
         }
 
         // Truncate dataset to 10%
-        $every = count($labels) * 0.1;
+        $every = ceil(count($labels) * 0.1);
         foreach ($labels as $key => $value) {
             if ($key % $every !== 0) {
                 unset($labels[$key]);

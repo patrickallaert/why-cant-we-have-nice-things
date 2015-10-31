@@ -58,6 +58,8 @@ class RequestsGatherer
 
     /**
      * Get all the requests.
+     *
+     * @return Request[]
      */
     public function createRequests()
     {
@@ -66,14 +68,17 @@ class RequestsGatherer
             return;
         }
 
+        $created  = [];
         $requests = (new RequestsExtractor($crawler))->extract();
         $progress = new ProgressBar($this->output, count($requests));
         foreach ($requests as $request) {
-            $this->createRequest(static::DOMAIN.$request);
+            $created[] = $this->createRequest(static::DOMAIN.$request);
             $progress->advance();
         }
 
         $progress->finish();
+
+        return $created;
     }
 
     /**

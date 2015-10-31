@@ -1,6 +1,8 @@
 <?php
 namespace History\Services\RequestsGatherer\Synchronizers;
 
+use DateTime;
+use History\Entities\Models\AbstractModel;
 use History\Services\RequestsGatherer\SynchronizerInterface;
 
 abstract class AbstractSynchronizer implements SynchronizerInterface
@@ -41,5 +43,24 @@ abstract class AbstractSynchronizer implements SynchronizerInterface
     protected function get($information)
     {
         return array_get($this->informations, $information);
+    }
+
+    /**
+     * Update the timestamps of an entity if needed.
+     *
+     * @param AbstractModel        $entity
+     * @param string|DateTime|null $timestamp
+     *
+     * @return AbstractModel
+     */
+    protected function updateTimestamps(AbstractModel $entity, $timestamp = null)
+    {
+        $timestamp = $timestamp ?: new DateTime();
+        if (!$entity->created_at || $timestamp->format('Y-m-d') !== $entity->created_at->format('Y-m-d')) {
+            $entity->created_at = $timestamp;
+            $entity->updated_at = $timestamp;
+        }
+
+        return $entity;
     }
 }

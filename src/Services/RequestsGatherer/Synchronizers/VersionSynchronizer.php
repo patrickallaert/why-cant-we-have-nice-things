@@ -14,7 +14,6 @@ class VersionSynchronizer extends AbstractSynchronizer
     public function synchronize()
     {
         $request = $this->get('request_id');
-
         $version = Version::firstOrNew([
             'version'    => $this->get('version'),
             'request_id' => $request,
@@ -22,8 +21,7 @@ class VersionSynchronizer extends AbstractSynchronizer
 
         $version->name       = $this->get('name');
         $version->request_id = $request;
-        $version->created_at = $this->get('timestamp');
-        $version->updated_at = $this->get('timestamp');
+        $this->updateTimestamps($version, $this->get('timestamp'));
 
         return $version;
     }

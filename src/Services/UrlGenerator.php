@@ -33,7 +33,7 @@ class UrlGenerator
      */
     public function to($name, $parameters = [])
     {
-        $action = 'History\Http\Controllers\\'.str_replace('.', 'Controller::', ucfirst($name));
+        $action = $this->routeToCallable($name);
         foreach ($this->routes as $route) {
             $path = $route->getPath();
             if ($route->getCallable() !== $action) {
@@ -44,6 +44,19 @@ class UrlGenerator
         }
 
         throw new InvalidArgumentException(sprintf('Unable to generate URL for %s (%s)', $name, $action));
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return string
+     */
+    protected function routeToCallable($name)
+    {
+        $callable = str_replace('.', 'Controller::', ucfirst($name));
+        $callable = 'History\Http\Controllers\\'.$callable;
+
+        return $callable;
     }
 
     /**

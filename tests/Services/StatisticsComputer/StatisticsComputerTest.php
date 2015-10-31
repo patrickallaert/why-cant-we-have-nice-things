@@ -123,4 +123,20 @@ class StatisticsComputerTest extends TestCase
             'hivemind'    => 2 / 3,
         ], $stats);
     }
+
+    public function testSkipsIfNoData()
+    {
+        $user        = new User([]);
+        $user->votes = new Collection([]);
+
+        $stats = $this->computer->forUser($user);
+        $this->assertEquals([
+            'yes_votes'   => 0,
+            'no_votes'    => 0,
+            'total_votes' => 0,
+            'approval'    => 0,
+            'success'     => 0,
+            'hivemind'    => 0,
+        ], $stats);
+    }
 }

@@ -1,7 +1,6 @@
 <?php
 namespace History\Services\RequestsGatherer\Synchronizers;
 
-use DateTime;
 use History\Entities\Models\Request;
 
 class RequestSynchronizer extends AbstractSynchronizer
@@ -23,11 +22,7 @@ class RequestSynchronizer extends AbstractSynchronizer
         $request->status    = $this->get('status');
 
         // Prevent false positive of dirty attributes
-        $timestamp = $this->get('timestamp') ?: new DateTime();
-        if (!$request->created_at || $timestamp->format('Y-m-d') !== $request->created_at->format('Y-m-d')) {
-            $request->created_at = $timestamp;
-            $request->updated_at = $timestamp;
-        }
+        $this->updateTimestamps($request, $this->get('timestamp'));
 
         return $request;
     }

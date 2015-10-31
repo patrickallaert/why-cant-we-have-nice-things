@@ -18,6 +18,10 @@
             <file>src/Collection.php</file>
             <directory suffix=".php">src/Entities</directory>
             <directory suffix=".php">src/Services</directory>
+            <exclude>
+                <file>src/Services/Internals/InternalsServiceProvider.php</file>
+                <file>src/Services/RequestsGatherer/RequestsGathererServiceProvider.php</file>
+            </exclude>
         </whitelist>
     </filter>
 </phpunit>
