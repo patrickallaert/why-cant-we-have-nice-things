@@ -3,6 +3,7 @@
 {% set fluid = false %}
 
 {% block content %}
+    <h2>Why?</h2>
     <div class="lead text-justify">
         <p>
             The PHP internals need <a target="_blank" href="https://philsturgeon.uk/php/2013/09/12/solving-the-php-internals-workflow/">to be improved</a>, it's not new, I know it, you know it.
@@ -16,6 +17,18 @@
         <p>
             The app is not perfect, it's even pretty disgusting at times, but so is the data I'm working with so, you know. Doing my best here.<br>
             If you want to make it better, you're <a target="_blank" href="https://github.com/madewithlove/why-cant-we-have-nice-things">more than welcome to</a>.
+        </p>
+    </div>
+
+    <h2>How?</h2>
+    <div class="lead text-justify">
+        <p>
+            In order to gather its data, WCWHNT crawls and scraps data from the PHP wiki and PHP People websites. Comments on the other hand are fetched directly from <code>news.php.net</code>
+            through the NNTP protocol. Then a fourth layer fetches complementary data from Github about the users previously found. These four layers of data are then unified and cleaned
+            up for nicer and more comprehensive display, right here.
+        </p>
+        <p>
+            Everything passes through cache and scheduling, to have the best compromise between freshness of the data and pissing off the wiki people with my crawler.
         </p>
     </div>
 {% endblock %}
