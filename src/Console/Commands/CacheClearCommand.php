@@ -32,7 +32,7 @@ class CacheClearCommand extends AbstractCommand
     public function run()
     {
         // Empty standard cache
-        //$this->repository->flush();
+        $this->repository->flush();
 
         // Empty filesystem cache
         $files = new Filesystem();
