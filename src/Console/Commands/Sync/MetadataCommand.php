@@ -33,7 +33,7 @@ class MetadataCommand extends AbstractCommand
         $this->output->title('Refreshing metadata');
 
         // Only get users with holes in their informations
-        $users = User::whereNull('company')->orWhereNull('full_name')->orWhereNull('name')->orWhereNull('email')->get();
+        $users = User::whereNull('github_id')->get();
         $this->output->progressIterator($users, function (User $user) {
             try {
                 $search = $this->github->searchUser($user);
