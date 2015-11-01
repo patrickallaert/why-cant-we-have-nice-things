@@ -3,8 +3,6 @@ import Chart from 'chart.js';
 
 Chart.defaults.global = {
     ...Chart.defaults.global, ...{
-        scaleShowLabels:  false,
-        showScale:        false,
         responsive:       true,
         scaleBeginAtZero: true,
     },
