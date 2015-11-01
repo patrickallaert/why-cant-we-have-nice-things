@@ -5,7 +5,6 @@ use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr7Middlewares\Utils\FileTrait;
 use Relay\MiddlewareInterface;
-use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Stream;
 
 class ServeCachedResponse implements MiddlewareInterface

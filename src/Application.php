@@ -12,6 +12,7 @@ use History\Http\Providers\TwigServiceProvider;
 use History\Providers\CacheServiceProvider;
 use History\Providers\DatabaseServiceProvider;
 use History\Providers\DebugbarServiceProvider;
+use History\Providers\LogsServiceProvider;
 use History\Providers\PathsServiceProvider;
 use History\Services\Github\GithubServiceProvider;
 use History\Services\Internals\InternalsServiceProvider;
@@ -57,6 +58,7 @@ class Application
         ConsoleServiceProvider::class,
         InternalsServiceProvider::class,
         GithubServiceProvider::class,
+        LogsServiceProvider::class,
     ];
 
     /**

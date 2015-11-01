@@ -4,11 +4,12 @@ namespace History\Http\Middlewares;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use League\Route\Http\Exception\NotFoundException;
+use Monolog\Logger;
 use Psr\Http\Message\RequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Log\LoggerInterface;
 use Relay\MiddlewareInterface;
 use Twig_Environment;
-use Whoops\Run;
 use Zend\Diactoros\Response\HtmlResponse;
 
 class ErrorsMiddleware implements MiddlewareInterface
@@ -17,16 +18,21 @@ class ErrorsMiddleware implements MiddlewareInterface
      * @var
      */
     private $twig;
+    /**
+     * @var LoggerInterface
+     */
+    private $logs;
 
     /**
      * ErrorsMiddleware constructor.
      *
-     * @param Run              $whoops
      * @param Twig_Environment $twig
+     * @param LoggerInterface  $logs
      */
-    public function __construct(Twig_Environment $twig)
+    public function __construct(Twig_Environment $twig, LoggerInterface $logs)
     {
         $this->twig = $twig;
+        $this->logs = $logs;
     }
 
     /**
@@ -41,6 +47,8 @@ class ErrorsMiddleware implements MiddlewareInterface
         try {
             return $next($request, $response);
         } catch (Exception $exception) {
+            $this->logs->log(Logger::ERROR, $exception);
+
             return $next($request, $this->handleException($exception));
         }
     }

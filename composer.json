@@ -19,6 +19,7 @@
         "league/container": "^2.0",
         "league/route": "2.*@dev",
         "mnapoli/silly": "^1.1",
+        "monolog/monolog": "^1.17",
         "mrclay/minify": "^2.2",
         "mtdowling/cron-expression": "^1.0",
         "oscarotero/psr7-middlewares": "^3.6",
