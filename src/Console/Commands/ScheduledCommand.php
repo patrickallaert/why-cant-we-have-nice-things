@@ -3,7 +3,6 @@ namespace History\Console\Commands;
 
 use Cron\CronExpression;
 use Exception;
-use Illuminate\Contracts\Cache\Repository;
 use Silly\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -16,36 +15,29 @@ class ScheduledCommand extends AbstractCommand
     protected $console;
 
     /**
-     * @var Repository
-     */
-    protected $cache;
-
-    /**
      * ScheduledCommand constructor.
      *
      * @param Application $console
-     * @param Repository  $cache
      */
-    public function __construct(Application $console, Repository $cache)
+    public function __construct(Application $console)
     {
         $this->console = $console;
-        $this->cache   = $cache;
     }
 
     /**
      * @param bool            $scratch
+     * @param bool            $force
      * @param OutputInterface $output
      *
      * @throws Exception
      */
-    public function run($scratch, OutputInterface $output)
+    public function run($scratch, $force, OutputInterface $output)
     {
         $this->wrapOutput($output);
 
         // Empty cache if needed
         if ($scratch) {
-            $this->output->error('Emptying cache');
-            $this->cache->flush();
+            $this->console->find('cache:clear')->run(new ArrayInput([]), $this->output);
         }
 
         $schedule = [
@@ -59,7 +51,7 @@ class ScheduledCommand extends AbstractCommand
         foreach ($schedule as $commandName => $cron) {
             $command = $this->console->find($commandName);
 
-            if ($cron->isDue() || $this->console->getContainer()->get('debug')) {
+            if ($cron->isDue() || $force || $this->console->getContainer()->get('debug')) {
                 $command->run(new ArrayInput([]), $this->output);
             } else {
                 $nextDueDate = $cron->getNextRunDate()->format('Y-m-d H:i:s');
