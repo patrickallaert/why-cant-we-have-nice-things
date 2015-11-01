@@ -7,6 +7,7 @@ use History\Console\Commands\SeedCommand;
 use History\Console\Commands\Sync\InternalsCommand;
 use History\Console\Commands\Sync\MetadataCommand;
 use History\Console\Commands\Sync\RequestsCommand;
+use History\Console\Commands\Sync\SlugsCommand;
 use History\Console\Commands\Sync\StatsCommand;
 use History\Console\Commands\Tinker;
 use History\Console\Commands\TinkerCommand;
@@ -38,6 +39,7 @@ class ConsoleServiceProvider extends AbstractServiceProvider
             $app->command('sync:internals', InternalsCommand::class)->descriptions('Sync the mailing list');
             $app->command('sync:stats', StatsCommand::class)->descriptions('Sync the entities statistics');
             $app->command('sync:metadata', MetadataCommand::class)->descriptions('Sync additional metadata');
+            $app->command('sync:slugs', SlugsCommand::class)->descriptions('Refresh entities slugs');
 
             // Register maintenance commands
             $app->command('seed', SeedCommand::class)->descriptions('Seed the database with dummy data');

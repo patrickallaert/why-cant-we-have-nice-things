@@ -10,7 +10,15 @@ trait HasSlug
      */
     public function sluggify()
     {
-        $this->slug = $this->slug ?: Str::slug($this->getSlugSource());
+        $this->slug = $this->slug ?: $this->getSlug();
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return Str::slug($this->getSlugSource());
     }
 
     /**
