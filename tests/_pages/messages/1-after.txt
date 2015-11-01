@@ -1,0 +1,31 @@
+On Wed, Nov 19, 2014 at 12:11 AM, Levi Morrison <levim@php.net> wrote:
+
+> Dear Internals,
+>
+> I am proposing an RFC[1] to remove PHP 4 constructors in PHP 7. If
+> accepted, methods with the same name as their defining class will no
+> longer be recognized as constructors. As noted in the RFC, there are
+> already many situations where we do not recognize these methods as
+> constructors, such as in namespaces and traits and when `function
+> __construct` is also present.
+>
+> Andrea Faulds has kindly written a utility that identifies when a PHP
+> 4 constructor is defined[2]. It does not automatically change the code
+> for liability reasons. The utility PHPMD[3] can also detect this but
+> has a false positive when `__construct` is also defined.
+>
+> Cheers,
+> Levi Morrison
+>
+>
+>   [1]: https://wiki.php.net/rfc/remove_php4_constructors
+>   [2]: https://github.com/TazeTSchnitzel/PHP4_Constructor_Finder
+>   [3]:
+> http://phpmd.org/rules/naming.html#constructorwithnameasenclosingclass
+>
+> --
+> PHP Internals - PHP Runtime Development Mailing List
+> To unsubscribe, visit: http://www.php.net/unsub.php
+>
+>
++1 from me

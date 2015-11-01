@@ -1,0 +1,15 @@
+Hi internals!
+
+I'd like to propose an RFC, which allows the use of exceptions within the
+engine and also allows changing existing fatal errors to exceptions:
+
+https://wiki.php.net/rfc/engine_exceptions
+
+This topic has been cropping up in the discussions for several of the
+recent RFCs and I think the time has come to consider moving away from
+fatal errors.
+
+Thoughts?
+
+Thanks,
+Nikita

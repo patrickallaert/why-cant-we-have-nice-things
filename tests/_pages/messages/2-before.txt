@@ -1,0 +1,105 @@
+Newsgroups: php.internals
+Path: news.php.net
+Xref: news.php.net php.internals:68280
+Return-Path: <indeyets@gmail.com>
+Mailing-List: contact internals-help@lists.php.net; run by ezmlm
+Delivered-To: mailing list internals@lists.php.net
+Received: (qmail 30731 invoked from network); 23 Jul 2013 06:21:10 -0000
+Received: from unknown (HELO lists.php.net) (127.0.0.1)
+by localhost with SMTP; 23 Jul 2013 06:21:10 -0000
+Authentication-Results: pb1.pair.com smtp.mail=indeyets@gmail.com; spf=pass; sender-id=pass
+Authentication-Results: pb1.pair.com header.from=indeyets@gmail.com; sender-id=pass
+Received-SPF: pass (pb1.pair.com: domain gmail.com designates 209.85.215.42 as permitted sender)
+X-PHP-List-Original-Sender: indeyets@gmail.com
+X-Host-Fingerprint: 209.85.215.42 mail-la0-f42.google.com
+Received: from [209.85.215.42] ([209.85.215.42:49262] helo=mail-la0-f42.google.com)
+by pb1.pair.com (ecelerity 2.1.1.9-wez r(12769M)) with ESMTP
+id B6/C5-17597-4D02EE15 for <internals@lists.php.net>; Tue, 23 Jul 2013 02:21:08 -0400
+Received: by mail-la0-f42.google.com with SMTP id eh20so3556217lab.29
+for <internals@lists.php.net>; Mon, 22 Jul 2013 23:21:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+d=gmail.com; s 120113;
+h=content-type:mime-version:subject:from:in-reply-to:date:cc
+:message-id:references:to:x-mailer;
+bh=6IynTZrg4zGzf5VZ2IxUmJuv0ppNZqfi2fX0YZ2UbxE=;
+b=eBJsCbUXf8kbKhzElGP5KmrCuJLFC5mNjjEf+ehfqpOb63Opb+fAKyXHOMR2ORrWVG
+36SEjQWSsUR0tR0nu9JBQbxvG/d8xdwYCPvIgHDY2Iw/6ATp9BmnB7Xl+1lm5KQAMhDS
+Z8ippgk6AtMzMykgtunp20lxExDMKsGDLfIciNqQR3agHorV5h0mFKjlbvWy5iKMy6PC
+0X3wABzyrxUmD96y8VvlnNUy/GvbaJ4aHfA3FD7m1wy/H8wN7+59jQA/KlUDtT1Atw5J
+FUR3UZgRZJcrEVFkU1RpCRi/WEWirJGcA/JVKkNCGrT9zEgJvtnSp22FMNIJrmYaizEi
+/HMw==
+X-Received: by 10.112.164.164 with SMTP id yr4mr13766710lbb.88.1374560465032;
+Mon, 22 Jul 2013 23:21:05 -0700 (PDT)
+Received: from [10.0.1.7] ([46.252.161.106])
+by mx.google.com with ESMTPSA id 8sm12126637lbq.4.2013.07.22.23.21.02
+for <multiple recipients>
+(version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+Mon, 22 Jul 2013 23:21:03 -0700 (PDT)
+Content-Type: multipart/signed; boundary="Apple-Mail=_C7FC6D38-61D9-4703-A5C5-F7C3C16B54CD"; protocol="application/pgp-signature"; micalg=pgp-sha512
+Mime-Version: 1.0 (Mac OS X Mail 6.5 \(1508\))
+In-Reply-To: <60BF8DD5-FEEA-47D9-834F-6C7FDEF3B879@wiedler.ch>
+Date: Tue, 23 Jul 2013 10:20:51 +0400
+Cc: "internals@lists.php.net" <internals@lists.php.net>
+Message-ID: <A61F400D-AC02-4F79-8703-A42C96E30692@gmail.com>
+References: <60BF8DD5-FEEA-47D9-834F-6C7FDEF3B879@wiedler.ch>
+To: Igor Wiedler <igor@wiedler.ch>
+X-Mailer: Apple Mail (2.1508)
+Subject: Re: [PHP-DEV] [RFC] Importing namespaced functions
+From: indeyets@gmail.com (Alexey Zakhlestin)
+
+--Apple-Mail=_C7FC6D38-61D9-4703-A5C5-F7C3C16B54CD
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+charset=us-ascii
+
+On 19.07.2013, at 21:29, Igor Wiedler <igor@wiedler.ch> wrote:
+
+> Hello internals,
+>
+> I posted the initial idea for a use_function RFC a few months back. I=
+would like to make the proposal official now, and open it for=
+discussion.
+>
+> I also did some work on a patch that probably still has some issues.=
+Review on that is welcome as well.
+>
+> RFC: https://wiki.php.net/rfc/use_function
+> Patch: https://github.com/php/php-src/pull/388
+
+
+I don't see much space for discussion :)
+It's a very useful addition with nice explicit semantics and a small=
+patch.
+
++1
+
+--
+Alexey Zakhlestin
+CTO at Grids.by/you
+https://github.com/indeyets
+PGP key: http://indeyets.ru/alexey.zakhlestin.pgp.asc
+
+
+
+
+--Apple-Mail=_C7FC6D38-61D9-4703-A5C5-F7C3C16B54CD
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+filename=signature.asc
+Content-Type: application/pgp-signature;
+name=signature.asc
+Content-Description: Message signed with OpenPGP using GPGMail
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG/MacGPG2 v2.0.19 (Darwin)
+
+iQEcBAEBCgAGBQJR7iDNAAoJEMkJcRxZdR27VmEIAJWCT0vxKRIWW0yWBHBYKXAT
+83UhEUjx2JdM5fzl8qHQFouyeEmIw8i+duBV/80OW+o8pHlOl9AuLWAOVBv0FH8D
+OvLo7o/+UvJksZYxCa4cF95rlrY+Nv6T8h9ic8c+y/Yt4KmaeOwzf0EC3X/7YfIO
+W0HokSvwi3kVgNNfJcC0Y4h25qmovOZm9qTtsauVa35VBkV8VwFtd81CjeoN7b9a
+v6Gd3x1aVY5IPfXf6vL8zWCagH7ehvxwo+vn2dXdKuvh4T2bqddo66+WQd0YI1SP
+Dmpl+v0REP6vsyxxmclNNBwFg8A84RcQ6jGjitlboFjkvYuSxRWKhpu86im5NyQ=
+=qVkH
+-----END PGP SIGNATURE-----
+
+--Apple-Mail=_C7FC6D38-61D9-4703-A5C5-F7C3C16B54CD--

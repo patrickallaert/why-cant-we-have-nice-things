@@ -1,0 +1,20 @@
+On 19.07.2013, at 21:29, Igor Wiedler <igor@wiedler.ch> wrote:
+
+> Hello internals,
+>
+> I posted the initial idea for a use_function RFC a few months back. I
+would like to make the proposal official now, and open it for
+discussion.
+>
+> I also did some work on a patch that probably still has some issues.
+Review on that is welcome as well.
+>
+> RFC: https://wiki.php.net/rfc/use_function
+> Patch: https://github.com/php/php-src/pull/388
+
+
+I don't see much space for discussion :)
+It's a very useful addition with nice explicit semantics and a small
+patch.
+
++1

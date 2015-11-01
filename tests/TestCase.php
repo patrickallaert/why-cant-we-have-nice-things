@@ -39,6 +39,19 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
         return file_get_contents(__DIR__.'/_pages/'.$page.'.html');
     }
 
+    /**
+     * @param integer $message
+     *
+     * @return array
+     */
+    protected function getMessage($message)
+    {
+        return [
+            file_get_contents(__DIR__.'/_pages/messages/'.$message.'-before.txt'),
+            file_get_contents(__DIR__.'/_pages/messages/'.$message.'-after.txt'),
+        ];
+    }
+
     //////////////////////////////////////////////////////////////////////
     /////////////////////////////// MOCKS ////////////////////////////////
     //////////////////////////////////////////////////////////////////////
