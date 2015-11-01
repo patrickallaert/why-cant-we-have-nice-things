@@ -15,6 +15,7 @@ use History\Entities\Traits\HasSlug;
  * @property int        status
  * @property strign     status_label
  * @property Collection votes
+ * @property Collection questions
  */
 class Request extends AbstractModel
 {

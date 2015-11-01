@@ -12,7 +12,7 @@ class RequestsController extends AbstractController
      */
     public function index()
     {
-        $requests = Request::with('versions', 'comments', 'votes')->latest()->get();
+        $requests = Request::with('votes', 'versions')->latest()->get();
 
         // Compute % of passed RFCs
         $voted = $requests->filter(function (Request $request) {

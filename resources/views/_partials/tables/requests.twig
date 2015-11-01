@@ -23,7 +23,7 @@
                     <a href="{{ url('requests.show', request.identifier) }}">{{ request.name }}</a>
                 </td>
                 <td class="text-right">{{ request.votes.count() }}</td>
-                <td class="text-right">{{ request.comments.count() }}</td>
+                <td class="text-right">{{ request.comments().count() }}</td>
                 <td class="text-right">{{ percentage(request.approval) }}</td>
                 <td class="text-center">{{ request.versions.first().version }}</td>
                 <td class="text-center">{{ request.created_at.toDateString() }}</td>

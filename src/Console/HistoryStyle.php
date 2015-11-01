@@ -1,7 +1,7 @@
 <?php
 namespace History\Console;
 
-use History\Collection;
+use Illuminate\Database\Eloquent\Collection;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class HistoryStyle extends SymfonyStyle
