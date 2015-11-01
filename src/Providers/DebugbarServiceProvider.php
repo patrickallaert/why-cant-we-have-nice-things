@@ -52,7 +52,7 @@ class DebugbarServiceProvider extends AbstractServiceProvider
             return $debugbar;
         });
 
-        $this->container->share(JavascriptRenderer::class, function() {
+        $this->container->share(JavascriptRenderer::class, function () {
            return $this->container->get(StandardDebugBar::class)->getJavascriptRenderer();
         });
     }

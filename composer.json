@@ -8,8 +8,6 @@
     ],
     "require": {
         "php": ">=5.6.0",
-        "filp/whoops": "^1.1",
-        "franzl/whoops-middleware": "^0.2.0",
         "illuminate/cache": "^5.1",
         "illuminate/database": "^5.1",
         "illuminate/events": "^5.1",
@@ -23,7 +21,6 @@
         "mnapoli/silly": "^1.1",
         "mrclay/minify": "^2.2",
         "mtdowling/cron-expression": "^1.0",
-        "oscarotero/psr7-middlewares": "^3.6",
         "relay/relay": "^1.0",
         "robmorgan/phinx": "^0.4.6",
         "rvdv/nntp": "1.0.*@dev",
@@ -36,8 +33,11 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "^2.0",
         "fabpot/php-cs-fixer": "^1.10",
+        "filp/whoops": "^1.1",
+        "franzl/whoops-middleware": "^0.2.0",
         "league/factory-muffin": "^2.1",
         "mockery/mockery": "^0.9.4",
+        "php-middleware/php-debug-bar": "^1.0",
         "phpunit/phpunit": "^5.0",
         "psy/psysh": "^0.5.2",
         "symfony/var-dumper": "^2.7"

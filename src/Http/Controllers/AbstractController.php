@@ -4,7 +4,6 @@ namespace History\Http\Controllers;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Fluent;
-use League\CommonMark\Inline\Element\Html;
 use Psr\Http\Message\ServerRequestInterface;
 use Twig_Environment;
 use Zend\Diactoros\Response\HtmlResponse;

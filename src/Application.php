@@ -1,7 +1,6 @@
 <?php
 namespace History;
 
-use DebugBar\StandardDebugBar;
 use Dotenv\Dotenv;
 use Franzl\Middleware\Whoops\Middleware as WhoopsMiddleware;
 use History\Console\ConsoleServiceProvider;
@@ -22,7 +21,7 @@ use League\Container\Container;
 use League\Container\ReflectionContainer;
 use PhpMiddleware\PhpDebugBar\PhpDebugBarMiddleware;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr7Middlewares\Middleware\When;
+use Relay\MiddlewareInterface;
 use Relay\RelayBuilder;
 use Silly\Application as Console;
 use Zend\Diactoros\Response;
@@ -111,23 +110,36 @@ class Application
         $request  = $this->container->get(ServerRequestInterface::class);
         $response = new Response();
 
-        $debug = $this->container->get('debug');
-        $middlewares = [
-            new When($debug, $this->container->get(PhpDebugBarMiddleware::class)),
-            new When($debug, new WhoopsMiddleware()),
-            new When($debug, $this->container->get(ErrorsMiddleware::class)),
-            LeagueRouteMiddleware::class,
-        ];
-
-        // Apply middlewares
         $builder = new RelayBuilder(function ($callable) {
             return is_string($callable) ? $this->container->get($callable) : $callable;
         });
 
-        $relay    = $builder->newInstance($middlewares);
+        // Apply middlewares
+        $relay    = $builder->newInstance($this->getMiddlewares());
         $response = $relay($request, $response);
 
         (new SapiEmitter())->emit($response);
+    }
+
+    /**
+     * @return MiddlewareInterface[]
+     */
+    protected function getMiddlewares()
+    {
+        $debug       = $this->container->get('debug');
+        $middlewares = [
+            LeagueRouteMiddleware::class,
+        ];
+
+        if ($debug) {
+            $middlewares = array_merge([
+                PhpDebugBarMiddleware::class,
+                WhoopsMiddleware::class,
+                ErrorsMiddleware::class,
+            ], $middlewares);
+        }
+
+        return $middlewares;
     }
 
     /**
