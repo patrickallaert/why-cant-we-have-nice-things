@@ -23,7 +23,7 @@ class PathsServiceProvider extends AbstractServiceProvider
     public function register()
     {
         $paths = [
-            'cache'     => __DIR__.'/../../cache',
+            'cache'     => __DIR__.'/../../storage/cache',
             'factories' => __DIR__.'/../../resources/factories',
             'views'     => __DIR__.'/../../resources/views',
             'builds'    => __DIR__.'/../../public/builds',
