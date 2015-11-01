@@ -13,6 +13,8 @@ use History\Console\Commands\Tinker;
 use History\Console\Commands\TinkerCommand;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Silly\Application;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class ConsoleServiceProvider extends AbstractServiceProvider
 {
@@ -42,8 +44,6 @@ class ConsoleServiceProvider extends AbstractServiceProvider
             $app->command('sync:slugs', SlugsCommand::class)->descriptions('Refresh entities slugs');
 
             // Register maintenance commands
-            $app->command('seed', SeedCommand::class)->descriptions('Seed the database with dummy data');
-            $app->command('tinker', TinkerCommand::class)->descriptions('Tinker with the app');
             $app->command('cache:clear', CacheClearCommand::class)->descriptions('Empty the cache');
             $app->command('scheduled [--scratch] [--force]', [
                 ScheduledCommand::class,
@@ -52,6 +52,14 @@ class ConsoleServiceProvider extends AbstractServiceProvider
                 '--scratch' => 'Empty the cache',
                 '--force'   => 'Force running of all commands',
             ]);
+
+            // Register development commands
+            $app->command('seed', SeedCommand::class)->descriptions('Seed the database with dummy data');
+            $app->command('tinker', TinkerCommand::class)->descriptions('Tinker with the app');
+            $app->command('deploy', function (OutputInterface $output, InputInterface $input) {
+                file_get_contents('https://forge.laravel.com/servers/28691/sites/105668/deploy/http?token='.getenv('FORGE_TOKEN'));
+                (new HistoryStyle($input, $output))->success('WCWHNT queued for deployment');
+            });
 
             return $app;
         });
