@@ -23,7 +23,7 @@ class RequestsController extends AbstractController
             return $request->status === 2;
         });
 
-        return $this->views->render('requests/index.twig', [
+        return $this->render('requests/index.twig', [
             'requests' => $requests,
             'voted'    => $voted,
             'passed'   => $passed->count() / $requests->count(),
@@ -42,7 +42,7 @@ class RequestsController extends AbstractController
         $request  = Request::with('questions.votes.question', 'questions.votes.user')->where('slug', $parameters['request'])->firstOrFail();
         $comments = $this->paginate($request->rootComments(), $serverRequest, 25);
 
-        return $this->views->render('requests/show.twig', [
+        return $this->render('requests/show.twig', [
             'request'  => $request,
             'comments' => $comments,
         ]);

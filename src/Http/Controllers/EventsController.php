@@ -28,7 +28,7 @@ class EventsController extends AbstractController
         // Get the RFCs currently in voting
         $voting = Request::where('status', Request::VOTING)->get();
 
-        return $this->views->render('events/index.twig', [
+        return $this->render('events/index.twig', [
             'filter' => $types,
             'voting' => $voting,
             'events' => $this->paginate($events, $request),

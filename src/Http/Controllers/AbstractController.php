@@ -4,8 +4,10 @@ namespace History\Http\Controllers;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Fluent;
+use League\CommonMark\Inline\Element\Html;
 use Psr\Http\Message\ServerRequestInterface;
 use Twig_Environment;
+use Zend\Diactoros\Response\HtmlResponse;
 
 abstract class AbstractController
 {
@@ -20,6 +22,17 @@ abstract class AbstractController
     public function __construct(Twig_Environment $views)
     {
         $this->views = $views;
+    }
+
+    /**
+     * @param       $view
+     * @param array $data
+     *
+     * @return HtmlResponse
+     */
+    protected function render($view, array $data = [])
+    {
+        return new HtmlResponse($this->views->render($view, $data));
     }
 
     /**

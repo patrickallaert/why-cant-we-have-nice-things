@@ -2,6 +2,7 @@
 namespace History\Providers;
 
 use Barryvdh\Debugbar\DataCollector\QueryCollector;
+use DebugBar\JavascriptRenderer;
 use DebugBar\StandardDebugBar;
 use Illuminate\Database\Capsule\Manager;
 use League\Container\ServiceProvider\AbstractServiceProvider;
@@ -14,6 +15,7 @@ class DebugbarServiceProvider extends AbstractServiceProvider
      */
     protected $provides = [
         StandardDebugBar::class,
+        JavascriptRenderer::class,
     ];
 
     /**
@@ -34,6 +36,7 @@ class DebugbarServiceProvider extends AbstractServiceProvider
             $renderer = $debugbar->getJavascriptRenderer();
             $renderer->dumpCssAssets('builds/debugbar.css');
             $renderer->dumpJsAssets('builds/debugbar.js');
+            $renderer->addAssets(['/builds/debugbar.css'], ['/builds/debugbar.js']);
 
             // Bind renderer to views
             $twig->addGlobal('debugbar', $renderer);
@@ -47,6 +50,10 @@ class DebugbarServiceProvider extends AbstractServiceProvider
             });
 
             return $debugbar;
+        });
+
+        $this->container->share(JavascriptRenderer::class, function() {
+           return $this->container->get(StandardDebugBar::class)->getJavascriptRenderer();
         });
     }
 }

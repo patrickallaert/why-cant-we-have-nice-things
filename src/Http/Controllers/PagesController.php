@@ -8,6 +8,6 @@ class PagesController extends AbstractController
      */
     public function about()
     {
-        return $this->views->render('about.twig');
+        return $this->render('about.twig');
     }
 }

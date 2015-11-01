@@ -20,6 +20,7 @@ use Illuminate\Database\Capsule\Manager;
 use Interop\Container\ContainerInterface;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
+use PhpMiddleware\PhpDebugBar\PhpDebugBarMiddleware;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr7Middlewares\Middleware\When;
 use Relay\RelayBuilder;
@@ -111,8 +112,8 @@ class Application
         $response = new Response();
 
         $debug = $this->container->get('debug');
-        $this->container->get(StandardDebugBar::class);
         $middlewares = [
+            new When($debug, $this->container->get(PhpDebugBarMiddleware::class)),
             new When($debug, new WhoopsMiddleware()),
             new When($debug, $this->container->get(ErrorsMiddleware::class)),
             LeagueRouteMiddleware::class,

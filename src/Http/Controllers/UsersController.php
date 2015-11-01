@@ -25,7 +25,7 @@ class UsersController extends AbstractController
             return $user->hivemind * $user->total_votes;
         });
 
-        return $this->views->render('users/index.twig', [
+        return $this->render('users/index.twig', [
             'creators' => $creators,
             'voters'   => $voters,
         ]);
@@ -50,7 +50,7 @@ class UsersController extends AbstractController
 
         $user = User::with($with)->where('slug', $parameters['user'])->firstOrFail();
 
-        return $this->views->render('users/show.twig', [
+        return $this->render('users/show.twig', [
             'user'  => $user,
             'chart' => (new GraphicsGenerator())->computePositiveness($user),
         ]);
