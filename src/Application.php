@@ -145,9 +145,9 @@ class Application
         }
 
         return array_merge([
-            new ServeCachedResponse($cachePath),
+            //new ServeCachedResponse($cachePath),
         ], $middlewares, [
-            new SaveResponse($cachePath),
+            //new SaveResponse($cachePath),
         ]);
     }
 
