@@ -27,6 +27,7 @@ class CreateRequestsTable extends AbstractMigration
              ->addColumn('slug', 'string', ['null' => true])
              ->addColumn('contents', 'text')
              ->addColumn('link', 'string')
+             ->addColumn('pull_request', 'string', ['null' => true])
              ->addColumn('condition', 'text', ['null' => true])
              ->addColumn('approval', 'float')
              ->addColumn('status', 'integer')

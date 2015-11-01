@@ -2,10 +2,10 @@
 namespace History\Entities\Models;
 
 /**
- * @property string name
+ * @property string   name
  * @property string[] choices
- * @property bool passed
- * @property float approval
+ * @property bool     passed
+ * @property float    approval
  */
 class Question extends AbstractModel
 {

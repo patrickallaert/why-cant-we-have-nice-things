@@ -29,11 +29,12 @@ class RequestSynchronizer extends AbstractSynchronizer
     protected function getSynchronizedFields(AbstractModel $entity)
     {
         return [
-            'name'      => $this->informations->get('name'),
-            'link'      => $this->informations->get('link'),
-            'contents'  => $this->informations->get('contents'),
-            'condition' => $this->informations->get('condition'),
-            'status'    => $this->informations->get('status'),
+            'name'         => $this->informations->get('name'),
+            'link'         => $this->informations->get('link'),
+            'pull_request' => $this->informations->get('pull_request'),
+            'contents'     => $this->informations->get('contents'),
+            'condition'    => $this->informations->get('condition'),
+            'status'       => $this->informations->get('status'),
         ];
     }
 }

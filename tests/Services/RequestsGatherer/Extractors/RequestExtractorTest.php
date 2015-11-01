@@ -18,11 +18,12 @@ class RequestExtractorTest extends TestCase
         unset($informations['contents']);
 
         $this->assertEquals([
-            'name'       => 'Support Class Constant Visibility',
-            'status'     => 3,
-            'condition'  => '2/3',
-            'timestamps' => DateTime::createFromFormat('Y-m-d H:i:s', '2015-09-13 00:00:00'),
-            'authors'    => [
+            'name'         => 'Support Class Constant Visibility',
+            'status'       => 3,
+            'condition'    => '2/3',
+            'pull_request' => 'https://github.com/php/php-src/pull/1494',
+            'timestamps'   => DateTime::createFromFormat('Y-m-d H:i:s', '2015-09-13 00:00:00'),
+            'authors'      => [
                 ['full_name' => 'Sean DuBois', 'email' => 'sean@siobud.com'],
                 ['full_name' => 'Reeze Xia', 'email' => 'reeze@php.net'],
             ],
@@ -34,12 +35,12 @@ class RequestExtractorTest extends TestCase
                         [
                             'user_id'    => 'ajf',
                             'choice'     => 2,
-                            'created_at' => DateTime::createFromFormat('Y-m-d H:i', '2015-10-22 22:30', $timezone),
+                            'timestamps' => DateTime::createFromFormat('Y-m-d H:i', '2015-10-22 22:30', $timezone),
                         ],
                         [
                             'user_id'    => 'ajf',
                             'choice'     => 1,
-                            'created_at' => DateTime::createFromFormat('Y-m-d H:i', '2015-10-22 22:30', $timezone),
+                            'timestamps' => DateTime::createFromFormat('Y-m-d H:i', '2015-10-22 22:30', $timezone),
                         ],
                     ],
                 ],

@@ -24,7 +24,10 @@
             </li>
         {% endif %}
         <li>
-            <a href="{{ request.link }}" target="_blank">View this RFC on the PHP wiki</a>
+            <div class="btn-group">
+                <a target="_blank" class="btn btn-default btn-xs" href="{{ request.link }}"><i class="fa fa-book"></i> Wiki</a>
+                {% if request.pull_request %}<a target="_blank" class="btn btn-default btn-xs" href="{{ request.pull_request }}"><i class="fa fa-github"></i> Pull request</a>{% endif %}
+            </div>
         </li>
     </ul>
 

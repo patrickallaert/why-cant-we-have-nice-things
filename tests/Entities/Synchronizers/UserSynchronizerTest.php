@@ -24,6 +24,7 @@ class UserSynchronizerTest extends TestCase
             'full_name'     => 'Foo Bar',
             'contributions' => ['foo', 'bar'],
             'company'       => 'Zend',
+            'github_avatar' => null,
         ], $user->toArray());
     }
 

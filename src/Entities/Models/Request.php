@@ -10,8 +10,8 @@ use History\Entities\Traits\HasSlug;
  * @property string contents
  * @property string link
  * @property string condition
- * @property float approval
- * @property int status
+ * @property float  approval
+ * @property int    status
  */
 class Request extends AbstractModel
 {

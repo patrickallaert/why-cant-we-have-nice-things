@@ -6,7 +6,7 @@ use History\Entities\Traits\Fakable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property int id
+ * @property int            id
  * @property \Carbon\Carbon created_at
  * @property \Carbon\Carbon updated_at
  */

@@ -27,14 +27,15 @@ class RequestExtractor extends AbstractExtractor
         $versions           = $this->getVersions();
 
         return [
-            'name'       => $name,
-            'contents'   => $this->getContents(),
-            'status'     => $status,
-            'condition'  => $majorityConditions,
-            'authors'    => $authors,
-            'timestamps' => $timestamp,
-            'questions'  => $questions,
-            'versions'   => $versions,
+            'name'         => $name,
+            'contents'     => $this->getContents(),
+            'status'       => $status,
+            'pull_request' => $this->getPatch(),
+            'condition'    => $majorityConditions,
+            'authors'      => $authors,
+            'timestamps'   => $timestamp,
+            'questions'    => $questions,
+            'versions'     => $versions,
         ];
     }
 
@@ -125,7 +126,22 @@ class RequestExtractor extends AbstractExtractor
     }
 
     /**
+     * @return string
+     */
+    protected function getPatch()
+    {
+        $links = $this->crawler->filterXPath('//a');
+        foreach ($links as $link) {
+            $link = $link->getAttribute('href');
+            if (strpos($link, 'github.com') !== false) {
+                return $link;
+            }
+        }
+    }
+
+    /**
      * @param array $informations
+     * @param array $questions
      *
      * @return int
      */

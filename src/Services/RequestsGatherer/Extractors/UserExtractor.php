@@ -25,7 +25,8 @@ class UserExtractor extends AbstractExtractor
      */
     private function getContributions()
     {
-        return $this->crawler->filterXpath('//h2[@id="karma"]/following-sibling::ul/li/a')->each(function ($contribution) {
+        return $this->crawler->filterXpath('//h2[@id="karma"]/following-sibling::ul/li/a')->each(function ($contribution
+        ) {
             return $contribution->text();
         });
     }
