@@ -6,6 +6,7 @@ use Franzl\Middleware\Whoops\Middleware as WhoopsMiddleware;
 use History\Console\ConsoleServiceProvider;
 use History\Http\Middlewares\ErrorsMiddleware;
 use History\Http\Middlewares\LeagueRouteMiddleware;
+use History\Http\Middlewares\ServeCachedResponse;
 use History\Http\Providers\RoutingServiceProvider;
 use History\Http\Providers\TwigServiceProvider;
 use History\Providers\CacheServiceProvider;
@@ -21,6 +22,7 @@ use League\Container\Container;
 use League\Container\ReflectionContainer;
 use PhpMiddleware\PhpDebugBar\PhpDebugBarMiddleware;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr7Middlewares\Middleware\SaveResponse;
 use Relay\MiddlewareInterface;
 use Relay\RelayBuilder;
 use Silly\Application as Console;
@@ -126,20 +128,25 @@ class Application
      */
     protected function getMiddlewares()
     {
-        $debug       = $this->container->get('debug');
+        $cachePath   = $this->container->get('paths.cache').'/http';
         $middlewares = [
             LeagueRouteMiddleware::class,
         ];
 
-        if ($debug) {
-            $middlewares = array_merge([
+        // Development middlewares
+        if ($this->container->get('debug')) {
+            return array_merge([
                 PhpDebugBarMiddleware::class,
                 WhoopsMiddleware::class,
                 ErrorsMiddleware::class,
             ], $middlewares);
         }
 
-        return $middlewares;
+        return array_merge([
+            new ServeCachedResponse($cachePath),
+        ], $middlewares, [
+            new SaveResponse($cachePath),
+        ]);
     }
 
     /**

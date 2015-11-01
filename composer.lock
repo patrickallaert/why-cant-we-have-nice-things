@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "5177ab59e579c5143076c0d42ec517c5",
-    "content-hash": "6b6fadfafe4c82e2b58df5ea67bdd8db",
+    "hash": "1cd1bbe229f14dc3f4c1c24bb835246e",
+    "content-hash": "9236cb9bc9fb029fe54a91eaa60a63a1",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1159,6 +1159,75 @@
                 "routing"
             ],
             "time": "2015-06-18 19:15:47"
+        },
+        {
+            "name": "oscarotero/psr7-middlewares",
+            "version": "v3.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/oscarotero/psr7-middlewares.git",
+                "reference": "710c24987b6e020b24cad9927b62336f5b7ec41d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/oscarotero/psr7-middlewares/zipball/710c24987b6e020b24cad9927b62336f5b7ec41d",
+                "reference": "710c24987b6e020b24cad9927b62336f5b7ec41d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "aura/router": "3.0.0-beta2",
+                "aura/session": "2.*",
+                "m6web/firewall": "~1.0",
+                "matthiasmullie/scrapbook": "dev-master",
+                "mrclay/minify": "^2.2",
+                "neomerx/cors-psr7": "^0.2.0",
+                "nikic/fast-route": "0.*",
+                "phpunit/phpunit": "~4.0",
+                "ramsey/uuid": "^2.8",
+                "relay/relay": "0.2",
+                "willdurand/negotiation": "~2.0",
+                "zendframework/zend-diactoros": "1.*"
+            },
+            "suggest": {
+                "aura/router": "To use Middleware::auraRouter",
+                "aura/session": "To use Middleware::auraSession",
+                "m6web/firewall": "To use Middleware::firewall()",
+                "mrclay/minify": "To use Middleware::minify()",
+                "neomerx/cors-psr7": "To use Middleware::cors()",
+                "nikic/fast-route": "To use Middleware::fastRoute",
+                "ramsey/uuid": "To use Middleware::uuid()",
+                "willdurand/negotiation": "To use Middleware::formatNegotiator() and Middleware::languageNegotiator()"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Psr7Middlewares\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Oscar Otero",
+                    "email": "oom@oscarotero.com",
+                    "homepage": "http://oscarotero.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Collection of HTTP middlewares compatible with PSR-7",
+            "homepage": "https://github.com/oscarotero/psr7-middlewares",
+            "keywords": [
+                "http",
+                "middlewares",
+                "psr-7",
+                "psr-messages"
+            ],
+            "time": "2015-10-29 22:51:59"
         },
         {
             "name": "php-di/invoker",
