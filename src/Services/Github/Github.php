@@ -40,7 +40,7 @@ class Github
         $criterias = array_filter([$user->email, $user->full_name, $user->name]);
         foreach ($criterias as $criteria) {
             $results = $this->cache->rememberForever('github:search:'.$criteria, function () use ($criteria) {
-                return $this->client->search()->users($criteria.' type:user language:php');
+                return $this->client->search()->users($criteria.' type:user');
             });
 
             if ($results['total_count']) {
