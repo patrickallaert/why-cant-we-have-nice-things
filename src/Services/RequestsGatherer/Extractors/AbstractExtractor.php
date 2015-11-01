@@ -64,7 +64,7 @@ abstract class AbstractExtractor implements ExtractorInterface
     {
         // Cleanup string from shit
         $date = preg_replace('/\([a-z\-]+\)/i', '', $text);
-        $date = preg_replace('/(\d{2,4}[-\/]\d{2}[-\/]\d{2,4}).*/i', '$1', $date);
+        $date = preg_replace('/[^\d]*(\d{2,4}[-\/]\d{2}[-\/]\d{2,4}).*/i', '$1', $date);
         $date = str_replace('/', '-', $date);
         $date = preg_replace('/[,()]+/', ' ', $date);
         $date = trim($date);
@@ -80,10 +80,15 @@ abstract class AbstractExtractor implements ExtractorInterface
                     ? DateTime::createFromFormat($format, $date)
                     : new DateTime($date);
 
-                // Stop trying if we managed to parse the date
                 if ($datetime) {
-                    $foundFormat = $format ?: 'Y-m-d';
-                    $text        = str_replace($datetime->format($foundFormat), '', $text);
+                    // Try to remove the date from the original text
+                    $text = strtr($text, [
+                        $datetime->format($format ?: 'Y-m-d') => '',
+                        $datetime->format('Y-m-d')            => '',
+                        $datetime->format('Y/m/d')            => '',
+                        $datetime->format('d-m-Y')            => '',
+                        $datetime->format('d/m/Y')            => '',
+                    ]);
                     break;
                 }
             } catch (Exception $exception) {

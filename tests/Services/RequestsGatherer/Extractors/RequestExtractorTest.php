@@ -325,6 +325,14 @@ HTML
         $this->assertEquals(3, $informations['status']);
     }
 
+    public function testDoesntGoBeyondChangelogBlock()
+    {
+        $html         = $this->getDummyPage('rfc2');
+        $informations = $this->getInformationsFromHtml($html);
+
+        $this->assertCount(3, $informations['versions']);
+    }
+
     //////////////////////////////////////////////////////////////////////
     //////////////////////////// DATA PROVIDERS //////////////////////////
     //////////////////////////////////////////////////////////////////////

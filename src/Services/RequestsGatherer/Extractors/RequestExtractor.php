@@ -223,9 +223,13 @@ class RequestExtractor extends AbstractExtractor
      */
     protected function getVersions()
     {
-        $crawler = $this->crawler->filterXPath('//h2[@id="changelog"]/following-sibling::div/ul');
+        $versions = [];
+        $xpath    = '//h2[@id="changelog"]/following-sibling::div[1]/ul';
+        $this->crawler->filterXPath($xpath)->each(function (Crawler $block) use (&$versions) {
+            $versions += (new VersionExtractor($block))->extract();
+        });
 
-        return (new VersionExtractor($crawler))->extract();
+        return $versions;
     }
 
     /**

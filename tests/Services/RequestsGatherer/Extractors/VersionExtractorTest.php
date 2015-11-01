@@ -68,10 +68,23 @@ class VersionExtractorTest extends TestCase
                 ],
             ],
             [
+                ['2015-03-21 - foo'],
+                [
+                    ['version' => 1, 'name' => 'foo', 'timestamps' => new DateTime('2015-03-21')],
+                ],
+            ],
+            [
+                ['Initial version 2012/08/21', 'Next version (2012/08/22)'],
+                [
+                    ['version' => 2, 'name' => 'Initial version', 'timestamps' => new DateTime('2012-08-21')],
+                    ['version' => 1, 'name' => 'Next version', 'timestamps' => new DateTime('2012-08-22')],
+                ],
+            ],
+            [
                 ['10/10/2011 - foo', '05/10/2011 -  bar'],
                 [
-                    ['version' => 2, 'name' => '10/10/2011 - foo', 'timestamps' => new DateTime('2011-10-10')],
-                    ['version' => 1, 'name' => '05/10/2011 - bar', 'timestamps' => new DateTime('2011-10-05')],
+                    ['version' => 2, 'name' => 'foo', 'timestamps' => new DateTime('2011-10-10')],
+                    ['version' => 1, 'name' => 'bar', 'timestamps' => new DateTime('2011-10-05')],
                 ],
             ],
         ];
