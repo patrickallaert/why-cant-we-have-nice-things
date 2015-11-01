@@ -24,8 +24,7 @@ And, well. That's pretty much it.
 
 ## Fetching the data
 
-You can run `./console sync` to sync RFCs and users and such. It will be slow the first time and then faster after that.
-Data from the mailing list is synced separately for now through the `./console sync:internals` command.
+You can run `./console scheduled --force` to sync RFCs, users, commands and such. It will be slow the first time and then faster after that.
 
 ## Running the tests
 
