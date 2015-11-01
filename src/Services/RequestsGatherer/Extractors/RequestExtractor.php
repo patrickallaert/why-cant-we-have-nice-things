@@ -130,13 +130,21 @@ class RequestExtractor extends AbstractExtractor
      */
     protected function getPatch()
     {
+        $pulls = [];
         $links = $this->crawler->filterXPath('//a');
         foreach ($links as $link) {
             $link = $link->getAttribute('href');
             if (strpos($link, 'github.com') !== false) {
-                return $link;
+                $pulls[] = $link;
             }
         }
+
+        // Prioritize links that contain /pull
+        usort($pulls, function($link) {
+           return strpos($link, '/pull') !== false ? 0 : -10;
+        });
+
+        return head($pulls);
     }
 
     /**
