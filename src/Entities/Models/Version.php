@@ -4,8 +4,9 @@ namespace History\Entities\Models;
 use History\Entities\Traits\HasEvents;
 
 /**
- * @property string name
- * @property string version
+ * @property string  name
+ * @property string  version
+ * @property Request request
  */
 class Version extends AbstractModel
 {

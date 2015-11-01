@@ -8,6 +8,7 @@ use LogicException;
 /**
  * @property string name
  * @property string contents
+ * @property string parsed_contents
  * @property string xref
  */
 class Comment extends AbstractModel

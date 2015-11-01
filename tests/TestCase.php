@@ -40,7 +40,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param integer $message
+     * @param int $message
      *
      * @return array
      */

@@ -59,6 +59,7 @@ class MetadataCommand extends AbstractCommand
                 ]);
 
                 // Save Github ID for later use
+                /** @var User $user */
                 $user = $synchronizer->persist();
                 $user->github_id = $githubLogin;
                 $user->save();

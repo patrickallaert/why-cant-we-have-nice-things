@@ -1,23 +1,30 @@
 <?php
 namespace History\Entities\Models;
 
+use History\Collection;
 use History\Entities\Traits\HasSlug;
 use thomaswelton\GravatarLib\Gravatar;
 
 /**
- * @property string   name
- * @property string   slug
- * @property string   full_name
- * @property string   email
- * @property string   company
- * @property string[] contributions
- * @property int      yes_votes
- * @property int      no_votes
- * @property int      total_votes
- * @property float    approval
- * @property float    success
- * @property float    hivemind
- * @property string   github_id
+ * @property string     name
+ * @property string     slug
+ * @property string     full_name
+ * @property string     email
+ * @property string     company
+ * @property string[]   contributions
+ * @property int        yes_votes
+ * @property int        no_votes
+ * @property int        total_votes
+ * @property float      approval
+ * @property float      success
+ * @property float      hivemind
+ * @property string     github_id
+ * @property string     github_avatar
+ * @property string     display_name
+ * @property float      negativeness
+ * @property Collection approvedRequests
+ * @property Collection votes
+ * @property Collection requests
  */
 class User extends AbstractModel
 {

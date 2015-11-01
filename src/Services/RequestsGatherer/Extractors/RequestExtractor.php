@@ -141,7 +141,7 @@ class RequestExtractor extends AbstractExtractor
 
         // Prioritize links that contain /pull
         usort($pulls, function ($link) {
-           return strpos($link, '/pull') !== false ? 0 : -10;
+            return strpos($link, '/pull') !== false ? 0 : -10;
         });
 
         return head($pulls);

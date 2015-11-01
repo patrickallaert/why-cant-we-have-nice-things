@@ -1,17 +1,20 @@
 <?php
 namespace History\Entities\Models;
 
+use History\Collection;
 use History\Entities\Traits\HasEvents;
 use History\Entities\Traits\HasSlug;
 
 /**
- * @property string name
- * @property string slug
- * @property string contents
- * @property string link
- * @property string condition
- * @property float  approval
- * @property int    status
+ * @property string     name
+ * @property string     slug
+ * @property string     contents
+ * @property string     link
+ * @property string     condition
+ * @property float      approval
+ * @property int        status
+ * @property strign     status_label
+ * @property Collection votes
  */
 class Request extends AbstractModel
 {

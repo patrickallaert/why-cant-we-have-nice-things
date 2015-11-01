@@ -47,7 +47,7 @@ abstract class AbstractExtractor implements ExtractorInterface
     protected function cleanWhitespace($information)
     {
         $information = Str::ascii($information);
-        $information = preg_replace("/\s+/", ' ', $information);
+        $information = preg_replace('/\s+/', ' ', $information);
         $information = trim($information);
 
         return $information;

@@ -5,7 +5,6 @@ use History\TestCase;
 
 class MailingListArticleCleanerTest extends TestCase
 {
-
     /**
      * @dataProvider provideMessages
      *

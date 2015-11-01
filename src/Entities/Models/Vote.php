@@ -5,7 +5,9 @@ use History\Entities\Traits\HasEvents;
 use Illuminate\Support\Arr;
 
 /**
- * @property int choice
+ * @property int      choice
+ * @property string   answer
+ * @property Question question
  */
 class Vote extends AbstractModel
 {

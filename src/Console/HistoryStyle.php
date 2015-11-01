@@ -1,6 +1,7 @@
 <?php
 namespace History\Console;
 
+use History\Collection;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class HistoryStyle extends SymfonyStyle
@@ -24,8 +25,8 @@ class HistoryStyle extends SymfonyStyle
     /**
      * Show progress as we loop through an iterable.
      *
-     * @param array    $entries
-     * @param callable $callback
+     * @param Collection|array $entries
+     * @param callable         $callback
      */
     public function progressIterator($entries, callable $callback)
     {

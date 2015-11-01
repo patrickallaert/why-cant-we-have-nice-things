@@ -265,6 +265,7 @@ class InternalsSynchronizer
         ]));
 
         // Save comment and append to existing
+        /** @var Comment $comment */
         $comment                      = $synchronizer->persist();
         $this->created[$comment->id]  = $comment;
         $this->parsed[$comment->xref] = $comment->id;

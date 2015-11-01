@@ -1,11 +1,15 @@
 <?php
 namespace History\Entities\Models;
 
+use History\Collection;
+
 /**
- * @property string   name
- * @property string[] choices
- * @property bool     passed
- * @property float    approval
+ * @property string     name
+ * @property string[]   choices
+ * @property bool       passed
+ * @property float      approval
+ * @property Collection votes
+ * @property Request    request
  */
 class Question extends AbstractModel
 {
