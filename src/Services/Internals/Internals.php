@@ -110,7 +110,9 @@ class Internals
      */
     protected function cacheRequest($key, callable $callback)
     {
-        return $this->cache->rememberForever($key, function () use ($callback) {
+        $tag = strpos($key, 'xover') !== false ? 'php' : 'internals';
+
+        return $this->cache->tags($tag)->rememberForever($key, function () use ($callback) {
             $this->connectIfNeeded();
 
             return $callback();

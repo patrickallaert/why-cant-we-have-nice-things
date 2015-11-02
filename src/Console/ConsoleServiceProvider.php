@@ -44,7 +44,7 @@ class ConsoleServiceProvider extends AbstractServiceProvider
             $app->command('sync:slugs', SlugsCommand::class)->descriptions('Refresh entities slugs');
 
             // Register maintenance commands
-            $app->command('cache:clear', CacheClearCommand::class)->descriptions('Empty the cache');
+            $app->command('cache:clear [--all]', [CacheClearCommand::class, 'run'])->descriptions('Empty the cache');
             $app->command('scheduled [--scratch] [--force]', [
                 ScheduledCommand::class,
                 'run',

@@ -4,6 +4,7 @@ namespace History\Console\Commands;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Filesystem\Filesystem;
 use Interop\Container\ContainerInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class CacheClearCommand extends AbstractCommand
 {
@@ -28,11 +29,20 @@ class CacheClearCommand extends AbstractCommand
 
     /**
      * Run the command.
+     *
+     * @param bool            $all
+     * @param OutputInterface $output
      */
-    public function run()
+    public function run($all, OutputInterface $output)
     {
+        $this->wrapOutput($output);
+
         // Empty standard cache
-        $this->repository->flush();
+        if ($all) {
+            $this->repository->flush();
+        } else {
+            $this->repository->tags('php')->flush();
+        }
 
         // Empty filesystem cache
         $files = new Filesystem();

@@ -199,7 +199,7 @@ class RequestsGatherer
      */
     protected function getPageCrawler($link)
     {
-        $contents = $this->cache->rememberForever($link, function () use ($link) {
+        $contents = $this->cache->tags('php')->rememberForever($link, function () use ($link) {
             return file_get_contents($link);
         });
 

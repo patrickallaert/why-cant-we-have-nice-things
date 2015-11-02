@@ -64,7 +64,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
     protected function mockCache(array $cached = [])
     {
         $cache = Mockery::mock(Repository::class);
-        $cache->shouldReceive('rememberForever')->andReturnUsing(function ($key, $callback) use ($cached) {
+        $cache->shouldReceive('tags->rememberForever')->andReturnUsing(function ($key, $callback) use ($cached) {
             if (array_key_exists($key, $cached)) {
                 return $cached[$key];
             }
