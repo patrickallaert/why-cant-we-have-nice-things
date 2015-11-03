@@ -25,11 +25,7 @@ class CompanySynchronizer extends AbstractSynchronizer
     }
 
     /**
-     * Get the fields to synchronize on the matched entity.
-     *
-     * @param AbstractModel $entity
-     *
-     * @return array
+     * {@inheritdoc}
      */
     protected function getSynchronizedFields(AbstractModel $entity)
     {

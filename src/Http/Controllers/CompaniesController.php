@@ -10,8 +10,10 @@ class CompaniesController extends AbstractController
      */
     public function index()
     {
+        $companies = Company::with('users')->get();
+
         return $this->render('companies/index.twig', [
-           'companies' => Company::all(),
+            'companies' => $companies,
         ]);
     }
 }

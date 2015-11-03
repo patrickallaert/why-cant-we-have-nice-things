@@ -18,7 +18,7 @@ class UserSynchronizer extends AbstractSynchronizer
     protected $protected = [
         'name',
         'full_name',
-        'company',
+        'company_id',
         'contributions',
     ];
 
@@ -60,7 +60,7 @@ class UserSynchronizer extends AbstractSynchronizer
         // If the user has an email in @zend.com we can
         // probably assume he works at Zend
         if (strpos($informations->get('email'), '@zend') !== false) {
-            $this->company = (new CompanySynchronizer(['name' => 'Zend']))->persist();
+            $this->company = (new CompanySynchronizer(['name' => 'Zend Technologies']))->persist();
         }
 
         return $informations;

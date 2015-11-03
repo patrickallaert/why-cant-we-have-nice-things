@@ -1,20 +1,25 @@
 {% extends '_layouts/layout.twig' %}
 {% set title = 'Companies' %}
 
+{% block title %}
+    <h2>{{ title }}</h2>
+    <h3>Who keeps the metric system down?</h3>
+{% endblock %}
+
 {% block content %}
     <div class="table-responsive">
         <table class="table">
             <thead>
             <tr>
                 <th>Company</th>
-                <th># of users</th>
+                <th class="default-sort"># of users</th>
             </tr>
             </thead>
             <tbody>
             {% for company in companies %}
                 <tr>
                     <td>{{ company.name }}</td>
-                    <td>{{ company.users().count() }}</td>
+                    <td>{{ company.users.count() }}</td>
                 </tr>
             {% endfor %}
             </tbody>
