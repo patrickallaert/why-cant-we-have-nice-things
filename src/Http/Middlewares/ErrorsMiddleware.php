@@ -3,6 +3,7 @@ namespace History\Http\Middlewares;
 
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Interop\Container\ContainerInterface;
 use League\Route\Http\Exception\NotFoundException;
 use Monolog\Logger;
 use Psr\Http\Message\RequestInterface as Request;
@@ -18,21 +19,28 @@ class ErrorsMiddleware implements MiddlewareInterface
      * @var
      */
     private $twig;
+
     /**
      * @var LoggerInterface
      */
     private $logs;
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
 
     /**
      * ErrorsMiddleware constructor.
      *
-     * @param Twig_Environment $twig
-     * @param LoggerInterface  $logs
+     * @param ContainerInterface $container
+     * @param Twig_Environment   $twig
+     * @param LoggerInterface    $logs
      */
-    public function __construct(Twig_Environment $twig, LoggerInterface $logs)
+    public function __construct(ContainerInterface $container, Twig_Environment $twig, LoggerInterface $logs)
     {
-        $this->twig = $twig;
-        $this->logs = $logs;
+        $this->twig      = $twig;
+        $this->logs      = $logs;
+        $this->container = $container;
     }
 
     /**
@@ -72,7 +80,13 @@ class ErrorsMiddleware implements MiddlewareInterface
                 break;
 
             default:
-                throw $exception;
+                if (!$this->container->get('debug')) {
+                    throw $exception;
+                }
+
+                $page     = $this->twig->render('errors/503.twig');
+                $response = new HtmlResponse($page, 404);
+                break;
         }
 
         return $response;

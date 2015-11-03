@@ -7,7 +7,7 @@ class CompanySynchronizerTest extends TestCase
 {
     public function testCanSynchronizeCompanies()
     {
-        $sync    = new CompanySynchronizer([
+        $sync = new CompanySynchronizer([
             'name' => 'thePHP.cc - The PHP Consulting Company',
         ]);
         $company = $sync->synchronize();

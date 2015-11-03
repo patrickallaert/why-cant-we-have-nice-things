@@ -10,7 +10,6 @@ class InternalsSynchronizerTest extends TestCase
 {
     public function testCanFetchArticles()
     {
-
         $request = Request::create(['name' => 'foobar']);
         $user    = User::create(['full_name' => 'Maxime Fabre']);
         $created = $this->mockSynchronization([
