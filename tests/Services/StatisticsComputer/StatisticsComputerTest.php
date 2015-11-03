@@ -2,6 +2,7 @@
 namespace History\Services\StatisticsComputer;
 
 use History\Collection;
+use History\Entities\Models\Company;
 use History\Entities\Models\Question;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
@@ -109,6 +110,23 @@ class StatisticsComputerTest extends TestCase
             'approval'    => round(1 / 3, 6),
             'success'     => round(1 / 2, 6),
             'hivemind'    => round(2 / 3, 6),
+        ], $stats);
+    }
+
+    public function testCanComputeCompanyStatistics()
+    {
+        Vote::truncate();
+
+        $company = Company::seed();
+        $user1   = User::seed(['company_id' => $company->id]);
+        $user2   = User::seed();
+
+        $user1->votes()->save(Vote::seed());
+        $user2->votes()->save(Vote::seed());
+
+        $stats = $this->computer->forCompany($company);
+        $this->assertEquals([
+            'representation' => 0.5,
         ], $stats);
     }
 

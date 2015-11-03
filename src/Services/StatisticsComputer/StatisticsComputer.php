@@ -16,10 +16,11 @@ class StatisticsComputer
      */
     public function forCompany(Company $company)
     {
-        $totalUsers = User::count();
+        $totalUsers   = User::has('votes')->count();
+        $companyUsers = $company->users()->has('votes')->count();
 
         return [
-          'representation' => $company->users()->count() / $totalUsers,
+            'representation' => $this->ratio($companyUsers, $totalUsers),
         ];
     }
 
@@ -44,8 +45,8 @@ class StatisticsComputer
             'yes_votes'   => $yesVotes,
             'no_votes'    => $noVotes,
             'total_votes' => $totalVotes,
-            'success'     => $this->roundToFloatLimit($createdRequests ? $passedRequests / $createdRequests : 0),
-            'approval'    => $this->roundToFloatLimit($totalVotes ? $yesVotes / $totalVotes : 0),
+            'success'     => $this->ratio($passedRequests, $createdRequests),
+            'approval'    => $this->ratio($yesVotes, $totalVotes),
             'hivemind'    => $this->roundToFloatLimit($hivemind),
         ];
     }
@@ -142,6 +143,17 @@ class StatisticsComputer
         $hivemind = $hivemind / $user->votes->count();
 
         return $hivemind;
+    }
+
+    /**
+     * @param int $from
+     * @param int $to
+     *
+     * @return float
+     */
+    protected function ratio($from, $to)
+    {
+        return $this->roundToFloatLimit($to ? $from / $to : 0);
     }
 
     /**
