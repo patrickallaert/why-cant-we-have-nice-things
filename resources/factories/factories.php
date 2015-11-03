@@ -58,8 +58,8 @@ FactoryMuffin::define(Comment::class, [
 ]);
 
 FactoryMuffin::define(Question::class, [
-    'name'       => 'sentence',
-    'choices'    => function () {
+    'name'    => 'sentence',
+    'choices' => function () {
         return ['Yes', 'No'];
     },
     'request_id' => random(Request::class),

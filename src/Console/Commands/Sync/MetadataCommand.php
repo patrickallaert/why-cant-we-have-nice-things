@@ -46,12 +46,12 @@ class MetadataCommand extends AbstractCommand
             }
 
             if ($search && $search['total_count']) {
-                $githubLogin  = $search['items'][0]['login'];
+                $githubLogin = $search['items'][0]['login'];
                 $synchronizer = $this->updateUserwithInformations($user, $githubLogin);
 
                 // Save Github ID for later use
                 /** @var User $user */
-                $user            = $synchronizer->persist();
+                $user = $synchronizer->persist();
                 $user->github_id = $githubLogin;
                 $user->save();
             }

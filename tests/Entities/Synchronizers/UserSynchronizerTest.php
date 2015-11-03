@@ -31,7 +31,7 @@ class UserSynchronizerTest extends TestCase
 
     public function testAssignsToZendIfZendEmail()
     {
-        $company = Company::firstOrCreate(['name' => 'Zend']);
+        $company = Company::firstOrCreate(['name' => 'Zend Technologies']);
         $sync    = new UserSynchronizer([
             'name'          => 'foobar',
             'email'         => 'foo@zend.com',

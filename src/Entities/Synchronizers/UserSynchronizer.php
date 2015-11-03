@@ -77,9 +77,9 @@ class UserSynchronizer extends AbstractSynchronizer
 
         $matchers = [
             ['id' => $this->informations->get('id')],
-            ['name' => $username],
-            ['email' => $email],
-            ['email' => preg_replace('/@(.+)/', '@php.net', $email)],
+            ['name'      => $username],
+            ['email'     => $email],
+            ['email'     => preg_replace('/@(.+)/', '@php.net', $email)],
             ['full_name' => $fullName],
         ];
 

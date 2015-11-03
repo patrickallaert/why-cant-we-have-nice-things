@@ -12,10 +12,20 @@ class CompanySynchronizer extends AbstractSynchronizer
     protected $entity = Company::class;
 
     /**
-     * Get the criterias against which an existing
-     * entity will be matched.
-     *
-     * @return array
+     * {@inheritdoc}
+     */
+    protected function sanitize(array $informations)
+    {
+        $informations       = parent::sanitize($informations);
+        $informations->name = strtr($informations->name, [
+            ' - The PHP Consulting Company' => '',
+        ]);
+
+        return $informations;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     protected function getMatchers()
     {
