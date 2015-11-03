@@ -11,6 +11,7 @@ class Company extends AbstractModel
      */
     protected $fillable = [
         'name',
+        'representation',
     ];
 
     //////////////////////////////////////////////////////////////////////

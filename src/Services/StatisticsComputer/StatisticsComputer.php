@@ -1,6 +1,7 @@
 <?php
 namespace History\Services\StatisticsComputer;
 
+use History\Entities\Models\Company;
 use History\Entities\Models\Question;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
@@ -8,6 +9,20 @@ use History\Entities\Models\Vote;
 
 class StatisticsComputer
 {
+    /**
+     * @param Company $company
+     *
+     * @return array
+     */
+    public function forCompany(Company $company)
+    {
+        $totalUsers = User::count();
+
+        return [
+          'representation' => $company->users()->count() / $totalUsers,
+        ];
+    }
+
     /**
      * @param User $user
      *

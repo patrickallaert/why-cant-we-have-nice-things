@@ -2,6 +2,7 @@
 namespace History\Console\Commands\Sync;
 
 use History\Console\Commands\AbstractCommand;
+use History\Entities\Models\Company;
 use History\Entities\Models\Question;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
@@ -33,6 +34,7 @@ class StatsCommand extends AbstractCommand
         $users     = User::with('votes.question.votes', 'requests')->get();
         $questions = Question::with('votes')->get();
         $requests  = Request::with('questions.votes')->get();
+        $companies = Company::with('users')->get();
 
         $this->output->section('Refreshing User statistics');
         $this->output->progressIterator($users, function (User $user) {
@@ -47,6 +49,11 @@ class StatsCommand extends AbstractCommand
         $this->output->section('Refreshing Request statistics');
         $this->output->progressIterator($requests, function (Request $request) {
             $request->fill($this->computer->forRequest($request))->saveIfDirty();
+        });
+
+        $this->output->section('Refreshing Company statistics');
+        $this->output->progressIterator($companies, function (Company $company) {
+            $company->fill($this->computer->forCompany($company))->saveIfDirty();
         });
     }
 }
