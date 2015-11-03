@@ -30,4 +30,12 @@ class Company extends AbstractModel
     {
         return $this->hasMany(User::class);
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function votes()
+    {
+        return $this->hasManyThrough(Vote::class, User::class);
+    }
 }

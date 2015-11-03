@@ -16,11 +16,11 @@ class StatisticsComputer
      */
     public function forCompany(Company $company)
     {
-        $totalUsers   = User::has('votes')->count();
-        $companyUsers = $company->users()->has('votes')->count();
+        $totalVotes   = Vote::count();
+        $companyVotes = $company->votes()->count();
 
         return [
-            'representation' => $this->ratio($companyUsers, $totalUsers),
+            'representation' => $this->ratio($companyVotes, $totalVotes),
         ];
     }
 

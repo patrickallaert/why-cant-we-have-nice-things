@@ -122,11 +122,12 @@ class StatisticsComputerTest extends TestCase
         $user2   = User::seed();
 
         $user1->votes()->save(Vote::seed());
+        $user1->votes()->save(Vote::seed());
         $user2->votes()->save(Vote::seed());
 
         $stats = $this->computer->forCompany($company);
         $this->assertEquals([
-            'representation' => 0.5,
+            'representation' => round(2 / 3, 6),
         ], $stats);
     }
 
