@@ -12,4 +12,16 @@ class Company extends AbstractModel
     protected $fillable = [
         'name',
     ];
+
+    //////////////////////////////////////////////////////////////////////
+    //////////////////////////// RELATIONSHIPS ///////////////////////////
+    //////////////////////////////////////////////////////////////////////
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

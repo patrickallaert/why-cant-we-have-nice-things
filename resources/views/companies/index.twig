@@ -1,0 +1,23 @@
+{% extends '_layouts/layout.twig' %}
+{% set title = 'Companies' %}
+
+{% block content %}
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Company</th>
+                <th># of users</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for company in companies %}
+                <tr>
+                    <td>{{ company.name }}</td>
+                    <td>{{ company.users().count() }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

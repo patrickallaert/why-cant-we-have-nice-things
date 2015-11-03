@@ -1,6 +1,7 @@
 <?php
 namespace History\Http\Providers;
 
+use History\Http\Controllers\CompaniesController;
 use History\Http\Controllers\EventsController;
 use History\Http\Controllers\PagesController;
 use History\Http\Controllers\RequestsController;
@@ -57,6 +58,7 @@ class RoutingServiceProvider extends AbstractServiceProvider
                 $routes->get('events', EventsController::class.'::index'),
                 $routes->get('requests', RequestsController::class.'::index'),
                 $routes->get('requests/{request}', RequestsController::class.'::show'),
+                $routes->get('companies', CompaniesController::class.'::index'),
             ];
 
             return $routes;
