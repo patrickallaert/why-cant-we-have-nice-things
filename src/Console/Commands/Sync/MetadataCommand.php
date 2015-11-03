@@ -3,7 +3,9 @@ namespace History\Console\Commands\Sync;
 
 use Exception;
 use History\Console\Commands\AbstractCommand;
+use History\Entities\Models\Company;
 use History\Entities\Models\User;
+use History\Entities\Synchronizers\CompanySynchronizer;
 use History\Entities\Synchronizers\UserSynchronizer;
 use History\Services\Github\Github;
 use Illuminate\Support\Fluent;
@@ -43,27 +45,47 @@ class MetadataCommand extends AbstractCommand
                 return false;
             }
 
-            // If we have results, find informations about
-            // the first returned user
             if ($search && $search['total_count']) {
-                $githubLogin = $search['items'][0]['login'];
-                $informations = $this->github->getUserInformations($githubLogin);
-                $informations = new Fluent($informations);
-                $synchronizer = new UserSynchronizer([
-                    'id'            => $user->id,
-                    'name'          => $user->name ?: $informations->login,
-                    'email'         => $user->email ?: $informations->email,
-                    'company'       => $user->company ?: $informations->company,
-                    'full_name'     => $user->full_name ?: $informations->full_name,
-                    'github_avatar' => $informations->avatar_url,
-                ]);
+                $githubLogin  = $search['items'][0]['login'];
+                $synchronizer = $this->updateUserwithInformations($user, $githubLogin);
 
                 // Save Github ID for later use
                 /** @var User $user */
-                $user = $synchronizer->persist();
+                $user            = $synchronizer->persist();
                 $user->github_id = $githubLogin;
                 $user->save();
             }
         });
+    }
+
+    /**
+     * @param User   $user
+     * @param string $githubLogin
+     *
+     * @return UserSynchronizer
+     */
+    public function updateUserwithInformations(User $user, $githubLogin)
+    {
+        $informations = $this->github->getUserInformations($githubLogin);
+        $informations = new Fluent($informations);
+
+        $company = new Company();
+        if ($informations->company) {
+            $company = new CompanySynchronizer([
+                'name' => $informations->company,
+            ]);
+
+            $company = $company->persist();
+        }
+
+        $synchronizer = new UserSynchronizer([
+            'id'            => $user->id,
+            'name'          => $user->name ?: $informations->login,
+            'email'         => $user->email ?: $informations->email,
+            'full_name'     => $user->full_name ?: $informations->full_name,
+            'github_avatar' => $informations->avatar_url,
+        ], $company);
+
+        return $synchronizer;
     }
 }

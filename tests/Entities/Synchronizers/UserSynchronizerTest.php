@@ -1,6 +1,7 @@
 <?php
 namespace History\Entities\Synchronizers;
 
+use History\Entities\Models\Company;
 use History\Entities\Models\User;
 use History\TestCase;
 
@@ -8,13 +9,13 @@ class UserSynchronizerTest extends TestCase
 {
     public function testCanSynchronizerUser()
     {
-        $sync = new UserSynchronizer([
+        $company = Company::firstOrCreate(['name' => 'Zend']);
+        $sync    = new UserSynchronizer([
             'name'          => 'foobar',
             'email'         => 'foo@bar.com',
             'full_name'     => 'Foo Bar',
             'contributions' => ['foo', 'bar'],
-            'company'       => 'Zend',
-        ]);
+        ], $company);
 
         $user = $sync->synchronize();
         $this->assertInstanceOf(User::class, $user);
@@ -23,8 +24,30 @@ class UserSynchronizerTest extends TestCase
             'email'         => 'foo@bar.com',
             'full_name'     => 'Foo Bar',
             'contributions' => ['foo', 'bar'],
-            'company'       => 'Zend',
             'github_avatar' => null,
+            'company_id'    => $company->id,
+        ], $user->toArray());
+    }
+
+    public function testAssignsToZendIfZendEmail()
+    {
+        $company = Company::firstOrCreate(['name' => 'Zend']);
+        $sync    = new UserSynchronizer([
+            'name'          => 'foobar',
+            'email'         => 'foo@zend.com',
+            'full_name'     => 'Foo Bar',
+            'contributions' => ['foo', 'bar'],
+        ]);
+
+        $user = $sync->synchronize();
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertEquals([
+            'name'          => 'foobar',
+            'email'         => 'foo@zend.com',
+            'full_name'     => 'Foo Bar',
+            'contributions' => ['foo', 'bar'],
+            'github_avatar' => null,
+            'company_id'    => $company->id,
         ], $user->toArray());
     }
 

@@ -38,7 +38,6 @@ class User extends AbstractModel
         'slug',
         'full_name',
         'email',
-        'company',
         'contributions',
         'yes_votes',
         'no_votes',
@@ -66,6 +65,16 @@ class User extends AbstractModel
     //////////////////////////////////////////////////////////////////////
     //////////////////////////// RELATIONSHIPS ///////////////////////////
     //////////////////////////////////////////////////////////////////////
+
+    /**
+     * @codeCoverageIgnore
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
 
     /**
      * @codeCoverageIgnore

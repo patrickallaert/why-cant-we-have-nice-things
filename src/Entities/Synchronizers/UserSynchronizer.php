@@ -2,6 +2,7 @@
 namespace History\Entities\Synchronizers;
 
 use History\Entities\Models\AbstractModel;
+use History\Entities\Models\Company;
 use History\Entities\Models\User;
 
 class UserSynchronizer extends AbstractSynchronizer
@@ -27,6 +28,23 @@ class UserSynchronizer extends AbstractSynchronizer
     protected $timestamps = false;
 
     /**
+     * @var Company
+     */
+    protected $company;
+
+    /**
+     * UserSynchronizer constructor.
+     *
+     * @param array        $informations
+     * @param Company|null $company
+     */
+    public function __construct(array $informations, Company $company = null)
+    {
+        $this->company = $company;
+        parent::__construct($informations);
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function sanitize(array $informations)
@@ -41,7 +59,9 @@ class UserSynchronizer extends AbstractSynchronizer
 
         // If the user has an email in @zend.com we can
         // probably assume he works at Zend
-        $informations['company'] = strpos($informations->get('email'), '@zend') !== false ? 'Zend' : $informations->get('company');
+        if (strpos($informations->get('email'), '@zend') !== false) {
+            $this->company = (new CompanySynchronizer(['name' => 'Zend']))->persist();
+        }
 
         return $informations;
     }
@@ -57,9 +77,9 @@ class UserSynchronizer extends AbstractSynchronizer
 
         $matchers = [
             ['id' => $this->informations->get('id')],
-            ['name'      => $username],
-            ['email'     => $email],
-            ['email'     => preg_replace('/@(.+)/', '@php.net', $email)],
+            ['name' => $username],
+            ['email' => $email],
+            ['email' => preg_replace('/@(.+)/', '@php.net', $email)],
             ['full_name' => $fullName],
         ];
 
@@ -88,7 +108,7 @@ class UserSynchronizer extends AbstractSynchronizer
             'email'         => $shouldReplaceEmail ? $email : $entity->email,
             'full_name'     => $this->informations->get('full_name'),
             'contributions' => $this->informations->get('contributions') ?: [],
-            'company'       => $this->informations->get('company'),
+            'company_id'    => $this->company ? $this->company->id : null,
             'github_avatar' => $this->informations->get('github_avatar'),
         ];
     }

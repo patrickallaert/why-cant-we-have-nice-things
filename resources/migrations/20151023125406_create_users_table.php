@@ -27,7 +27,6 @@ class CreateUsersTable extends AbstractMigration
              ->addColumn('slug', 'string', ['null' => true])
              ->addColumn('full_name', 'string', ['null' => true])
              ->addColumn('email', 'string', ['null' => true])
-             ->addColumn('company', 'string', ['null' => true])
              ->addColumn('contributions', 'text')
              ->addColumn('yes_votes', 'integer')
              ->addColumn('no_votes', 'integer')
@@ -37,8 +36,10 @@ class CreateUsersTable extends AbstractMigration
              ->addColumn('hivemind', 'float')
              ->addColumn('github_avatar', 'string', ['null' => true])
              ->addColumn('github_id', 'string', ['null' => true])
+             ->addColumn('company_id', 'integer', ['null' => true])
              ->addColumn('created_at', 'datetime')
              ->addColumn('updated_at', 'datetime')
+             ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE'])
              ->create();
     }
 }

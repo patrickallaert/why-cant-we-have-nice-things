@@ -1,6 +1,7 @@
 <?php
 
 use History\Entities\Models\Comment;
+use History\Entities\Models\Company;
 use History\Entities\Models\Question;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
@@ -29,6 +30,7 @@ FactoryMuffin::define(User::class, [
     'name'       => 'userName',
     'full_name'  => 'name',
     'email'      => 'email',
+    'company_id' => random(Company::class),
     'created_at' => 'dateTimeThisYear',
     'updated_at' => 'dateTimeThisYear',
 ]);
@@ -56,8 +58,8 @@ FactoryMuffin::define(Comment::class, [
 ]);
 
 FactoryMuffin::define(Question::class, [
-    'name'    => 'sentence',
-    'choices' => function () {
+    'name'       => 'sentence',
+    'choices'    => function () {
         return ['Yes', 'No'];
     },
     'request_id' => random(Request::class),
@@ -71,4 +73,8 @@ FactoryMuffin::define(Vote::class, [
     'user_id'     => random(User::class),
     'created_at'  => 'dateTimeThisYear',
     'updated_at'  => 'dateTimeThisYear',
+]);
+
+FactoryMuffin::define(Company::class, [
+    'name' => 'word',
 ]);
