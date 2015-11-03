@@ -1,0 +1,29 @@
+{% extends '_layouts/layout.twig' %}
+{% set title = company.name %}
+
+{% block content %}
+    {% include '_partials/search.twig' %}
+
+    <div class="table-responsive">
+        <table class="table table-condensed table-striped table-hover">
+            <thead>
+            <tr>
+                <th>User</th>
+                <th># of votes</th>
+                <th># of RFCs</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in company.users %}
+                <tr>
+                    <td>
+                        <a href="{{ url('users.show', user.identifier) }}">{{ user.display_name }}</a>
+                    </td>
+                    <td>{{ user.total_votes }}</td>
+                    <td>{{ user.requests().count() }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

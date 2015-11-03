@@ -2,11 +2,13 @@
 namespace History\Providers;
 
 use History\Entities\Models\Comment;
+use History\Entities\Models\Company;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
 use History\Entities\Models\Version;
 use History\Entities\Models\Vote;
 use History\Entities\Observers\CommentObserver;
+use History\Entities\Observers\CompanyObserver;
 use History\Entities\Observers\RequestObserver;
 use History\Entities\Observers\UserObserver;
 use History\Entities\Observers\VersionObserver;
@@ -38,6 +40,7 @@ class DatabaseServiceProvider extends AbstractServiceProvider
 
             // Configure observers
             Comment::observe(new CommentObserver());
+            Company::observe(new CompanyObserver());
             Request::observe(new RequestObserver());
             User::observe(new UserObserver());
             Version::observe(new VersionObserver());

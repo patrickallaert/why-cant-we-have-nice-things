@@ -1,16 +1,21 @@
 <?php
 namespace History\Entities\Models;
 
+use History\Entities\Traits\HasSlug;
+
 /**
  * @property string name
  */
 class Company extends AbstractModel
 {
+    use HasSlug;
+
     /**
      * @var array
      */
     protected $fillable = [
         'name',
+        'slug',
         'representation',
     ];
 

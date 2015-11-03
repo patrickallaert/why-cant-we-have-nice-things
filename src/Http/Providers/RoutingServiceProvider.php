@@ -59,6 +59,7 @@ class RoutingServiceProvider extends AbstractServiceProvider
                 $routes->get('requests', RequestsController::class.'::index'),
                 $routes->get('requests/{request}', RequestsController::class.'::show'),
                 $routes->get('companies', CompaniesController::class.'::index'),
+                $routes->get('companies/{company}', CompaniesController::class.'::show'),
             ];
 
             return $routes;
