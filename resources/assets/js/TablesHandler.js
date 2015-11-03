@@ -103,12 +103,12 @@ export default class TablesHandler {
      * @param {Event} event
      */
     onClickEvent(event) {
-        if (this.th && this.cellIndex !== event.target.cellIndex) {
+        if (this.th && this.cellIndex !== event.currentTarget.cellIndex) {
             this.reset();
         }
 
         // Assign current header and its index
-        this.th        = event.target;
+        this.th        = event.currentTarget;
         this.cellIndex = this.th.cellIndex;
         const tbody    = this.th.offsetParent.querySelector('tbody');
 
