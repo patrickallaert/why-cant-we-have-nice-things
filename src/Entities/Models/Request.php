@@ -61,6 +61,7 @@ class Request extends AbstractModel
         'Under discussion',
         'Voting',
         'Implemented',
+        'Inactive',
     ];
 
     /**

@@ -3,6 +3,7 @@ namespace History\Services\RequestsGatherer\Extractors;
 
 use DateTime;
 use DateTimeZone;
+use History\Entities\Models\Request;
 use History\TestCase;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -323,6 +324,14 @@ HTML
         $informations = $this->getInformationsFromHtml($html);
 
         $this->assertEquals(Request::VOTING, $informations['status']);
+    }
+
+    public function testRequestIsInactiveIfTooOld()
+    {
+        $html         = $this->getDummyPage('rfc2');
+        $informations = $this->getInformationsFromHtml($html);
+
+        $this->assertEquals(Request::INACTIVE, $informations['status']);
     }
 
     public function testDoesntGoBeyondChangelogBlock()

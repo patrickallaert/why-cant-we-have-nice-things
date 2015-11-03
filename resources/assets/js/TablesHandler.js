@@ -7,7 +7,7 @@ export default class TablesHandler {
     order     = null;
 
     /**
-     * @param table
+     * @param {Node} table
      */
     constructor(table) {
         this.table = table;

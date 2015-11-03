@@ -3,6 +3,7 @@ namespace History\Services\RequestsGatherer\Extractors;
 
 use DateTime;
 use DOMText;
+use History\Entities\Models\Request;
 use History\Services\IdentityExtractor;
 use Minify_HTML;
 use Symfony\Component\DomCrawler\Crawler;
@@ -21,8 +22,8 @@ class RequestExtractor extends AbstractExtractor
         $majorityConditions = $this->getMajorityConditions();
         $informations       = $this->getInformations();
         $questions          = $this->getQuestions();
-        $status             = $this->getStatus($informations, $questions);
         $timestamp          = $this->getRequestTimestamp($informations);
+        $status             = $this->getStatus($informations, $questions, $timestamp);
         $authors            = $this->getAuthors($informations);
         $versions           = $this->getVersions();
 
@@ -148,20 +149,21 @@ class RequestExtractor extends AbstractExtractor
     }
 
     /**
-     * @param array $informations
-     * @param array $questions
+     * @param array    $informations
+     * @param array    $questions
+     * @param DateTime $timestamp
      *
      * @return int
      */
-    protected function getStatus(array $informations, array $questions)
+    protected function getStatus(array $informations, array $questions, DateTime $timestamp)
     {
         $statusText = $this->findInformation($informations, '/Status/');
         $statuses   = [
-            Request::DECLINED => 'declined',
-            Request::DRAFT => 'draft',
+            Request::DECLINED   => 'declined',
+            Request::DRAFT      => 'draft',
             Request::DISCUSSION => 'discussion',
-            Request::APPROVED => 'accepted|implemented',
-            Request::VOTING => 'voting',
+            Request::APPROVED   => 'accepted|implemented',
+            Request::VOTING     => 'voting',
         ];
 
         // Look for a match in the status
@@ -185,6 +187,13 @@ class RequestExtractor extends AbstractExtractor
         // anymore and can consider implemented/declined
         if ($this->allPollsClosed() && $status === Request::VOTING) {
             $status = Request::APPROVED;
+        }
+
+        // If the request is too old to still be under discussion
+        // then mark it as inactive
+        $timeDifference = $timestamp->diff(new DateTime());
+        if ($status === Request::DISCUSSION && $timeDifference->y >= 1) {
+            $status = Request::INACTIVE;
         }
 
         return $status;

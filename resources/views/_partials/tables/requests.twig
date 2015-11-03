@@ -27,7 +27,7 @@
                 <td class="text-right">{{ percentage(request.approval) }}</td>
                 <td class="text-center">{{ request.versions.first().version }}</td>
                 <td class="text-center">{{ request.created_at.toDateString() }}</td>
-                <td class="text-center {{ ['danger', '', '', '', 'success'][request.status] }}">{{ request.status_label }}</td>
+                <td class="text-center {{ ['danger', '', '', 'info', 'success', 'active'][request.status] }}">{{ request.status_label }}</td>
             </tr>
         {% endfor %}
         </tbody>
