@@ -182,13 +182,19 @@ class InternalsSynchronizer
     {
         $subject = $article['subject'];
 
-        // Try to find the RFC the message's talking about
-        $request = array_get($this->existingRequests, $subject);
-        if (!$request) {
-            return;
+        // Try to find an exact match
+        if (array_key_exists($subject, $this->existingRequests)) {
+            return $this->existingRequests[$subject];
         }
 
-        return $request;
+        // If the similarity between a message's title and an RFC name
+        // is above 90%, consider a match
+        foreach ($this->existingRequests as $name => $id) {
+            similar_text(strtolower($subject), strtolower($name), $similarity);
+            if ($similarity > 90) {
+                return $id;
+            }
+        }
     }
 
     /**

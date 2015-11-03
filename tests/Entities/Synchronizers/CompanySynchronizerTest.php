@@ -7,15 +7,18 @@ class CompanySynchronizerTest extends TestCase
 {
     public function testCanSynchronizeCompanies()
     {
-        $sync = new CompanySynchronizer([
+        $sync    = new CompanySynchronizer([
             'name' => 'thePHP.cc - The PHP Consulting Company',
         ]);
         $company = $sync->synchronize();
 
         $this->assertEquals([
-            'name'       => 'thePHP.cc',
-            'created_at' => '2011-01-01 01:01:01',
-            'updated_at' => '2011-01-01 01:01:01',
+            'name'           => 'thePHP.cc',
+            'id'             => $company->id,
+            'slug'           => 'thephpcc',
+            'representation' => 0.0,
+            'created_at'     => '2011-01-01 01:01:01',
+            'updated_at'     => '2011-01-01 01:01:01',
         ], $company->toArray());
     }
 }
