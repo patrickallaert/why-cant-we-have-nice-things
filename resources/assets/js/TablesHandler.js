@@ -7,12 +7,24 @@ export default class TablesHandler {
     order     = null;
 
     /**
+     * @param table
+     */
+    constructor(table) {
+        this.table = table;
+    }
+
+    /**
      * Enable the TableSorter
      */
     enable() {
         // Bind sorting
-        each('th', heading => {
+        const headers = nodelistToArray(this.table.querySelectorAll('th'));
+        headers.forEach(heading => {
             heading.onclick = this.onClickEvent.bind(this);
+            if (heading.classList.contains('default-sort')) {
+                heading.click();
+                heading.click();
+            }
         });
 
         // Bind search if present

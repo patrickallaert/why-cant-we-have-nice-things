@@ -21,8 +21,8 @@ class UsersController extends AbstractController
             return $user->approvedRequests->count();
         });
 
-        $voters = $voters->sortBy(function (User $user) {
-            return $user->hivemind * $user->total_votes;
+        $voters = $voters->sortByDesc(function (User $user) {
+            return $user->total_votes;
         });
 
         return $this->render('users/index.twig', [

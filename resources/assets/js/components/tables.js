@@ -1,4 +1,7 @@
+import {each} from '../helpers';
 import TablesHandler from '../TablesHandler';
 
-const tables = new TablesHandler();
-tables.enable();
+each('table', table => {
+    const tables = new TablesHandler(table);
+    tables.enable();
+});
