@@ -130,6 +130,7 @@ class Application
     {
         $cachePath   = $this->container->get('paths.cache').'/http';
         $middlewares = [
+            ErrorsMiddleware::class,
             LeagueRouteMiddleware::class,
         ];
 
@@ -138,7 +139,6 @@ class Application
             return array_merge([
                 PhpDebugBarMiddleware::class,
                 WhoopsMiddleware::class,
-                ErrorsMiddleware::class,
             ], $middlewares);
         }
 
