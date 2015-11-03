@@ -4,7 +4,7 @@
 {% block content %}
     <p class="lead text-center">
         A total of <strong>{{ requests.count() }}</strong> RFCs have been created, <strong>{{ voted.count() }}</strong> have been voted on.<br>
-        In total, <strong>{{ percentage(passed) }}</strong> have passed.
+        Of those, <strong>{{ percentage(passed) }}</strong> have passed.
     </p>
 
     {% include '_partials/search.twig' %}
