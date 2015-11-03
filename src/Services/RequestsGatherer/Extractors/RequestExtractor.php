@@ -58,7 +58,7 @@ class RequestExtractor extends AbstractExtractor
 
         // Remove voting tables and changelog
         $this->removeSection($contents, '//div[form[table[@class="inline"]]]');
-        $this->removeSection($contents, '//h2[@id="changelog"]/following-sibling::div');
+        $this->removeSection($contents, '//h2[@id="changelog"]/following-sibling::div[1]');
 
         // Make tables into nice tables
         $contents->filterXPath('//table[@class="inline"]')->each(function (Crawler $table) {
