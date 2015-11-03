@@ -92,11 +92,11 @@ class TwigServiceProvider extends AbstractServiceProvider
         $twig->addGlobal('assets', $this->getWebpackAssets());
 
         $twig->addGlobal('navigation', [
-            ['uri' => $url->to('users.index'), 'label' => 'Users'],
-            ['uri' => $url->to('events.index'), 'label' => 'Timeline'],
-            ['uri' => $url->to('requests.index'), 'label' => 'RFCs'],
-            ['uri' => $url->to('companies.index'), 'label' => 'Companies'],
-            ['uri' => $url->to('pages.about'), 'label' => 'About'],
+            ['key' => 'users', 'uri' => $url->to('users.index'), 'label' => 'Users'],
+            ['key' => 'events', 'uri' => $url->to('events.index'), 'label' => 'Timeline'],
+            ['key' => 'requests', 'uri' => $url->to('requests.index'), 'label' => 'RFCs'],
+            ['key' => 'companies', 'uri' => $url->to('companies.index'), 'label' => 'Companies'],
+            ['key' => 'pages', 'uri' => $url->to('pages.about'), 'label' => 'About'],
         ]);
     }
 

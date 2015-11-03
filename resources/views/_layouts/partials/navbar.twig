@@ -1,3 +1,11 @@
+{% set icons = {
+    users: 'user',
+    events: 'clock-o',
+    requests: 'comment',
+    companies: 'building',
+    pages: 'question',
+} %}
+
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -14,7 +22,10 @@
             <ul class="nav navbar-nav navbar-right">
                 {% for link in navigation %}
                     <li {% if current_uri starts with link.uri %}class="active"{% endif %}>
-                        <a href="{{ link.uri }}">{{ link.label }}</a>
+                        <a href="{{ link.uri }}">
+                            <i class="fa fa-{{ icons[link.key] }}"></i>
+                            {{ link.label }}
+                        </a>
                     </li>
                 {% endfor %}
             </ul>
