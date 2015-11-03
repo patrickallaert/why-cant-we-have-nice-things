@@ -45,7 +45,7 @@ class ScheduledCommand extends AbstractCommand
             'sync:stats'     => CronExpression::factory('@hourly'),
             'sync:internals' => CronExpression::factory('@hourly'),
             'sync:slugs'     => CronExpression::factory('@hourly'),
-            'sync:metadata'  => CronExpression::factory('*/10 * * * * *'),
+            'sync:metadata'  => CronExpression::factory('*/2 * * * * *'),
         ];
 
         /** @var CronExpression $cron */
