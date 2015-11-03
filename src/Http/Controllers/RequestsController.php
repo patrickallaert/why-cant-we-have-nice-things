@@ -20,7 +20,7 @@ class RequestsController extends AbstractController
         });
 
         $passed = $requests->filter(function (Request $request) {
-            return $request->status === 2;
+            return $request->status === Request::APPROVED;
         });
 
         return $this->render('requests/index.twig', [

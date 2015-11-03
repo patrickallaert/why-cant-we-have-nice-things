@@ -322,7 +322,7 @@ HTML
         $html         = $this->getDummyPage('rfc');
         $informations = $this->getInformationsFromHtml($html);
 
-        $this->assertEquals(3, $informations['status']);
+        $this->assertEquals(Request::VOTING, $informations['status']);
     }
 
     public function testDoesntGoBeyondChangelogBlock()
@@ -372,12 +372,12 @@ HTML
     public function provideStatuses()
     {
         return [
-            ['Status: in draft', 1],
-            ['Status: Under discussion', 2],
-            ['Status: In voting phase', 3],
-            ['Status: Implemented (in PHP 7.0)', 4],
-            ['Status: accepted (see voting results)', 4],
-            ['Status: accepted', 4],
+            ['Status: in draft', Request::DRAFT],
+            ['Status: Under discussion', Request::DISCUSSION],
+            ['Status: In voting phase', Request::VOTING],
+            ['Status: Implemented (in PHP 7.0)', Request::APPROVED],
+            ['Status: accepted (see voting results)', Request::APPROVED],
+            ['Status: accepted', Request::APPROVED],
         ];
     }
 

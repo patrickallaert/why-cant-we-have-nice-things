@@ -25,12 +25,32 @@ class Request extends AbstractModel
     /**
      * @var int
      */
+    const DECLINED = 0;
+
+    /**
+     * @var int
+     */
+    const DRAFT = 1;
+
+    /**
+     * @var int
+     */
+    const DISCUSSION = 2;
+
+    /**
+     * @var int
+     */
     const VOTING = 3;
 
     /**
      * @var int
      */
     const APPROVED = 4;
+
+    /**
+     * @var int
+     */
+    const INACTIVE = 5;
 
     /**
      * @var array

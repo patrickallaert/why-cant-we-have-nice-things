@@ -157,15 +157,15 @@ class RequestExtractor extends AbstractExtractor
     {
         $statusText = $this->findInformation($informations, '/Status/');
         $statuses   = [
-            0 => 'declined',
-            1 => 'draft',
-            2 => 'discussion',
-            4 => 'accepted|implemented',
-            3 => 'voting',
+            Request::DECLINED => 'declined',
+            Request::DRAFT => 'draft',
+            Request::DISCUSSION => 'discussion',
+            Request::APPROVED => 'accepted|implemented',
+            Request::VOTING => 'voting',
         ];
 
         // Look for a match in the status
-        $status = 0;
+        $status = Request::DECLINED;
         foreach ($statuses as $key => $matcher) {
             if (preg_match('/('.$matcher.')/i', $statusText)) {
                 $status = $key;
@@ -177,14 +177,14 @@ class RequestExtractor extends AbstractExtractor
         // votes then we're voting
         $votes = array_column($questions, 'votes');
         $votes = array_filter(array_map('count', $votes));
-        if ($status === 2 && count($votes)) {
-            $status = 3;
+        if ($status === Request::DISCUSSION && count($votes)) {
+            $status = Request::VOTING;
         }
 
         // If all polls are closed, then we're not voting
         // anymore and can consider implemented/declined
-        if ($this->allPollsClosed() && $status === 3) {
-            $status = 4;
+        if ($this->allPollsClosed() && $status === Request::VOTING) {
+            $status = Request::APPROVED;
         }
 
         return $status;
