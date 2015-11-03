@@ -320,7 +320,7 @@ HTML
 
     public function testDoesntTruncateStuff()
     {
-        $html = $this->getDummyPage('rfc2');
+        $html         = $this->getDummyPage('rfc2');
         $informations = $this->getInformationsFromHtml($html);
 
         $this->assertContains('Similar discussion back in 2005', $informations['contents']);
