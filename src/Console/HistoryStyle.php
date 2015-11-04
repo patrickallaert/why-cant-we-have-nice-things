@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Console;
 
 use Illuminate\Database\Eloquent\Collection;

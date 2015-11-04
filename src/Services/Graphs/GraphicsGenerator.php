@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Services\Graphs;
 
 use History\Collection;

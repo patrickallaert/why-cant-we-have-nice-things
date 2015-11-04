@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Http\Providers;
 
 use History\Application;

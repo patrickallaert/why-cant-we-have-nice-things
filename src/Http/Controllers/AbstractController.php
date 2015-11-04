@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Http\Controllers;
 
 use Illuminate\Database\Eloquent\Builder;

@@ -1,4 +1,5 @@
 <?php
+
 namespace History;
 
 class Collection extends \Illuminate\Database\Eloquent\Collection

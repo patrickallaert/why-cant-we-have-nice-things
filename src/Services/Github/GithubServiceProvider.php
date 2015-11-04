@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Services\Github;
 
 use Github\Client;

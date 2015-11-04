@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Console\Commands\Sync;
 
 use History\Console\Commands\AbstractCommand;

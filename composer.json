@@ -34,7 +34,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^2.0",
-        "fabpot/php-cs-fixer": "^1.10",
+        "fabpot/php-cs-fixer": "2.0.*@dev",
         "filp/whoops": "^1.1",
         "franzl/whoops-middleware": "^0.2.0",
         "league/factory-muffin": "^2.1",

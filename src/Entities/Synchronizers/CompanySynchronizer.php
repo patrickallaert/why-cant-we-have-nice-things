@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Entities\Synchronizers;
 
 use History\Entities\Models\AbstractModel;

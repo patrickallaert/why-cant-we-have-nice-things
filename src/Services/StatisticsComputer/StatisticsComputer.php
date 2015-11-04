@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Services\StatisticsComputer;
 
 use History\Entities\Models\Company;

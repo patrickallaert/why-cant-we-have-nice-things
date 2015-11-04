@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Providers;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;

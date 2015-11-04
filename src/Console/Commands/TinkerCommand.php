@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Console\Commands;
 
 use Interop\Container\ContainerInterface;

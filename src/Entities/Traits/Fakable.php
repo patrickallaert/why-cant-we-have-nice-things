@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Entities\Traits;
 
 use League\FactoryMuffin\Facade;

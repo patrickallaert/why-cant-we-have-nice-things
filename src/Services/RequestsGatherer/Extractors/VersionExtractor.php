@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Services\RequestsGatherer\Extractors;
 
 class VersionExtractor extends AbstractExtractor

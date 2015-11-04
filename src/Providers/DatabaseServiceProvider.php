@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Providers;
 
 use History\Entities\Models\Comment;

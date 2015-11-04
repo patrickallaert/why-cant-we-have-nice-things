@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Http\Middlewares;
 
 use Exception;

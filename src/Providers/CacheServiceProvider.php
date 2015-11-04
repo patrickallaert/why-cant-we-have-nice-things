@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Providers;
 
 use Illuminate\Cache\FileStore;

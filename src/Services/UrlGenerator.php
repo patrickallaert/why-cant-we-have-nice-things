@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Services;
 
 use Illuminate\Support\Arr;

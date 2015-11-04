@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Providers;
 
 use Barryvdh\Debugbar\DataCollector\QueryCollector;

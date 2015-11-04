@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Entities\Models;
 
 use History\Entities\Traits\HasSlug;

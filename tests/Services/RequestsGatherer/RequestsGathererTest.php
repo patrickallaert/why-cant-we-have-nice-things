@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Services\RequestsGatherer;
 
 use History\Entities\Models\Request;

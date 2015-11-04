@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Entities\Traits;
 
 use DateTime;

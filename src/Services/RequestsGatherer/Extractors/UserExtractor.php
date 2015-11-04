@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Services\RequestsGatherer\Extractors;
 
 class UserExtractor extends AbstractExtractor

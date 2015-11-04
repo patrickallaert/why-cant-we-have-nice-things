@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Services\Internals\Commands;
 
 use Rvdv\Nntp\Command\Command;

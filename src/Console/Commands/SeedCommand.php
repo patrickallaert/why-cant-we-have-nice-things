@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Console\Commands;
 
 use History\Entities\Models\Comment;

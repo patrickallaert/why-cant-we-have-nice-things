@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Services\RequestsGatherer;
 
 use Illuminate\Contracts\Cache\Repository;

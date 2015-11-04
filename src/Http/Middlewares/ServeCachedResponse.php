@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Http\Middlewares;
 
 use Psr\Http\Message\RequestInterface as Request;

@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Entities\Models;
 
 use History\TestCase;

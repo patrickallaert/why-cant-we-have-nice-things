@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Http\Controllers;
 
 class PagesController extends AbstractController
