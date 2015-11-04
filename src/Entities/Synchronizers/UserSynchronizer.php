@@ -20,6 +20,7 @@ class UserSynchronizer extends AbstractSynchronizer
         'full_name',
         'company_id',
         'contributions',
+        'github_avatar',
     ];
 
     /**
