@@ -193,7 +193,7 @@ class InternalsSynchronizer
         // is above 90%, consider a match
         foreach ($this->existingRequests as $name => $id) {
             similar_text(strtolower($subject), strtolower($name), $similarity);
-            if ($similarity > 90) {
+            if ($similarity > 85) {
                 return $id;
             }
         }
