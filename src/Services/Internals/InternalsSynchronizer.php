@@ -121,6 +121,8 @@ class InternalsSynchronizer
      * Process a chunk of articles.
      *
      * @param array $article
+     *
+     * @return Comment|void
      */
     public function processArticle(array $article)
     {
@@ -147,7 +149,7 @@ class InternalsSynchronizer
         $comment = $this->getCommentFromReference($article['references']);
 
         // Grab the message contents and insert into database
-        $this->createCommentFromArticle($article, $request, $user, $comment);
+        return $this->createCommentFromArticle($article, $request, $user, $comment);
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -170,7 +172,7 @@ class InternalsSynchronizer
             '[DISCUSSION]' => null,
             '[PHP-DEV]'    => null,
             '[VOTE]'       => null,
-        ]));
+        ]), ' :');
     }
 
     /**
@@ -221,8 +223,11 @@ class InternalsSynchronizer
     {
         // Just get the last reference cause
         $references = explode('>', $references);
-        $references = array_filter($references);
-        $reference  = trim(last($references).'>');
+        $reference  = last(array_filter($references));
+        $reference  = $reference ? trim($reference) : null;
+        if (!$reference) {
+            return;
+        }
 
         // Try to retrieve the comment the reference's about
         try {

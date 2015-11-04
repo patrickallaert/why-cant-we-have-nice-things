@@ -62,7 +62,7 @@ class InternalsSynchronizerTest extends TestCase
             [
                 'xref'       => 'php.internals:2321321',
                 'number'     => 2,
-                'subject'    => '[RFC][DISCUSSION] Trailing commas in all list syntax',
+                'subject'    => '[RFC][DISCUSSION]: Trailing commas in all list syntax',
                 'from'       => 'Maxime Fabre (foo@bar.com)',
                 'references' => '',
                 'date'       => '2011-01-01 01:01:01',
@@ -103,7 +103,7 @@ class InternalsSynchronizerTest extends TestCase
         $internals      = Mockery::mock(Internals::class);
         $internals->shouldReceive('getTotalNumberArticles')->once()->andReturn($lastArticle);
         $internals->shouldReceive('getArticleBody')->times($matched)->andReturn('foobar');
-        $internals->shouldReceive('findArticleFromReference')->times($matched)->andReturn();
+        $internals->shouldReceive('findArticleFromReference')->never()->andReturn();
         $internals->shouldReceive('getArticles')->times($numberArticles + 1)->andReturn($messages);
 
         $sync    = new InternalsSynchronizer($internals);
