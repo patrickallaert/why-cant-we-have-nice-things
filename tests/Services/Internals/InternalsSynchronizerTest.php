@@ -62,7 +62,7 @@ class InternalsSynchronizerTest extends TestCase
             [
                 'xref'       => 'php.internals:2321321',
                 'number'     => 2,
-                'subject'    => '[RFC][DISCUSSION]: Trailing commas in all list syntax',
+                'subject'    => 'RE: [RFC][DISCUSSION]: Trailing commas in all list syntax',
                 'from'       => 'Maxime Fabre (foo@bar.com)',
                 'references' => '',
                 'date'       => '2011-01-01 01:01:01',

@@ -166,6 +166,7 @@ class InternalsSynchronizer
     protected function cleanupSubject($subject)
     {
         return trim(strtr($subject, [
+            'RE'           => null,
             'Re:'          => null,
             'RFC'          => null,
             '[RFC]'        => null,
