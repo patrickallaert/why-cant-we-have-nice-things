@@ -28,6 +28,11 @@ class InternalsSynchronizer
     const CHUNK = 500;
 
     /**
+     * @var int
+     */
+    protected $size;
+
+    /**
      * @var Internals
      */
     protected $internals;
@@ -78,6 +83,14 @@ class InternalsSynchronizer
     }
 
     /**
+     * @param int $size
+     */
+    public function setSize($size)
+    {
+        $this->size = $size;
+    }
+
+    /**
      * Synchronize the php.internals mailing list
      * to a fucking usable format.
      */
@@ -87,9 +100,9 @@ class InternalsSynchronizer
         $this->existingRequests = Request::lists('id', 'name');
 
         // Start at the last comment we parsed
-        $start = self::FIRST_RFC;
         $count = $this->internals->getTotalNumberArticles();
-        $total = $count - $start;
+        $from  = $this->size ? $count - $this->size : self::FIRST_RFC;
+        $total = $count - $this->size;
 
         $progress = $this->output->createProgressBar($total);
         $format   = $progress->getFormatDefinition('very_verbose');
@@ -97,7 +110,7 @@ class InternalsSynchronizer
         $progress->setMessage('Getting messages');
         $progress->setRedrawFrequency(350);
         $progress->start();
-        for ($i = $start; $i <= $count; $i += self::CHUNK) {
+        for ($i = $from; $i <= $count; $i += self::CHUNK) {
             $to = $i + (self::CHUNK - 1);
 
             // Process this chunk of articles
