@@ -6,22 +6,16 @@ use History\CommandBus\CommandInterface;
 use History\Console\HistoryStyle;
 use History\Services\Threading\Jobs\CommandBusJob;
 use History\Services\Threading\Jobs\Job;
-use Pool as NativePool;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Pool extends NativePool
+class Pool extends \Pool
 {
     /**
      * @var HistoryStyle
      */
     protected $output;
-
-    /**
-     * @var array
-     */
-    protected $results = [];
 
     /**
      * @param OutputInterface $output
@@ -30,11 +24,11 @@ class Pool extends NativePool
     {
         parent::__construct(5, AutoloadingWorker::class);
 
-        $this->output = $output ?: new HistoryStyle(new ArrayInput([]), new NullOutput());
+        $this->output = $output ?: new HistoryStyle();
     }
 
     /**
-     * Reflect and submit a Job to the pool.
+     * Submit a command to the pool.
      *
      * @param CommandInterface $command
      *
@@ -62,7 +56,7 @@ class Pool extends NativePool
 
                 // Collect results
                 if ($isDone) {
-                    $this->results[] = $job->getResult();
+                    yield $job->getResult();
                     $this->output->progressAdvance();
                 }
 
@@ -72,7 +66,5 @@ class Pool extends NativePool
 
         $this->shutdown();
         $this->output->progressFinish();
-
-        return $this->results;
     }
 }
