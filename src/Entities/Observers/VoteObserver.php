@@ -21,7 +21,7 @@ class VoteObserver
     {
         if ($vote->isDirty('choice')) {
             $vote->events()->first()->update([
-                'type' => $this->getVoteType($vote)
+                'type' => $this->getVoteType($vote),
             ]);
         }
     }

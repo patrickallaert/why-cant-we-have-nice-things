@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Entities\Observers;
 
 use History\Entities\Models\Vote;
