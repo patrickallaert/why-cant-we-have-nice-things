@@ -4,6 +4,7 @@ namespace History;
 
 use Dotenv\Dotenv;
 use Franzl\Middleware\Whoops\Middleware as WhoopsMiddleware;
+use History\CommandBus\CommandBusServiceProvider;
 use History\Console\ConsoleServiceProvider;
 use History\Http\Middlewares\ErrorsMiddleware;
 use History\Http\Middlewares\LeagueRouteMiddleware;
@@ -20,6 +21,7 @@ use History\Services\RequestsGatherer\RequestsGathererServiceProvider;
 use Illuminate\Database\Capsule\Manager;
 use Interop\Container\ContainerInterface;
 use League\Container\Container;
+use League\Container\ContainerAwareTrait;
 use League\Container\ReflectionContainer;
 use PhpMiddleware\PhpDebugBar\PhpDebugBarMiddleware;
 use Psr\Http\Message\ServerRequestInterface;
@@ -34,15 +36,12 @@ use Zend\Diactoros\Response\SapiEmitter;
  */
 class Application
 {
+    use ContainerAwareTrait;
+
     /**
      * @var string
      */
     const NAME = "Why can't we have nice things";
-
-    /**
-     * @var Container
-     */
-    protected $container;
 
     /**
      * @var array
@@ -58,6 +57,7 @@ class Application
         InternalsServiceProvider::class,
         GithubServiceProvider::class,
         LogsServiceProvider::class,
+        CommandBusServiceProvider::class,
     ];
 
     /**
@@ -87,6 +87,14 @@ class Application
 
         // Register providers
         $this->registerProviders();
+    }
+
+    /**
+     * @return Container
+     */
+    public function getContainer()
+    {
+        return $this->container;
     }
 
     /**

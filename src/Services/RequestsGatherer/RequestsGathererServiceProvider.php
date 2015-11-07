@@ -23,7 +23,9 @@ class RequestsGathererServiceProvider extends AbstractServiceProvider
     public function register()
     {
         $this->container->share(RequestsGatherer::class, function () {
-            return new RequestsGatherer($this->container->get(Repository::class));
+            return new RequestsGatherer(
+                $this->container->get(Repository::class)
+            );
         });
 
         $this->container->add('gatherer', function () {

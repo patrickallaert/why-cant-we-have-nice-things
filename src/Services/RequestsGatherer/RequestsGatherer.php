@@ -2,12 +2,12 @@
 
 namespace History\Services\RequestsGatherer;
 
+use History\CommandBus\Commands\CreateRequestCommand;
 use History\Console\HistoryStyle;
 use History\Entities\Models\Request;
 use History\Services\RequestsGatherer\Extractors\RequestsExtractor;
 use History\Services\Threading\Pool;
 use Illuminate\Contracts\Cache\Repository;
-use Interop\Container\ContainerInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DomCrawler\Crawler;
@@ -28,20 +28,14 @@ class RequestsGatherer
      * @var HistoryStyle
      */
     protected $output;
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
 
     /**
-     * @param ContainerInterface $container
-     * @param Repository         $cache
+     * @param Repository $cache
      */
-    public function __construct(ContainerInterface $container, Repository $cache)
+    public function __construct(Repository $cache)
     {
         $this->cache  = $cache;
         $this->output = new HistoryStyle(new ArrayInput([]), new NullOutput());
-        $this->container = $container;
     }
 
     /**
@@ -69,12 +63,9 @@ class RequestsGatherer
         }
 
         $requests = (new RequestsExtractor($crawler))->extract();
-        $pool     = new Pool($this->container, $this->output);
-        $requests = array_slice($requests, 0, 50);
+        $pool     = new Pool($this->output);
         foreach ($requests as $request) {
-            $pool->queue(CreateRequest::class, [
-               'request' => static::DOMAIN.$request,
-            ]);
+            $pool->handle(new CreateRequestCommand(static::DOMAIN.$request));
         }
 
         return $pool->process();

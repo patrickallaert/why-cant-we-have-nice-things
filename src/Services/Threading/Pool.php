@@ -2,8 +2,8 @@
 
 namespace History\Services\Threading;
 
+use History\CommandBus\CommandInterface;
 use History\Console\HistoryStyle;
-use Interop\Container\ContainerInterface;
 use Pool as NativePool;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
@@ -22,41 +22,29 @@ class Pool extends NativePool
     protected $completed = [];
 
     /**
-     * @var ContainerInterface
+     * @param OutputInterface $output
      */
-    private $container;
-
-    /**
-     * @param ContainerInterface $container
-     * @param OutputInterface    $output
-     */
-    public function __construct(ContainerInterface $container, OutputInterface $output = null)
+    public function __construct(OutputInterface $output = null)
     {
         parent::__construct(10, Autoloader::class, [__DIR__.'/../../../vendor/autoload.php']);
 
-        $this->output    = $output ?: new HistoryStyle(new ArrayInput([]), new NullOutput());
-        $this->container = $container;
+        $this->output = $output ?: new HistoryStyle(new ArrayInput([]), new NullOutput());
     }
 
     /**
-     * Reflect and submit a Job to the pool
+     * Reflect and submit a Job to the pool.
      *
-     * @param string $job
-     * @param array  $payload
+     * @param CommandInterface $command
      *
      * @return int|void
      */
-    public function queue($job, array $payload)
+    public function handle(CommandInterface $command)
     {
-        $job = $this->container->get($job);
-        $job->setPayload($payload);
-
-        parent::submit($job);
+        return parent::submit(new Job($command));
     }
 
-
     /**
-     * Process a pool of jobs
+     * Process a pool of jobs.
      *
      * @return array
      */

@@ -4,19 +4,11 @@ namespace History\Services\Threading;
 
 use Collectable;
 use History\Application;
+use History\CommandBus\ThreadedCommandInterface;
+use League\Tactician\CommandBus;
 
-abstract class Job extends Collectable
+class Job extends Collectable
 {
-    /**
-     * @var string
-     */
-    protected $identifier;
-
-    /**
-     * @var array
-     */
-    protected $payload = [];
-
     /**
      * @var bool
      */
@@ -28,15 +20,20 @@ abstract class Job extends Collectable
     protected $result;
 
     /**
-     * Job constructor.
+     * @var ThreadedCommandInterface
      */
-    public function __construct()
+    private $command;
+
+    /**
+     * @param ThreadedCommandInterface $command
+     */
+    public function __construct(ThreadedCommandInterface $command)
     {
-        $this->identifier = uniqid();
+        $this->command = $command;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isDone()
     {
@@ -56,15 +53,7 @@ abstract class Job extends Collectable
      */
     public function getIdentifier()
     {
-        return $this->identifier;
-    }
-
-    /**
-     * @param array $payload
-     */
-    public function setPayload($payload)
-    {
-        $this->payload = $payload;
+        return $this->command->getIdentifier();
     }
 
     /**
@@ -74,17 +63,11 @@ abstract class Job extends Collectable
     {
         // Boot the application and database
         // and everything we might need
-        $app = new Application();
+        $container = (new Application())->getContainer();
+        $bus       = $container->get(CommandBus::class);
 
-        $this->result = $this->fire();
-        $this->done = true;
+        $this->result = $bus->handle($this->command);
+        $this->done   = true;
         $this->setGarbage();
     }
-
-    /**
-     * Fire the job.
-     *
-     * @return mixed
-     */
-    abstract public function fire();
 }

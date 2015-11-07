@@ -1,8 +1,7 @@
 <?php
 
-namespace History\Services\RequestsGatherer;
+namespace History\CommandBus\Commands;
 
-use GuzzleHttp\Client;
 use History\Entities\Models\Question;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
@@ -13,12 +12,10 @@ use History\Entities\Synchronizers\VersionSynchronizer;
 use History\Entities\Synchronizers\VoteSynchronizer;
 use History\Services\RequestsGatherer\Extractors\RequestExtractor;
 use History\Services\RequestsGatherer\Extractors\UserExtractor;
-use History\Services\Threading\Job;
 use Illuminate\Contracts\Cache\Repository;
 use InvalidArgumentException;
-use Symfony\Component\DomCrawler\Crawler;
 
-class CreateRequest extends Job
+class CreateRequestHandler extends AbstractHandler
 {
     /**
      * @var Repository
@@ -26,28 +23,28 @@ class CreateRequest extends Job
     protected $cache;
 
     /**
-     * @var string
-     */
-    protected $request;
-
-    /**
+     * CreateRequestHandler constructor.
+     *
      * @param Repository $cache
-     * @param string     $request
      */
-    public function __construct(Repository $cache, $request)
+    public function __construct(Repository $cache)
     {
-        $this->identifier = $request;
-        $this->request    = $request;
-        $this->cache      = $cache;
+        $this->cache = $cache;
     }
 
     /**
      * Run the job.
+     *
+     * @param CreateRequestCommand $command
+     *
+     * @return Request|void
      */
-    public function fire(array $payload)
+    public function handle(CreateRequestCommand $command)
     {
+        $link = $command->request;
+
         // Extract request informations
-        $crawler      = $this->getPageCrawler($this->request);
+        $crawler      = $this->getPageCrawler($link);
         $extractor    = new RequestExtractor($crawler);
         $informations = $extractor->extract();
         if (!$informations['name']) {
@@ -56,7 +53,7 @@ class CreateRequest extends Job
 
         // Retrieve or create the request
         // and update its informations
-        $informations['link'] = $this->request;
+        $informations['link'] = $link;
         $synchronizer         = new RequestSynchronizer($informations);
         $request              = $synchronizer->persist();
 
@@ -149,21 +146,5 @@ class CreateRequest extends Job
         $synchronizer = new UserSynchronizer($attributes);
 
         return $synchronizer->persist();
-    }
-
-    /**
-     * @param string $link
-     *
-     * @return Crawler
-     */
-    protected function getPageCrawler($link)
-    {
-        if (!$contents = $this->cache->tags('php')->get($link)) {
-            $request  = (new Client())->request('GET', $link);
-            $contents = $request->getBody()->getContents();
-            $this->cache->tags('php')->forever($link, $contents);
-        }
-
-        return new Crawler($contents);
     }
 }

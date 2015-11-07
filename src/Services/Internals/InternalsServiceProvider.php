@@ -13,7 +13,6 @@ class InternalsServiceProvider extends AbstractServiceProvider
      * @var array
      */
     protected $provides = [
-        InternalsSynchronizer::class,
         Internals::class,
     ];
 
@@ -30,10 +29,6 @@ class InternalsServiceProvider extends AbstractServiceProvider
             $client = new Client($connection);
 
             return new Internals($cache, $client);
-        });
-
-        $this->container->share(InternalsSynchronizer::class, function () {
-            return new InternalsSynchronizer($this->container->get(Internals::class));
         });
     }
 }
