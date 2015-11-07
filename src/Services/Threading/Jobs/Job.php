@@ -31,4 +31,18 @@ abstract class Job extends Collectable
     {
         return $this->result;
     }
+
+    /**
+     * Mark the job as done with a result
+     * and mark for collection
+     *
+     * @param mixed $result
+     */
+    protected function markDone($result)
+    {
+        $this->result = $result;
+        $this->done   = true;
+
+        $this->setGarbage();
+    }
 }

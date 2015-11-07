@@ -36,10 +36,16 @@ class StatsCommand extends AbstractCommand
         $pool = new Pool($this->output);
         $this->output->title('Refreshing statistics');
 
-        $this->submitToPool($pool, User::with('votes.question.votes', 'requests')->get());
-        $this->submitToPool($pool, Question::with('votes')->get());
-        $this->submitToPool($pool, Request::with('questions.votes')->get());
-        $this->submitToPool($pool, Company::with('users')->get());
+        $entities = [
+            User::with('votes.question.votes', 'requests')->get(),
+            Question::with('votes')->get(),
+            Request::with('questions.votes')->get(),
+            Company::with('users')->get(),
+        ];
+
+        foreach ($entities as $collection) {
+            $this->submitToPool($pool, $collection);
+        }
 
         return $pool->process();
     }

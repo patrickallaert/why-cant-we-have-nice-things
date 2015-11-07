@@ -28,9 +28,8 @@ class ClosureJob extends Job
 
     public function run()
     {
-        $this->result = call_user_func_array($this->closure, $this->arguments);
-
-        $this->done = true;
-        $this->setGarbage();
+        $this->markDone(
+            call_user_func_array($this->closure, $this->arguments)
+        );
     }
 }

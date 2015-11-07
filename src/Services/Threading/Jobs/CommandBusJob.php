@@ -31,12 +31,8 @@ class CommandBusJob extends Job
      */
     public function run()
     {
-        // Get the command bus from the worker
+        // Get the command bus from the worker and run the command
         $bus = $this->worker->getContainer()->get(CommandBus::class);
-
-        // Execute the command and yield its results
-        $this->result = $bus->handle($this->command);
-        $this->done   = true;
-        $this->setGarbage();
+        $this->markDone($bus->handle($this->command));
     }
 }
