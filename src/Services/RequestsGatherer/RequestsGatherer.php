@@ -35,7 +35,7 @@ class RequestsGatherer
     public function __construct(Repository $cache)
     {
         $this->cache  = $cache;
-        $this->output = new HistoryStyle(new ArrayInput([]), new NullOutput());
+        $this->output = new HistoryStyle();
     }
 
     /**

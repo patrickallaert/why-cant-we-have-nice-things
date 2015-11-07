@@ -50,7 +50,7 @@ class InternalsSynchronizer
     public function __construct(CommandBus $bus, Internals $internals)
     {
         $this->internals = $internals;
-        $this->output    = new HistoryStyle(new ArrayInput([]), new NullOutput());
+        $this->output    = new HistoryStyle();
         $this->bus       = $bus;
     }
 
