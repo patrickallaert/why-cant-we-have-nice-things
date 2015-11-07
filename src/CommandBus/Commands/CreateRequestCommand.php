@@ -2,9 +2,9 @@
 
 namespace History\CommandBus\Commands;
 
-use History\CommandBus\ThreadedCommandInterface;
+use History\CommandBus\CommandInterface;
 
-class CreateRequestCommand implements ThreadedCommandInterface
+class CreateRequestCommand implements CommandInterface
 {
     /**
      * @var string
@@ -19,13 +19,5 @@ class CreateRequestCommand implements ThreadedCommandInterface
     public function __construct($request)
     {
         $this->request = $request;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIdentifier()
-    {
-        return $this->request;
     }
 }

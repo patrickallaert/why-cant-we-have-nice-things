@@ -2,6 +2,7 @@
 
 namespace History\Services\StatisticsComputer;
 
+use History\Entities\Models\AbstractModel;
 use History\Entities\Models\Company;
 use History\Entities\Models\Question;
 use History\Entities\Models\Request;
@@ -10,6 +11,28 @@ use History\Entities\Models\Vote;
 
 class StatisticsComputer
 {
+    /**
+     * @param AbstractModel $entity
+     *
+     * @return array
+     */
+    public function forEntity(AbstractModel $entity)
+    {
+        switch (true) {
+            case $entity instanceof User:
+                return $this->forUser($entity);
+
+            case $entity instanceof Company:
+                return $this->forCompany($entity);
+
+            case $entity instanceof Request:
+                return $this->forRequest($entity);
+
+            case $entity instanceof Question:
+                return $this->forQuestion($entity);
+        }
+    }
+
     /**
      * @param Company $company
      *

@@ -3,11 +3,15 @@
 namespace History\Console\Commands\Sync;
 
 use History\Console\Commands\AbstractCommand;
+use History\Entities\Models\AbstractModel;
 use History\Entities\Models\Company;
 use History\Entities\Models\Question;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
 use History\Services\StatisticsComputer\StatisticsComputer;
+use History\Services\Threading\Jobs\ClosureJob;
+use History\Services\Threading\Pool;
+use Illuminate\Database\Eloquent\Collection;
 
 class StatsCommand extends AbstractCommand
 {
@@ -29,32 +33,29 @@ class StatsCommand extends AbstractCommand
      */
     public function run()
     {
+        $pool = new Pool($this->output);
         $this->output->title('Refreshing statistics');
 
-        // Fetch the entities to refresh
-        $users     = User::with('votes.question.votes', 'requests')->get();
-        $questions = Question::with('votes')->get();
-        $requests  = Request::with('questions.votes')->get();
-        $companies = Company::with('users')->get();
+        $this->submitToPool($pool, User::with('votes.question.votes', 'requests')->get());
+        $this->submitToPool($pool, Question::with('votes')->get());
+        $this->submitToPool($pool, Request::with('questions.votes')->get());
+        $this->submitToPool($pool, Company::with('users')->get());
 
-        $this->output->section('Refreshing User statistics');
-        $this->output->progressIterator($users, function (User $user) {
-            $user->fill($this->computer->forUser($user))->saveIfDirty();
-        });
+        return $pool->process();
+    }
 
-        $this->output->section('Refreshing Question statistics');
-        $this->output->progressIterator($questions, function (Question $question) {
-            $question->fill($this->computer->forQuestion($question))->saveIfDirty();
-        });
+    /**
+     * @param Pool       $pool
+     * @param Collection $entities
+     */
+    protected function submitToPool(Pool $pool, Collection $entities)
+    {
+        $updateEntity = function (StatisticsComputer $computer, AbstractModel $entity) {
+            $entity->fill($computer->forEntity($entity))->saveIfDirty();
+        };
 
-        $this->output->section('Refreshing Request statistics');
-        $this->output->progressIterator($requests, function (Request $request) {
-            $request->fill($this->computer->forRequest($request))->saveIfDirty();
-        });
-
-        $this->output->section('Refreshing Company statistics');
-        $this->output->progressIterator($companies, function (Company $company) {
-            $company->fill($this->computer->forCompany($company))->saveIfDirty();
-        });
+        foreach ($entities as $entity) {
+            $pool->submit(new ClosureJob($updateEntity, [$this->computer, $entity]));
+        }
     }
 }

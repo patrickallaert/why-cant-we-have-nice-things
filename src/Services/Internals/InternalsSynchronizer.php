@@ -5,7 +5,6 @@ namespace History\Services\Internals;
 use History\CommandBus\Commands\CreateCommentCommand;
 use History\Console\HistoryStyle;
 use History\Entities\Models\Comment;
-use History\Services\Threading\Pool;
 use League\Tactician\CommandBus;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
@@ -52,7 +51,7 @@ class InternalsSynchronizer
     {
         $this->internals = $internals;
         $this->output    = new HistoryStyle(new ArrayInput([]), new NullOutput());
-        $this->bus = $bus;
+        $this->bus       = $bus;
     }
 
     /**
@@ -80,6 +79,7 @@ class InternalsSynchronizer
         $queue = $this->getArticlesQueue();
 
         $this->output->writeln('Creating comments');
+
         return $this->output->progressIterator($queue, function (CreateCommentCommand $command) use (&$created) {
             return $this->bus->handle($command);
         });

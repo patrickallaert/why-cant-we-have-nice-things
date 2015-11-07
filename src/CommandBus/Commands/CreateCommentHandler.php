@@ -5,7 +5,6 @@ namespace History\CommandBus\Commands;
 use Carbon\Carbon;
 use DateTime;
 use Exception;
-
 use History\Entities\Models\Comment;
 use History\Entities\Models\Request;
 use History\Entities\Synchronizers\CommentSynchronizer;

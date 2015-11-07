@@ -2,9 +2,9 @@
 
 namespace History\CommandBus\Commands;
 
-use History\CommandBus\ThreadedCommandInterface;
+use History\CommandBus\CommandInterface;
 
-class CreateCommentCommand implements ThreadedCommandInterface
+class CreateCommentCommand implements CommandInterface
 {
     /**
      * @var string
@@ -35,12 +35,4 @@ class CreateCommentCommand implements ThreadedCommandInterface
      * @var string
      */
     public $date;
-
-    /**
-     * @return string
-     */
-    public function getIdentifier()
-    {
-        return $this->xref;
-    }
 }

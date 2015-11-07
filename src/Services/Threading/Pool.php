@@ -4,6 +4,8 @@ namespace History\Services\Threading;
 
 use History\CommandBus\CommandInterface;
 use History\Console\HistoryStyle;
+use History\Services\Threading\Jobs\CommandBusJob;
+use History\Services\Threading\Jobs\Job;
 use Pool as NativePool;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
@@ -19,14 +21,14 @@ class Pool extends NativePool
     /**
      * @var array
      */
-    protected $completed = [];
+    protected $results = [];
 
     /**
      * @param OutputInterface $output
      */
     public function __construct(OutputInterface $output = null)
     {
-        parent::__construct(10, Autoloader::class, [__DIR__.'/../../../vendor/autoload.php']);
+        parent::__construct(5, AutoloadingWorker::class);
 
         $this->output = $output ?: new HistoryStyle(new ArrayInput([]), new NullOutput());
     }
@@ -40,7 +42,7 @@ class Pool extends NativePool
      */
     public function handle(CommandInterface $command)
     {
-        return parent::submit(new Job($command));
+        return parent::submit(new CommandBusJob($command));
     }
 
     /**
@@ -54,30 +56,23 @@ class Pool extends NativePool
 
         // Check the status of jobs until all
         // of them are marked as done
-        while (!$this->isDone()) {
+        while (count($this->work)) {
             $this->collect(function (Job $job) {
-                $key = $job->getIdentifier();
+                $isDone = $job->isDone();
 
-                // If we haven't marked this job as
-                // completed yet, do it
-                if (!array_key_exists($key, $this->completed) && $job->isDone()) {
-                    $this->completed[$key] = $job->getResult();
+                // Collect results
+                if ($isDone) {
+                    $this->results[] = $job->getResult();
                     $this->output->progressAdvance();
                 }
+
+                return $isDone;
             });
         }
 
         $this->shutdown();
         $this->output->progressFinish();
 
-        return $this->completed;
-    }
-
-    /**
-     * @return bool
-     */
-    protected function isDone()
-    {
-        return count($this->completed) === (count($this->work) - 1);
+        return $this->results;
     }
 }
