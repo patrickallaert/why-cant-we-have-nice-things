@@ -84,10 +84,13 @@ class InternalsSynchronizer
         $this->output->writeln('Getting messages');
         $queue = $this->getArticlesQueue();
 
+        $created = [];
         $this->output->writeln('Creating comments');
         $this->output->progressIterator($queue, function (CreateCommentCommand $command) use (&$created) {
-            return $this->bus->handle($command);
+            $created[] = $this->bus->handle($command);
         });
+
+        return $created;
     }
 
     /**

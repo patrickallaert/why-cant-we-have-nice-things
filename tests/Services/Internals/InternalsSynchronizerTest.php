@@ -5,6 +5,7 @@ namespace History\Services\Internals;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
 use History\TestCase;
+use League\Tactician\CommandBus;
 use Mockery;
 
 class InternalsSynchronizerTest extends TestCase
@@ -107,7 +108,9 @@ class InternalsSynchronizerTest extends TestCase
         $internals->shouldReceive('findArticleFromReference')->never()->andReturn();
         $internals->shouldReceive('getArticles')->times($numberArticles + 1)->andReturn($messages);
 
-        $sync    = new InternalsSynchronizer($internals);
+        $this->container->add(Internals::class, $internals);
+
+        $sync    = $this->container->get(InternalsSynchronizer::class);
         $created = $sync->synchronize();
         $this->assertCount($matched, $created);
 

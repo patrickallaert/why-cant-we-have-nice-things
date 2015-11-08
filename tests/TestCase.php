@@ -5,16 +5,19 @@ namespace History;
 use Carbon\Carbon;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Database\Capsule\Manager;
+use League\Container\ContainerAwareTrait;
 use Mockery;
 use Mockery\MockInterface;
 use PHPUnit_Framework_TestCase;
 
 abstract class TestCase extends PHPUnit_Framework_TestCase
 {
+    use ContainerAwareTrait;
+
     public function setUp()
     {
         // Boot up application
-        new Application();
+        $this->container = (new Application())->getContainer();
 
         // Mock current time
         Carbon::setTestNow(new Carbon('2011-01-01 01:01:01'));
