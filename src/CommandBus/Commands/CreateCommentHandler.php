@@ -26,6 +26,11 @@ class CreateCommentHandler extends AbstractHandler
     protected $internals;
 
     /**
+     * @var array
+     */
+    protected $parsed;
+
+    /**
      * CreateCommentHandler constructor.
      *
      * @param Internals $internals
@@ -33,6 +38,7 @@ class CreateCommentHandler extends AbstractHandler
     public function __construct(Internals $internals)
     {
         $this->internals = $internals;
+        $this->parsed    = Comment::lists('id', 'xref')->all();
     }
 
     /**

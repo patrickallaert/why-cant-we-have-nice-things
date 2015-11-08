@@ -86,9 +86,9 @@ class InternalsSynchronizer
 
         $created = [];
         $this->output->writeln('Creating comments');
-        $this->output->progressIterator($queue, function (CreateCommentCommand $command) use (&$created) {
-            $created[] = $this->bus->handle($command);
-        });
+        foreach ($this->output->progressIterator($queue, [$this->bus, 'handle']) as $comment) {
+            $created[] = $comment;
+        }
 
         return $created;
     }

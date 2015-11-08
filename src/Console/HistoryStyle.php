@@ -54,15 +54,19 @@ class HistoryStyle extends SymfonyStyle
      *
      * @param Collection|array $entries
      * @param callable         $callback
+     *
+     * @return \Generator|void
      */
     public function progressIterator($entries, callable $callback)
     {
         $this->progressStart(count($entries));
         foreach ($entries as $entry) {
-            if ($callback($entry) === false) {
+            $result = $callback($entry);
+            if ($result === false) {
                 return;
             }
 
+            yield $result;
             $this->progressAdvance();
         }
 
