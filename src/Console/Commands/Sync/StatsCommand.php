@@ -8,7 +8,7 @@ use History\Entities\Models\Company;
 use History\Entities\Models\Question;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
-use History\Services\Threading\Pool;
+use History\Services\Threading\OutputPool;
 
 class StatsCommand extends AbstractCommand
 {
@@ -26,11 +26,11 @@ class StatsCommand extends AbstractCommand
             Company::with('users'),
         ];
 
-        $pool = new Pool($this->output);
+        $pool = new OutputPool($this->output);
         foreach ($queries as $query) {
             $entities = $query->get();
             foreach ($entities as $entity) {
-                $pool->handle(new ComputeStatisticsCommand($entity));
+                $pool->submitCommand(new ComputeStatisticsCommand($entity));
             }
         }
 

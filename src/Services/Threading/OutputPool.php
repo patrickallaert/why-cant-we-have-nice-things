@@ -8,8 +8,10 @@ use History\Services\Threading\Jobs\CommandBusJob;
 use History\Services\Threading\Jobs\Job;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Pool extends \Pool
+class OutputPool extends \Pool
 {
+    use SubmitsCommands;
+
     /**
      * @var HistoryStyle
      */
@@ -23,18 +25,6 @@ class Pool extends \Pool
         parent::__construct(5, AutoloadingWorker::class);
 
         $this->output = $output ?: new HistoryStyle();
-    }
-
-    /**
-     * Submit a command to the pool.
-     *
-     * @param CommandInterface $command
-     *
-     * @return int|void
-     */
-    public function handle(CommandInterface $command)
-    {
-        return parent::submit(new CommandBusJob($command));
     }
 
     /**

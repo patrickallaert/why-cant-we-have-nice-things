@@ -6,7 +6,7 @@ use History\CommandBus\Commands\CreateRequestCommand;
 use History\Console\HistoryStyle;
 use History\Entities\Models\Request;
 use History\Services\RequestsGatherer\Extractors\RequestsExtractor;
-use History\Services\Threading\Pool;
+use History\Services\Threading\OutputPool;
 use Illuminate\Contracts\Cache\Repository;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -61,9 +61,9 @@ class RequestsGatherer
         }
 
         $requests = (new RequestsExtractor($crawler))->extract();
-        $pool     = new Pool($this->output);
+        $pool     = new OutputPool($this->output);
         foreach ($requests as $request) {
-            $pool->handle(new CreateRequestCommand(static::DOMAIN.$request));
+            $pool->submitCommand(new CreateRequestCommand(static::DOMAIN.$request));
         }
 
         return $pool->process();
