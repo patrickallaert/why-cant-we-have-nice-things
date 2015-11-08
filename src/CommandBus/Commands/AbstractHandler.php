@@ -14,9 +14,11 @@ abstract class AbstractHandler
      */
     protected function getPageCrawler($link)
     {
+        // Check the cache for the contents first
         if (!$contents = $this->cache->tags('php')->get($link)) {
             $request  = (new Client())->request('GET', $link);
             $contents = $request->getBody()->getContents();
+
             $this->cache->tags('php')->forever($link, $contents);
         }
 

@@ -32,7 +32,9 @@ class CommandBusJob extends Job
     public function run()
     {
         // Get the command bus from the worker and run the command
-        $bus = $this->worker->getContainer()->get(CommandBus::class);
-        $this->markDone($bus->handle($this->command));
+        $bus     = $this->worker->getContainer()->get(CommandBus::class);
+        $results = $bus->handle($this->command);
+
+        $this->markDone($results);
     }
 }

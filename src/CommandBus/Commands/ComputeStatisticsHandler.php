@@ -25,6 +25,9 @@ class ComputeStatisticsHandler
     public function handle(ComputeStatisticsCommand $command)
     {
         $stats = $this->statistics->forEntity($command->entity);
-        $command->entity->fill($stats)->saveIfDirty();
+
+        // Update model attributes and save
+        $command->entity->fill($stats);
+        $command->entity->saveIfDirty();
     }
 }

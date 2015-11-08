@@ -6,6 +6,11 @@ use Interop\Container\ContainerInterface;
 use League\Tactician\Exception\MissingHandlerException;
 use League\Tactician\Handler\Locator\HandlerLocator;
 
+/**
+ * An handler locator that can infere the handler's
+ * name from the command and resolve it
+ * from a container.
+ */
 class ContainerLocator implements HandlerLocator
 {
     /**

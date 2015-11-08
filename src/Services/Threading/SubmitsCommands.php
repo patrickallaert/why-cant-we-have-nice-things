@@ -4,7 +4,12 @@ namespace History\Services\Threading;
 
 use History\CommandBus\CommandInterface;
 use History\Services\Threading\Jobs\CommandBusJob;
+use Threaded;
 
+/**
+ * Adds command dispatching capabilities
+ * to a pool.
+ */
 trait SubmitsCommands
 {
     /**
@@ -16,6 +21,13 @@ trait SubmitsCommands
      */
     public function submitCommand(CommandInterface $command)
     {
-        return parent::submit(new CommandBusJob($command));
+        return $this->submit(new CommandBusJob($command));
     }
+
+    /**
+     * @param Threaded $job
+     *
+     * @return mixed
+     */
+    abstract public function submit($job);
 }

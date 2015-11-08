@@ -2,9 +2,9 @@
 
 namespace History\Services\Threading\Jobs;
 
-use Collectable;
+use Threaded;
 
-abstract class Job extends Collectable
+abstract class Job extends Threaded
 {
     /**
      * @var bool
@@ -26,7 +26,5 @@ abstract class Job extends Collectable
     {
         $this->result = $result;
         $this->done   = true;
-
-        $this->setGarbage();
     }
 }

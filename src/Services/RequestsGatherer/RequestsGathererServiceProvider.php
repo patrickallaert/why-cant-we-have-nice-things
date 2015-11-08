@@ -2,7 +2,6 @@
 
 namespace History\Services\RequestsGatherer;
 
-use Illuminate\Contracts\Cache\Repository;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 class RequestsGathererServiceProvider extends AbstractServiceProvider
