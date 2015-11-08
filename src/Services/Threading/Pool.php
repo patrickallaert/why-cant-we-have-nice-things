@@ -6,8 +6,6 @@ use History\CommandBus\CommandInterface;
 use History\Console\HistoryStyle;
 use History\Services\Threading\Jobs\CommandBusJob;
 use History\Services\Threading\Jobs\Job;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Pool extends \Pool
@@ -52,15 +50,11 @@ class Pool extends \Pool
         // of them are marked as done
         while (count($this->work)) {
             $this->collect(function (Job $job) {
-                $isDone = $job->isDone();
-
-                // Collect results
-                if ($isDone) {
-                    yield $job->getResult();
+                if ($job->done) {
                     $this->output->progressAdvance();
                 }
 
-                return $isDone;
+                return $job->done;
             });
         }
 

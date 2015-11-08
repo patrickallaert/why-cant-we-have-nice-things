@@ -29,11 +29,11 @@
         "robmorgan/phinx": "^0.4.6",
         "rvdv/nntp": "1.0.*@dev",
         "symfony/dom-crawler": "^2.7",
+        "symfony/process": "^2.7",
         "thomaswelton/gravatarlib": "^0.1.0",
         "twig/twig": "^1.23",
         "vlucas/phpdotenv": "^2.1",
-        "zendframework/zend-diactoros": "^1.1",
-        "league/tactician-container": "0.1.*@dev"
+        "zendframework/zend-diactoros": "^1.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^2.0",
