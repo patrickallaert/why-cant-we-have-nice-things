@@ -90,14 +90,6 @@ class Application
     }
 
     /**
-     * @return Container
-     */
-    public function getContainer()
-    {
-        return $this->container;
-    }
-
-    /**
      * Register the application's service providers.
      */
     protected function registerProviders()
