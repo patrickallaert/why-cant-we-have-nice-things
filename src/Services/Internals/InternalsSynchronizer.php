@@ -40,6 +40,11 @@ class InternalsSynchronizer
     protected $output;
 
     /**
+     * @var array
+     */
+    protected $parsed;
+
+    /**
      * InternalsSynchronizer constructor.
      *
      * @param CommandBus $bus
@@ -74,11 +79,13 @@ class InternalsSynchronizer
      */
     public function synchronize()
     {
+        $this->parsed = Comment::lists('xref')->all();
+
+        $this->output->writeln('Getting messages');
         $queue = $this->getArticlesQueue();
 
         $this->output->writeln('Creating comments');
-
-        return $this->output->progressIterator($queue, function (CreateCommentCommand $command) use (&$created) {
+        $this->output->progressIterator($queue, function (CreateCommentCommand $command) use (&$created) {
             return $this->bus->handle($command);
         });
     }
@@ -93,7 +100,6 @@ class InternalsSynchronizer
         $from  = $this->size ? $count - $this->size : self::FIRST_RFC;
 
         $queue = [];
-        $this->output->writeln('Getting messages');
         $this->output->progressStart($count - $this->size);
         for ($i = $from; $i <= $count; $i += self::CHUNK) {
             $to = $i + (self::CHUNK - 1);
@@ -101,19 +107,9 @@ class InternalsSynchronizer
             // Process this chunk of articles
             $articles = $this->internals->getArticles($i, $to);
             foreach ($articles as $article) {
-                if (!$article) {
-                    break;
+                if ($command = $this->processArticle($article)) {
+                    $queue[] = $command;
                 }
-
-                $command             = new CreateCommentCommand();
-                $command->xref       = $article['xref'];
-                $command->subject    = $article['subject'];
-                $command->references = $article['references'];
-                $command->from       = $article['from'];
-                $command->number     = $article['number'];
-                $command->date       = $article['date'];
-
-                $queue[] = $command;
             }
 
             $this->output->progressAdvance(self::CHUNK);
@@ -122,5 +118,37 @@ class InternalsSynchronizer
         $this->output->progressFinish();
 
         return $queue;
+    }
+
+    /**
+     * @param array|null $article
+     *
+     * @return CreateCommentCommand
+     */
+    protected function processArticle($article)
+    {
+        if (!$article) {
+            return;
+        }
+
+        // If we already synchronized this one, skip it
+        if (array_key_exists($article['xref'], $this->parsed)) {
+            return;
+        }
+
+        // If the article is not about RFCs, fuck off
+        if (!preg_match('/(RFC|VOTE)/i', $article['subject'])) {
+            return;
+        }
+
+        $command             = new CreateCommentCommand();
+        $command->xref       = $article['xref'];
+        $command->subject    = $article['subject'];
+        $command->references = $article['references'];
+        $command->from       = $article['from'];
+        $command->number     = $article['number'];
+        $command->date       = $article['date'];
+
+        return $command;
     }
 }

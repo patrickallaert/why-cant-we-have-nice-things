@@ -2,9 +2,7 @@
 
 namespace History\Services\Threading;
 
-use History\CommandBus\CommandInterface;
 use History\Console\HistoryStyle;
-use History\Services\Threading\Jobs\CommandBusJob;
 use History\Services\Threading\Jobs\Job;
 use Symfony\Component\Console\Output\OutputInterface;
 

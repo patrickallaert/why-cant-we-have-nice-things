@@ -44,16 +44,6 @@ class CreateCommentHandler extends AbstractHandler
     {
         $this->command = $command;
 
-        // If we already synchronized this one, skip it
-        if (array_key_exists($this->command->xref, Comment::lists('xref')->all())) {
-            return;
-        }
-
-        // If the article is not about RFCs, fuck off
-        if (!preg_match('/(RFC|VOTE)/i', $this->command->subject)) {
-            return;
-        }
-
         // Get the RFC the message relates to
         $this->command->subject = $this->cleanupSubject($this->command->subject);
         if (!$request = $this->getRelatedRequest()) {
