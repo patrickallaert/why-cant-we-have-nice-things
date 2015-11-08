@@ -19,7 +19,18 @@ class HistoryStyle extends SymfonyStyle
      */
     public function __construct(InputInterface $input = null, OutputInterface $output = null)
     {
-        parent::__construct(new ArrayInput([]), new NullOutput());
+        $input  = $input ?: new ArrayInput([]);
+        $output = $output ?: new NullOutput();
+
+        parent::__construct($input, $output);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDebug()
+    {
+        return $this->getVerbosity() === OutputInterface::VERBOSITY_DEBUG;
     }
 
     /**

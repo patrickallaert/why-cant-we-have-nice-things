@@ -8,8 +8,6 @@ use History\Entities\Models\Request;
 use History\Services\RequestsGatherer\Extractors\RequestsExtractor;
 use History\Services\Threading\Pool;
 use Illuminate\Contracts\Cache\Repository;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DomCrawler\Crawler;
 
 class RequestsGatherer
