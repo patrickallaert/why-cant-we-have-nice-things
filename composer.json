@@ -45,7 +45,9 @@
         "php-middleware/php-debug-bar": "^1.0",
         "phpunit/phpunit": "^5.0",
         "psy/psysh": "^0.5.2",
-        "symfony/var-dumper": "^2.7"
+        "symfony/var-dumper": "^2.7",
+        "phpro/grumphp": "^0.5.1",
+        "roave/security-advisories": "dev-master@dev"
     },
     "autoload": {
         "psr-4": {

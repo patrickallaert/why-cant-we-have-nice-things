@@ -5,7 +5,6 @@ namespace History\Services\Internals;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
 use History\TestCase;
-use League\Tactician\CommandBus;
 use Mockery;
 
 class InternalsSynchronizerTest extends TestCase
