@@ -2,8 +2,6 @@ parameters:
     git_dir: .
     bin_dir: ./vendor/bin
     tasks:
-        phpunit:
-            enabled: false
         composer: ~
         phpcs:
             standard: "phpcs.xml"

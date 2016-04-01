@@ -3,7 +3,7 @@
 namespace History\Services\Threading;
 
 use History\CommandBus\CommandInterface;
-use History\Services\Threading\Jobs\CommandBusAbstractJob;
+use History\Services\Threading\Jobs\CommandBusJob;
 use Threaded;
 
 /**
@@ -21,7 +21,7 @@ trait SubmitsCommandsTrait
      */
     public function submitCommand(CommandInterface $command)
     {
-        return $this->submit(new CommandBusAbstractJob($command));
+        return $this->submit(new CommandBusJob($command));
     }
 
     /**

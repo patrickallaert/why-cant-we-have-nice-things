@@ -13,7 +13,7 @@ class RequestsGathererTest extends TestCase
     /**
      * @var string
      */
-    protected $url = 'http://rfc.com/constant';
+    protected $url = 'https://wiki.php.net/rfc/constant';
 
     public function testCanCreateRequests()
     {
@@ -25,6 +25,7 @@ class RequestsGathererTest extends TestCase
         ]);
 
         $gatherer = $this->container->get(RequestsGatherer::class);
+        $gatherer->setAsync(false);
         $requests = $gatherer->createRequests();
 
         $this->assertCount(3, $requests);
@@ -62,7 +63,7 @@ class RequestsGathererTest extends TestCase
         ]);
 
         $command = $this->container->get(CreateRequestHandler::class);
-        $user = $command->createUser('foobar');
+        $user    = $command->createUser('foobar');
         $this->assertInstanceOf(User::class, $user);
         $this->assertEquals('foobar', $user->name);
     }

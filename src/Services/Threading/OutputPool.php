@@ -4,13 +4,14 @@ namespace History\Services\Threading;
 
 use History\Console\HistoryStyle;
 use History\Services\Threading\Jobs\AbstractJob;
+use Pool;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * A threading pool that can communicate its
  * progress through an OutputInterface instance.
  */
-class OutputPool extends \Pool
+class OutputPool extends Pool
 {
     use SubmitsCommandsTrait;
 
@@ -18,6 +19,11 @@ class OutputPool extends \Pool
      * @var HistoryStyle
      */
     protected $output;
+
+    /**
+     * @var AutoloadingWorker[]
+     */
+    protected $workers;
 
     /**
      * @param OutputInterface $output

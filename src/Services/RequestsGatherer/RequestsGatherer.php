@@ -8,6 +8,7 @@ use History\Entities\Models\Request;
 use History\Services\RequestsGatherer\Extractors\RequestsExtractor;
 use History\Services\Threading\OutputPool;
 use Illuminate\Contracts\Cache\Repository;
+use League\Tactician\CommandBus;
 use Symfony\Component\DomCrawler\Crawler;
 
 class RequestsGatherer
@@ -23,17 +24,37 @@ class RequestsGatherer
     protected $cache;
 
     /**
+     * @var CommandBus
+     */
+    protected $bus;
+
+    /**
      * @var HistoryStyle
      */
     protected $output;
 
     /**
-     * @param Repository $cache
+     * @var bool
      */
-    public function __construct(Repository $cache)
+    protected $async = true;
+
+    /**
+     * @param Repository $cache
+     * @param CommandBus $bus
+     */
+    public function __construct(Repository $cache, CommandBus $bus = null)
     {
-        $this->cache = $cache;
+        $this->cache  = $cache;
         $this->output = new HistoryStyle();
+        $this->bus    = $bus;
+    }
+
+    /**
+     * @param boolean $async
+     */
+    public function setAsync($async)
+    {
+        $this->async = $async;
     }
 
     /**
@@ -61,12 +82,24 @@ class RequestsGatherer
         }
 
         $requests = (new RequestsExtractor($crawler))->extract();
-        $pool = new OutputPool($this->output);
-        foreach ($requests as $request) {
-            $pool->submitCommand(new CreateRequestCommand(static::DOMAIN.$request));
-        }
+        $commands = array_map(function ($request) {
+            return new CreateRequestCommand(static::DOMAIN.$request);
+        }, $requests);
 
-        return $pool->process();
+        if (!$this->async) {
+            foreach ($commands as &$command) {
+                $command = $this->bus->handle($command);
+            }
+
+            return $commands;
+        } else {
+            $pool = new OutputPool($this->output);
+            foreach ($commands as $command) {
+                $pool->submitCommand($command);
+            }
+
+            return $pool->process();
+        }
     }
 
     /**
