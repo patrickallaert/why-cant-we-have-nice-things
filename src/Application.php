@@ -83,7 +83,7 @@ class Application
 
         // Bind global debug mode
         $debug = in_array(getenv('APP_ENV'), ['local', 'testing'], true);
-        $this->container->add('debug', $debug);
+        $this->container->add('debug', (int) $debug);
 
         // Register providers
         $this->registerProviders();
