@@ -15,14 +15,14 @@ class RequestsGathererTest extends TestCase
 
     public function testCanCreateRequests()
     {
-        $cache = $this->mockCache([
+        $this->mockCache([
             RequestsGatherer::DOMAIN.'/rfc' => $this->getDummyPage('rfcs'),
             RequestsGatherer::DOMAIN.'/rfc/void_return_type' => '',
             RequestsGatherer::DOMAIN.'/rfc/revisit-trailing-comma-function-args' => '',
             RequestsGatherer::DOMAIN.'/rfc/closurefromcallable' => '',
         ]);
 
-        $gatherer = new RequestsGatherer($cache);
+        $gatherer = $this->container->get(RequestsGatherer::class);
         $requests = $gatherer->createRequests();
 
         $this->assertCount(3, $requests);
@@ -30,11 +30,11 @@ class RequestsGathererTest extends TestCase
 
     public function testCanCreateRequest()
     {
-        $cache = $this->mockCache([
+        $this->mockCache([
             $this->url => $this->getDummyPage('rfc'),
         ]);
 
-        $gatherer = new RequestsGatherer($cache);
+        $gatherer = $this->container->get(RequestsGatherer::class);
         $request = $gatherer->createRequest($this->url);
 
         $this->assertInstanceOf(Request::class, $request);
@@ -42,11 +42,11 @@ class RequestsGathererTest extends TestCase
 
     public function testCancelsOnRfcsWithNoNames()
     {
-        $cache = $this->mockCache([
+        $this->mockCache([
             $this->url => '',
         ]);
 
-        $gatherer = new RequestsGatherer($cache);
+        $gatherer = $this->container->get(RequestsGatherer::class);
         $request = $gatherer->createRequest($this->url);
 
         $this->assertNull($request);
@@ -54,12 +54,12 @@ class RequestsGathererTest extends TestCase
 
     public function testDoesntOverwriteUserWithEmptyInformations()
     {
-        $cache = $this->mockCache([
+        $this->mockCache([
             'http://people.php.net/foobar' => '',
             $this->url => $this->getDummyPage('rfc'),
         ]);
 
-        $gatherer = new RequestsGatherer($cache);
+        $gatherer = $this->container->get(RequestsGatherer::class);
         $user = $gatherer->createUser('foobar');
         $this->assertInstanceOf(User::class, $user);
         $this->assertEquals('foobar', $user->name);
@@ -67,11 +67,11 @@ class RequestsGathererTest extends TestCase
 
     public function testDoesntCrashOnInvalidCrawler()
     {
-        $cache = $this->mockCache([
+        $this->mockCache([
             'http://people.php.net/foobar' => false,
         ]);
 
-        $gatherer = new RequestsGatherer($cache);
+        $gatherer = $this->container->get(RequestsGatherer::class);
         $gatherer->createUser('foobar');
     }
 }
