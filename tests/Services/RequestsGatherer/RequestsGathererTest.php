@@ -8,6 +8,9 @@ use History\TestCase;
 
 class RequestsGathererTest extends TestCase
 {
+    /**
+     * @var string
+     */
     protected $url = 'http://rfc.com/constant';
 
     public function testCanCreateRequests()
