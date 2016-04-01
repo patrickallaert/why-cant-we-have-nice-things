@@ -119,8 +119,9 @@ class StatisticsComputerTest extends TestCase
         Vote::truncate();
 
         $company = Company::seed();
+        $otherCompany = Company::seed();
         $user1 = User::seed(['company_id' => $company->id]);
-        $user2 = User::seed();
+        $user2 = User::seed(['company_id' => $otherCompany->id]);
 
         $user1->votes()->save(Vote::seed());
         $user1->votes()->save(Vote::seed());
