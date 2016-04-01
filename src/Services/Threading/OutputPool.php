@@ -46,7 +46,6 @@ class OutputPool extends \Pool
 
         // Check the status of jobs until all
         // of them are marked as done
-        $toProcess = true;
         do {
             $toProcess = $this->collect(function (Job $job) {
                 if ($job->done) {
