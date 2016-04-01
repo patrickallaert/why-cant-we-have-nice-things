@@ -2,6 +2,7 @@
 
 namespace History\Services\Threading\Jobs;
 
+use Exception;
 use History\CommandBus\CommandInterface;
 use History\Services\Threading\AutoloadingWorker;
 use League\Tactician\CommandBus;
@@ -33,7 +34,11 @@ class CommandBusJob extends Job
     {
         // Get the command bus from the worker and run the command
         $bus = $this->worker->getContainer()->get(CommandBus::class);
-        $results = $bus->handle($this->command);
+        try {
+            $results = $bus->handle($this->command);
+        } catch (Exception $e) {
+            $results = null;
+        }
 
         $this->markDone($results);
     }

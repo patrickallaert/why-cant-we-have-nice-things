@@ -46,13 +46,16 @@ class OutputPool extends \Pool
 
         // Check the status of jobs until all
         // of them are marked as done
-        while ($this->collect(function (Job $job) {
-            if ($job->done) {
-                $this->output->progressAdvance();
-            }
+        $toProcess = true;
+        do {
+            $toProcess = $this->collect(function (Job $job) {
+                if ($job->done) {
+                    $this->output->progressAdvance();
+                }
 
-            return $job->done;
-        })) continue;
+                return $job->done;
+            });
+        } while ($toProcess);
 
         $this->shutdown();
         $this->output->progressFinish();
