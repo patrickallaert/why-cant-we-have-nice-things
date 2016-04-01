@@ -2,6 +2,8 @@
 
 namespace History\Services\RequestsGatherer;
 
+use History\CommandBus\Commands\CreateRequestCommand;
+use History\CommandBus\Commands\CreateRequestHandler;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
 use History\TestCase;
@@ -34,8 +36,8 @@ class RequestsGathererTest extends TestCase
             $this->url => $this->getDummyPage('rfc'),
         ]);
 
-        $gatherer = $this->container->get(RequestsGatherer::class);
-        $request = $gatherer->createRequest($this->url);
+        $command = $this->container->get(CreateRequestHandler::class);
+        $request = $command->handle(new CreateRequestCommand($this->url));
 
         $this->assertInstanceOf(Request::class, $request);
     }
@@ -46,8 +48,8 @@ class RequestsGathererTest extends TestCase
             $this->url => '',
         ]);
 
-        $gatherer = $this->container->get(RequestsGatherer::class);
-        $request = $gatherer->createRequest($this->url);
+        $command = $this->container->get(CreateRequestHandler::class);
+        $request = $command->handle(new CreateRequestCommand($this->url));
 
         $this->assertNull($request);
     }
@@ -59,8 +61,8 @@ class RequestsGathererTest extends TestCase
             $this->url => $this->getDummyPage('rfc'),
         ]);
 
-        $gatherer = $this->container->get(RequestsGatherer::class);
-        $user = $gatherer->createUser('foobar');
+        $command = $this->container->get(CreateRequestHandler::class);
+        $user = $command->createUser('foobar');
         $this->assertInstanceOf(User::class, $user);
         $this->assertEquals('foobar', $user->name);
     }
@@ -71,7 +73,7 @@ class RequestsGathererTest extends TestCase
             'http://people.php.net/foobar' => false,
         ]);
 
-        $gatherer = $this->container->get(RequestsGatherer::class);
-        $gatherer->createUser('foobar');
+        $command = $this->container->get(CreateRequestHandler::class);
+        $command->createUser('foobar');
     }
 }

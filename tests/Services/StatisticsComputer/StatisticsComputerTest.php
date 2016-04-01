@@ -70,7 +70,7 @@ class StatisticsComputerTest extends TestCase
 
     public function testCanComputeQuestionApprovalIfNotDefined()
     {
-        $question = Question::seed();
+        $question = Question::seed(['approval' => 0]);
         Vote::seed(['choice' => 1, 'question_id' => $question->id]);
 
         $request = new Request();
