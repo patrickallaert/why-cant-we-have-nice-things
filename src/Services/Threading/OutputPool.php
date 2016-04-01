@@ -36,7 +36,13 @@ class OutputPool extends \Pool
      */
     public function process()
     {
-        $this->output->progressStart();
+        // Count number of jobs
+        $count = 0;
+        foreach ($this->workers as $worker) {
+            $count += $worker->getStacked();
+        }
+
+        $this->output->progressStart($count);
 
         // Check the status of jobs until all
         // of them are marked as done
