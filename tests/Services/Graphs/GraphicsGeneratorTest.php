@@ -26,7 +26,7 @@ class GraphicsGeneratorTest extends TestCase
         ];
 
         // Seed dummy data
-        $user     = User::seed();
+        $user = User::seed();
         $question = Question::seed();
         foreach ($months as $key => $month) {
             $choice = $key < 2 ? 1 : 2;
@@ -49,9 +49,9 @@ class GraphicsGeneratorTest extends TestCase
             ],
             'datasets' => [
                 [
-                    'fillColor'   => '#33cc73',
+                    'fillColor' => '#33cc73',
                     'strokeColor' => '#279B57',
-                    'data'        => [
+                    'data' => [
                         1 / 1,
                         2 / 3,
                         2 / 5,

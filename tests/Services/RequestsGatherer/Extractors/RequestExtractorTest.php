@@ -12,36 +12,36 @@ class RequestExtractorTest extends TestCase
 {
     public function testCanExtractRequest()
     {
-        $html         = $this->getDummyPage('rfc');
+        $html = $this->getDummyPage('rfc');
         $informations = $this->getInformationsFromHtml($html);
-        $timezone     = new DateTimeZone('UTC');
+        $timezone = new DateTimeZone('UTC');
 
         $contents = $informations['contents'];
         unset($informations['contents']);
 
         $this->assertEquals([
-            'name'         => 'Support Class Constant Visibility',
-            'status'       => 3,
-            'condition'    => '2/3',
+            'name' => 'Support Class Constant Visibility',
+            'status' => 3,
+            'condition' => '2/3',
             'pull_request' => 'https://github.com/php/php-src/pull/1494',
-            'timestamps'   => DateTime::createFromFormat('Y-m-d H:i:s', '2015-09-13 00:00:00'),
-            'authors'      => [
+            'timestamps' => DateTime::createFromFormat('Y-m-d H:i:s', '2015-09-13 00:00:00'),
+            'authors' => [
                 ['full_name' => 'Sean DuBois', 'email' => 'sean@siobud.com'],
                 ['full_name' => 'Reeze Xia', 'email' => 'reeze@php.net'],
             ],
             'questions' => [
                 [
-                    'name'    => 'Class Constant Visibility',
+                    'name' => 'Class Constant Visibility',
                     'choices' => ['Yes', 'No'],
-                    'votes'   => [
+                    'votes' => [
                         [
-                            'user_id'    => 'ajf',
-                            'choice'     => 2,
+                            'user_id' => 'ajf',
+                            'choice' => 2,
                             'timestamps' => DateTime::createFromFormat('Y-m-d H:i', '2015-10-22 22:30', $timezone),
                         ],
                         [
-                            'user_id'    => 'ajf',
-                            'choice'     => 1,
+                            'user_id' => 'ajf',
+                            'choice' => 1,
                             'timestamps' => DateTime::createFromFormat('Y-m-d H:i', '2015-10-22 22:30', $timezone),
                         ],
                     ],
@@ -84,7 +84,7 @@ HTML;
             ['full_name' => 'Wietse Venema', 'email' => 'wietse@porcupine.org'],
         ], $informations['authors']);
 
-        $html         = ' Author: Ryusuke Sekiyama &lt;rsky0711 at gmail . com&gt;, Sebastian Deutsch &lt;sebastian.deutsch at 9elements . com&gt;';
+        $html = ' Author: Ryusuke Sekiyama &lt;rsky0711 at gmail . com&gt;, Sebastian Deutsch &lt;sebastian.deutsch at 9elements . com&gt;';
         $informations = $this->getInformationsFromInformationBlock($html);
         $this->assertEquals([
             ['full_name' => 'Ryusuke Sekiyama', 'email' => 'rsky0711@gmail.com'],
@@ -102,7 +102,7 @@ HTML;
 
     public function testCanParseConditionsFromProposedVotingChoices()
     {
-        $html         = '<div id="proposed_voting_choices"></div><div><p>I like butts</p><p>Requires a 2/3 majority</p></div>';
+        $html = '<div id="proposed_voting_choices"></div><div><p>I like butts</p><p>Requires a 2/3 majority</p></div>';
         $informations = $this->getInformationsFromHtml($html);
 
         $this->assertEquals('2/3', $informations['condition']);
@@ -117,7 +117,7 @@ HTML;
     public function testCanParseWeirdAssDateFormats($text, $date)
     {
         $informations = $this->getInformationsFromInformationBlock($text);
-        $matcher      = $date instanceof DateTime ? $date : DateTime::createFromFormat('Y-m-d H:i:s', $date);
+        $matcher = $date instanceof DateTime ? $date : DateTime::createFromFormat('Y-m-d H:i:s', $date);
         $this->assertEquals($matcher->format('Y-m-d'), $informations['timestamps']->format('Y-m-d'));
     }
 
@@ -321,7 +321,7 @@ HTML
 
     public function testDoesntTruncateStuff()
     {
-        $html         = $this->getDummyPage('rfc2');
+        $html = $this->getDummyPage('rfc2');
         $informations = $this->getInformationsFromHtml($html);
 
         $this->assertContains('Similar discussion back in 2005', $informations['contents']);
@@ -329,7 +329,7 @@ HTML
 
     public function testRequestIsVotingIfItHasVotes()
     {
-        $html         = $this->getDummyPage('rfc');
+        $html = $this->getDummyPage('rfc');
         $informations = $this->getInformationsFromHtml($html);
 
         $this->assertEquals(Request::VOTING, $informations['status']);
@@ -337,7 +337,7 @@ HTML
 
     public function testRequestIsInactiveIfTooOld()
     {
-        $html         = $this->getDummyPage('rfc2');
+        $html = $this->getDummyPage('rfc2');
         $informations = $this->getInformationsFromHtml($html);
 
         $this->assertEquals(Request::INACTIVE, $informations['status']);
@@ -345,7 +345,7 @@ HTML
 
     public function testDoesntGoBeyondChangelogBlock()
     {
-        $html         = $this->getDummyPage('rfc2');
+        $html = $this->getDummyPage('rfc2');
         $informations = $this->getInformationsFromHtml($html);
 
         $this->assertCount(3, $informations['versions']);
@@ -430,7 +430,7 @@ HTML
         }
 
         // Create crawler and extract
-        $crawler   = new Crawler($html);
+        $crawler = new Crawler($html);
         $extractor = new RequestExtractor($crawler);
 
         return $extractor->extract();

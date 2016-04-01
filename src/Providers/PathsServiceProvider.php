@@ -25,11 +25,11 @@ class PathsServiceProvider extends AbstractServiceProvider
     public function register()
     {
         $paths = [
-            'builds'    => __DIR__.'/../../public/builds',
+            'builds' => __DIR__.'/../../public/builds',
             'factories' => __DIR__.'/../../resources/factories',
-            'views'     => __DIR__.'/../../resources/views',
-            'cache'     => __DIR__.'/../../storage/cache',
-            'logs'      => __DIR__.'/../../storage/logs',
+            'views' => __DIR__.'/../../resources/views',
+            'cache' => __DIR__.'/../../storage/cache',
+            'logs' => __DIR__.'/../../storage/logs',
         ];
 
         foreach ($paths as $key => $path) {

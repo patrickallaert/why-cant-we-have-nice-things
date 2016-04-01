@@ -51,7 +51,7 @@ class ConsoleServiceProvider extends AbstractServiceProvider
                 'run',
             ])->descriptions('Run the scheduled commands', [
                 '--scratch' => 'Empty the cache',
-                '--force'   => 'Force running of all commands',
+                '--force' => 'Force running of all commands',
             ]);
 
             // Register development commands

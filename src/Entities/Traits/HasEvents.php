@@ -26,7 +26,7 @@ trait HasEvents
     public function registerEvent($type, array $metadata = [])
     {
         $attributes = [
-            'type'     => $type,
+            'type' => $type,
             'metadata' => $metadata,
         ];
 

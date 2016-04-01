@@ -25,6 +25,6 @@ abstract class Job extends Threaded
     protected function markDone($result)
     {
         $this->result = $result;
-        $this->done   = true;
+        $this->done = true;
     }
 }

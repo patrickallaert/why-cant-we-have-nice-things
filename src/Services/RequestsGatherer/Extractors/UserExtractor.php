@@ -12,9 +12,9 @@ class UserExtractor extends AbstractExtractor
     public function extract()
     {
         return [
-            'name'          => $this->extractText('h2'),
-            'full_name'     => $this->extractText('h1'),
-            'email'         => $this->extractText('ul[@class="profile-details"]/li[position() = 1]'),
+            'name' => $this->extractText('h2'),
+            'full_name' => $this->extractText('h1'),
+            'email' => $this->extractText('ul[@class="profile-details"]/li[position() = 1]'),
             'contributions' => $this->getContributions(),
         ];
     }

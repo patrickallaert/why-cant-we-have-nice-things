@@ -38,10 +38,10 @@ class TwigServiceProvider extends AbstractServiceProvider
             $loader = new Twig_Loader_Filesystem($this->container->get('paths.views'));
             $debug = $this->container->get('debug');
             $twig = new Twig_Environment($loader, [
-                'debug'            => $debug,
-                'auto_reload'      => $debug,
+                'debug' => $debug,
+                'auto_reload' => $debug,
                 'strict_variables' => false,
-                'cache'            => $this->container->get('paths.cache').'/twig',
+                'cache' => $this->container->get('paths.cache').'/twig',
             ]);
 
             // Configure Twig
@@ -87,7 +87,7 @@ class TwigServiceProvider extends AbstractServiceProvider
 
         /** @var ServerRequestInterface $request */
         $request = $this->container->get(ServerRequestInterface::class);
-        $uri     = $request->getUri()->getPath().'?'.urldecode($request->getUri()->getQuery());
+        $uri = $request->getUri()->getPath().'?'.urldecode($request->getUri()->getQuery());
         $twig->addGlobal('current_uri', $uri);
         $twig->addGlobal('precision', self::PRECISION);
         $twig->addGlobal('assets', $this->getWebpackAssets());

@@ -8,7 +8,7 @@ class AbstractModelTest extends TestCase
 {
     public function testCanGetIdentifier()
     {
-        $model     = new User();
+        $model = new User();
         $model->id = 1;
         $this->assertEquals(1, $model->identifier);
 

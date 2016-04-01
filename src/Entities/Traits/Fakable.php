@@ -35,13 +35,14 @@ trait Fakable
     }
 
     /**
-     * @return FactoryMuffin
      * @throws \League\FactoryMuffin\Exceptions\DirectoryNotFoundException
+     *
+     * @return FactoryMuffin
      */
     protected static function getFactoryMuffin()
     {
         $muffin = new FactoryMuffin();
-        $muffin->loadFactories(realpath(__DIR__. '/../../../resources/factories'));
+        $muffin->loadFactories(realpath(__DIR__.'/../../../resources/factories'));
 
         return $muffin;
     }

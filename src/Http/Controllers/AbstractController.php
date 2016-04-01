@@ -46,7 +46,7 @@ abstract class AbstractController
     {
         /* @var Paginator $paginator */
         $parameters = new Fluent($request->getQueryParams());
-        $paginator  = $query->paginate($perPage, ['*'], 'page', $parameters->page);
+        $paginator = $query->paginate($perPage, ['*'], 'page', $parameters->page);
         $paginator->setPath($request->getUri()->getPath());
 
         return $paginator;

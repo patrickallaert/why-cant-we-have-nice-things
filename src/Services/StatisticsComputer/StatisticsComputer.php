@@ -40,7 +40,7 @@ class StatisticsComputer
      */
     public function forCompany(Company $company)
     {
-        $totalVotes   = Vote::count();
+        $totalVotes = Vote::count();
         $companyVotes = $company->votes()->count();
 
         return [
@@ -56,22 +56,22 @@ class StatisticsComputer
     public function forUser(User $user)
     {
         $totalVotes = $user->votes->count();
-        $yesVotes   = $user->votes->filter(function (Vote $vote) {
+        $yesVotes = $user->votes->filter(function (Vote $vote) {
             return $vote->isPositive();
         })->count();
         $noVotes = $totalVotes - $yesVotes;
 
-        $hivemind        = $this->computeHivemind($user);
-        $passedRequests  = $user->approvedRequests->count();
+        $hivemind = $this->computeHivemind($user);
+        $passedRequests = $user->approvedRequests->count();
         $createdRequests = $user->requests->count();
 
         return [
-            'yes_votes'   => $yesVotes,
-            'no_votes'    => $noVotes,
+            'yes_votes' => $yesVotes,
+            'no_votes' => $noVotes,
             'total_votes' => $totalVotes,
-            'success'     => $this->ratio($passedRequests, $createdRequests),
-            'approval'    => $this->ratio($yesVotes, $totalVotes),
-            'hivemind'    => $this->roundToFloatLimit($hivemind),
+            'success' => $this->ratio($passedRequests, $createdRequests),
+            'approval' => $this->ratio($yesVotes, $totalVotes),
+            'hivemind' => $this->roundToFloatLimit($hivemind),
         ];
     }
 
@@ -95,7 +95,7 @@ class StatisticsComputer
 
         return [
             'approval' => $this->roundToFloatLimit($approval),
-            'passed'   => (int) $this->hasPassed($question, $approval),
+            'passed' => (int) $this->hasPassed($question, $approval),
         ];
     }
 
@@ -137,7 +137,7 @@ class StatisticsComputer
      */
     protected function getMajorityCondition(Question $question)
     {
-        $majority  = 0.5;
+        $majority = 0.5;
         $condition = $question->request ? $question->request->condition : null;
         if (strpos($condition, '2/3') !== false) {
             $majority = 2 / 3;

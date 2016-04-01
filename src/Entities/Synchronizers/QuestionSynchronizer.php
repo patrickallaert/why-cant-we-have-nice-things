@@ -41,7 +41,7 @@ class QuestionSynchronizer extends AbstractSynchronizer
     {
         return [
             [
-                'name'       => $this->informations->get('name'),
+                'name' => $this->informations->get('name'),
                 'request_id' => $this->request->id,
             ],
         ];
@@ -53,8 +53,8 @@ class QuestionSynchronizer extends AbstractSynchronizer
     protected function getSynchronizedFields(AbstractModel $entity)
     {
         return [
-            'name'       => $this->informations->get('name'),
-            'choices'    => $this->informations->get('choices'),
+            'name' => $this->informations->get('name'),
+            'choices' => $this->informations->get('choices'),
             'request_id' => $this->request->id,
         ];
     }

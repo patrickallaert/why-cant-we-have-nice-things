@@ -20,19 +20,19 @@ class RequestTest extends TestCase
 
     public function testFiresEventOnStatusChange()
     {
-        $request         = Request::seed(['status' => 1, 'created_at' => '2010-01-01']);
+        $request = Request::seed(['status' => 1, 'created_at' => '2010-01-01']);
         $request->status = 2;
         $request->save();
 
         $event = $request->events->first();
         $this->assertEquals([
-            'id'             => $event->id,
-            'type'           => 'rfc_status',
-            'eventable_id'   => $request->id,
+            'id' => $event->id,
+            'type' => 'rfc_status',
+            'eventable_id' => $request->id,
             'eventable_type' => 'History\Entities\Models\Request',
-            'metadata'       => ['new_status' => 2],
-            'created_at'     => '2011-01-01 01:01:01',
-            'updated_at'     => '2011-01-01 01:01:01',
+            'metadata' => ['new_status' => 2],
+            'created_at' => '2011-01-01 01:01:01',
+            'updated_at' => '2011-01-01 01:01:01',
         ], $event->toArray());
     }
 }

@@ -11,16 +11,16 @@ class QuestionSynchronizerTest extends TestCase
     public function testCanSynchronizerQuestion()
     {
         $request = Request::seed();
-        $sync    = new QuestionSynchronizer([
-            'name'    => 'lol',
+        $sync = new QuestionSynchronizer([
+            'name' => 'lol',
             'choices' => ['yes', 'no'],
         ], $request);
 
         $question = $sync->synchronize();
         $this->assertInstanceOf(Question::class, $question);
         $this->assertEquals([
-            'name'       => 'lol',
-            'choices'    => ['yes', 'no'],
+            'name' => 'lol',
+            'choices' => ['yes', 'no'],
             'request_id' => $request->id,
         ], $question->toArray());
     }
@@ -28,8 +28,8 @@ class QuestionSynchronizerTest extends TestCase
     public function testDoesntDuplicateQuestions()
     {
         $request = Request::seed();
-        $sync    = new QuestionSynchronizer([
-            'name'    => 'lol',
+        $sync = new QuestionSynchronizer([
+            'name' => 'lol',
             'choices' => ['Yes', 'No'],
         ], $request);
 

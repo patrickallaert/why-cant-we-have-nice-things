@@ -74,7 +74,7 @@ abstract class AbstractExtractor implements ExtractorInterface
         // Loop over various formats until we
         // find one that fits
         $datetime = null;
-        $formats  = [null, 'Y-d-m', 'm-d - Y', 'Y M d'];
+        $formats = [null, 'Y-d-m', 'm-d - Y', 'Y M d'];
         foreach ($formats as $format) {
             try {
                 $datetime = $format
@@ -85,10 +85,10 @@ abstract class AbstractExtractor implements ExtractorInterface
                     // Try to remove the date from the original text
                     $text = strtr($text, [
                         $datetime->format($format ?: 'Y-m-d') => '',
-                        $datetime->format('Y-m-d')            => '',
-                        $datetime->format('Y/m/d')            => '',
-                        $datetime->format('d-m-Y')            => '',
-                        $datetime->format('d/m/Y')            => '',
+                        $datetime->format('Y-m-d') => '',
+                        $datetime->format('Y/m/d') => '',
+                        $datetime->format('d-m-Y') => '',
+                        $datetime->format('d/m/Y') => '',
                     ]);
                     break;
                 }

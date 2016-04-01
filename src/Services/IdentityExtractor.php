@@ -46,14 +46,14 @@ class IdentityExtractor
 
         // Cleanup dead results
         $this->emails = array_values(array_filter($this->emails));
-        $this->names  = array_values(array_filter($this->names));
+        $this->names = array_values(array_filter($this->names));
 
         // Combine informations
         $identities = [];
-        $count      = count($this->emails) ?: count($this->names);
+        $count = count($this->emails) ?: count($this->names);
         for ($i = 0; $i <= $count; ++$i) {
             $identities[] = array_filter([
-                'email'     => Arr::get($this->emails, $i),
+                'email' => Arr::get($this->emails, $i),
                 'full_name' => Arr::get($this->names, $i),
             ]);
         }
@@ -69,7 +69,7 @@ class IdentityExtractor
     protected function extractEmails($emails)
     {
         // Try to split off emails
-        $names  = $emails;
+        $names = $emails;
         $emails = preg_split('/[\s,\/]+/', $emails);
         foreach ($emails as $key => $email) {
 

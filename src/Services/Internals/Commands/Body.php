@@ -50,7 +50,7 @@ class Body extends Command
     {
         return [
             self::ARTICLE_RECEIVED => 'onArticleReceived',
-            self::NO_SUCH_ARTICLE  => 'onArticleNotFound',
+            self::NO_SUCH_ARTICLE => 'onArticleNotFound',
         ];
     }
 

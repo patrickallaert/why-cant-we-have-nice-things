@@ -13,10 +13,10 @@ class RequestsGathererTest extends TestCase
     public function testCanCreateRequests()
     {
         $cache = $this->mockCache([
-            RequestsGatherer::DOMAIN.'/rfc'                                      => $this->getDummyPage('rfcs'),
-            RequestsGatherer::DOMAIN.'/rfc/void_return_type'                     => '',
+            RequestsGatherer::DOMAIN.'/rfc' => $this->getDummyPage('rfcs'),
+            RequestsGatherer::DOMAIN.'/rfc/void_return_type' => '',
             RequestsGatherer::DOMAIN.'/rfc/revisit-trailing-comma-function-args' => '',
-            RequestsGatherer::DOMAIN.'/rfc/closurefromcallable'                  => '',
+            RequestsGatherer::DOMAIN.'/rfc/closurefromcallable' => '',
         ]);
 
         $gatherer = new RequestsGatherer($cache);
@@ -32,7 +32,7 @@ class RequestsGathererTest extends TestCase
         ]);
 
         $gatherer = new RequestsGatherer($cache);
-        $request  = $gatherer->createRequest($this->url);
+        $request = $gatherer->createRequest($this->url);
 
         $this->assertInstanceOf(Request::class, $request);
     }
@@ -44,7 +44,7 @@ class RequestsGathererTest extends TestCase
         ]);
 
         $gatherer = new RequestsGatherer($cache);
-        $request  = $gatherer->createRequest($this->url);
+        $request = $gatherer->createRequest($this->url);
 
         $this->assertNull($request);
     }
@@ -53,11 +53,11 @@ class RequestsGathererTest extends TestCase
     {
         $cache = $this->mockCache([
             'http://people.php.net/foobar' => '',
-            $this->url                     => $this->getDummyPage('rfc'),
+            $this->url => $this->getDummyPage('rfc'),
         ]);
 
         $gatherer = new RequestsGatherer($cache);
-        $user     = $gatherer->createUser('foobar');
+        $user = $gatherer->createUser('foobar');
         $this->assertInstanceOf(User::class, $user);
         $this->assertEquals('foobar', $user->name);
     }

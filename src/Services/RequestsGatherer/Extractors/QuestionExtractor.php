@@ -12,7 +12,7 @@ class QuestionExtractor extends AbstractExtractor
     public function extract()
     {
         // Extract Question informations
-        $name    = $this->extractText('tr[position() = 1]');
+        $name = $this->extractText('tr[position() = 1]');
         $choices = $this->getChoices();
 
         // Extract votes
@@ -25,9 +25,9 @@ class QuestionExtractor extends AbstractExtractor
             });
 
         return [
-            'name'    => $name,
+            'name' => $name,
             'choices' => $choices,
-            'votes'   => $votes,
+            'votes' => $votes,
         ];
     }
 

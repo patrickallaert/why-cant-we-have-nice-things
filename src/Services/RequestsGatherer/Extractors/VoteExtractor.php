@@ -18,7 +18,7 @@ class VoteExtractor extends AbstractExtractor
 
         // Get which choice the user picked
         $voted = 0;
-        $time  = new DateTime();
+        $time = new DateTime();
         $this->crawler->filterXpath('//td')->each(function ($choice, $key) use (&$voted, &$time) {
             $image = $choice->filterXpath('//img');
 
@@ -32,8 +32,8 @@ class VoteExtractor extends AbstractExtractor
 
         // Save vote for this request
         return [
-            'user_id'    => $this->replaceFullnamesByUsernames($user),
-            'choice'     => $voted,
+            'user_id' => $this->replaceFullnamesByUsernames($user),
+            'choice' => $voted,
             'timestamps' => DateTime::createFromFormat('Y/m/d H:i', $time, new DateTimeZone('UTC')),
         ];
     }

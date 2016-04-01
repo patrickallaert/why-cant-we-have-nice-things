@@ -99,7 +99,7 @@ class VersionExtractorTest extends TestCase
     protected function extractVersions(array $versions)
     {
         $versions = implode('</li><li class="level1">', $versions);
-        $html     = <<<'HTML'
+        $html = <<<'HTML'
 <h2 id="changelog">Changelog</h2>
 <div class="level2">
     <ul>
@@ -111,7 +111,7 @@ class VersionExtractorTest extends TestCase
 HTML;
 
         // Create crawler and extract
-        $crawler   = new Crawler(str_replace('$versions', $versions, $html));
+        $crawler = new Crawler(str_replace('$versions', $versions, $html));
         $extractor = new VersionExtractor($crawler);
 
         return $extractor->extract();

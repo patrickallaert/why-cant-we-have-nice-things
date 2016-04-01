@@ -34,7 +34,7 @@ class Internals
      */
     public function __construct(Repository $cache, ClientInterface $client)
     {
-        $this->cache  = $cache;
+        $this->cache = $cache;
         $this->client = $client;
     }
 

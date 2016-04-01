@@ -32,7 +32,7 @@ class RequestsGatherer
      */
     public function __construct(Repository $cache)
     {
-        $this->cache  = $cache;
+        $this->cache = $cache;
         $this->output = new HistoryStyle();
     }
 
@@ -61,7 +61,7 @@ class RequestsGatherer
         }
 
         $requests = (new RequestsExtractor($crawler))->extract();
-        $pool     = new OutputPool($this->output);
+        $pool = new OutputPool($this->output);
         foreach ($requests as $request) {
             $pool->submitCommand(new CreateRequestCommand(static::DOMAIN.$request));
         }

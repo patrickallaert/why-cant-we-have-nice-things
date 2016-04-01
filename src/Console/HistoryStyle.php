@@ -19,7 +19,7 @@ class HistoryStyle extends SymfonyStyle
      */
     public function __construct(InputInterface $input = null, OutputInterface $output = null)
     {
-        $input  = $input ?: new ArrayInput([]);
+        $input = $input ?: new ArrayInput([]);
         $output = $output ?: new NullOutput();
 
         parent::__construct($input, $output);

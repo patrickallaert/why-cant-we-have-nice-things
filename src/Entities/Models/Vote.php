@@ -76,7 +76,7 @@ class Vote extends AbstractModel
     public function getAnswerAttribute()
     {
         $choices = $this->question ? $this->question->choices : [];
-        $choice  = Arr::get($choices, $this->choice - 1, $this->choice);
+        $choice = Arr::get($choices, $this->choice - 1, $this->choice);
 
         return ucfirst($choice);
     }

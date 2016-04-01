@@ -19,25 +19,25 @@ class RequestExtractor extends AbstractExtractor
     public function extract()
     {
         // Extract Request informations
-        $name               = $this->getRequestName();
+        $name = $this->getRequestName();
         $majorityConditions = $this->getMajorityConditions();
-        $informations       = $this->getInformations();
-        $questions          = $this->getQuestions();
-        $timestamp          = $this->getRequestTimestamp($informations);
-        $status             = $this->getStatus($informations, $questions, $timestamp);
-        $authors            = $this->getAuthors($informations);
-        $versions           = $this->getVersions();
+        $informations = $this->getInformations();
+        $questions = $this->getQuestions();
+        $timestamp = $this->getRequestTimestamp($informations);
+        $status = $this->getStatus($informations, $questions, $timestamp);
+        $authors = $this->getAuthors($informations);
+        $versions = $this->getVersions();
 
         return [
-            'name'         => $name,
-            'contents'     => $this->getContents(),
-            'status'       => $status,
+            'name' => $name,
+            'contents' => $this->getContents(),
+            'status' => $status,
             'pull_request' => $this->getPatch(),
-            'condition'    => $majorityConditions,
-            'authors'      => $authors,
-            'timestamps'   => $timestamp,
-            'questions'    => $questions,
-            'versions'     => $versions,
+            'condition' => $majorityConditions,
+            'authors' => $authors,
+            'timestamps' => $timestamp,
+            'questions' => $questions,
+            'versions' => $versions,
         ];
     }
 
@@ -94,7 +94,7 @@ class RequestExtractor extends AbstractExtractor
     protected function getInformations()
     {
         $informations = [];
-        $lines        = $this->crawler->filterXpath('//div[@class="page group"]/div[@class="level1"]/ul/li');
+        $lines = $this->crawler->filterXpath('//div[@class="page group"]/div[@class="level1"]/ul/li');
         foreach ($lines as $line) {
             $text = str_replace("\n", ' ', $line->nodeValue);
             preg_match('/([^:]+) *: *(.+)/mi', $text, $matches);
@@ -103,8 +103,8 @@ class RequestExtractor extends AbstractExtractor
             }
 
             list(, $label, $value) = $matches;
-            $label                 = $this->cleanWhitespace($label);
-            $value                 = $this->cleanWhitespace($value);
+            $label = $this->cleanWhitespace($label);
+            $value = $this->cleanWhitespace($value);
 
             $informations[$label] = $value;
         }
@@ -159,12 +159,12 @@ class RequestExtractor extends AbstractExtractor
     protected function getStatus(array $informations, array $questions, DateTime $timestamp)
     {
         $statusText = $this->findInformation($informations, '/Status/');
-        $statuses   = [
-            Request::DECLINED   => 'declined',
-            Request::DRAFT      => 'draft',
+        $statuses = [
+            Request::DECLINED => 'declined',
+            Request::DRAFT => 'draft',
             Request::DISCUSSION => 'discussion',
-            Request::APPROVED   => 'accepted|implemented',
-            Request::VOTING     => 'voting',
+            Request::APPROVED => 'accepted|implemented',
+            Request::VOTING => 'voting',
         ];
 
         // Look for a match in the status
@@ -205,7 +205,7 @@ class RequestExtractor extends AbstractExtractor
      */
     protected function allPollsClosed()
     {
-        $polls  = $this->crawler->filterXPath('//form/table[@class="inline"]')->count();
+        $polls = $this->crawler->filterXPath('//form/table[@class="inline"]')->count();
         $closed = $this->crawler->filterXPath('//form/table/tbody/tr/td[@colspan]')->count();
 
         return $polls && $polls === $closed;
@@ -222,7 +222,7 @@ class RequestExtractor extends AbstractExtractor
      */
     protected function getAuthors(array $informations)
     {
-        $authors   = $this->findInformation($informations, '/Author/');
+        $authors = $this->findInformation($informations, '/Author/');
         $extractor = new IdentityExtractor($authors);
 
         return $extractor->extract();
@@ -234,7 +234,7 @@ class RequestExtractor extends AbstractExtractor
     protected function getVersions()
     {
         $versions = [];
-        $xpath    = '//h2[@id="changelog"]/following-sibling::div[1]/ul';
+        $xpath = '//h2[@id="changelog"]/following-sibling::div[1]/ul';
         $this->crawler->filterXPath($xpath)->each(function (Crawler $block) use (&$versions) {
             $versions += (new VersionExtractor($block))->extract();
         });
@@ -254,7 +254,7 @@ class RequestExtractor extends AbstractExtractor
     protected function getRequestTimestamp(array $informations)
     {
         // Find and cleanup date string
-        $text           = $this->findInformation($informations, '/(created|date)/i');
+        $text = $this->findInformation($informations, '/(created|date)/i');
         list($datetime) = $this->parseDate($text);
 
         // Try to grab date from footer

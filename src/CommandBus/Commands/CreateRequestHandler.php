@@ -44,8 +44,8 @@ class CreateRequestHandler extends AbstractHandler
         $link = $command->request;
 
         // Extract request informations
-        $crawler      = $this->getPageCrawler($link);
-        $extractor    = new RequestExtractor($crawler);
+        $crawler = $this->getPageCrawler($link);
+        $extractor = new RequestExtractor($crawler);
         $informations = $extractor->extract();
         if (!$informations['name']) {
             return;
@@ -54,8 +54,8 @@ class CreateRequestHandler extends AbstractHandler
         // Retrieve or create the request
         // and update its informations
         $informations['link'] = $link;
-        $synchronizer         = new RequestSynchronizer($informations);
-        $request              = $synchronizer->persist();
+        $synchronizer = new RequestSynchronizer($informations);
+        $request = $synchronizer->persist();
 
         /* @var Request $request */
         $this->createVersions($request, $informations['versions']);
@@ -75,7 +75,7 @@ class CreateRequestHandler extends AbstractHandler
     {
         foreach ($versions as $version) {
             $version['request_id'] = $request->id;
-            $synchronizer          = new VersionSynchronizer($version);
+            $synchronizer = new VersionSynchronizer($version);
             $synchronizer->persist();
         }
     }
@@ -134,15 +134,15 @@ class CreateRequestHandler extends AbstractHandler
 
         try {
             // Else find his informations and extract them
-            $crawler    = $this->getPageCrawler('http://people.php.net/'.$username);
-            $extractor  = new UserExtractor($crawler);
+            $crawler = $this->getPageCrawler('http://people.php.net/'.$username);
+            $extractor = new UserExtractor($crawler);
             $attributes = array_filter($extractor->extract());
         } catch (InvalidArgumentException $exception) {
             $attributes = [];
         }
 
         // Merge attributes
-        $attributes   = array_merge(['name' => $username], $attributes);
+        $attributes = array_merge(['name' => $username], $attributes);
         $synchronizer = new UserSynchronizer($attributes);
 
         return $synchronizer->persist();

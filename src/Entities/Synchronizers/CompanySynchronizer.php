@@ -17,7 +17,7 @@ class CompanySynchronizer extends AbstractSynchronizer
      */
     protected function sanitize(array $informations)
     {
-        $informations       = parent::sanitize($informations);
+        $informations = parent::sanitize($informations);
         $informations->name = strtr($informations->name, [
             ' - The PHP Consulting Company' => '',
         ]);

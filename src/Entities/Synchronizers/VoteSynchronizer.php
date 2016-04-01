@@ -34,7 +34,7 @@ class VoteSynchronizer extends AbstractSynchronizer
         parent::__construct($informations);
 
         $this->question = $question;
-        $this->user     = $user;
+        $this->user = $user;
     }
 
     /**
@@ -45,7 +45,7 @@ class VoteSynchronizer extends AbstractSynchronizer
         return [
             [
                 'question_id' => $this->question->id,
-                'user_id'     => $this->user->id,
+                'user_id' => $this->user->id,
             ],
         ];
     }
@@ -56,9 +56,9 @@ class VoteSynchronizer extends AbstractSynchronizer
     protected function getSynchronizedFields(AbstractModel $entity)
     {
         return [
-            'choice'      => (int) $this->informations->get('choice'),
+            'choice' => (int) $this->informations->get('choice'),
             'question_id' => $this->question->id,
-            'user_id'     => $this->user->id,
+            'user_id' => $this->user->id,
         ];
     }
 }

@@ -1,9 +1,10 @@
 <?php
-use Symfony\CS\Config\Config;
-use Symfony\CS\Finder\DefaultFinder;
-use Symfony\CS\FixerInterface;
+use PhpCsFixer\Config;
+use PhpCsFixer\Finder;
 
-$finder = DefaultFinder::create()->in([
+require 'vendor/autoload.php';
+
+$finder = Finder::create()->in([
     'resources/migrations',
     'resources/factories',
     'src',
@@ -13,23 +14,31 @@ $finder = DefaultFinder::create()->in([
 return Config::create()
              ->setRiskyAllowed(true)
              ->setRules([
-                 '@Symfony'                          => true,
-                 'align_double_arrow'                => true,
-                 'align_equals'                      => true,
-                 'ereg_to_preg'                      => true,
-                 'function_typehint_space'           => true,
-                 'multiline_spaces_before_semicolon' => true,
-                 'ordered_use'                       => true,
-                 'php4_constructor'                  => true,
-                 'php_unit_construct'                => true,
-                 'php_unit_strict'                   => false,
-                 'phpdoc_order'                      => true,
-                 'phpdoc_types'                      => true,
-                 'psr0'                              => true,
-                 'short_array_syntax'                => true,
-                 'short_echo_tag'                    => true,
-                 'strict'                            => true,
-                 'strict_param'                      => true,
+                 '@Symfony'                                  => true,
+                 'align_double_arrow'                        => false,
+                 'align_equals'                              => false,
+                 'concat_with_spaces'                        => false,
+                 'echo_to_print'                             => true,
+                 'ereg_to_preg'                              => true,
+                 'header_comment'                            => false,
+                 'linebreak_after_opening_tag'               => true,
+                 'long_array_syntax'                         => false,
+                 'no_blank_lines_before_namespace'           => false,
+                 'no_multiline_whitespace_before_semicolons' => true,
+                 'no_php4_constructor'                       => true,
+                 'no_short_echo_tag'                         => true,
+                 'no_useless_return'                         => true,
+                 'not_operator_with_space'                   => false,
+                 'not_operator_with_successor_space'         => false,
+                 'ordered_imports'                           => true,
+                 'php_unit_construct'                        => true,
+                 'php_unit_strict'                           => false,
+                 'phpdoc_order'                              => true,
+                 'phpdoc_property'                           => true,
+                 'phpdoc_var_to_type'                        => false,
+                 'psr0'                                      => true,
+                 'short_array_syntax'                        => true,
+                 'strict_comparison'                         => true,
+                 'strict_param'                              => true,
              ])
-             ->setUsingCache(true)
              ->finder($finder);

@@ -39,8 +39,8 @@ class ErrorsMiddleware implements MiddlewareInterface
      */
     public function __construct(ContainerInterface $container, Twig_Environment $twig, LoggerInterface $logs)
     {
-        $this->twig      = $twig;
-        $this->logs      = $logs;
+        $this->twig = $twig;
+        $this->logs = $logs;
         $this->container = $container;
     }
 
@@ -76,7 +76,7 @@ class ErrorsMiddleware implements MiddlewareInterface
         switch (true) {
             case $exception instanceof ModelNotFoundException:
             case $exception instanceof NotFoundException:
-                $page     = $this->twig->render('errors/404.twig');
+                $page = $this->twig->render('errors/404.twig');
                 $response = new HtmlResponse($page, 404);
                 break;
 
@@ -85,7 +85,7 @@ class ErrorsMiddleware implements MiddlewareInterface
                     throw $exception;
                 }
 
-                $page     = $this->twig->render('errors/503.twig');
+                $page = $this->twig->render('errors/503.twig');
                 $response = new HtmlResponse($page, 404);
                 break;
         }

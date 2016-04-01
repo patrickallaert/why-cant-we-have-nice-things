@@ -15,7 +15,7 @@ class UsersController extends AbstractController
     public function index()
     {
         $creators = User::has('requests')->with('approvedRequests', 'requests')->get();
-        $voters   = User::has('votes', '>', 5)->with('requests')->orderBy('hivemind', 'ASC')->get();
+        $voters = User::has('votes', '>', 5)->with('requests')->orderBy('hivemind', 'ASC')->get();
 
         // Sort results
         $creators = $creators->sortByDesc(function (User $user) {
@@ -28,7 +28,7 @@ class UsersController extends AbstractController
 
         return $this->render('users/index.twig', [
             'creators' => $creators,
-            'voters'   => $voters,
+            'voters' => $voters,
         ]);
     }
 
@@ -52,7 +52,7 @@ class UsersController extends AbstractController
         $user = User::with($with)->where('slug', $parameters['user'])->firstOrFail();
 
         return $this->render('users/show.twig', [
-            'user'  => $user,
+            'user' => $user,
             'chart' => (new GraphicsGenerator())->computePositiveness($user),
         ]);
     }

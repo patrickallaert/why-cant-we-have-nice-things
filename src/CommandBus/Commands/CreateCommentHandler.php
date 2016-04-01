@@ -38,7 +38,7 @@ class CreateCommentHandler extends AbstractHandler
     public function __construct(Internals $internals)
     {
         $this->internals = $internals;
-        $this->parsed    = Comment::lists('id', 'xref')->all();
+        $this->parsed = Comment::lists('id', 'xref')->all();
     }
 
     /**
@@ -80,13 +80,13 @@ class CreateCommentHandler extends AbstractHandler
     protected function cleanupSubject($subject)
     {
         return trim(strtr($subject, [
-            'RE'           => null,
-            'Re:'          => null,
-            'RFC'          => null,
-            '[RFC]'        => null,
+            'RE' => null,
+            'Re:' => null,
+            'RFC' => null,
+            '[RFC]' => null,
             '[DISCUSSION]' => null,
-            '[PHP-DEV]'    => null,
-            '[VOTE]'       => null,
+            '[PHP-DEV]' => null,
+            '[VOTE]' => null,
         ]), ' :');
     }
 
@@ -95,7 +95,7 @@ class CreateCommentHandler extends AbstractHandler
      */
     protected function getRelatedRequest()
     {
-        $subject          = $this->command->subject;
+        $subject = $this->command->subject;
         $existingRequests = Request::lists('id', 'name');
 
         // Try to find an exact match
@@ -119,8 +119,8 @@ class CreateCommentHandler extends AbstractHandler
     protected function getRelatedUser()
     {
         // Get user email
-        $extractor    = new IdentityExtractor($this->command->from);
-        $user         = head($extractor->extract());
+        $extractor = new IdentityExtractor($this->command->from);
+        $user = head($extractor->extract());
         $synchronizer = new UserSynchronizer($user);
 
         return $synchronizer->persist()->id;
@@ -135,8 +135,8 @@ class CreateCommentHandler extends AbstractHandler
     {
         // Just get the last reference cause
         $references = explode('>', $references);
-        $reference  = last(array_filter($references));
-        $reference  = $reference ? trim($reference) : null;
+        $reference = last(array_filter($references));
+        $reference = $reference ? trim($reference) : null;
         if (!$reference) {
             return;
         }
@@ -144,7 +144,7 @@ class CreateCommentHandler extends AbstractHandler
         // Try to retrieve the comment the reference's about
         try {
             $reference = $this->internals->findArticleFromReference($reference);
-            $comment   = $reference && isset($this->parsed[$reference]) ? $this->parsed[$reference] : null;
+            $comment = $reference && isset($this->parsed[$reference]) ? $this->parsed[$reference] : null;
         } catch (InvalidArgumentException $exception) {
             return;
         }
@@ -178,10 +178,10 @@ class CreateCommentHandler extends AbstractHandler
         }
 
         $synchronizer = new CommentSynchronizer(array_merge((array) $this->command, [
-            'contents'   => $contents,
+            'contents' => $contents,
             'comment_id' => $comment,
             'request_id' => $request,
-            'user_id'    => $user,
+            'user_id' => $user,
             'timestamps' => $datetime,
         ]));
 

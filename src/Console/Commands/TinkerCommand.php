@@ -26,7 +26,7 @@ class TinkerCommand
     public function __construct(ContainerInterface $container, Shell $shell)
     {
         $this->container = $container;
-        $this->shell     = $shell;
+        $this->shell = $shell;
     }
 
     /**

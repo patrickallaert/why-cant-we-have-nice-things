@@ -27,11 +27,11 @@ class VoteTest extends TestCase
 
     public function testCanGetTextualAnswer()
     {
-        $vote           = new Vote(['choice' => 1]);
+        $vote = new Vote(['choice' => 1]);
         $vote->question = new Question(['choices' => ['yes']]);
         $this->assertEquals('Yes', $vote->answer);
 
-        $vote           = new Vote(['choice' => 1]);
+        $vote = new Vote(['choice' => 1]);
         $vote->question = null;
         $this->assertEquals(1, $vote->answer);
     }
@@ -44,7 +44,7 @@ class VoteTest extends TestCase
      */
     public function testCanFindPositiveVote($text, $positive)
     {
-        $vote           = new Vote(['choice' => 1]);
+        $vote = new Vote(['choice' => 1]);
         $vote->question = new Question(['choices' => [$text]]);
         $this->assertEquals($positive, $vote->isPositive());
     }

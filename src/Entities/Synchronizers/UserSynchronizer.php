@@ -56,7 +56,7 @@ class UserSynchronizer extends AbstractSynchronizer
         // If the username contains a space, it's most likely a name
         if (!$informations->get('full_name') && strpos($informations->get('name'), ' ') !== false) {
             $informations['full_name'] = $informations->get('name');
-            $informations['name']      = null;
+            $informations['name'] = null;
         }
 
         // If the user has an email in @zend.com we can
@@ -73,22 +73,22 @@ class UserSynchronizer extends AbstractSynchronizer
      */
     protected function getMatchers()
     {
-        $email    = $this->informations->get('email');
+        $email = $this->informations->get('email');
         $username = $this->informations->get('name');
         $fullName = $this->informations->get('full_name');
 
         $matchers = [
             ['id' => $this->informations->get('id')],
-            ['name'      => $username],
-            ['email'     => $email],
-            ['email'     => preg_replace('/@(.+)/', '@php.net', $email)],
+            ['name' => $username],
+            ['email' => $email],
+            ['email' => preg_replace('/@(.+)/', '@php.net', $email)],
             ['full_name' => $fullName],
         ];
 
         // If we have no username but have an email
         // try to infere username from it
         if (!$username && $email) {
-            $username   = explode('@', $email)[0];
+            $username = explode('@', $email)[0];
             $matchers[] = ['name' => $username];
         }
 
@@ -102,15 +102,15 @@ class UserSynchronizer extends AbstractSynchronizer
     {
         // Do not replace the user's email if it is more valid than the one we have or
         // if we don't even have one
-        $email              = $this->informations->get('email');
+        $email = $this->informations->get('email');
         $shouldReplaceEmail = $email && (!$entity->email || strpos($entity->email, '@php.net'));
 
         return [
-            'name'          => $this->informations->get('name'),
-            'email'         => $shouldReplaceEmail ? $email : $entity->email,
-            'full_name'     => $this->informations->get('full_name'),
+            'name' => $this->informations->get('name'),
+            'email' => $shouldReplaceEmail ? $email : $entity->email,
+            'full_name' => $this->informations->get('full_name'),
             'contributions' => $this->informations->get('contributions') ?: [],
-            'company_id'    => $this->company ? $this->company->id : null,
+            'company_id' => $this->company ? $this->company->id : null,
             'github_avatar' => $this->informations->get('github_avatar'),
         ];
     }

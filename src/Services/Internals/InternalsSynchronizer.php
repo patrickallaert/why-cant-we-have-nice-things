@@ -53,8 +53,8 @@ class InternalsSynchronizer
     public function __construct(CommandBus $bus, Internals $internals)
     {
         $this->internals = $internals;
-        $this->output    = new HistoryStyle();
-        $this->bus       = $bus;
+        $this->output = new HistoryStyle();
+        $this->bus = $bus;
     }
 
     /**
@@ -100,7 +100,7 @@ class InternalsSynchronizer
     {
         // Start at the last comment we parsed
         $count = $this->internals->getTotalNumberArticles();
-        $from  = $this->size ? $count - $this->size : self::FIRST_RFC;
+        $from = $this->size ? $count - $this->size : self::FIRST_RFC;
 
         $queue = [];
         $this->output->progressStart($count - $this->size);
@@ -144,13 +144,13 @@ class InternalsSynchronizer
             return;
         }
 
-        $command             = new CreateCommentCommand();
-        $command->xref       = $article['xref'];
-        $command->subject    = $article['subject'];
+        $command = new CreateCommentCommand();
+        $command->xref = $article['xref'];
+        $command->subject = $article['subject'];
         $command->references = $article['references'];
-        $command->from       = $article['from'];
-        $command->number     = $article['number'];
-        $command->date       = $article['date'];
+        $command->from = $article['from'];
+        $command->number = $article['number'];
+        $command->date = $article['date'];
 
         return $command;
     }

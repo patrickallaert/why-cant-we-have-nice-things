@@ -11,73 +11,73 @@ class UserSynchronizerTest extends TestCase
     public function testCanSynchronizerUser()
     {
         $company = Company::firstOrCreate(['name' => 'Zend']);
-        $sync    = new UserSynchronizer([
-            'name'          => 'foobar',
-            'email'         => 'foo@bar.com',
-            'full_name'     => 'Foo Bar',
+        $sync = new UserSynchronizer([
+            'name' => 'foobar',
+            'email' => 'foo@bar.com',
+            'full_name' => 'Foo Bar',
             'contributions' => ['foo', 'bar'],
         ], $company);
 
         $user = $sync->synchronize();
         $this->assertInstanceOf(User::class, $user);
         $this->assertEquals([
-            'name'          => 'foobar',
-            'email'         => 'foo@bar.com',
-            'full_name'     => 'Foo Bar',
+            'name' => 'foobar',
+            'email' => 'foo@bar.com',
+            'full_name' => 'Foo Bar',
             'contributions' => ['foo', 'bar'],
             'github_avatar' => null,
-            'company_id'    => $company->id,
+            'company_id' => $company->id,
         ], $user->toArray());
     }
 
     public function testAssignsToZendIfZendEmail()
     {
         $company = Company::firstOrCreate(['name' => 'Zend Technologies']);
-        $sync    = new UserSynchronizer([
-            'name'          => 'foobar',
-            'email'         => 'foo@zend.com',
-            'full_name'     => 'Foo Bar',
+        $sync = new UserSynchronizer([
+            'name' => 'foobar',
+            'email' => 'foo@zend.com',
+            'full_name' => 'Foo Bar',
             'contributions' => ['foo', 'bar'],
         ]);
 
         $user = $sync->synchronize();
         $this->assertInstanceOf(User::class, $user);
         $this->assertEquals([
-            'name'          => 'foobar',
-            'email'         => 'foo@zend.com',
-            'full_name'     => 'Foo Bar',
+            'name' => 'foobar',
+            'email' => 'foo@zend.com',
+            'full_name' => 'Foo Bar',
             'contributions' => ['foo', 'bar'],
             'github_avatar' => null,
-            'company_id'    => $company->id,
+            'company_id' => $company->id,
         ], $user->toArray());
     }
 
     public function testCanRetrieveExistingUser()
     {
         $existing = User::create(['email' => 'foo@bar.com']);
-        $sync     = new UserSynchronizer(['email' => 'foo@bar.com']);
-        $user     = $sync->synchronize();
+        $sync = new UserSynchronizer(['email' => 'foo@bar.com']);
+        $user = $sync->synchronize();
         $this->assertEquals($existing->id, $user->id);
 
         $existing = User::create(['name' => 'foobar']);
-        $sync     = new UserSynchronizer(['name' => 'foobar']);
-        $user     = $sync->synchronize();
+        $sync = new UserSynchronizer(['name' => 'foobar']);
+        $user = $sync->synchronize();
         $this->assertEquals($existing->id, $user->id);
     }
 
     public function testCanInfereUsernameFromEmail()
     {
         $existing = User::create(['name' => 'foobarz']);
-        $sync     = new UserSynchronizer(['email' => 'foobarz@php.net']);
-        $user     = $sync->synchronize();
+        $sync = new UserSynchronizer(['email' => 'foobarz@php.net']);
+        $user = $sync->synchronize();
         $this->assertEquals($existing->id, $user->id);
     }
 
     public function testDoesntOverwriteInformationsWithLessPertinentOnes()
     {
         $existing = User::create(['name' => 'foo', 'email' => 'foo@php.net', 'full_name' => 'Marco']);
-        $sync     = new UserSynchronizer(['full_name' => 'Marco', 'email' => 'foobarz@gmail.com']);
-        $user     = $sync->synchronize();
+        $sync = new UserSynchronizer(['full_name' => 'Marco', 'email' => 'foobarz@gmail.com']);
+        $user = $sync->synchronize();
 
         $this->assertEquals($existing->id, $user->id);
         $this->assertEquals('foobarz@gmail.com', $user->email);
@@ -88,8 +88,8 @@ class UserSynchronizerTest extends TestCase
     public function testNeverOverwriteWithPhpEmail()
     {
         $existing = User::create(['name' => 'foo', 'email' => 'foo@gmail.com']);
-        $sync     = new UserSynchronizer(['name' => 'foo', 'email' => 'foo@php.net']);
-        $user     = $sync->synchronize();
+        $sync = new UserSynchronizer(['name' => 'foo', 'email' => 'foo@php.net']);
+        $user = $sync->synchronize();
 
         $this->assertEquals($existing->id, $user->id);
         $this->assertEquals('foo@gmail.com', $user->email);
@@ -98,8 +98,8 @@ class UserSynchronizerTest extends TestCase
     public function testDoesntUnifyBlankProfiles()
     {
         $existing = User::create(['name' => 'foobar', 'email' => '', 'full_name' => '']);
-        $sync     = new UserSynchronizer(['name' => 'foo', 'email' => '', 'full_name' => '']);
-        $user     = $sync->synchronize();
+        $sync = new UserSynchronizer(['name' => 'foo', 'email' => '', 'full_name' => '']);
+        $user = $sync->synchronize();
 
         $this->assertNotEquals($existing->id, $user->id);
     }

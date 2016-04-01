@@ -22,16 +22,16 @@ class VersionExtractor extends AbstractExtractor
             } else {
                 // If there is no actual version number
                 // use the key
-                $name    = $version;
+                $name = $version;
                 $version = count($versions) - $key;
             }
 
             list($date, $name) = $this->parseDate($name);
-            $name              = trim($name, ' -():');
+            $name = trim($name, ' -():');
 
             $versions[$key] = [
-                'version'    => $version,
-                'name'       => $name,
+                'version' => $version,
+                'name' => $name,
                 'timestamps' => $date,
             ];
         }

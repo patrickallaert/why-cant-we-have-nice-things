@@ -19,7 +19,7 @@ class VersionSynchronizer extends AbstractSynchronizer
     {
         return [
             [
-                'version'    => $this->informations->get('version'),
+                'version' => $this->informations->get('version'),
                 'request_id' => $this->informations->get('request_id'),
             ],
         ];
@@ -31,8 +31,8 @@ class VersionSynchronizer extends AbstractSynchronizer
     protected function getSynchronizedFields(AbstractModel $entity)
     {
         return [
-            'name'       => $this->informations->get('name'),
-            'version'    => $this->informations->get('version'),
+            'name' => $this->informations->get('name'),
+            'version' => $this->informations->get('version'),
             'request_id' => $this->informations->get('request_id'),
         ];
     }

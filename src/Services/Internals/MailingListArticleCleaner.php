@@ -138,7 +138,7 @@ class MailingListArticleCleaner
 
         list($key, $value) = $header;
         if ($key && $value) {
-            $this->headerKey                 = strtolower($key);
+            $this->headerKey = strtolower($key);
             $this->headers[$this->headerKey] = $value;
         }
     }
@@ -156,7 +156,7 @@ class MailingListArticleCleaner
 
             if (preg_match('/boundary=(["\']?)([^;]+)\1/is', $this->headers['content-type'], $matches)) {
                 $this->boundaries[] = trim($matches[2]);
-                $this->boundary     = end($this->boundaries);
+                $this->boundary = end($this->boundaries);
             }
 
             if (preg_match('/([^;]+)(;|$)/', $this->headers['content-type'], $matches)) {
@@ -166,7 +166,7 @@ class MailingListArticleCleaner
         }
 
         // Save encoding for later
-        $encoding       = Arr::get($this->headers, 'content-transfer-encoding');
+        $encoding = Arr::get($this->headers, 'content-transfer-encoding');
         $this->encoding = strtolower(trim($encoding));
     }
 
@@ -191,7 +191,7 @@ class MailingListArticleCleaner
             $this->boundary = end($this->boundaries);
         } else {
             // Next section: start with no headers, default content type
-            $this->headers  = [];
+            $this->headers = [];
             $this->mimetype = 'text/plain';
         }
 

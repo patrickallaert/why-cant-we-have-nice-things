@@ -31,7 +31,7 @@ class GraphicsGenerator
      */
     public function computePositiveness(User $user)
     {
-        $total        = 0;
+        $total = 0;
         $positiveness = 0;
 
         return $this->computeGraph($user->votes, function (Vote $vote) use (&$total, &$positiveness) {
@@ -55,9 +55,9 @@ class GraphicsGenerator
         $labels = [];
         foreach ($dataset as $key => $value) {
             list($label, $value) = $callback($value);
-            $value               = $this->round ? round($value, 2) : $value;
-            $labels[]            = $label;
-            $values[]            = $value;
+            $value = $this->round ? round($value, 2) : $value;
+            $labels[] = $label;
+            $values[] = $value;
         }
 
         // Truncate dataset to 10%
@@ -81,12 +81,12 @@ class GraphicsGenerator
     protected function addLineChart(array $labels, array $values)
     {
         return [
-            'labels'   => array_values($labels),
+            'labels' => array_values($labels),
             'datasets' => [
                 [
-                    'fillColor'   => '#33cc73',
+                    'fillColor' => '#33cc73',
                     'strokeColor' => '#279B57',
-                    'data'        => array_values($values),
+                    'data' => array_values($values),
                 ],
             ],
         ];

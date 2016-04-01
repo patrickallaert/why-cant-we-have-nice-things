@@ -10,7 +10,7 @@ use League\FactoryMuffin\FactoryMuffin;
 use League\FactoryMuffin\Faker\Facade;
 use League\FactoryMuffin\Faker\Faker;
 
-/** @var FactoryMuffin $fm */
+/* @var FactoryMuffin $fm */
 /** @var Faker $faker */
 $faker = Facade::instance();
 
@@ -31,13 +31,12 @@ if (!function_exists('random')) {
             return $class::lists('id')->shuffle()->first();
         };
     }
-
 }
 
 $fm->define(User::class)->setDefinitions([
-    'name'       => $faker->userName(),
-    'full_name'  => $faker->name(),
-    'email'      => $faker->email(),
+    'name' => $faker->userName(),
+    'full_name' => $faker->name(),
+    'email' => $faker->email(),
     'contributions' => $faker->sentence(),
     'company_id' => random(Company::class),
     'no_votes' => $faker->randomNumber(1),
@@ -51,10 +50,10 @@ $fm->define(User::class)->setDefinitions([
 ]);
 
 $fm->define(Request::class)->setDefinitions([
-    'name'       => $faker->sentence(),
-    'contents'   => $faker->paragraph(),
-    'link'       => $faker->url(),
-    'condition'  => $faker->boolean(2/3),
+    'name' => $faker->sentence(),
+    'contents' => $faker->paragraph(),
+    'link' => $faker->url(),
+    'condition' => $faker->boolean(2 / 3),
     'approval' => $faker->randomFloat(null, 0, 1),
     'status' => $faker->numberBetween(1, 3),
     'created_at' => $faker->dateTimeThisDecade(),
@@ -65,17 +64,17 @@ $fm->define(Request::class)->setDefinitions([
 });
 
 $fm->define(Comment::class)->setDefinitions([
-    'name'       => $faker->sentence(),
-    'contents'   => $faker->paragraph(),
-    'xref'       => $faker->randomNumber(1),
+    'name' => $faker->sentence(),
+    'contents' => $faker->paragraph(),
+    'xref' => $faker->randomNumber(1),
     'created_at' => $faker->dateTimeThisYear(),
     'updated_at' => $faker->dateTimeThisYear(),
-    'user_id'    => random(User::class),
+    'user_id' => random(User::class),
     'request_id' => random(Request::class),
 ]);
 
 $fm->define(Question::class)->setDefinitions([
-    'name'    => $faker->sentence(),
+    'name' => $faker->sentence(),
     'choices' => function () {
         return ['Yes', 'No'];
     },
@@ -87,11 +86,11 @@ $fm->define(Question::class)->setDefinitions([
 ]);
 
 $fm->define(Vote::class)->setDefinitions([
-    'choice'      => $faker->numberBetween(1, 3),
+    'choice' => $faker->numberBetween(1, 3),
     'question_id' => random(Question::class),
-    'user_id'     => random(User::class),
-    'created_at'  => $faker->dateTimeThisYear(),
-    'updated_at'  => $faker->dateTimeThisYear(),
+    'user_id' => random(User::class),
+    'created_at' => $faker->dateTimeThisYear(),
+    'updated_at' => $faker->dateTimeThisYear(),
 ]);
 
 $fm->define(Company::class)->setDefinitions([

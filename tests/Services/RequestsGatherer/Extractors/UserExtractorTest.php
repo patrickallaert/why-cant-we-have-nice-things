@@ -9,14 +9,14 @@ class UserExtractorTest extends TestCase
 {
     public function testCanExtractUserInformations()
     {
-        $html      = $this->getDummyPage('user');
-        $crawler   = new Crawler($html);
+        $html = $this->getDummyPage('user');
+        $crawler = new Crawler($html);
         $extractor = new UserExtractor($crawler);
 
         $this->assertEquals([
-            'name'          => 'anahkiasen',
-            'full_name'     => 'Maxime Fabre',
-            'email'         => 'foo@bar.com',
+            'name' => 'anahkiasen',
+            'full_name' => 'Maxime Fabre',
+            'email' => 'foo@bar.com',
             'contributions' => ['pear/packages', 'pear/peardoc'],
         ], $extractor->extract());
     }

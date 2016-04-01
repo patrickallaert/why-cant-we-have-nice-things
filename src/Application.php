@@ -110,7 +110,7 @@ class Application
     public function run()
     {
         // Create Request and Response
-        $request  = $this->container->get(ServerRequestInterface::class);
+        $request = $this->container->get(ServerRequestInterface::class);
         $response = new Response();
 
         $builder = new RelayBuilder(function ($callable) {
@@ -118,7 +118,7 @@ class Application
         });
 
         // Apply middlewares
-        $relay    = $builder->newInstance($this->getMiddlewares());
+        $relay = $builder->newInstance($this->getMiddlewares());
         $response = $relay($request, $response);
 
         (new SapiEmitter())->emit($response);
@@ -129,7 +129,7 @@ class Application
      */
     protected function getMiddlewares()
     {
-        $cachePath   = $this->container->get('paths.cache').'/http';
+        $cachePath = $this->container->get('paths.cache').'/http';
         $middlewares = [
             ErrorsMiddleware::class,
             LeagueRouteMiddleware::class,

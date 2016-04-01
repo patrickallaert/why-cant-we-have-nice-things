@@ -27,7 +27,7 @@ class Github
     public function __construct(Repository $cache, Client $client)
     {
         $this->client = $client;
-        $this->cache  = $cache;
+        $this->cache = $cache;
     }
 
     /**

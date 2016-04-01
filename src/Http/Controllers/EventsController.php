@@ -18,7 +18,7 @@ class EventsController extends AbstractController
     {
         // Get which types of events to show
         $parameters = new Fluent($request->getQueryParams());
-        $types      = (array) $parameters->get('types');
+        $types = (array) $parameters->get('types');
 
         // Get the events we're interested in
         $events = Event::with('eventable.question.request', 'eventable.user')->latest();

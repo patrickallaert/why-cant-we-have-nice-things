@@ -34,7 +34,7 @@ class IdentitityExtractorTest extends TestCase
                 [
                     ['full_name' => 'Rasmus Schultz', 'email' => 'rasmus@mindplay.dk'],
                     ['full_name' => 'Yasuo Ohgaki', 'email' => 'yohgaki@ohgaki.net'],
-                    ['email'     => 'yohgaki@php.net'],
+                    ['email' => 'yohgaki@php.net'],
                 ],
             ],
             [

@@ -80,10 +80,10 @@ class MetadataCommand extends AbstractCommand
         }
 
         $synchronizer = new UserSynchronizer([
-            'id'            => $user->id,
-            'name'          => $user->name ?: $informations->login,
-            'email'         => $user->email ?: $informations->email,
-            'full_name'     => $user->full_name ?: $informations->full_name,
+            'id' => $user->id,
+            'name' => $user->name ?: $informations->login,
+            'email' => $user->email ?: $informations->email,
+            'full_name' => $user->full_name ?: $informations->full_name,
             'github_avatar' => $informations->avatar_url,
         ], $company);
 

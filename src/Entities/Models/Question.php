@@ -29,7 +29,7 @@ class Question extends AbstractModel
      */
     protected $casts = [
         'choices' => 'array',
-        'passed'  => 'boolean',
+        'passed' => 'boolean',
     ];
 
     //////////////////////////////////////////////////////////////////////

@@ -46,11 +46,11 @@ class ScheduledCommand extends AbstractCommand
         }
 
         $schedule = [
-            'sync:requests'  => CronExpression::factory('@hourly'),
-            'sync:stats'     => CronExpression::factory('@hourly'),
+            'sync:requests' => CronExpression::factory('@hourly'),
+            'sync:stats' => CronExpression::factory('@hourly'),
             'sync:internals' => CronExpression::factory('@hourly'),
-            'sync:slugs'     => CronExpression::factory('@hourly'),
-            'sync:metadata'  => CronExpression::factory('*/2 * * * * *'),
+            'sync:slugs' => CronExpression::factory('@hourly'),
+            'sync:metadata' => CronExpression::factory('*/2 * * * * *'),
         ];
 
         $helper = new ProcessHelper();
@@ -76,7 +76,7 @@ class ScheduledCommand extends AbstractCommand
     protected function runCommand(ProcessHelper $helper, $commandName)
     {
         // Define command and input
-        $input   = $commandName === 'sync:internals' ? '--size=1000' : '';
+        $input = $commandName === 'sync:internals' ? '--size=1000' : '';
         $command = [exec('which php'), 'console', $commandName, '-vvv'];
 
         // Create process instance

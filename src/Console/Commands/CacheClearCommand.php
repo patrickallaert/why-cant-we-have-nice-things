@@ -25,7 +25,7 @@ class CacheClearCommand extends AbstractCommand
     public function __construct(ContainerInterface $container, Repository $repository)
     {
         $this->repository = $repository;
-        $this->container  = $container;
+        $this->container = $container;
     }
 
     /**
