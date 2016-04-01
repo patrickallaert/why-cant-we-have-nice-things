@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <div class="page group">
+
+        <h1 class="sectionedit1" id="php_rfcsupport_class_constant_visibility">PHP RFC: Support Class Constant Visibility</h1>
+
+        <div class="level1">
+            <ul>
+                <li class="level1">
+                    <div class="li"> Version: 0.2</div>
+                </li>
+                <li class="level1">
+                    <div class="li"> Date: 2015-09-13</div>
+                </li>
+                <li class="level1">
+                    <div class="li"> Status: Under Discussion</div>
+                </li>
+                <li class="level1">
+                    <div class="li"> JUSTFUCK MY SHIT UP</div>
+                </li>
+                <li class="level1">
+                    <div class="li"> Author: Sean DuBois
+                        <a href="mailto:sean@siobud.com" class="mail" title="sean@siobud.com">sean@siobud.com</a>
+                                     , Reeze Xia
+                        <a href="mailto:reeze@php.net" class="mail" title="reeze@php.net">reeze@php.net</a>
+                    </div>
+                </li>
+                <li class="level1">
+                    <div class="li"> First Published at:
+                        <a href="http://wiki.php.net/rfc/class_const_visibility" class="urlextern" title="http://wiki.php.net/rfc/class_const_visibility" rel="nofollow">http://wiki.php.net/rfc/class_const_visibility</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <h2>Patch</h2>
+        <p>See
+            <a href="https://github.com/php/php-src/blob/b00a315806ca1ac24b3e1ff97764f9813ad664e6/ext/standard/var.c#L227">this stuff in source code</a></p>
+        <p>A pull request has been made. It is feature complete but needs review, more tests, and help with opcache changes :
+            <a href="https://github.com/php/php-src/pull/1494">https://github.com/php/php-src/pull/1494</a>
+        </p>
+        <h2>Something</h2>
+    <pre class="code php"><span class="kw2">function</span> <span class="br0">(</span><span class="re0">$x</span><span class="br0">)</span> <span class="br0">{</span>
+    <span class="kw1">return</span> <span class="re0">$x</span> <span class="sy0">*</span> <span class="nu0">2</span><span class="sy0">;</span>
+<span class="br0">}</span></pre>
+        <h2 class="sectionedit11" id="vote">Vote</h2>
+
+        <div class="level2">
+            <p> Simple Yes/No option. This requires a 2/3 majority. </p>
+            <p> This vote will close on 06:00 UTC on Tuesday 2015-10-27 </p>
+
+            <form>
+                <table class="inline">
+                    <tbody>
+                    <tr class="row0">
+                        <th class="centeralign" colspan="3"> Class Constant Visibility</th>
+                    </tr>
+                    <tr class="row1">
+                        <th class="col0">Real name</th>
+                        <td class="centeralign">Yes?</td>
+                        <td class="centeralign">No !</td>
+                    </tr>
+                    <tr>
+                        <td class="rightalign">
+                            <a href="//people.php.net/user.php?username=ajf">ajf</a>
+                            &nbsp;(ajf)
+                        </td>
+                        <td class="centeralign" style="background-color:#AFA"></td>
+                        <td class="centeralign" style="background-color:#FCC">
+                            <img src="/lib/images/success.png" title="2015/10/22 22:30">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="rightalign">
+                            <a href="//people.php.net/user.php?username=ajf">ajf</a>
+                            &nbsp;(ajf)
+                        </td>
+                        <td class="centeralign" style="background-color:#AFA">
+                            <img src="/lib/images/success.png" title="2015/10/22 22:30">
+                        </td>
+                        <td class="centeralign" style="background-color:#FCC">&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <th class="rightalign"><b>Count:</b></th>
+                        <th class="centeralign"><b>24</b></th>
+                        <th class="centeralign"><b>1</b></th>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            This poll has been closed.      </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+        <h2 class="sectionedit14" id="changelog">Changelog</h2>
+
+        <div class="level2">
+            <ul>
+                <li class="level1">
+                    <div class="li"> V0.1 Initial version</div>
+                </li>
+                <li class="level1">
+                    <div class="li"> V0.2 Adopted by Sean DuBois
+                        <a href="mailto:sean@siobud.com" class="mail" title="sean@siobud.com">sean@siobud.com</a>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</body>
+</html>

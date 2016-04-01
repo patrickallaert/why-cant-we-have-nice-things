@@ -1,5 +1,7 @@
 # Why can't we have nice things
 
+[![Circle CI](https://circleci.com/gh/madewithlove/why-cant-we-have-nice-things/tree/master.svg?style=svg)](https://circleci.com/gh/madewithlove/why-cant-we-have-nice-things/tree/master)
+
 This is an application to uniformizes PHP internals data in one central place and add insight into it (voting patterns, history, etc.). It aims to unify the PHP wiki, the repository and the mailing list, by displaying a clear interface of who voted on what, the comments on an RFC directly on it, and all kinds of stuff.
 
 ## Setup

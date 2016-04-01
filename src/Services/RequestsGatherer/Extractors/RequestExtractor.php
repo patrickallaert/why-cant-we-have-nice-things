@@ -180,12 +180,12 @@ class RequestExtractor extends AbstractExtractor
         // votes then we're voting
         $votes = array_column($questions, 'votes');
         $votes = array_filter(array_map('count', $votes));
-        if ($status === Request::DISCUSSION && count($votes)) {
+        if ($status === Request::DISCUSSION && count($votes) && !$this->allPollsClosed()) {
             $status = Request::VOTING;
         }
 
-        // If all polls are closed, then we're not voting
-        // anymore and can consider implemented/declined
+        // If the request was in voting but votes are closed,
+        // then consider it implemented
         if ($this->allPollsClosed() && $status === Request::VOTING) {
             $status = Request::APPROVED;
         }

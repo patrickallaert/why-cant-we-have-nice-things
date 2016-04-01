@@ -343,6 +343,14 @@ HTML
         $this->assertEquals(Request::INACTIVE, $informations['status']);
     }
 
+    public function testDoesntMarkAsVotingIfVotesAreClosed()
+    {
+        $html = $this->getDummyPage('rfc3');
+        $informations = $this->getInformationsFromHtml($html);
+
+        $this->assertEquals(Request::DISCUSSION, $informations['status']);
+    }
+
     public function testDoesntGoBeyondChangelogBlock()
     {
         $html = $this->getDummyPage('rfc2');
