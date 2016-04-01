@@ -5,7 +5,7 @@ namespace History\Entities\Traits;
 use DateTime;
 use History\Entities\Models\Event;
 
-trait HasEvents
+trait HasEventsTrait
 {
     /**
      * @codeCoverageIgnore

@@ -7,7 +7,7 @@ use History\CommandBus\CommandInterface;
 use History\Services\Threading\AutoloadingWorker;
 use League\Tactician\CommandBus;
 
-class CommandBusJob extends Job
+class CommandBusJob extends AbstractJob
 {
     /**
      * @var CommandInterface

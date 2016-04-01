@@ -75,7 +75,7 @@ abstract class TestCase extends PHPUnit_Framework_TestCase
 
             return $callback();
         });
-        
+
         $this->container->share(Repository::class, $cache);
 
         return $cache;

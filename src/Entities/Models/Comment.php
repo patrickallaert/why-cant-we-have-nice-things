@@ -2,7 +2,7 @@
 
 namespace History\Entities\Models;
 
-use History\Entities\Traits\HasEvents;
+use History\Entities\Traits\HasEventsTrait;
 use League\CommonMark\CommonMarkConverter;
 use LogicException;
 
@@ -14,7 +14,7 @@ use LogicException;
  */
 class Comment extends AbstractModel
 {
-    use HasEvents;
+    use HasEventsTrait;
 
     /**
      * The relations to eager load on every query.

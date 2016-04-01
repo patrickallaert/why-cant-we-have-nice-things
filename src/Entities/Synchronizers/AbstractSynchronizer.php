@@ -44,33 +44,6 @@ abstract class AbstractSynchronizer
     }
 
     /**
-     * @param array $informations
-     *
-     * @return Fluent
-     */
-    protected function sanitize(array $informations)
-    {
-        return new Fluent($informations);
-    }
-
-    /**
-     * Get the criterias against which an existing
-     * entity will be matched.
-     *
-     * @return array
-     */
-    abstract protected function getMatchers();
-
-    /**
-     * Get the fields to synchronize on the matched entity.
-     *
-     * @param AbstractModel $entity
-     *
-     * @return array
-     */
-    abstract protected function getSynchronizedFields(AbstractModel $entity);
-
-    /**
      * Synchronize a new or existing entity
      * with a set of data.
      *
@@ -109,6 +82,33 @@ abstract class AbstractSynchronizer
 
         return $entity;
     }
+
+    /**
+     * @param array $informations
+     *
+     * @return Fluent
+     */
+    protected function sanitize(array $informations)
+    {
+        return new Fluent($informations);
+    }
+
+    /**
+     * Get the criterias against which an existing
+     * entity will be matched.
+     *
+     * @return array
+     */
+    abstract protected function getMatchers();
+
+    /**
+     * Get the fields to synchronize on the matched entity.
+     *
+     * @param AbstractModel $entity
+     *
+     * @return array
+     */
+    abstract protected function getSynchronizedFields(AbstractModel $entity);
 
     //////////////////////////////////////////////////////////////////////
     ////////////////////////////// HELPERS ///////////////////////////////

@@ -2,7 +2,7 @@
 
 namespace History\Entities\Models;
 
-use History\Entities\Traits\HasEvents;
+use History\Entities\Traits\HasEventsTrait;
 
 /**
  * @property string  name
@@ -11,7 +11,7 @@ use History\Entities\Traits\HasEvents;
  */
 class Version extends AbstractModel
 {
-    use HasEvents;
+    use HasEventsTrait;
 
     /**
      * @var array

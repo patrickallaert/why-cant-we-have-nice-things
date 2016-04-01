@@ -3,8 +3,8 @@
 namespace History\Entities\Models;
 
 use History\Collection;
-use History\Entities\Traits\HasEvents;
-use History\Entities\Traits\HasSlug;
+use History\Entities\Traits\HasEventsTrait;
+use History\Entities\Traits\HasSlugTrait;
 
 /**
  * @property string     name
@@ -20,8 +20,8 @@ use History\Entities\Traits\HasSlug;
  */
 class Request extends AbstractModel
 {
-    use HasEvents;
-    use HasSlug;
+    use HasEventsTrait;
+    use HasSlugTrait;
 
     /**
      * @var int

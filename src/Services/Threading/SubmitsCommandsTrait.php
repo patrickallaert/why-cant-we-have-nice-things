@@ -3,14 +3,14 @@
 namespace History\Services\Threading;
 
 use History\CommandBus\CommandInterface;
-use History\Services\Threading\Jobs\CommandBusJob;
+use History\Services\Threading\Jobs\CommandBusAbstractJob;
 use Threaded;
 
 /**
  * Adds command dispatching capabilities
  * to a pool.
  */
-trait SubmitsCommands
+trait SubmitsCommandsTrait
 {
     /**
      * Submit a command to the pool.
@@ -21,7 +21,7 @@ trait SubmitsCommands
      */
     public function submitCommand(CommandInterface $command)
     {
-        return $this->submit(new CommandBusJob($command));
+        return $this->submit(new CommandBusAbstractJob($command));
     }
 
     /**

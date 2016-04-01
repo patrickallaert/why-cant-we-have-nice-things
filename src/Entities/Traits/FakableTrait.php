@@ -4,12 +4,12 @@ namespace History\Entities\Traits;
 
 use League\FactoryMuffin\FactoryMuffin;
 
-trait Fakable
+trait FakableTrait
 {
     /**
      * Get a fake instance of the model.
      *
-     * @param array $args
+     * @param array ...$args
      *
      * @return static
      */
@@ -21,7 +21,7 @@ trait Fakable
     /**
      * Seed a fake instance of the model.
      *
-     * @param int|array $args
+     * @param int|array ...$args
      *
      * @return static
      */

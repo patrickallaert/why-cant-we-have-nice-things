@@ -1,4 +1,5 @@
 <?php
+
 namespace History\Services;
 
 class Str extends \Illuminate\Support\Str

@@ -177,7 +177,7 @@ class MailingListArticleCleaner
      *
      * @return bool
      */
-    private function isBoundary($line)
+    protected function isBoundary($line)
     {
         if (!$this->boundary || strpos($line, '--'.$this->boundary) !== 0) {
             return false;

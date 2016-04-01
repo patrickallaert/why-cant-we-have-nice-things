@@ -20,8 +20,8 @@ class TinkerCommand
     /**
      * TinkerCommand constructor.
      *
-     * @param $container
-     * @param $shell
+     * @param ContainerInterface $container
+     * @param Shell              $shell
      */
     public function __construct(ContainerInterface $container, Shell $shell)
     {

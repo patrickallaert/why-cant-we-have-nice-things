@@ -131,7 +131,7 @@ class CreateCommentHandler extends AbstractHandler
      *
      * @return int|null
      */
-    private function getCommentFromReference($references)
+    protected function getCommentFromReference($references)
     {
         // Just get the last reference cause
         $references = explode('>', $references);

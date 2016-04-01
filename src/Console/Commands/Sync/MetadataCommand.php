@@ -56,7 +56,7 @@ class MetadataCommand extends AbstractCommand
                 $user->github_id = $githubLogin;
                 $user->save();
             }
-        };
+        }
     }
 
     /**
@@ -65,7 +65,7 @@ class MetadataCommand extends AbstractCommand
      *
      * @return UserSynchronizer
      */
-    public function updateUserwithInformations(User $user, $githubLogin)
+    protected function updateUserwithInformations(User $user, $githubLogin)
     {
         $informations = $this->github->getUserInformations($githubLogin);
         $informations = new Fluent($informations);

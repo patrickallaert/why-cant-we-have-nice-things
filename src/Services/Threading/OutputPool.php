@@ -3,7 +3,7 @@
 namespace History\Services\Threading;
 
 use History\Console\HistoryStyle;
-use History\Services\Threading\Jobs\Job;
+use History\Services\Threading\Jobs\AbstractJob;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class OutputPool extends \Pool
 {
-    use SubmitsCommands;
+    use SubmitsCommandsTrait;
 
     /**
      * @var HistoryStyle
@@ -47,7 +47,7 @@ class OutputPool extends \Pool
         // Check the status of jobs until all
         // of them are marked as done
         do {
-            $toProcess = $this->collect(function (Job $job) {
+            $toProcess = $this->collect(function (AbstractJob $job) {
                 if ($job->done) {
                     $this->output->progressAdvance();
                 }

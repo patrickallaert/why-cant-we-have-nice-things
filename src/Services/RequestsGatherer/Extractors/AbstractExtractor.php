@@ -5,8 +5,8 @@ namespace History\Services\RequestsGatherer\Extractors;
 use DateTime;
 use Exception;
 use History\Services\RequestsGatherer\ExtractorInterface;
-use Symfony\Component\DomCrawler\Crawler;
 use History\Services\Str;
+use Symfony\Component\DomCrawler\Crawler;
 
 abstract class AbstractExtractor implements ExtractorInterface
 {

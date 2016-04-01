@@ -4,7 +4,7 @@ namespace History\Entities\Traits;
 
 use Illuminate\Support\Str;
 
-trait HasSlug
+trait HasSlugTrait
 {
     /**
      * Refresh the model's slug.

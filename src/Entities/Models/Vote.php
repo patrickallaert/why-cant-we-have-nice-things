@@ -2,7 +2,7 @@
 
 namespace History\Entities\Models;
 
-use History\Entities\Traits\HasEvents;
+use History\Entities\Traits\HasEventsTrait;
 use Illuminate\Support\Arr;
 
 /**
@@ -12,7 +12,7 @@ use Illuminate\Support\Arr;
  */
 class Vote extends AbstractModel
 {
-    use HasEvents;
+    use HasEventsTrait;
 
     /**
      * @var array

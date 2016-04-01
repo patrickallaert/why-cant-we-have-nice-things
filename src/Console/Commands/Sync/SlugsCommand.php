@@ -18,18 +18,18 @@ class SlugsCommand extends AbstractCommand
         foreach ($this->output->progressIterator($entries) as $user) {
             $user->slug = $user->getSlug();
             $user->save();
-        };
+        }
 
         $entries = Request::all();
         foreach ($this->output->progressIterator($entries) as $request) {
             $request->slug = $request->getSlug();
             $request->save();
-        };
+        }
 
         $entries = Company::all();
         foreach ($this->output->progressIterator($entries) as $company) {
             $company->slug = $company->getSlug();
             $company->save();
-        };
+        }
     }
 }

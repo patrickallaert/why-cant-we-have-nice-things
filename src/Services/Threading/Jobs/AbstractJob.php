@@ -4,7 +4,7 @@ namespace History\Services\Threading\Jobs;
 
 use Threaded;
 
-abstract class Job extends Threaded
+abstract class AbstractJob extends Threaded
 {
     /**
      * @var bool

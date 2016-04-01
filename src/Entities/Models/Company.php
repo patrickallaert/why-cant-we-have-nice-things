@@ -2,14 +2,14 @@
 
 namespace History\Entities\Models;
 
-use History\Entities\Traits\HasSlug;
+use History\Entities\Traits\HasSlugTrait;
 
 /**
  * @property string name
  */
 class Company extends AbstractModel
 {
-    use HasSlug;
+    use HasSlugTrait;
 
     /**
      * @var array

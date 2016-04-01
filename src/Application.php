@@ -90,21 +90,6 @@ class Application
     }
 
     /**
-     * Register the application's service providers.
-     */
-    protected function registerProviders()
-    {
-        // Register providers
-        array_walk($this->providers, [$this->container, 'addServiceProvider']);
-        $this->container->get(Manager::class);
-
-        // Register local providers
-        if ($this->container->get('debug')) {
-            array_walk($this->localProviders, [$this->container, 'addServiceProvider']);
-        }
-    }
-
-    /**
      * Run the application.
      */
     public function run()
@@ -125,11 +110,33 @@ class Application
     }
 
     /**
+     * Run the CLI application.
+     */
+    public function runConsole()
+    {
+        $this->container->get(Console::class)->run();
+    }
+
+    /**
+     * Register the application's service providers.
+     */
+    protected function registerProviders()
+    {
+        // Register providers
+        array_walk($this->providers, [$this->container, 'addServiceProvider']);
+        $this->container->get(Manager::class);
+
+        // Register local providers
+        if ($this->container->get('debug')) {
+            array_walk($this->localProviders, [$this->container, 'addServiceProvider']);
+        }
+    }
+
+    /**
      * @return MiddlewareInterface[]
      */
     protected function getMiddlewares()
     {
-        $cachePath = $this->container->get('paths.cache').'/http';
         $middlewares = [
             ErrorsMiddleware::class,
             LeagueRouteMiddleware::class,
@@ -143,18 +150,6 @@ class Application
             ], $middlewares);
         }
 
-        return array_merge([
-            //new ServeCachedResponse($cachePath),
-        ], $middlewares, [
-            //new SaveResponse($cachePath),
-        ]);
-    }
-
-    /**
-     * Run the CLI application.
-     */
-    public function runConsole()
-    {
-        $this->container->get(Console::class)->run();
+        return $middlewares;
     }
 }

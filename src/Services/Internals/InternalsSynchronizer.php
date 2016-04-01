@@ -76,6 +76,8 @@ class InternalsSynchronizer
     /**
      * Synchronize the php.internals mailing list
      * to a fucking usable format.
+     *
+     * @return Comment[]
      */
     public function synchronize()
     {

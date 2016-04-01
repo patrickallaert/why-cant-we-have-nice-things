@@ -3,7 +3,7 @@
 namespace History\Entities\Models;
 
 use History\Collection;
-use History\Entities\Traits\Fakable;
+use History\Entities\Traits\FakableTrait;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 abstract class AbstractModel extends Model
 {
-    use Fakable;
+    use FakableTrait;
 
     /**
      * @return string

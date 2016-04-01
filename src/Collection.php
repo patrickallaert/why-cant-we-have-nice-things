@@ -5,6 +5,8 @@ namespace History;
 class Collection extends \Illuminate\Database\Eloquent\Collection
 {
     /**
+     * @param string|null $key
+     *
      * @return float|int
      */
     public function average($key = null)

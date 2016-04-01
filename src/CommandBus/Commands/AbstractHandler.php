@@ -17,6 +17,7 @@ abstract class AbstractHandler
         // Check the cache for the contents first
         $contents = $this->cache->tags('php')->rememberForever($link, function () use ($link) {
             $request = (new Client())->request('GET', $link);
+
             return $request->getBody()->getContents();
         });
 

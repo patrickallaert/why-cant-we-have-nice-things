@@ -3,7 +3,7 @@
 namespace History\Entities\Models;
 
 use History\Collection;
-use History\Entities\Traits\HasSlug;
+use History\Entities\Traits\HasSlugTrait;
 use thomaswelton\GravatarLib\Gravatar;
 
 /**
@@ -29,7 +29,7 @@ use thomaswelton\GravatarLib\Gravatar;
  */
 class User extends AbstractModel
 {
-    use HasSlug;
+    use HasSlugTrait;
 
     /**
      * @var array
