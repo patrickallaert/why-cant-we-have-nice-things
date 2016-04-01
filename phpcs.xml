@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ruleset>
-    <file>app</file>
+    <file>src</file>
     <arg name="colors"/>
     <arg value="p"/>
     <exclude-pattern>tests/*</exclude-pattern>
