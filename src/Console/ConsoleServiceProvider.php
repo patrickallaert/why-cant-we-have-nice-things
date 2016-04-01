@@ -4,13 +4,11 @@ namespace History\Console;
 
 use History\Console\Commands\CacheClearCommand;
 use History\Console\Commands\ScheduledCommand;
-use History\Console\Commands\SeedCommand;
 use History\Console\Commands\Sync\InternalsCommand;
 use History\Console\Commands\Sync\MetadataCommand;
 use History\Console\Commands\Sync\RequestsCommand;
 use History\Console\Commands\Sync\SlugsCommand;
 use History\Console\Commands\Sync\StatsCommand;
-use History\Console\Commands\Tinker;
 use History\Console\Commands\TinkerCommand;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Silly\Application;
@@ -55,10 +53,10 @@ class ConsoleServiceProvider extends AbstractServiceProvider
             ]);
 
             // Register development commands
-            $app->command('seed', SeedCommand::class)->descriptions('Seed the database with dummy data');
             $app->command('tinker', TinkerCommand::class)->descriptions('Tinker with the app');
             $app->command('deploy', function (OutputInterface $output, InputInterface $input) {
-                file_get_contents('https://forge.laravel.com/servers/28691/sites/105668/deploy/http?token='.getenv('FORGE_TOKEN'));
+                $endpoint = 'https://forge.laravel.com/servers/28691/sites/105668/deploy/http?token='.getenv('FORGE_TOKEN');
+                file_get_contents($endpoint);
                 (new HistoryStyle($input, $output))->success('WCWHNT queued for deployment');
             });
 
