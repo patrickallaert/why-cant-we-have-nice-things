@@ -39,6 +39,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^2.2",
+        "escapestudios/symfony2-coding-standard": "^2.9",
         "fabpot/php-cs-fixer": "2.0.*@dev",
         "filp/whoops": "^2.1",
         "franzl/whoops-middleware": "^0.3.1",
@@ -50,6 +51,8 @@
         "phpunit/phpunit": "^5.3",
         "psy/psysh": "^0.7.2",
         "roave/security-advisories": "dev-master@dev",
+        "sensiolabs/security-checker": "^3.0",
+        "squizlabs/php_codesniffer": "^2.5",
         "symfony/var-dumper": "^3.0"
     },
     "autoload": {
