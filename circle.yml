@@ -21,11 +21,11 @@ database:
   pre:
     - cp .env.testing .env
   override:
-    - vendor/bin/phinx migrate
+    - npm run migrate
 
 test:
   override:
     - npm run build
-    - composer test
-    - npm run lint
-    - composer lint -- --dry-run
+    - npm test
+    - npm run lint:js
+    - npm run lint:php

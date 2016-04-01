@@ -65,11 +65,6 @@
             "History\\": "tests"
         }
     },
-    "scripts": {
-        "migrate": "phinx migrate",
-        "lint": "php-cs-fixer fix",
-        "test": "phpunit"
-    },
     "config": {
         "sort-packages": true,
         "preferred-install": "dist"

@@ -19,7 +19,11 @@
   },
   "scripts": {
     "build": "webpack --progress",
-    "lint": "eslint resources/assets/js",
+    "migrate": "vendor/bin/phinx migrate",
+    "test": "vendor/bin/phpunit",
+    "lint": "npm run lint:php && npm run lint:js",
+    "lint:php": "vendor/bin/phpcs",
+    "lint:js": "eslint resources/assets/js",
     "start": "webpack-dev-server --inline --progress"
   }
 }

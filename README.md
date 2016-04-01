@@ -15,7 +15,7 @@ $ npm run build
 Then migrate the database:
 
 ```bash
-$ composer migrate
+$ npm run migrate
 ```
 
 And, well. That's pretty much it.
@@ -27,5 +27,5 @@ You can run `./console scheduled --force` to sync RFCs, users, commands and such
 ## Running the tests
 
 ```bash
-$ composer test
+$ npm test
 ```
