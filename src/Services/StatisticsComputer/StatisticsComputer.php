@@ -95,7 +95,7 @@ class StatisticsComputer
 
         return [
             'approval' => $this->roundToFloatLimit($approval),
-            'passed' => (int) $this->hasPassed($question, $approval),
+            'passed' => (bool) $this->hasPassed($question, $approval),
         ];
     }
 
@@ -127,7 +127,7 @@ class StatisticsComputer
      */
     public function hasPassed(Question $question, $approval)
     {
-        return $approval > $this->getMajorityCondition($question);
+        return $approval >= $this->getMajorityCondition($question);
     }
 
     /**

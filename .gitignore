@@ -8,3 +8,4 @@ vendor
 # Generated
 public/builds
 tests/_coverage
+humbuglog.txt

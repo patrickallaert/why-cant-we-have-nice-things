@@ -34,6 +34,7 @@ class VoteSynchronizerTest extends TestCase
 
     public function testDoesntOverwriteExistingVotes()
     {
+        Vote::truncate();
         $existing = Vote::seed();
 
         $time = new DateTime();

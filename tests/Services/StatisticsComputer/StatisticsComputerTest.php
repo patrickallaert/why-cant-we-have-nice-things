@@ -27,17 +27,19 @@ class StatisticsComputerTest extends TestCase
     /**
      * @dataProvider provideConditions
      */
-    public function testCanComputeDependingOnMajorityConditions($condition, $passed)
+    public function testCanComputeDependingOnMajorityConditions($condition, $passed, $votes)
     {
         $question = Question::seed();
         $question->request = new Request(['condition' => $condition]);
-        Vote::seed(['choice' => 2, 'question_id' => $question->id]);
-        Vote::seed(['choice' => 1, 'question_id' => $question->id]);
-        Vote::seed(['choice' => 1, 'question_id' => $question->id]);
+        $approval = 0;
+        foreach ($votes as $vote) {
+            $approval += $vote === 1;
+            Vote::seed(['choice' => $vote, 'question_id' => $question->id]);
+        }
 
         $stats = $this->computer->forQuestion($question);
         $this->assertEquals([
-            'approval' => round(2 / 3, 6),
+            'approval' => round($approval / 3, 6),
             'passed' => $passed,
         ], $stats);
     }
@@ -155,8 +157,9 @@ class StatisticsComputerTest extends TestCase
     public function provideConditions()
     {
         return [
-            ['2/3', false],
-            ['50%+1', true],
+            ['2/3', false, [1, 2, 2]],
+            ['2/3', true, [1, 1, 2]],
+            ['50%+1', true, [1, 1, 2]],
         ];
     }
 }

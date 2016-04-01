@@ -18,7 +18,7 @@ class VoteExtractor extends AbstractExtractor
 
         // Get which choice the user picked
         $voted = 0;
-        $time = new DateTime();
+        $time = (new DateTime())->format('Y/m/d H:i:s');
         $this->crawler->filterXpath('//td')->each(function ($choice, $key) use (&$voted, &$time) {
             $image = $choice->filterXpath('//img');
 

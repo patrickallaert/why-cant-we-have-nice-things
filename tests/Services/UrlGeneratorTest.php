@@ -18,7 +18,7 @@ class UrlGeneratorTest extends TestCase
         parent::setUp();
 
         $routes = new RouteCollection();
-        $urls = [
+        $urls   = [
             $routes->get('users', 'History\Http\Controllers\FooController::index'),
             $routes->get('users/{user}', 'History\Http\Controllers\FooController::show'),
         ];
@@ -26,16 +26,36 @@ class UrlGeneratorTest extends TestCase
         $this->generator = new UrlGenerator($urls);
     }
 
-    public function testCanGeneratorUrlToRoute()
+    /**
+     * @dataProvider provideUrls
+     *
+     * @param string $route
+     * @param string|array $parameters
+     * @param string $expected
+     */
+    public function testCanGeneratorUrlToRoute($route, $parameters, $expected)
     {
-        $this->assertEquals('/users', $this->generator->to('foo.index'));
-        $this->assertEquals('/users/foobar', $this->generator->to('foo.show', ['user' => 'foobar']));
-        $this->assertEquals('/users/foobar', $this->generator->to('foo.show', 'foobar'));
+        $this->assertEquals($expected, $this->generator->to($route, $parameters));
     }
 
+    /**
+     * @expectedException InvalidArgumentException
+     */
     public function testThrowsExceptionOnInvalidRoute()
     {
-        $this->setExpectedException(InvalidArgumentException::class);
         $this->generator->to('foo.sdfsdf');
+    }
+
+    /**
+     * @return array
+     */
+    public function provideUrls()
+    {
+        return [
+            ['foo.index', [], '/users'],
+            ['foo.show', ['user' => 'foobar'], '/users/foobar'],
+            ['foo.show', 'foobar', '/users/foobar'],
+            ['foo.show', ['foobar' => 'foobar'], '/users/user'],
+        ];
     }
 }
