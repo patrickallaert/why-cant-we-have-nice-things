@@ -6,10 +6,17 @@ use History\Entities\Models\Question;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
 use History\Entities\Models\Vote;
-use League\FactoryMuffin\Facade as FactoryMuffin;
+use League\FactoryMuffin\FactoryMuffin;
+use League\FactoryMuffin\Faker\Facade;
+use League\FactoryMuffin\Faker\Faker;
+
+/** @var FactoryMuffin $fm */
+/** @var Faker $faker */
+$faker = Facade::instance();
 
 if (!function_exists('random')) {
-    /*
+
+    /**
      * @param string $class
      *
      * @return Closure
@@ -24,57 +31,70 @@ if (!function_exists('random')) {
             return $class::lists('id')->shuffle()->first();
         };
     }
+
 }
 
-FactoryMuffin::define(User::class, [
-    'name'       => 'userName',
-    'full_name'  => 'name',
-    'email'      => 'email',
+$fm->define(User::class)->setDefinitions([
+    'name'       => $faker->userName(),
+    'full_name'  => $faker->name(),
+    'email'      => $faker->email(),
+    'contributions' => $faker->sentence(),
     'company_id' => random(Company::class),
-    'created_at' => 'dateTimeThisYear',
-    'updated_at' => 'dateTimeThisYear',
+    'no_votes' => $faker->randomNumber(1),
+    'yes_votes' => $faker->randomNumber(1),
+    'total_votes' => $faker->randomNumber(1),
+    'approval' => $faker->randomFloat(null, 0, 1),
+    'success' => $faker->randomFloat(null, 0, 1),
+    'hivemind' => $faker->randomFloat(null, 0, 1),
+    'created_at' => $faker->dateTimeThisYear(),
+    'updated_at' => $faker->dateTimeThisYear(),
 ]);
 
-FactoryMuffin::define(Request::class, [
-    'name'       => 'sentence',
-    'contents'   => 'paragraph',
-    'link'       => 'url',
-    'condition'  => '2/3',
-    'created_at' => 'dateTimeThisDecade',
-    'updated_at' => 'dateTimeThisDecade',
-], function (Request $request) {
+$fm->define(Request::class)->setDefinitions([
+    'name'       => $faker->sentence(),
+    'contents'   => $faker->paragraph(),
+    'link'       => $faker->url(),
+    'condition'  => $faker->boolean(2/3),
+    'approval' => $faker->randomFloat(null, 0, 1),
+    'status' => $faker->numberBetween(1, 3),
+    'created_at' => $faker->dateTimeThisDecade(),
+    'updated_at' => $faker->dateTimeThisDecade(),
+])->setCallback(function (Request $request) {
     $users = User::lists('id')->shuffle()->take(2);
     $request->authors()->sync($users->all());
 });
 
-FactoryMuffin::define(Comment::class, [
-    'name'       => 'sentence',
-    'contents'   => 'paragraph',
-    'xref'       => 'number',
-    'created_at' => 'dateTimeThisYear',
-    'updated_at' => 'dateTimeThisYear',
+$fm->define(Comment::class)->setDefinitions([
+    'name'       => $faker->sentence(),
+    'contents'   => $faker->paragraph(),
+    'xref'       => $faker->randomNumber(1),
+    'created_at' => $faker->dateTimeThisYear(),
+    'updated_at' => $faker->dateTimeThisYear(),
     'user_id'    => random(User::class),
     'request_id' => random(Request::class),
 ]);
 
-FactoryMuffin::define(Question::class, [
-    'name'    => 'sentence',
+$fm->define(Question::class)->setDefinitions([
+    'name'    => $faker->sentence(),
     'choices' => function () {
         return ['Yes', 'No'];
     },
+    'approval' => $faker->randomFloat(null, 0, 1),
+    'passed' => $faker->boolean(),
     'request_id' => random(Request::class),
-    'created_at' => 'dateTimeThisYear',
-    'updated_at' => 'dateTimeThisYear',
+    'created_at' => $faker->dateTimeThisYear(),
+    'updated_at' => $faker->dateTimeThisYear(),
 ]);
 
-FactoryMuffin::define(Vote::class, [
-    'choice'      => 'numberBetween|1;3',
+$fm->define(Vote::class)->setDefinitions([
+    'choice'      => $faker->numberBetween(1, 3),
     'question_id' => random(Question::class),
     'user_id'     => random(User::class),
-    'created_at'  => 'dateTimeThisYear',
-    'updated_at'  => 'dateTimeThisYear',
+    'created_at'  => $faker->dateTimeThisYear(),
+    'updated_at'  => $faker->dateTimeThisYear(),
 ]);
 
-FactoryMuffin::define(Company::class, [
-    'name' => 'word',
+$fm->define(Company::class)->setDefinitions([
+    'name' => $faker->word(),
+    'representation' => $faker->randomNumber(1),
 ]);

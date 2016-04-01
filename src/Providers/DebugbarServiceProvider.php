@@ -6,6 +6,8 @@ use Barryvdh\Debugbar\DataCollector\QueryCollector;
 use DebugBar\JavascriptRenderer;
 use DebugBar\StandardDebugBar;
 use Illuminate\Database\Capsule\Manager;
+use Illuminate\Database\Connection;
+use Illuminate\Database\Events\QueryExecuted;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Twig_Environment;
 
@@ -44,10 +46,12 @@ class DebugbarServiceProvider extends AbstractServiceProvider
 
             // Bind QueryCollector to current connection
             /* @var StandardDebugbar $debugbar */
+            /* @var Connection $connection */
             $connection = $this->container->get(Manager::class)->connection();
-            $connection->listen(function ($query, $bindings, $time) use ($debugbar, $connection) {
+            $connection->listen(function (QueryExecuted $event) use ($debugbar, $connection) {
+                /** @var QueryCollector $collector */
                 $collector = $debugbar->getCollector('queries');
-                $collector->addQuery((string) $query, $bindings, $time, $connection);
+                $collector->addQuery((string) $event->sql, $event->bindings, $event->time, $event->connection);
             });
 
             return $debugbar;

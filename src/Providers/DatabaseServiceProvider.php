@@ -18,7 +18,7 @@ use Illuminate\Container\Container;
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Events\Dispatcher;
 use League\Container\ServiceProvider\AbstractServiceProvider;
-use League\FactoryMuffin\Facade;
+use League\FactoryMuffin\Faker\Facade;
 
 class DatabaseServiceProvider extends AbstractServiceProvider
 {
