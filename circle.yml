@@ -8,6 +8,7 @@ machine:
 
 dependencies:
   cache_directories:
+    - ~/.composer/cache/
     - vendor
   pre:
     - echo "memory_limit = 1024M" > ~/.phpenv/versions/$(phpenv global)/etc/conf.d/memory.ini
@@ -25,7 +26,7 @@ database:
 
 test:
   override:
-    - npm run build
+    - npm run build -- --bail
     - npm test
     - npm run lint:js
     - npm run lint:php
