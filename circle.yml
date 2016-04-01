@@ -30,3 +30,10 @@ test:
     - npm test
     - npm run lint:js
     - npm run lint:php
+
+deployment:
+ develop:
+   branch: master
+   commands:
+     - bundle install
+     - bundle exec cap staging deploy

@@ -1,4 +1,2 @@
-import nodelistToArray from './nodelistToArray';
-import each from './each';
-
-export default {nodelistToArray, each};
+export nodelistToArray from './nodelistToArray';
+export each from './each';

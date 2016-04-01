@@ -54,11 +54,6 @@ class ConsoleServiceProvider extends AbstractServiceProvider
 
             // Register development commands
             $app->command('tinker', TinkerCommand::class)->descriptions('Tinker with the app');
-            $app->command('deploy', function (OutputInterface $output, InputInterface $input) {
-                $endpoint = 'https://forge.laravel.com/servers/28691/sites/105668/deploy/http?token='.getenv('FORGE_TOKEN');
-                file_get_contents($endpoint);
-                (new HistoryStyle($input, $output))->success('WCWHNT queued for deployment');
-            });
 
             return $app;
         });
