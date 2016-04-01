@@ -18,7 +18,6 @@ use Illuminate\Container\Container;
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Events\Dispatcher;
 use League\Container\ServiceProvider\AbstractServiceProvider;
-use League\FactoryMuffin\Faker\Facade;
 
 class DatabaseServiceProvider extends AbstractServiceProvider
 {
@@ -46,11 +45,6 @@ class DatabaseServiceProvider extends AbstractServiceProvider
             User::observe(new UserObserver());
             Version::observe(new VersionObserver());
             Vote::observe(new VoteObserver());
-
-            // Load factories if they aren't already
-            if ($this->container->get('debug')) {
-                Facade::loadFactories($this->container->get('paths.factories'));
-            }
 
             return $database;
         });

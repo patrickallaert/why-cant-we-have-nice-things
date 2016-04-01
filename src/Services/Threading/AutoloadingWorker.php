@@ -47,7 +47,7 @@ class AutoloadingWorker extends Worker
     /**
      * {@inheritdoc}
      */
-    public function start($options = null)
+    public function start(int $options = null)
     {
         return parent::start(PTHREADS_INHERIT_NONE);
     }

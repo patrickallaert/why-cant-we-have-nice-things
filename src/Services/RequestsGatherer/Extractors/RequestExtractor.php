@@ -136,7 +136,7 @@ class RequestExtractor extends AbstractExtractor
         $links = $this->crawler->filterXPath('//a');
         foreach ($links as $link) {
             $link = $link->getAttribute('href');
-            if (strpos($link, 'github.com') !== false) {
+            if (strpos($link, 'github.com') !== false && strpos($link, 'pull') !== false) {
                 $pulls[] = $link;
             }
         }

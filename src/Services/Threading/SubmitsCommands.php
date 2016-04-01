@@ -29,5 +29,5 @@ trait SubmitsCommands
      *
      * @return mixed
      */
-    abstract public function submit($job);
+    abstract public function submit(Threaded $job);
 }

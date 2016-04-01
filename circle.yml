@@ -2,7 +2,7 @@ machine:
   php:
     version: 5.6.5
   node:
-    version: 4.1.0
+    version: stable
   environment:
     APP_ENV: testing
 
