@@ -15,21 +15,21 @@ class SlugsCommand extends AbstractCommand
     public function run()
     {
         $entries = User::all();
-        $this->output->progressIterator($entries, function (User $user) {
+        foreach ($this->output->progressIterator($entries) as $user) {
             $user->slug = $user->getSlug();
             $user->save();
-        });
+        };
 
         $entries = Request::all();
-        $this->output->progressIterator($entries, function (Request $request) {
+        foreach ($this->output->progressIterator($entries) as $request) {
             $request->slug = $request->getSlug();
             $request->save();
-        });
+        };
 
         $entries = Company::all();
-        $this->output->progressIterator($entries, function (Company $company) {
+        foreach ($this->output->progressIterator($entries) as $company) {
             $company->slug = $company->getSlug();
             $company->save();
-        });
+        };
     }
 }

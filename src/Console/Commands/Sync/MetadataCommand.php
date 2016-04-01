@@ -37,7 +37,7 @@ class MetadataCommand extends AbstractCommand
 
         // Only get users with holes in their informations
         $users = User::whereNull('github_id')->orWhereNull('github_avatar')->get();
-        $this->output->progressIterator($users, function (User $user) {
+        foreach ($this->output->progressIterator($users) as $user) {
             try {
                 $search = $this->github->searchUser($user);
             } catch (Exception $exception) {
@@ -56,7 +56,7 @@ class MetadataCommand extends AbstractCommand
                 $user->github_id = $githubLogin;
                 $user->save();
             }
-        });
+        };
     }
 
     /**

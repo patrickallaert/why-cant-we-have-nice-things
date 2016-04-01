@@ -53,20 +53,14 @@ class HistoryStyle extends SymfonyStyle
      * Show progress as we loop through an iterable.
      *
      * @param Collection|array $entries
-     * @param callable         $callback
      *
      * @return \Generator|void
      */
-    public function progressIterator($entries, callable $callback)
+    public function progressIterator($entries)
     {
         $this->progressStart(count($entries));
         foreach ($entries as $entry) {
-            $result = $callback($entry);
-            if ($result === false) {
-                return;
-            }
-
-            yield $result;
+            yield $entry;
             $this->progressAdvance();
         }
 
