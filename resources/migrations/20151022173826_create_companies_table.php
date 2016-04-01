@@ -25,7 +25,7 @@ class CreateCompaniesTable extends AbstractMigration
         $this->table('companies')
              ->addColumn('name', 'string')
              ->addColumn('slug', 'string', ['null' => true])
-             ->addColumn('representation', 'float')
+             ->addColumn('representation', 'float', ['default' => 0])
              ->addColumn('created_at', 'datetime')
              ->addColumn('updated_at', 'datetime')
              ->create();
