@@ -2,21 +2,20 @@
   "name": "why-cant-we-have-nice-things",
   "private": true,
   "dependencies": {
-    "babel-runtime": "^5.8.25",
-    "bootstrap-sass": "^3.3.5",
-    "bootstrap.native": "^0.9.7-npmfix.1",
-    "bootswatch": "^3.3.5",
+    "babel-runtime": "^6.6.1",
+    "bootstrap-sass": "^3.3.6",
+    "bootstrap.native": "^1.0.2",
+    "bootswatch": "^3.3.6",
     "chart.js": "^1.0.2",
-    "font-awesome": "^4.4.0",
-    "highlight.js": "^8.9.1"
+    "font-awesome": "^4.5.0",
+    "highlight.js": "^9.2.0"
   },
   "devDependencies": {
-    "babel-eslint": "^4.1.3",
-    "eslint": "^1.7.3",
-    "eslint-config-madewithlove": "^1.0.1",
-    "madewithlove-webpack-config": "^1.1.0",
-    "webpack": "^1.12.2",
-    "webpack-dev-server": "^1.12.1"
+    "eslint": "^2.5.3",
+    "eslint-config-madewithlove": "^2.1.5",
+    "madewithlove-webpack-config": "^3.0.9",
+    "webpack": "^1.12.14",
+    "webpack-dev-server": "^1.14.1"
   },
   "scripts": {
     "build": "webpack --progress",
