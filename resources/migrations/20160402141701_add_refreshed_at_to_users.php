@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class AddTargetToRequests extends AbstractMigration
+class AddRefreshedAtToUsers extends AbstractMigration
 {
     /**
      * Change Method.
@@ -27,8 +27,8 @@ class AddTargetToRequests extends AbstractMigration
      */
     public function change()
     {
-        $this->table('requests')
-            ->addColumn('target', 'string', ['after' => 'approval', 'null' => true])
+        $this->table('users')
+            ->addColumn('refreshed_at', 'datetime', ['null' => true, 'after' => 'company_id'])
             ->update();
     }
 }

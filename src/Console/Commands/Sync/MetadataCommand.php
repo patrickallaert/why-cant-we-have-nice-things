@@ -3,29 +3,24 @@
 namespace History\Console\Commands\Sync;
 
 use Exception;
+use History\CommandBus\Commands\FetchMetadataCommand;
 use History\Console\Commands\AbstractCommand;
-use History\Entities\Models\Company;
 use History\Entities\Models\User;
-use History\Entities\Synchronizers\CompanySynchronizer;
-use History\Entities\Synchronizers\UserSynchronizer;
-use History\Services\Github\Github;
-use Illuminate\Support\Fluent;
+use League\Tactician\CommandBus;
 
 class MetadataCommand extends AbstractCommand
 {
     /**
-     * @var Github
+     * @var CommandBus
      */
-    protected $github;
+    protected $bus;
 
     /**
-     * MetadataCommand constructor.
-     *
-     * @param Github $github
+     * @param CommandBus $bus
      */
-    public function __construct(Github $github)
+    public function __construct(CommandBus $bus)
     {
-        $this->github = $github;
+        $this->bus = $bus;
     }
 
     /**
@@ -33,60 +28,17 @@ class MetadataCommand extends AbstractCommand
      */
     protected function run()
     {
+        $users = User::all();
         $this->output->title('Refreshing metadata');
 
-        // Only get users with holes in their informations
-        $users = User::whereNull('github_id')->orWhereNull('github_avatar')->get();
         foreach ($this->output->progressIterator($users) as $user) {
             try {
-                $search = $this->github->searchUser($user);
+                $this->bus->handle(new FetchMetadataCommand($user));
             } catch (Exception $exception) {
                 $this->output->writeln('<error>API limit reached</error>');
 
                 return false;
             }
-
-            if ($search && $search['total_count']) {
-                $githubLogin = $search['items'][0]['login'];
-                $synchronizer = $this->updateUserwithInformations($user, $githubLogin);
-
-                // Save Github ID for later use
-                /** @var User $user */
-                $user = $synchronizer->persist();
-                $user->github_id = $githubLogin;
-                $user->save();
-            }
         }
-    }
-
-    /**
-     * @param User   $user
-     * @param string $githubLogin
-     *
-     * @return UserSynchronizer
-     */
-    protected function updateUserwithInformations(User $user, $githubLogin)
-    {
-        $informations = $this->github->getUserInformations($githubLogin);
-        $informations = new Fluent($informations);
-
-        $company = new Company();
-        if ($informations->company) {
-            $company = new CompanySynchronizer([
-                'name' => $informations->company,
-            ]);
-
-            $company = $company->persist();
-        }
-
-        $synchronizer = new UserSynchronizer([
-            'id' => $user->id,
-            'name' => $user->name ?: $informations->login,
-            'email' => $user->email ?: $informations->email,
-            'full_name' => $user->full_name ?: $informations->full_name,
-            'github_avatar' => $informations->avatar_url,
-        ], $company);
-
-        return $synchronizer;
     }
 }

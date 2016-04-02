@@ -56,6 +56,13 @@ class User extends AbstractModel
     ];
 
     /**
+     * @var array
+     */
+    protected $dates = [
+        'refreshed_at',
+    ];
+
+    /**
      * @return string
      */
     public function getSlugSource()
