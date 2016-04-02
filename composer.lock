@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3dc638b50f6cfbb94db9ed1948707484",
-    "content-hash": "0709c199c5e14b2d664f37145bfcf768",
+    "hash": "678102fceb1e1d27c6eb581c3e931c2a",
+    "content-hash": "992354c44189f3cc90b1d8dd9941895d",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -866,16 +866,16 @@
         },
         {
             "name": "krakjoe/pthreads-polyfill",
-            "version": "v1.1.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Anahkiasen/pthreads-polyfill.git",
-                "reference": "e0b6b34aca142dda943bf8ade046285fd2000c35"
+                "reference": "6a54d5ce9bb1f49aaea6194e802d9b6943e2c950"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Anahkiasen/pthreads-polyfill/zipball/e0b6b34aca142dda943bf8ade046285fd2000c35",
-                "reference": "e0b6b34aca142dda943bf8ade046285fd2000c35",
+                "url": "https://api.github.com/repos/Anahkiasen/pthreads-polyfill/zipball/6a54d5ce9bb1f49aaea6194e802d9b6943e2c950",
+                "reference": "6a54d5ce9bb1f49aaea6194e802d9b6943e2c950",
                 "shasum": ""
             },
             "require-dev": {
@@ -892,7 +892,6 @@
                     "src/Pool.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "PHP"
             ],
@@ -908,7 +907,10 @@
                 "polyfill",
                 "pthreads"
             ],
-            "time": "2015-11-16 08:24:31"
+            "support": {
+                "source": "https://github.com/Anahkiasen/pthreads-polyfill/tree/master"
+            },
+            "time": "2016-04-02 12:29:26"
         },
         {
             "name": "league/commonmark",
@@ -5422,13 +5424,14 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {
+        "krakjoe/pthreads-polyfill": 20,
         "rvdv/nntp": 20,
         "fabpot/php-cs-fixer": 20,
         "roave/security-advisories": 20
     },
-    "prefer-stable": false,
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": ">=5.6.0"
