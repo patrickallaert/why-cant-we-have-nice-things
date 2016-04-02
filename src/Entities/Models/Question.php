@@ -67,7 +67,7 @@ class Question extends AbstractModel
      */
     public function getMajorityChoiceAttribute()
     {
-        $choices = $this->votes->lists('choice')->all();
+        $choices = $this->votes->pluck('choice')->all();
         $choices = array_count_values($choices);
         arsort($choices);
 
