@@ -24,7 +24,6 @@ set :linked_files, fetch(:linked_files, []).push('.env')
 
 # Tasks
 namespace :deploy do
-    before :updated, "cache:install"
     before :updated, "npm:install"
     before :updated, "application:assets"
     before :updated, "database:migrate"

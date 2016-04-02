@@ -4,9 +4,45 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fe4af721dc27ede187ec0b0266a76c67",
-    "content-hash": "8369cb1c745e5ce0d6604f7fc5901375",
+    "hash": "6bfda8f6d2dfe3ca974e59c4b38d7d91",
+    "content-hash": "252f7ce73e41682bcbb372dcc35ef3b3",
     "packages": [
+        {
+            "name": "adoy/fastcgi-client",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/adoy/PHP-FastCGI-Client.git",
+                "reference": "ae8234f0781b6d97e909e45d8a425b9f9bd120bb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/adoy/PHP-FastCGI-Client/zipball/ae8234f0781b6d97e909e45d8a425b9f9bd120bb",
+                "reference": "ae8234f0781b6d97e909e45d8a425b9f9bd120bb",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Adoy\\FastCGI\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pierrick Charron",
+                    "email": "pierrick@adoy.net"
+                }
+            ],
+            "description": "Client for communication with a FastCGI (FCGI) application using the FastCGI protocol.",
+            "keywords": [
+                "fastcgi"
+            ],
+            "time": "2015-05-20 15:36:05"
+        },
         {
             "name": "container-interop/container-interop",
             "version": "1.1.0",
@@ -100,6 +136,63 @@
                 "string"
             ],
             "time": "2015-11-06 14:35:42"
+        },
+        {
+            "name": "gordalina/cachetool",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gordalina/cachetool.git",
+                "reference": "87d0785dc4236e5aa9f72f619e6b595e31940614"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gordalina/cachetool/zipball/87d0785dc4236e5aa9f72f619e6b595e31940614",
+                "reference": "87d0785dc4236e5aa9f72f619e6b595e31940614",
+                "shasum": ""
+            },
+            "require": {
+                "adoy/fastcgi-client": "~1.0",
+                "monolog/monolog": "~1.1",
+                "php": ">=5.5.9",
+                "psr/log": "~1.0",
+                "symfony/console": "~3.0",
+                "symfony/dependency-injection": "~3.0",
+                "symfony/process": "~3.0",
+                "symfony/yaml": "~3.0"
+            },
+            "require-dev": {
+                "herrera-io/phar-update": "~2.0",
+                "phpunit/phpunit": "4.7.*"
+            },
+            "bin": [
+                "bin/cachetool"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "CacheTool": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "gordalina",
+                    "email": "samuel.gordalina@gmail.com"
+                }
+            ],
+            "description": "Manage your opcode & apc through the cli",
+            "keywords": [
+                "Opcache",
+                "apc",
+                "cache",
+                "fastcgi",
+                "opcode"
+            ],
+            "time": "2016-03-18 19:01:54"
         },
         {
             "name": "guzzle/guzzle",
@@ -2043,6 +2136,65 @@
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
             "time": "2016-03-16 17:00:50"
+        },
+        {
+            "name": "symfony/dependency-injection",
+            "version": "v3.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/dependency-injection.git",
+                "reference": "6a9058101b591edced21ca3c83c80a3978f5c6b0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/6a9058101b591edced21ca3c83c80a3978f5c6b0",
+                "reference": "6a9058101b591edced21ca3c83c80a3978f5c6b0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "require-dev": {
+                "symfony/config": "~2.8|~3.0",
+                "symfony/expression-language": "~2.8|~3.0",
+                "symfony/yaml": "~2.8|~3.0"
+            },
+            "suggest": {
+                "symfony/config": "",
+                "symfony/proxy-manager-bridge": "Generate service proxies to lazy load them",
+                "symfony/yaml": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\DependencyInjection\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony DependencyInjection Component",
+            "homepage": "https://symfony.com",
+            "time": "2016-03-30 10:41:14"
         },
         {
             "name": "symfony/dom-crawler",
@@ -5138,65 +5290,6 @@
                 "standards"
             ],
             "time": "2016-01-19 23:39:10"
-        },
-        {
-            "name": "symfony/dependency-injection",
-            "version": "v3.0.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "6a9058101b591edced21ca3c83c80a3978f5c6b0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/6a9058101b591edced21ca3c83c80a3978f5c6b0",
-                "reference": "6a9058101b591edced21ca3c83c80a3978f5c6b0",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.9"
-            },
-            "require-dev": {
-                "symfony/config": "~2.8|~3.0",
-                "symfony/expression-language": "~2.8|~3.0",
-                "symfony/yaml": "~2.8|~3.0"
-            },
-            "suggest": {
-                "symfony/config": "",
-                "symfony/proxy-manager-bridge": "Generate service proxies to lazy load them",
-                "symfony/yaml": ""
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\DependencyInjection\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony DependencyInjection Component",
-            "homepage": "https://symfony.com",
-            "time": "2016-03-30 10:41:14"
         },
         {
             "name": "symfony/options-resolver",

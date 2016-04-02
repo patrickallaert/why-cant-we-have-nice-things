@@ -13,6 +13,7 @@
     "require": {
         "php": ">=7.0",
         "container-interop/container-interop": "^1.1",
+        "gordalina/cachetool": "^2.0",
         "guzzlehttp/guzzle": "^6.2",
         "illuminate/cache": "^5.2",
         "illuminate/database": "^5.2",
