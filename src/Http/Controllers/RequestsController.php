@@ -3,7 +3,6 @@
 namespace History\Http\Controllers;
 
 use History\Entities\Models\Request;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class RequestsController extends AbstractController
@@ -32,15 +31,14 @@ class RequestsController extends AbstractController
     }
 
     /**
+     * @param Request                $request
      * @param ServerRequestInterface $serverRequest
-     * @param ResponseInterface      $response
-     * @param array                  $parameters
      *
      * @return string
      */
-    public function show(ServerRequestInterface $serverRequest, ResponseInterface $response, $parameters)
+    public function show(Request $request, ServerRequestInterface $serverRequest)
     {
-        $request = Request::with('questions.votes.question', 'questions.votes.user')->where('slug', $parameters['request'])->firstOrFail();
+        $request->load('questions.votes.question', 'questions.votes.user');
         $comments = $this->paginate($request->rootComments(), $serverRequest, 25);
 
         return $this->render('requests/show.twig', [

@@ -1,4 +1,5 @@
 <?php
+
 namespace History\CommandsBus\Commands;
 
 use Carbon\Carbon;
@@ -9,7 +10,6 @@ use History\CommandBus\Commands\FetchMetadataHandler;
 use History\Entities\Models\User;
 use History\Services\Github\Github;
 use History\TestCase;
-use Illuminate\Database\Capsule\Manager;
 use Mockery;
 
 class FetchMetadataHandlerTest extends TestCase

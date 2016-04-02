@@ -1,4 +1,5 @@
 <?php
+
 namespace History\CommandBus\Commands;
 
 use History\CommandBus\CommandInterface;

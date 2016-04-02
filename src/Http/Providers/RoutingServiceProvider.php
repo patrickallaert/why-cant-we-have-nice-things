@@ -7,6 +7,7 @@ use History\Http\Controllers\EventsController;
 use History\Http\Controllers\PagesController;
 use History\Http\Controllers\RequestsController;
 use History\Http\Controllers\UsersController;
+use History\Http\RouteBindingStrategy;
 use History\Services\UrlGenerator;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Route\Route;
@@ -48,7 +49,11 @@ class RoutingServiceProvider extends AbstractServiceProvider
         });
 
         $this->container->share(RouteCollection::class, function () {
+            $strategy = new RouteBindingStrategy();
+            $strategy->setContainer($this->container);
+
             $routes = new RouteCollection($this->container);
+            $routes->setStrategy($strategy);
 
             // Register routes
             $this->routes = [

@@ -2,10 +2,9 @@
 
 namespace History\Http\Controllers;
 
+use History\Collection;
 use History\Entities\Models\User;
 use History\Services\Graphs\GraphicsGenerator;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class UsersController extends AbstractController
 {
@@ -14,6 +13,8 @@ class UsersController extends AbstractController
      */
     public function index()
     {
+        /** @var Collection $creators */
+        /* @var Collection $voters */
         $creators = User::has('requests')->with('approvedRequests', 'requests')->get();
         $voters = User::has('votes', '>', 5)->with('requests')->orderBy('hivemind', 'ASC')->get();
 
@@ -33,13 +34,11 @@ class UsersController extends AbstractController
     }
 
     /**
-     * @param ServerRequestInterface $request
-     * @param ResponseInterface      $response
-     * @param array                  $parameters
+     * @param User $user
      *
      * @return string
      */
-    public function show(ServerRequestInterface $request, ResponseInterface $response, $parameters)
+    public function show(User $user)
     {
         $with = [
             'votes.question.request',
@@ -49,10 +48,8 @@ class UsersController extends AbstractController
             'requests.votes',
         ];
 
-        $user = User::with($with)->where('slug', $parameters['user'])->firstOrFail();
-
         return $this->render('users/show.twig', [
-            'user' => $user,
+            'user' => $user->load($with),
             'chart' => (new GraphicsGenerator())->computePositiveness($user),
         ]);
     }
