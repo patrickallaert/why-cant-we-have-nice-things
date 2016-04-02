@@ -28,5 +28,6 @@ namespace :deploy do
     before :updated, "npm:install"
     before :updated, "application:assets"
     before :updated, "database:migrate"
+    before :updated, "application:refresh"
     before :finishing, "cache:clear"
 end
