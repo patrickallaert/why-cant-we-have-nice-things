@@ -1,5 +1,8 @@
 {
     "name": "madewithlove/why-we-cant-have-nice-things",
+    "description": "An app to centralize PHP internals informations",
+    "homepage": "https://why-cant-we-have-nice-things.mwl.be",
+    "license": "MIT",
     "type": "project",
     "authors": [
         {
