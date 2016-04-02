@@ -18,8 +18,7 @@ namespace :cache do
     task :clear do
         on roles(:all) do
             within release_path do
-                execute :php, "-r \"opcache_reset();\""
-                execute :php, "#{shared_path}/cachetool.phar opcache:reset --fcgi=/var/run/php5-fpm.sock"
+                execute :php, "#{shared_path}/cachetool.phar opcache:reset --fcgi=/var/run/php/php7.0-fpm.sock"
             end
         end
     end
