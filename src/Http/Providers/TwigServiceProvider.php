@@ -96,6 +96,7 @@ class TwigServiceProvider extends AbstractServiceProvider
             ['key' => 'users', 'uri' => $url->to('users.index'), 'label' => 'Users'],
             ['key' => 'events', 'uri' => $url->to('events.index'), 'label' => 'Timeline'],
             ['key' => 'requests', 'uri' => $url->to('requests.index'), 'label' => 'RFCs'],
+            ['key' => 'comments', 'uri' => $url->to('comments.index'), 'label' => 'Mailing list'],
             ['key' => 'companies', 'uri' => $url->to('companies.index'), 'label' => 'Companies'],
             ['key' => 'pages', 'uri' => $url->to('pages.about'), 'label' => 'About'],
         ]);

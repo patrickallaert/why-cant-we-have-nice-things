@@ -2,6 +2,7 @@
 
 namespace History\Http\Providers;
 
+use History\Http\Controllers\CommentsController;
 use History\Http\Controllers\CompaniesController;
 use History\Http\Controllers\EventsController;
 use History\Http\Controllers\PagesController;
@@ -66,6 +67,7 @@ class RoutingServiceProvider extends AbstractServiceProvider
                 $routes->get('requests/{request}', RequestsController::class.'::show'),
                 $routes->get('companies', CompaniesController::class.'::index'),
                 $routes->get('companies/{company}', CompaniesController::class.'::show'),
+                $routes->get('comments', CommentsController::class.'::index'),
             ];
 
             return $routes;

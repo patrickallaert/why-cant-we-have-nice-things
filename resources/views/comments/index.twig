@@ -1,0 +1,8 @@
+{% extends '_layouts/layout.twig' %}
+{% set title = 'Mailing list' %}
+
+{% block content %}
+    {% for comment in comments %}
+        {{ comment.name }}
+    {% endfor %}
+{% endblock %}
