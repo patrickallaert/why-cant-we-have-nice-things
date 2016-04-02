@@ -18,6 +18,7 @@
         "illuminate/pagination": "^5.2",
         "illuminate/redis": "^5.2",
         "knplabs/github-api": "^1.6",
+        "krakjoe/pthreads-polyfill": "^1.1",
         "league/commonmark": "^0.13.2",
         "league/container": "^2.2",
         "league/route": "^2.0",

@@ -2,6 +2,7 @@
 
 namespace History\Services\Threading\Jobs;
 
+use History\Services\Threading\AutoloadingWorker;
 use Threaded;
 
 abstract class AbstractJob extends Threaded
@@ -15,6 +16,11 @@ abstract class AbstractJob extends Threaded
      * @var mixed
      */
     public $result;
+
+    /**
+     * @var AutoloadingWorker
+     */
+    public $worker;
 
     /**
      * Mark the job as done with a result

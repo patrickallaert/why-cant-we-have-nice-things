@@ -15,11 +15,6 @@ class CommandBusJob extends AbstractJob
     protected $command;
 
     /**
-     * @var AutoloadingWorker
-     */
-    protected $worker;
-
-    /**
      * @param CommandInterface $command
      */
     public function __construct(CommandInterface $command)

@@ -2,4 +2,9 @@
 <?php
 require 'vendor/autoload.php';
 
+// Workaround until constants are in the pthreads-polyfill
+if (!defined('PTHREADS_INHERIT_NONE')) {
+    define('PTHREADS_INHERIT_NONE', 0);
+}
+
 return (new History\Application())->runConsole();
