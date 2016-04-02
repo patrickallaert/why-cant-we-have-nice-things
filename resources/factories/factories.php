@@ -55,7 +55,7 @@ $fm->define(Request::class)->setDefinitions([
     'link' => $faker->url(),
     'condition' => $faker->boolean(2 / 3),
     'approval' => $faker->randomFloat(null, 0, 1),
-    'status' => $faker->numberBetween(1, 3),
+    'status' => $faker->numberBetween(0, 5),
     'created_at' => $faker->dateTimeThisDecade(),
     'updated_at' => $faker->dateTimeThisDecade(),
 ])->setCallback(function (Request $request) {
