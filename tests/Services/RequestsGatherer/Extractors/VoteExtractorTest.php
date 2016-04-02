@@ -1,7 +1,7 @@
 <?php
+
 namespace History\Services\RequestsGatherer\Extractors;
 
-use DateTime;
 use History\TestCase;
 use Symfony\Component\DomCrawler\Crawler;
 
@@ -46,7 +46,7 @@ HTML
     <td class="centeralign"></td>
 </tr>
 HTML
-]
+],
         ];
     }
 }

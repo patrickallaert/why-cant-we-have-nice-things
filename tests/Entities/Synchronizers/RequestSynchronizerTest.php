@@ -27,6 +27,7 @@ class RequestSynchronizerTest extends TestCase
             'pull_request' => 'https://github.com/php/php-src/pull/1494',
             'condition' => '2/3',
             'status' => 2,
+            'target' => null,
             'created_at' => '2015-01-01 00:00:00',
             'updated_at' => '2015-01-01 00:00:00',
         ], $request->toArray());

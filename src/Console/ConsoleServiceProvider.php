@@ -12,8 +12,6 @@ use History\Console\Commands\Sync\StatsCommand;
 use History\Console\Commands\TinkerCommand;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use Silly\Application;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class ConsoleServiceProvider extends AbstractServiceProvider
 {

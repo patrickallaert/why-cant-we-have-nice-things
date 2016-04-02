@@ -18,7 +18,7 @@ class UrlGeneratorTest extends TestCase
         parent::setUp();
 
         $routes = new RouteCollection();
-        $urls   = [
+        $urls = [
             $routes->get('users', 'History\Http\Controllers\FooController::index'),
             $routes->get('users/{user}', 'History\Http\Controllers\FooController::show'),
         ];
@@ -29,9 +29,9 @@ class UrlGeneratorTest extends TestCase
     /**
      * @dataProvider provideUrls
      *
-     * @param string $route
+     * @param string       $route
      * @param string|array $parameters
-     * @param string $expected
+     * @param string       $expected
      */
     public function testCanGeneratorUrlToRoute($route, $parameters, $expected)
     {

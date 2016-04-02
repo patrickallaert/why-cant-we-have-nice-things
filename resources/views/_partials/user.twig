@@ -4,7 +4,8 @@
         <a href="{{ url('users.show', user.identifier) }}">{{ user.display_name }}</a><br>
     </h2>
     <h3>
-        {{ user.full_name }}{% if user.company %}, from <a href="{{ url('companies.show', user.company.identifier) }}">{{ user.company.name }}</a>{% endif %}
+        {{ user.full_name }}
+        {%- if user.company %}, from <a href="{{ url('companies.show', user.company.identifier) }}">{{ user.company.name }}</a>{% endif %}
     </h3>
     <div class="btn-group">
         <a target="_blank" class="btn btn-default btn-xs" href="http://people.php.net/{{ user.name }}"><i class="fa fa-book"></i> PHP</a>

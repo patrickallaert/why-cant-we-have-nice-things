@@ -4,7 +4,6 @@ namespace History\Services\Threading\Jobs;
 
 use Exception;
 use History\CommandBus\CommandInterface;
-use History\Services\Threading\AutoloadingWorker;
 use League\Tactician\CommandBus;
 
 class CommandBusJob extends AbstractJob

@@ -63,7 +63,7 @@ class RequestsGathererTest extends TestCase
         ]);
 
         $command = $this->container->get(CreateRequestHandler::class);
-        $user    = $command->createUser('foobar');
+        $user = $command->createUser('foobar');
         $this->assertInstanceOf(User::class, $user);
         $this->assertEquals('foobar', $user->name);
     }

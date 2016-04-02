@@ -27,6 +27,7 @@ class RequestExtractor extends AbstractExtractor
         $status = $this->getStatus($informations, $questions, $timestamp);
         $authors = $this->getAuthors($informations);
         $versions = $this->getVersions();
+        $target = $this->getTarget($informations);
 
         return [
             'name' => $name,
@@ -35,6 +36,7 @@ class RequestExtractor extends AbstractExtractor
             'pull_request' => $this->getPatch(),
             'condition' => $majorityConditions,
             'authors' => $authors,
+            'target' => $target,
             'timestamps' => $timestamp,
             'questions' => $questions,
             'versions' => $versions,
@@ -299,6 +301,25 @@ class RequestExtractor extends AbstractExtractor
         });
     }
 
+    /**
+     * @param array $informations
+     *
+     * @return string
+     */
+    protected function getTarget(array $informations)
+    {
+        $possibles = [
+            new Crawler($this->findInformation($informations, '/PHP/', true)),
+            $this->crawler->filterXPath('//*[contains(@id, "proposed_php")]/following-sibling::div'),
+        ];
+
+        foreach ($possibles as $possible) {
+            if ($target = (new TargetExtractor($possible))->extract()) {
+                return $target;
+            }
+        }
+    }
+
     //////////////////////////////////////////////////////////////////////
     ////////////////////////////// HELPERS ///////////////////////////////
     //////////////////////////////////////////////////////////////////////
@@ -308,13 +329,14 @@ class RequestExtractor extends AbstractExtractor
      *
      * @param array  $informations
      * @param string $matcher
+     * @param bool   $searchInValues
      *
      * @return string
      */
-    protected function findInformation(array $informations, $matcher)
+    protected function findInformation(array $informations, $matcher, $searchInValues = false)
     {
         foreach ($informations as $label => $value) {
-            if (preg_match($matcher, $label)) {
+            if (preg_match($matcher, $label) || ($searchInValues && preg_match($matcher, $value))) {
                 return $value;
             }
         }

@@ -36,6 +36,7 @@ class RequestSynchronizer extends AbstractSynchronizer
             'contents' => $this->informations->get('contents'),
             'condition' => $this->informations->get('condition'),
             'status' => $this->informations->get('status'),
+            'target' => $this->informations->get('target'),
         ];
     }
 }

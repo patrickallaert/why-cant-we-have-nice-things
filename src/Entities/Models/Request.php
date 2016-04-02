@@ -75,6 +75,7 @@ class Request extends AbstractModel
         'link',
         'condition',
         'approval',
+        'target',
         'status',
     ];
 

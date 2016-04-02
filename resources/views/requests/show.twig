@@ -18,6 +18,9 @@
         <li>
             Currently <strong>{{ request.status_label|lower }}</strong>
         </li>
+        <li>
+            Target version: {{ request.target }}
+        </li>
         {% if request.questions.count() %}
             <li>
                 Approved at <strong>{{ percentage(request.approval) }}</strong>

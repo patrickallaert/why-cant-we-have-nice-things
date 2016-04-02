@@ -44,13 +44,13 @@ class RequestsGatherer
      */
     public function __construct(Repository $cache, CommandBus $bus = null)
     {
-        $this->cache  = $cache;
+        $this->cache = $cache;
         $this->output = new HistoryStyle();
-        $this->bus    = $bus;
+        $this->bus = $bus;
     }
 
     /**
-     * @param boolean $async
+     * @param bool $async
      */
     public function setAsync($async)
     {

@@ -29,6 +29,7 @@ class RequestExtractorTest extends TestCase
                 ['full_name' => 'Sean DuBois', 'email' => 'sean@siobud.com'],
                 ['full_name' => 'Reeze Xia', 'email' => 'reeze@php.net'],
             ],
+            'target' => '7.1',
             'questions' => [
                 [
                     'name' => 'Class Constant Visibility',
@@ -357,6 +358,24 @@ HTML
         $informations = $this->getInformationsFromHtml($html);
 
         $this->assertCount(3, $informations['versions']);
+    }
+
+    public function testCanExtractImplementedPhpVersion()
+    {
+        $html = <<<'HTML'
+<div class="page group"><div class="level1"><ul><li>Status: Implemented (PHP 7.1)</li></ul></div></div>
+HTML;
+        $informations = $this->getInformationsFromHtml($html);
+
+        $this->assertEquals('7.1', $informations['target']);
+    }
+
+    public function testCanExtractTargetedPhpVersion()
+    {
+        $html = $this->getDummyPage('rfc2');
+        $informations = $this->getInformationsFromHtml($html);
+
+        $this->assertEquals('7.x', $informations['target']);
     }
 
     //////////////////////////////////////////////////////////////////////
