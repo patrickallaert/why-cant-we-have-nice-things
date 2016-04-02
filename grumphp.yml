@@ -3,6 +3,7 @@ parameters:
     bin_dir: ./vendor/bin
     tasks:
         composer: ~
+        phpunit: ~
         phpcs:
             standard: "phpcs.xml"
         securitychecker: ~

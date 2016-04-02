@@ -71,12 +71,16 @@ class Comment extends AbstractModel
     //////////////////////////////////////////////////////////////////////
 
     /**
+     * @param CommonMarkConverter|null $converter
+     *
      * @return string
      */
-    public function getParsedContentsAttribute()
+    public function getParsedContentsAttribute(CommonMarkConverter $converter = null)
     {
+        $converter = $converter ?: new CommonMarkConverter();
+
         try {
-            return (new CommonMarkConverter())->convertToHtml($this->contents);
+            return $converter->convertToHtml($this->contents);
         } catch (LogicException $exception) {
             return $this->contents;
         }

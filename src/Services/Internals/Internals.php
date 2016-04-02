@@ -6,6 +6,7 @@ use History\Services\Internals\Commands\Body;
 use History\Services\Internals\Commands\Xpath;
 use Illuminate\Contracts\Cache\Repository;
 use Rvdv\Nntp\ClientInterface;
+use Rvdv\Nntp\Command\ArticleCommand;
 use Rvdv\Nntp\Command\XpathCommand;
 use SplFixedArray;
 
@@ -76,9 +77,13 @@ class Internals
         $cleaner = new MailingListArticleCleaner();
         $article = $this->cacheRequest('internals:body:'.$article, function () use ($article) {
             return $this->client
-                ->sendCommand(new Body($article))
+                ->sendCommand(new ArticleCommand($article))
                 ->getResult();
         });
+
+        if (!is_array($article)) {
+            $article = explode("\r\n", $article);
+        }
 
         return $cleaner->cleanup($article);
     }
