@@ -12,14 +12,14 @@ use SplFixedArray;
 class Internals
 {
     /**
-     * @var ClientInterface
-     */
-    protected $client;
-
-    /**
      * @var array
      */
     protected $group;
+
+    /**
+     * @var bool
+     */
+    protected $connected = false;
 
     /**
      * @var Repository
@@ -27,13 +27,16 @@ class Internals
     private $cache;
 
     /**
+     * @var ClientInterface
+     */
+    protected $client;
+
+    /**
      * @var MailingListArticleCleaner
      */
     private $cleaner;
 
     /**
-     * Internals constructor.
-     *
      * @param Repository                $cache
      * @param ClientInterface           $client
      * @param MailingListArticleCleaner $cleaner
@@ -50,17 +53,20 @@ class Internals
     //////////////////////////////////////////////////////////////////////
 
     /**
-     * @return \Rvdv\Nntp\Command\GroupCommand
+     * @return array
      */
-    public function getGroups()
+    public function getGroups(): array
     {
-        $this->client->connect();
+        $this->connectIfNeeded();
+        $groups = $this->client->listGroups()->getResult();
 
-        return $this->client->listGroups()->getResult();
+        return $groups;
     }
 
     /**
      * @param string $group
+     *
+     * @return $this
      */
     public function setGroup(string $group)
     {
@@ -178,11 +184,11 @@ class Internals
      */
     protected function connectIfNeeded()
     {
-        if ($this->group) {
+        if ($this->connected) {
             return;
         }
 
-        // Get php.internals group
         $this->client->connect();
+        $this->connected = true;
     }
 }
