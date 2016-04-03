@@ -7,10 +7,10 @@ use History\Entities\Models\User;
 class UserObserver
 {
     /**
-     * @param User $request
+     * @param User $user
      */
-    public function saving(User $request)
+    public function saving(User $user)
     {
-        $request->sluggify();
+        $user->sluggify();
     }
 }

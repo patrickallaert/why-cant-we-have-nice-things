@@ -2,11 +2,11 @@
 
 namespace History\Http\Providers;
 
-use History\Http\Controllers\ThreadsController;
 use History\Http\Controllers\CompaniesController;
 use History\Http\Controllers\EventsController;
 use History\Http\Controllers\PagesController;
 use History\Http\Controllers\RequestsController;
+use History\Http\Controllers\ThreadsController;
 use History\Http\Controllers\UsersController;
 use History\Http\RouteBindingStrategy;
 use History\Services\UrlGenerator;
@@ -68,6 +68,7 @@ class RoutingServiceProvider extends AbstractServiceProvider
                 $routes->get('companies', CompaniesController::class.'::index'),
                 $routes->get('companies/{company}', CompaniesController::class.'::show'),
                 $routes->get('threads', ThreadsController::class.'::index'),
+                $routes->get('threads/{thread}', ThreadsController::class.'::show'),
             ];
 
             return $routes;

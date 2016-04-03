@@ -2,16 +2,20 @@
 
 namespace History\Entities\Models;
 
+use History\Entities\Traits\HasSlugTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Thread extends AbstractModel
 {
+    use HasSlugTrait;
+
     /**
      * @var array
      */
     protected $fillable = [
         'name',
+        'slug',
     ];
 
     //////////////////////////////////////////////////////////////////////

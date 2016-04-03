@@ -55,6 +55,7 @@ class UrlGeneratorTest extends TestCase
             ['foo.index', [], '/users'],
             ['foo.show', ['user' => 'foobar'], '/users/foobar'],
             ['foo.show', 'foobar', '/users/foobar'],
+            ['foo.show', 12, '/users/12'],
             ['foo.show', ['foobar' => 'foobar'], '/users/user'],
         ];
     }

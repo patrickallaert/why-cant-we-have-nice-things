@@ -73,7 +73,7 @@ class UrlGenerator
         }
 
         return preg_replace_callback('/{(.+)}/', function ($pattern) use ($parameters) {
-            return is_string($parameters) ? $parameters : Arr::get($parameters, $pattern[1], $pattern[1]);
+            return !is_array($parameters) ? $parameters : Arr::get($parameters, $pattern[1], $pattern[1]);
         }, $path);
     }
 }

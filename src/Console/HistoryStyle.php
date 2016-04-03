@@ -2,6 +2,7 @@
 
 namespace History\Console;
 
+use Generator;
 use Illuminate\Database\Eloquent\Collection;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -54,7 +55,7 @@ class HistoryStyle extends SymfonyStyle
      *
      * @param Collection|array $entries
      *
-     * @return \Generator|void
+     * @return Generator
      */
     public function progressIterator($entries)
     {

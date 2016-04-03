@@ -24,6 +24,7 @@ class CreateThreadsTable extends AbstractMigration
     {
         $this->table('threads')
             ->addColumn('name', 'string')
+            ->addColumn('slug', 'string', ['null' => true])
             ->addColumn('request_id', 'integer', ['null' => true])
             ->addColumn('user_id', 'integer')
             ->addColumn('created_at', 'datetime')

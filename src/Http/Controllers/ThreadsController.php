@@ -17,4 +17,14 @@ class ThreadsController extends AbstractController
             'threads' => $threads,
         ]);
     }
+
+    /**
+     * @param Thread $thread
+     *
+     * @return Thread
+     */
+    public function show(Thread $thread)
+    {
+        return $thread->toJson();
+    }
 }
