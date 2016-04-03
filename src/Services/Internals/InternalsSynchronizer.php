@@ -93,11 +93,11 @@ class InternalsSynchronizer
      * Synchronize the mailing list
      * to a fucking usable format.
      *
-     * @return Comment[]
+     * @return Comment[][]
      */
     public function synchronize()
     {
-        $this->parsed = Comment::lists('xref')->all();
+        $this->refreshParsedList();
 
         $this->output->writeln('Getting groups');
         $groups = $this->synchronizeGroups();
@@ -107,13 +107,19 @@ class InternalsSynchronizer
             $created[$group->name] = $this->synchronizeArticlesForGroup($group);
         }
 
+        $this->output->writeln('Binding references');
+        $this->synchronizeReferences();
+
         return $created;
     }
 
     /**
+     * Synchronize the groups with the ones
+     * on the server.
+     *
      * @return Group[]
      */
-    protected function synchronizeGroups()
+    protected function synchronizeGroups(): array
     {
         $groups = !$this->group ? $this->internals->getGroups() : [['name' => $this->group]];
         foreach ($this->output->progressIterator($groups) as $key => $group) {
@@ -131,6 +137,8 @@ class InternalsSynchronizer
     }
 
     /**
+     * Synchronize all articles found in a group.
+     *
      * @param Group $group
      *
      * @return array
@@ -143,26 +151,59 @@ class InternalsSynchronizer
         $this->output->writeln('Getting messages informations');
         $queue = $this->getArticlesQueue($group);
 
+        if (!$queue) {
+            return [];
+        }
+
         $this->output->writeln('Creating comments');
         $comments = $this->dispatchCommands($queue);
 
         return $comments;
     }
 
+    protected function synchronizeReferences()
+    {
+        $this->refreshParsedList();
+
+        /** @var Comment[] $withReferences */
+        $withReferences = Comment::whereNotNull('reference')->whereNull('comment_id')->get();
+        $withReferences = $this->output->progressIterator($withReferences);
+        foreach ($withReferences as $comment) {
+            $reference = $this->getCommentFromReference($comment->reference);
+            if (!$reference) {
+                continue;
+            }
+
+            // Mark reference as parent
+            $comment->comment_id = $reference;
+            $comment->save();
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    ////////////////////////////// COMMANDS //////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+
     /**
+     * Get a queue of CreateComment commands
+     * we need to handle for this group.
+     *
      * @param Group $group
      *
-     * @return array
+     * @return CreateCommentCommand[]
      */
-    protected function getArticlesQueue(Group $group)
+    protected function getArticlesQueue(Group $group): array
     {
+        $groupHigh = $group->high ?: self::CHUNK;
+
         // Start at the last comment we parsed
         $from = $group->low;
-        $chunk = min(self::CHUNK, $group->high);
+        $chunk = min(self::CHUNK, $groupHigh);
+        $max = $this->size ? min($groupHigh, $this->size) : $groupHigh;
 
         $queue = [];
-        $this->output->progressStart($group->high);
-        for ($i = $from; $i <= $group->high; $i += $chunk) {
+        $this->output->progressStart($max);
+        for ($i = $from; $i <= $max; $i += $chunk) {
             $to = $i + ($chunk - 1);
 
             // Process this chunk of articles
@@ -170,7 +211,7 @@ class InternalsSynchronizer
                 $articles = $this->internals->getArticles($i, $to);
 
                 foreach ($articles as $article) {
-                    if ($command = $this->processArticle($article, $group->name)) {
+                    if ($command = $this->createCommandFromArticle($article, $group->name)) {
                         $queue[] = $command;
                     }
                 }
@@ -192,14 +233,14 @@ class InternalsSynchronizer
      *
      * @return CreateCommentCommand
      */
-    protected function processArticle($article, string $group)
+    protected function createCommandFromArticle($article, string $group)
     {
         if (!$article || !isset($article['from'])) {
             return;
         }
 
         // If we already synchronized this one, skip it
-        if (array_key_exists($article['xref'], $this->parsed)) {
+        if (in_array($article['xref'], $this->parsed, true)) {
             return;
         }
 
@@ -207,11 +248,45 @@ class InternalsSynchronizer
         $command->group = $group;
         $command->xref = $article['xref'];
         $command->subject = $article['subject'];
-        $command->references = $article['references'];
+        $command->reference = $article['references'];
         $command->from = $article['from'];
         $command->number = $article['number'];
         $command->date = $article['date'];
 
         return $command;
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    ////////////////////////////// HELPERS ///////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+
+    /**
+     * @param string $references
+     *
+     * @return int|null
+     */
+    protected function getCommentFromReference(string $references)
+    {
+        // Just get the last reference cause
+        $references = array_filter(explode('>', $references));
+        $reference = last($references);
+        $reference = $reference ? trim($reference).'>' : null;
+        if (!$reference) {
+            return;
+        }
+
+        // Try to retrieve the comment the reference's about
+        $reference = $this->internals->findArticleFromReference($reference);
+        $comment = $reference && in_array($reference, $this->parsed, true) ? array_search($reference, $this->parsed, true) : null;
+
+        return $comment;
+    }
+
+    /**
+     * Refresh the list of parsed comments.
+     */
+    protected function refreshParsedList()
+    {
+        $this->parsed = Comment::lists('xref')->all();
     }
 }

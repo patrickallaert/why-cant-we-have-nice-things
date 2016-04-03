@@ -12,19 +12,19 @@ use SplFixedArray;
 class Internals
 {
     /**
-     * @var array
-     */
-    protected $group;
-
-    /**
      * @var bool
      */
     protected $connected = false;
 
     /**
+     * @var array
+     */
+    protected $group;
+
+    /**
      * @var Repository
      */
-    private $cache;
+    protected $cache;
 
     /**
      * @var ClientInterface
@@ -34,7 +34,15 @@ class Internals
     /**
      * @var MailingListArticleCleaner
      */
-    private $cleaner;
+    protected $cleaner;
+
+    /**
+     * Some articles that should never
+     * be attempted to be fetched.
+     *
+     * @var array
+     */
+    protected $forbiddenArticles = [992];
 
     /**
      * @param Repository                $cache
@@ -115,6 +123,11 @@ class Internals
      */
     public function getArticleBody(int $articleNumber): string
     {
+        // Fuck those
+        if (in_array($articleNumber, $this->forbiddenArticles, true)) {
+            return '';
+        }
+
         $article = $this->cacheRequest('body:'.$articleNumber, function () use ($articleNumber) {
             return $this->client
                 ->sendCommand(new ArticleCommand($articleNumber))
@@ -133,7 +146,7 @@ class Internals
      *
      * @return string
      */
-    public function findArticleFromReference($xpath)
+    public function findArticleFromReference(string $xpath)
     {
         $reference = $this->cacheRequest($xpath, function () use ($xpath) {
             return $this->client->sendCommand(new XpathCommand($xpath))->getResult();

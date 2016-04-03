@@ -24,7 +24,7 @@ class CreateCommentCommand implements CommandInterface
     /**
      * @var string
      */
-    public $references;
+    public $reference;
 
     /**
      * @var string

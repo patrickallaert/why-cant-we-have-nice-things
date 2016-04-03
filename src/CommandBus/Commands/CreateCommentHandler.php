@@ -13,7 +13,6 @@ use History\Entities\Synchronizers\CommentSynchronizer;
 use History\Entities\Synchronizers\UserSynchronizer;
 use History\Services\IdentityExtractor;
 use History\Services\Internals\Internals;
-use Rvdv\Nntp\Exception\InvalidArgumentException;
 
 class CreateCommentHandler extends AbstractHandler
 {
@@ -63,13 +62,15 @@ class CreateCommentHandler extends AbstractHandler
 
         // Get the user that posted the message
         $user = $this->getRelatedUser();
+        if (!$user) {
+            return;
+        }
 
-        // If the article has references, find them
+        // Find the thread this belongs to
         $thread = $this->getParentThread($user, $request);
-        $comment = $this->getCommentFromReference($this->command->references);
 
         // Grab the message contents and insert into database
-        return $this->createCommentFromArticle($thread->id, $user, $comment);
+        return $this->createCommentFromArticle($thread->id, $user);
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -114,8 +115,7 @@ class CreateCommentHandler extends AbstractHandler
         try {
             $datetime = new DateTime($date);
         } catch (Exception $exception) {
-            dump($exception->getMessage(), $this->command->date);
-            $datetime = Carbon::now();
+            $datetime = Carbon::createFromDate(1970, 01, 01);
         }
 
         return $datetime;
@@ -186,32 +186,6 @@ class CreateCommentHandler extends AbstractHandler
         return $synchronizer->persist()->id;
     }
 
-    /**
-     * @param string $references
-     *
-     * @return int|null
-     */
-    protected function getCommentFromReference($references)
-    {
-        // Just get the last reference cause
-        $references = explode('>', $references);
-        $reference = last(array_filter($references));
-        $reference = $reference ? trim($reference) : null;
-        if (!$reference) {
-            return;
-        }
-
-        // Try to retrieve the comment the reference's about
-        try {
-            $reference = $this->internals->findArticleFromReference($reference);
-            $comment = $reference && isset($this->parsed[$reference]) ? $this->parsed[$reference] : null;
-        } catch (InvalidArgumentException $exception) {
-            return;
-        }
-
-        return $comment ?: null;
-    }
-
     //////////////////////////////////////////////////////////////////////
     ////////////////////////// COMMENT CREATION //////////////////////////
     //////////////////////////////////////////////////////////////////////
@@ -219,26 +193,21 @@ class CreateCommentHandler extends AbstractHandler
     /**
      * Create a comment from a NNTP article.
      *
-     * @param int      $thread
-     * @param int      $user
-     * @param int|null $comment
+     * @param int $thread
+     * @param int $user
      *
      * @return \History\Entities\Models\Threads\Comment
      */
-    protected function createCommentFromArticle(int $thread, int $user, int $comment = null)
+    protected function createCommentFromArticle(int $thread, int $user)
     {
-        try {
-            $group = $this->command->group;
-            $this->internals->setGroup($group);
-            $contents = $this->internals->getArticleBody($this->command->number);
-        } catch (InvalidArgumentException $exception) {
-            return;
-        }
+        $group = $this->command->group;
+        $this->internals->setGroup($group);
+        $contents = $this->internals->getArticleBody($this->command->number);
 
         $datetime = $this->getDatetime();
         $synchronizer = new CommentSynchronizer(array_merge((array) $this->command, [
             'contents' => $contents,
-            'comment_id' => $comment,
+            'reference' => $this->command->reference,
             'thread_id' => $thread,
             'user_id' => $user,
             'timestamps' => $datetime,

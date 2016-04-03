@@ -2,6 +2,7 @@
 
 namespace History\Services\Threading;
 
+use Exception;
 use History\CommandBus\CommandInterface;
 use League\Tactician\CommandBus;
 
@@ -33,8 +34,14 @@ trait HasAsyncCapabilitiesTrait
     protected function dispatchCommands($commands)
     {
         if (!$this->async) {
-            foreach ($commands as &$command) {
-                $command = $this->bus->handle($command);
+            $commands = $this->output->progressIterator($commands);
+            $results = [];
+            foreach ($commands as $command) {
+                try {
+                    $results[] = $this->bus->handle($command);
+                } catch (Exception $exception) {
+                    // Will get caught next sync
+                }
             }
         } else {
             $pool = new OutputPool($this->output);
@@ -42,9 +49,9 @@ trait HasAsyncCapabilitiesTrait
                 $pool->submitCommand($command);
             }
 
-            $commands = $pool->process();
+            $results = $pool->process();
         }
 
-        return $commands;
+        return $results;
     }
 }

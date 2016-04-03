@@ -33,6 +33,7 @@ class Comment extends AbstractModel
      */
     protected $fillable = [
         'name',
+        'reference',
         'contents',
         'xref',
     ];
