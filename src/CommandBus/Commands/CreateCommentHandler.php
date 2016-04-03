@@ -7,6 +7,7 @@ use DateTime;
 use Exception;
 use History\Entities\Models\Request;
 use History\Entities\Models\Threads\Comment;
+use History\Entities\Models\Threads\Group;
 use History\Entities\Models\Threads\Thread;
 use History\Entities\Synchronizers\CommentSynchronizer;
 use History\Entities\Synchronizers\UserSynchronizer;
@@ -124,11 +125,16 @@ class CreateCommentHandler extends AbstractHandler
         $thread = Thread::firstOrNew(['name' => $this->command->subject]);
         $datetime = $this->getDatetime();
 
+        // Retrieve group
+        list($group) = explode(':', $this->command->xref);
+        $group = Group::firstOrCreate(['name' => $group]);
+
         // Add additional attributes if we just
         // created the thread
         if (!$thread->exists) {
             $thread->request_id = $request;
             $thread->user_id = $user;
+            $thread->group_id = $group->id;
             $thread->created_at = $datetime;
             $thread->updated_at = $datetime;
             $thread->save();

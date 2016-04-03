@@ -2,7 +2,7 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class CreateThreadsTable extends AbstractMigration
+class CreateGroupsTable extends AbstractMigration
 {
     /**
      * Change Method.
@@ -22,17 +22,11 @@ class CreateThreadsTable extends AbstractMigration
      */
     public function change()
     {
-        $this->table('threads')
+        $this->table('groups')
              ->addColumn('name', 'string')
              ->addColumn('slug', 'string', ['null' => true])
-             ->addColumn('request_id', 'integer', ['null' => true])
-             ->addColumn('group_id', 'integer', ['null' => true])
-             ->addColumn('user_id', 'integer')
              ->addColumn('created_at', 'datetime')
              ->addColumn('updated_at', 'datetime')
-             ->addForeignKey('group_id', 'groups', 'id', ['delete' => 'CASCADE'])
-             ->addForeignKey('request_id', 'requests', 'id', ['delete' => 'CASCADE'])
-             ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE'])
              ->create();
     }
 }

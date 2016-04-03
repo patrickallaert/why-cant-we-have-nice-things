@@ -4,6 +4,7 @@ namespace History\Http\Providers;
 
 use History\Http\Controllers\CompaniesController;
 use History\Http\Controllers\EventsController;
+use History\Http\Controllers\GroupsController;
 use History\Http\Controllers\PagesController;
 use History\Http\Controllers\RequestsController;
 use History\Http\Controllers\ThreadsController;
@@ -67,6 +68,8 @@ class RoutingServiceProvider extends AbstractServiceProvider
                 $routes->get('requests/{request}', RequestsController::class.'::show'),
                 $routes->get('companies', CompaniesController::class.'::index'),
                 $routes->get('companies/{company}', CompaniesController::class.'::show'),
+                $routes->get('groups', GroupsController::class.'::index'),
+                $routes->get('groups/{group}', GroupsController::class.'::show'),
                 $routes->get('threads', ThreadsController::class.'::index'),
                 $routes->get('threads/{thread}', ThreadsController::class.'::show'),
             ];

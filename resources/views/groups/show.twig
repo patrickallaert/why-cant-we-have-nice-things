@@ -1,9 +1,9 @@
 {% extends '_layouts/layout.twig' %}
-{% set title = 'Mailing list' %}
+{% set title = group.name %}
 
 {% block content %}
     <ul class="list-group">
-        {% for thread in threads %}
+        {% for thread in group.threads %}
             <li class="list-group-item">
                 <span class="badge">{{ thread.comments().count() }} replies</span>
                 <div class="media">

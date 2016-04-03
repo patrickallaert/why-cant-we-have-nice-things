@@ -1,0 +1,13 @@
+{% extends '_layouts/layout.twig' %}
+{% set title = 'Mailing list' %}
+
+{% block content %}
+    <div class="list-group">
+        {% for group in groups %}
+            <a class="list-group-item" href="{{ url('groups.show', group.slug) }}">
+                <span class="badge">{{ group.threads.count() }} threads</span>
+                <h3 class="list-group-item-heading">{{ group.name }}</h3>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}
