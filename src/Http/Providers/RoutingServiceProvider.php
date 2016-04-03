@@ -70,8 +70,7 @@ class RoutingServiceProvider extends AbstractServiceProvider
                 $routes->get('companies/{company}', CompaniesController::class.'::show'),
                 $routes->get('groups', GroupsController::class.'::index'),
                 $routes->get('groups/{group}', GroupsController::class.'::show'),
-                $routes->get('threads', ThreadsController::class.'::index'),
-                $routes->get('threads/{thread}', ThreadsController::class.'::show'),
+                $routes->get('groups/{group}/threads/{thread}', ThreadsController::class.'::show'),
             ];
 
             return $routes;

@@ -1,6 +1,13 @@
 {% extends '_layouts/layout.twig' %}
 {% set title = group.name %}
 
+{% block title %}
+    <ol class="breadcrumb">
+        <li><a href="{{ url('groups.index') }}">Mailing list</a></li>
+        <li class="active">{{ group.name }}</li>
+    </ol>
+{% endblock %}
+
 {% block content %}
     <ul class="list-group">
         {% for thread in group.threads %}
@@ -12,12 +19,12 @@
                     </div>
                     <div class="media-body">
                         <h4 class="media-heading">
-                            <a href="{{ url('threads.show', thread.slug) }}">
+                            <a href="{{ url('threads.show', {group: group.slug, thread: thread.slug}) }}">
                                 {{ thread.name }}
                             </a>
                         </h4>
                         <p>
-                            by <a href="{{ url('users.show', thread.user.slug) }}">{{ thread.user.name }}</a>,
+                            by <a href="{{ url('users.show', thread.user.slug) }}">{{ thread.user.identifier }}</a>,
                             {{ thread.created_at.diffForHumans() }}
                         </p>
                     </div>

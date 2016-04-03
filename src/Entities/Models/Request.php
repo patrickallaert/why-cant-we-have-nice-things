@@ -3,9 +3,11 @@
 namespace History\Entities\Models;
 
 use History\Collection;
+use History\Entities\Models\Threads\Comment;
 use History\Entities\Models\Threads\Thread;
 use History\Entities\Traits\HasEventsTrait;
 use History\Entities\Traits\HasSlugTrait;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
@@ -130,6 +132,14 @@ class Request extends AbstractModel
     public function versions()
     {
         return $this->hasMany(Version::class)->orderBy('version', 'DESC');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     */
+    public function comments(): HasManyThrough
+    {
+        return $this->hasManyThrough(Comment::class, Thread::class);
     }
 
     /**

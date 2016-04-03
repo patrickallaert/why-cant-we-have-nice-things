@@ -6,7 +6,7 @@
         {% for group in groups %}
             <a class="list-group-item" href="{{ url('groups.show', group.slug) }}">
                 <span class="badge">{{ group.threads.count() }} threads</span>
-                <h3 class="list-group-item-heading">{{ group.name }}</h3>
+                <span class="list-group-item-heading">{{ group.name }}</span>
             </a>
         {% endfor %}
     </div>

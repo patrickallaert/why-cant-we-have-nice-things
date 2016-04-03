@@ -1,6 +1,14 @@
 {% extends '_layouts/layout.twig' %}
 {% set title = thread.name %}
 
+{% block title %}
+    <ol class="breadcrumb">
+        <li><a href="{{ url('groups.index') }}">Mailing list</a></li>
+        <li><a href="{{ url('groups.show', group.slug) }}">{{ group.name }}</a></li>
+        <li class="active">{{ thread.name }}</li>
+    </ol>
+{% endblock %}
+
 {% block content %}
-    {% include 'requests/partials/comments.twig' with {comments_count: thread.comments.count()} %}
+    {% include 'requests/partials/comments.twig' with {hide_title: true, comments_count: thread.comments.count()} %}
 {% endblock %}

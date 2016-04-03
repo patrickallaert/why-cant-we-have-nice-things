@@ -1,4 +1,8 @@
-<h2 id="comments" class="text-center">Comments ({{ comments_count|default(comments.count()) }})</h2>
+{% if not hide_title %}
+    <h2 id="comments" class="text-center">
+        Comments ({{ comments_count|default(comments.count()) }})
+    </h2>
+{% endif %}
 {% for comment in comments %}
     {% include '_partials/comment.twig' %}
 {% endfor %}

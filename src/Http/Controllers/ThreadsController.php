@@ -2,34 +2,25 @@
 
 namespace History\Http\Controllers;
 
+use History\Entities\Models\Threads\Group;
 use History\Entities\Models\Threads\Thread;
 use Psr\Http\Message\ServerRequestInterface;
 
 class ThreadsController extends AbstractController
 {
     /**
-     * @return \Zend\Diactoros\Response\HtmlResponse
-     */
-    public function index()
-    {
-        $threads = Thread::latest()->get();
-
-        return $this->render('threads/index.twig', [
-            'threads' => $threads,
-        ]);
-    }
-
-    /**
+     * @param Group                  $group
      * @param Thread                 $thread
      * @param ServerRequestInterface $request
      *
      * @return Thread
      */
-    public function show(Thread $thread, ServerRequestInterface $request)
+    public function show(Group $group, Thread $thread, ServerRequestInterface $request)
     {
         $comments = $this->paginate($thread->rootComments(), $request, 25);
 
         return $this->render('threads/show.twig', [
+            'group' => $group,
             'thread' => $thread,
             'comments' => $comments,
         ]);

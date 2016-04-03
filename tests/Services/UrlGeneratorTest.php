@@ -21,6 +21,7 @@ class UrlGeneratorTest extends TestCase
         $urls = [
             $routes->get('users', 'History\Http\Controllers\FooController::index'),
             $routes->get('users/{user}', 'History\Http\Controllers\FooController::show'),
+            $routes->get('users/{foo}/bar/{baz}', 'History\Http\Controllers\FooController::bar'),
         ];
 
         $this->generator = new UrlGenerator($urls);
@@ -57,6 +58,7 @@ class UrlGeneratorTest extends TestCase
             ['foo.show', 'foobar', '/users/foobar'],
             ['foo.show', 12, '/users/12'],
             ['foo.show', ['foobar' => 'foobar'], '/users/user'],
+            ['foo.bar', ['foo' => 'a', 'baz' => 'b'], '/users/a/bar/b'],
         ];
     }
 }
