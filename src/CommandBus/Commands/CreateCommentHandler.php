@@ -28,11 +28,6 @@ class CreateCommentHandler extends AbstractHandler
     protected $internals;
 
     /**
-     * @var array
-     */
-    protected $parsed;
-
-    /**
      * @var Thread
      */
     protected $thread;
@@ -45,7 +40,6 @@ class CreateCommentHandler extends AbstractHandler
     public function __construct(Internals $internals)
     {
         $this->internals = $internals;
-        $this->parsed = Comment::lists('id', 'xref')->all();
     }
 
     /**
@@ -206,7 +200,7 @@ class CreateCommentHandler extends AbstractHandler
             $this->internals->setGroup($group);
             $contents = $this->internals->getArticleBody($this->command->number);
         } catch (InvalidArgumentException $exception) {
-            return;
+            $contents = '';
         }
 
         $datetime = $this->getDatetime();
