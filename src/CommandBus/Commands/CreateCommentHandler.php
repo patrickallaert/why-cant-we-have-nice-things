@@ -106,9 +106,11 @@ class CreateCommentHandler extends AbstractHandler
             'Eastern Standard Time' => 'EST',
         ];
 
-        // Normalize date
+        // Try to change timezone to one PHP understands
+        $date = strtr($this->command->date, $timezones);
+        $date = preg_replace('/(.+)\(.+\)$/', '$1', $date);
+
         try {
-            $date = strtr($this->command->date, $timezones);
             $datetime = new DateTime($date);
         } catch (Exception $exception) {
             dump($exception->getMessage(), $this->command->date);
