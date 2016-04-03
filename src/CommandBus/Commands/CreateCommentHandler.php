@@ -98,6 +98,22 @@ class CreateCommentHandler extends AbstractHandler
     }
 
     /**
+     * @return DateTime
+     */
+    protected function getDatetime(): DateTime
+    {
+        // Normalize date
+        try {
+            $datetime = str_replace('(GMT Daylight Time)', '', $this->command->date);
+            $datetime = new DateTime($datetime);
+        } catch (Exception $exception) {
+            $datetime = Carbon::now();
+        }
+
+        return $datetime;
+    }
+
+    /**
      * @param int $request
      * @param int $user
      *
@@ -106,12 +122,15 @@ class CreateCommentHandler extends AbstractHandler
     protected function getParentThread(int $request, int $user): Thread
     {
         $thread = Thread::firstOrNew(['name' => $this->command->subject]);
+        $datetime = $this->getDatetime();
 
         // Add additional attributes if we just
         // created the thread
         if (!$thread->exists) {
             $thread->request_id = $request;
             $thread->user_id = $user;
+            $thread->created_at = $datetime;
+            $thread->updated_at = $datetime;
             $thread->save();
         }
 
@@ -180,6 +199,10 @@ class CreateCommentHandler extends AbstractHandler
         return $comment ?: null;
     }
 
+    //////////////////////////////////////////////////////////////////////
+    ////////////////////////// COMMENT CREATION //////////////////////////
+    //////////////////////////////////////////////////////////////////////
+
     /**
      * Create a comment from a NNTP article.
      *
@@ -197,14 +220,7 @@ class CreateCommentHandler extends AbstractHandler
             return;
         }
 
-        // Normalize date
-        try {
-            $datetime = str_replace('(GMT Daylight Time)', '', $this->command->date);
-            $datetime = new DateTime($datetime);
-        } catch (Exception $exception) {
-            $datetime = Carbon::now();
-        }
-
+        $datetime = $this->getDatetime();
         $synchronizer = new CommentSynchronizer(array_merge((array) $this->command, [
             'contents' => $contents,
             'comment_id' => $comment,
