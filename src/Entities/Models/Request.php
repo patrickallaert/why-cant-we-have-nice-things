@@ -5,6 +5,7 @@ namespace History\Entities\Models;
 use History\Collection;
 use History\Entities\Traits\HasEventsTrait;
 use History\Entities\Traits\HasSlugTrait;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property string     name
@@ -131,23 +132,11 @@ class Request extends AbstractModel
     }
 
     /**
-     * @codeCoverageIgnore
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
-    public function comments()
+    public function thread(): HasOne
     {
-        return $this->hasMany(Comment::class)->oldest();
-    }
-
-    /**
-     * @codeCoverageIgnore
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function rootComments()
-    {
-        return $this->comments()->whereNull('comment_id');
+        return $this->hasOne(Thread::class);
     }
 
     //////////////////////////////////////////////////////////////////////

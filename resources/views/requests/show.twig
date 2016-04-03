@@ -55,8 +55,8 @@
                 {% include 'requests/partials/votes.twig' %}
             {% endif %}
 
-            {% if request.rootComments.count() %}
-                {% include 'requests/partials/comments.twig' %}
+            {% if request.thread.rootComments.count() %}
+                {% include 'requests/partials/comments.twig' with {comments_count: request.thread.comments.count()} %}
             {% endif %}
         </section>
     </section>

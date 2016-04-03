@@ -1,0 +1,6 @@
+{% extends '_layouts/layout.twig' %}
+{% set title = thread.name %}
+
+{% block content %}
+    {% include 'requests/partials/comments.twig' with {comments_count: thread.comments.count()} %}
+{% endblock %}

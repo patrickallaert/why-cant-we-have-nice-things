@@ -3,6 +3,7 @@
 namespace History\Http\Controllers;
 
 use History\Entities\Models\Thread;
+use Psr\Http\Message\ServerRequestInterface;
 
 class ThreadsController extends AbstractController
 {
@@ -19,12 +20,18 @@ class ThreadsController extends AbstractController
     }
 
     /**
-     * @param Thread $thread
+     * @param Thread                 $thread
+     * @param ServerRequestInterface $request
      *
      * @return Thread
      */
-    public function show(Thread $thread)
+    public function show(Thread $thread, ServerRequestInterface $request)
     {
-        return $thread->toJson();
+        $comments = $this->paginate($thread->rootComments(), $request, 25);
+
+        return $this->render('threads/show.twig', [
+            'thread' => $thread,
+            'comments' => $comments,
+        ]);
     }
 }

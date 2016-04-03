@@ -2,6 +2,7 @@
 
 namespace History\Http\Controllers;
 
+use History\Collection;
 use History\Entities\Models\Request;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -39,7 +40,10 @@ class RequestsController extends AbstractController
     public function show(Request $request, ServerRequestInterface $serverRequest)
     {
         $request->load('questions.votes.question', 'questions.votes.user');
-        $comments = $this->paginate($request->rootComments(), $serverRequest, 25);
+        $comments = new Collection();
+        if ($request->thread) {
+            $comments = $this->paginate($request->thread->rootComments(), $serverRequest, 25);
+        }
 
         return $this->render('requests/show.twig', [
             'request' => $request,

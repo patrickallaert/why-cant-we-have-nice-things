@@ -39,10 +39,22 @@ class Thread extends AbstractModel
     }
 
     /**
+     * @codeCoverageIgnore
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function comments(): HasMany
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class)->oldest();
+    }
+
+    /**
+     * @codeCoverageIgnore
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function rootComments(): HasMany
+    {
+        return $this->comments()->whereNull('comment_id');
     }
 }
