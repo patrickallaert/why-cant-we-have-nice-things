@@ -2,24 +2,27 @@
 {% set title = 'Mailing list' %}
 
 {% block content %}
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Subject</th>
-            <th>User</th>
-            <th>Comments</th>
-            <th>Date</th>
-        </tr>
-        </thead>
-        <tbody>
-            {% for thread in threads %}
-                <tr>
-                    <td>{{ thread.name }}</td>
-                    <td>{{ thread.user.name }}</td>
-                    <td>{{ thread.comments().count() }}</td>
-                    <td>{{ thread.created_at.diffForHumans() }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <ul class="list-group">
+        {% for thread in threads %}
+            <li class="list-group-item">
+                <span class="badge">{{ thread.comments().count() }} replies</span>
+                <div class="media">
+                    <div class="media-left">
+                        <img class="img-circle" src="{{ thread.user.avatar(50) }}" style="width: 50px">
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                            <a href="{{ url('threads.index', thread.id) }}">
+                                {{ thread.name }}
+                            </a>
+                        </h4>
+                        <p>
+                            by <a href="{{ url('users.show', thread.user.slug) }}">{{ thread.user.name }}</a>,
+                            {{ thread.created_at.diffForHumans() }}
+                        </p>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}
