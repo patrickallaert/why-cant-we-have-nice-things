@@ -272,7 +272,9 @@ class InternalsSynchronizer
 
         // Try to retrieve the comment the reference's about
         $reference = $this->internals->findArticleFromReference($reference);
-        $comment = $reference && in_array($reference, $this->parsed, true) ? array_search($reference, $this->parsed, true) : null;
+        $comment = $reference && in_array($reference, $this->parsed, true)
+            ? array_search($reference, $this->parsed, true)
+            : null;
 
         return $comment;
     }

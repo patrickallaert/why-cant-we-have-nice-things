@@ -83,6 +83,6 @@ trait HasAsyncCapabilitiesTrait
      */
     protected function isAsync(): bool
     {
-        return $this->async && extension_loaded("pthreads");
+        return $this->async && extension_loaded('pthreads');
     }
 }
