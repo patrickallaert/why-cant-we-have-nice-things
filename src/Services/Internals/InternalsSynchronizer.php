@@ -30,11 +30,6 @@ class InternalsSynchronizer
     protected $internals;
 
     /**
-     * @var HistoryStyle
-     */
-    protected $output;
-
-    /**
      * @var array
      */
     protected $parsed;
@@ -104,7 +99,7 @@ class InternalsSynchronizer
 
         $created = [];
         foreach ($groups as $group) {
-            $created[$group->name] = $this->synchronizeArticlesForGroup($group);
+            $this->synchronizeArticlesForGroup($group);
         }
 
         $this->output->writeln('Binding references');
@@ -196,21 +191,19 @@ class InternalsSynchronizer
      */
     protected function getArticlesQueue(Group $group): array
     {
-        $groupHigh = $group->high ?: self::CHUNK;
-
-        // Start at the last comment we parsed
         $from = $group->low;
-        $chunk = min(self::CHUNK, $groupHigh);
-        $max = $this->size ? min($groupHigh, $this->size) : $groupHigh;
+        $to = $group->high ?: self::CHUNK;
+        $to = $this->size ? min($this->size, $to) : $to;
+        $chunkSize = min($to, self::CHUNK);
 
         $queue = [];
-        $this->output->progressStart($max);
-        for ($i = $from; $i <= $max; $i += $chunk) {
-            $to = $i + ($chunk - 1);
+        $this->output->progressStart($to);
+        for ($i = $from; $i <= $to; $i += $chunkSize) {
+            $currentChunk = $i + ($chunkSize - 1);
 
             // Process this chunk of articles
             try {
-                $articles = $this->internals->getArticles($i, $to);
+                $articles = $this->internals->getArticles($i, $currentChunk);
 
                 foreach ($articles as $article) {
                     if ($command = $this->createCommandFromArticle($article, $group->name)) {
@@ -221,7 +214,7 @@ class InternalsSynchronizer
                 // No articles in this range
             }
 
-            $this->output->progressAdvance($chunk);
+            $this->output->progressAdvance($chunkSize);
         }
 
         $this->output->progressFinish();
