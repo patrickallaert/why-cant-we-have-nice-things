@@ -93,34 +93,6 @@ class Internals
     //////////////////////////////////////////////////////////////////////
 
     /**
-     * @return int
-     */
-    public function getTotalNumberArticles()
-    {
-        $this->connectIfNeeded();
-
-        return $this->group ? $this->group['count'] : 90000;
-    }
-
-    /**
-     * List all availables articles.
-     *
-     * @param int $from
-     * @param int $to
-     *
-     * @return SplFixedArray
-     */
-    public function getArticles($from, $to)
-    {
-        return $this->cacheRequest('xover:'.$from.'-'.$to, function () use ($from, $to) {
-            $format = $this->client->overviewFormat()->getResult();
-            $command = $this->client->xover($from, $to, $format);
-
-            return (array) $command->getResult();
-        });
-    }
-
-    /**
      * Get informations about an article
      *
      * @param int $articleNumber
@@ -131,7 +103,7 @@ class Internals
     {
         // Fuck those
         if (in_array($articleNumber, $this->forbiddenArticles, true)) {
-            return '';
+            return [];
         }
 
         $article = $this->cacheRequest('article:'.$articleNumber, function () use ($articleNumber) {
@@ -139,31 +111,6 @@ class Internals
                 ->sendCommand(new ArticleCommand($articleNumber))
                 ->getResult();
         });
-
-        return $this->parser->parse($article);
-    }
-
-    /**
-     * @param int $articleNumber
-     *
-     * @return string
-     */
-    public function getArticleBody(int $articleNumber): string
-    {
-        // Fuck those
-        if (in_array($articleNumber, $this->forbiddenArticles, true)) {
-            return '';
-        }
-
-        $article = $this->cacheRequest('body:'.$articleNumber, function () use ($articleNumber) {
-            return $this->client
-                ->sendCommand(new ArticleCommand($articleNumber))
-                ->getResult();
-        });
-
-        if (is_array($article)) {
-            $article = implode("\r\n", $article);
-        }
 
         return $this->parser->parse($article);
     }
