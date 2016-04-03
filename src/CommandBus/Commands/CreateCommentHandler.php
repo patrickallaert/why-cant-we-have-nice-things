@@ -13,6 +13,7 @@ use History\Entities\Synchronizers\CommentSynchronizer;
 use History\Entities\Synchronizers\UserSynchronizer;
 use History\Services\IdentityExtractor;
 use History\Services\Internals\Internals;
+use Rvdv\Nntp\Exception\InvalidArgumentException;
 
 class CreateCommentHandler extends AbstractHandler
 {
@@ -200,9 +201,13 @@ class CreateCommentHandler extends AbstractHandler
      */
     protected function createCommentFromArticle(int $thread, int $user)
     {
-        $group = $this->command->group;
-        $this->internals->setGroup($group);
-        $contents = $this->internals->getArticleBody($this->command->number);
+        try {
+            $group = $this->command->group;
+            $this->internals->setGroup($group);
+            $contents = $this->internals->getArticleBody($this->command->number);
+        } catch (InvalidArgumentException $exception) {
+            return;
+        }
 
         $datetime = $this->getDatetime();
         $synchronizer = new CommentSynchronizer(array_merge((array) $this->command, [

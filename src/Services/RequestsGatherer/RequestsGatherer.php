@@ -6,7 +6,7 @@ use History\CommandBus\Commands\CreateRequestCommand;
 use History\Console\HistoryStyle;
 use History\Entities\Models\Request;
 use History\Services\RequestsGatherer\Extractors\RequestsExtractor;
-use History\Services\Threading\HasAsyncCapabilitiesTrait;
+use History\Services\Traits\HasAsyncCapabilitiesTrait;
 use Illuminate\Contracts\Cache\Repository;
 use League\Tactician\CommandBus;
 use Symfony\Component\DomCrawler\Crawler;
@@ -24,11 +24,6 @@ class RequestsGatherer
      * @var Repository
      */
     protected $cache;
-
-    /**
-     * @var HistoryStyle
-     */
-    protected $output;
 
     /**
      * @param Repository $cache

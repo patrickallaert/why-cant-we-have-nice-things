@@ -6,7 +6,7 @@ use History\CommandBus\Commands\CreateCommentCommand;
 use History\Console\HistoryStyle;
 use History\Entities\Models\Threads\Comment;
 use History\Entities\Models\Threads\Group;
-use History\Services\Threading\HasAsyncCapabilitiesTrait;
+use History\Services\Traits\HasAsyncCapabilitiesTrait;
 use League\Tactician\CommandBus;
 use Rvdv\Nntp\Exception\RuntimeException;
 
@@ -152,6 +152,8 @@ class InternalsSynchronizer
         $queue = $this->getArticlesQueue($group);
 
         if (!$queue) {
+            $this->output->writeln('<info>No new articles to synchronize</info>');
+
             return [];
         }
 
