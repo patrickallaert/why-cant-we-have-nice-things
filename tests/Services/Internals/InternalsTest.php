@@ -50,6 +50,6 @@ class InternalsTest extends TestCase
             $callback($client);
         }
 
-        return new Internals($cache, $client, new MailingListArticleCleaner());
+        return new Internals($cache, $client, new ArticleParser());
     }
 }

@@ -33,9 +33,16 @@ class Comment extends AbstractModel
      */
     protected $fillable = [
         'name',
-        'reference',
+        'references',
         'contents',
         'xref',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $casts = [
+      'references' => 'array',
     ];
 
     //////////////////////////////////////////////////////////////////////

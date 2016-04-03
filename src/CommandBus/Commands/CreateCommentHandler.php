@@ -13,19 +13,15 @@ use History\Entities\Synchronizers\CommentSynchronizer;
 use History\Entities\Synchronizers\UserSynchronizer;
 use History\Services\IdentityExtractor;
 use History\Services\Internals\Internals;
+use Illuminate\Support\Fluent;
 use Rvdv\Nntp\Exception\InvalidArgumentException;
 
 class CreateCommentHandler extends AbstractHandler
 {
     /**
-     * @var CreateCommentCommand
+     * @var Fluent
      */
-    protected $command;
-
-    /**
-     * @var Internals
-     */
-    protected $internals;
+    protected $article;
 
     /**
      * @var Thread
@@ -33,8 +29,11 @@ class CreateCommentHandler extends AbstractHandler
     protected $thread;
 
     /**
-     * CreateCommentHandler constructor.
-     *
+     * @var Internals
+     */
+    protected $internals;
+
+    /**
      * @param Internals $internals
      */
     public function __construct(Internals $internals)
@@ -49,10 +48,11 @@ class CreateCommentHandler extends AbstractHandler
      */
     public function handle(CreateCommentCommand $command)
     {
-        $this->command = $command;
+        $this->internals->setGroup($command->group, true);
+        $article = $this->internals->getArticle($command->articleNumber);
+        $this->article = new Fluent($article);
 
         // Get the RFC the message relates to
-        $this->command->subject = $this->cleanupSubject($this->command->subject);
         $request = $this->getRelatedRequest();
 
         // Get the user that posted the message
@@ -73,50 +73,6 @@ class CreateCommentHandler extends AbstractHandler
     //////////////////////////////////////////////////////////////////////
 
     /**
-     * Remove tags from an article's subject.
-     *
-     * @param string $subject
-     *
-     * @return string
-     */
-    protected function cleanupSubject($subject)
-    {
-        return trim(strtr($subject, [
-            'RE' => null,
-            'Re:' => null,
-            'RFC' => null,
-            '[RFC]' => null,
-            '[DISCUSSION]' => null,
-            '[PHP-DEV]' => null,
-            '[VOTE]' => null,
-        ]), ' :');
-    }
-
-    /**
-     * @return DateTime
-     */
-    protected function getDatetime(): DateTime
-    {
-        $timezones = [
-            'Eastern Daylight Time' => 'EDT',
-            'Eastern Standard Time' => 'EST',
-            'MET DST' => 'MET',
-        ];
-
-        // Try to change timezone to one PHP understands
-        $date = strtr($this->command->date, $timezones);
-        $date = preg_replace('/(.+)\(.+\)$/', '$1', $date);
-
-        try {
-            $datetime = new DateTime($date);
-        } catch (Exception $exception) {
-            $datetime = Carbon::createFromDate(1970, 01, 01);
-        }
-
-        return $datetime;
-    }
-
-    /**
      * @param int      $user
      * @param int|null $request
      *
@@ -124,11 +80,10 @@ class CreateCommentHandler extends AbstractHandler
      */
     protected function getParentThread(int $user, int $request = null): Thread
     {
-        $thread = Thread::firstOrNew(['name' => $this->command->subject]);
-        $datetime = $this->getDatetime();
+        $thread = Thread::firstOrNew(['name' => $this->article->subject]);
 
         // Retrieve group
-        list($group) = explode(':', $this->command->xref);
+        list($group) = explode(':', $this->article->xref);
         $group = Group::firstOrCreate(['name' => $group]);
 
         // Add additional attributes if we just
@@ -137,8 +92,8 @@ class CreateCommentHandler extends AbstractHandler
             $thread->request_id = $request;
             $thread->user_id = $user;
             $thread->group_id = $group->id;
-            $thread->created_at = $datetime;
-            $thread->updated_at = $datetime;
+            $thread->created_at = $this->article->date;
+            $thread->updated_at = $this->article->date;
             $thread->save();
         }
 
@@ -150,7 +105,7 @@ class CreateCommentHandler extends AbstractHandler
      */
     protected function getRelatedRequest()
     {
-        $subject = $this->command->subject;
+        $subject = $this->article->subject;
         $existingRequests = Request::lists('id', 'name');
 
         // Try to find an exact match
@@ -174,7 +129,7 @@ class CreateCommentHandler extends AbstractHandler
     protected function getRelatedUser()
     {
         // Get user email
-        $extractor = new IdentityExtractor($this->command->from);
+        $extractor = new IdentityExtractor($this->article->from);
         $user = head($extractor->extract());
         $synchronizer = new UserSynchronizer($user);
 
@@ -195,21 +150,10 @@ class CreateCommentHandler extends AbstractHandler
      */
     protected function createCommentFromArticle(int $thread, int $user)
     {
-        try {
-            $group = $this->command->group;
-            $this->internals->setGroup($group);
-            $contents = $this->internals->getArticleBody($this->command->number);
-        } catch (InvalidArgumentException $exception) {
-            $contents = '';
-        }
-
-        $datetime = $this->getDatetime();
-        $synchronizer = new CommentSynchronizer(array_merge((array) $this->command, [
-            'contents' => $contents,
-            'reference' => $this->command->reference,
+        $synchronizer = new CommentSynchronizer(array_merge($this->article->toArray(), [
             'thread_id' => $thread,
             'user_id' => $user,
-            'timestamps' => $datetime,
+            'timestamps' => $this->article->date,
         ]));
 
         return $synchronizer->persist();

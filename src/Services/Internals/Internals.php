@@ -7,6 +7,7 @@ use Illuminate\Contracts\Cache\Repository;
 use Rvdv\Nntp\ClientInterface;
 use Rvdv\Nntp\Command\ArticleCommand;
 use Rvdv\Nntp\Command\XpathCommand;
+use Rvdv\Nntp\Exception\InvalidArgumentException;
 use SplFixedArray;
 
 class Internals
@@ -32,9 +33,9 @@ class Internals
     protected $client;
 
     /**
-     * @var MailingListArticleCleaner
+     * @var ArticleParser
      */
-    protected $cleaner;
+    protected $parser;
 
     /**
      * Some articles that should never
@@ -45,15 +46,15 @@ class Internals
     protected $forbiddenArticles = [992];
 
     /**
-     * @param Repository                $cache
-     * @param ClientInterface           $client
-     * @param MailingListArticleCleaner $cleaner
+     * @param Repository      $cache
+     * @param ClientInterface $client
+     * @param ArticleParser   $parser
      */
-    public function __construct(Repository $cache, ClientInterface $client, MailingListArticleCleaner $cleaner)
+    public function __construct(Repository $cache, ClientInterface $client, ArticleParser $parser)
     {
         $this->cache = $cache;
         $this->client = $client;
-        $this->cleaner = $cleaner;
+        $this->parser = $parser;
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -73,12 +74,13 @@ class Internals
 
     /**
      * @param string $group
+     * @param bool   $force
      *
      * @return $this
      */
-    public function setGroup(string $group)
+    public function setGroup(string $group, bool $force = false)
     {
-        if (!$this->group || $this->group['name'] !== $group) {
+        if (!$this->group || $this->group['name'] !== $group || $force) {
             $this->connectIfNeeded();
             $this->group = $this->client->group($group)->getResult();
         }
@@ -119,6 +121,29 @@ class Internals
     }
 
     /**
+     * Get informations about an article
+     *
+     * @param int $articleNumber
+     *
+     * @return array
+     */
+    public function getArticle(int $articleNumber): array
+    {
+        // Fuck those
+        if (in_array($articleNumber, $this->forbiddenArticles, true)) {
+            return '';
+        }
+
+        $article = $this->cacheRequest('article:'.$articleNumber, function () use ($articleNumber) {
+            return $this->client
+                ->sendCommand(new ArticleCommand($articleNumber))
+                ->getResult();
+        });
+
+        return $this->parser->parse($article);
+    }
+
+    /**
      * @param int $articleNumber
      *
      * @return string
@@ -140,7 +165,7 @@ class Internals
             $article = implode("\r\n", $article);
         }
 
-        return $this->cleaner->cleanup($article);
+        return $this->parser->parse($article);
     }
 
     /**
@@ -190,7 +215,11 @@ class Internals
         return $this->cache->tags('internals')->rememberForever($key, function () use ($callback) {
             $this->connectIfNeeded();
 
-            return $callback();
+            try {
+                return $callback();
+            } catch (InvalidArgumentException $exception) {
+                return '';
+            }
         });
     }
 

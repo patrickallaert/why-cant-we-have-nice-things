@@ -7,6 +7,7 @@ use History\Console\HistoryStyle;
 use History\Entities\Models\Threads\Comment;
 use History\Entities\Models\Threads\Group;
 use History\Services\Traits\HasAsyncCapabilitiesTrait;
+use Illuminate\Database\Capsule\Manager;
 use League\Tactician\CommandBus;
 use Rvdv\Nntp\Exception\RuntimeException;
 
@@ -143,19 +144,14 @@ class InternalsSynchronizer
         $this->output->section($group->name);
         $this->internals->setGroup($group->name);
 
-        $this->output->writeln('Getting messages informations');
+        // Prepare main loop variables
         $queue = $this->getArticlesQueue($group);
-
         if (!$queue) {
-            $this->output->writeln('<info>No new articles to synchronize</info>');
-
-            return [];
+            return $this->output->writeln('No new articles');
         }
 
-        $this->output->writeln('Creating comments');
-        $comments = $this->dispatchCommands($queue);
-
-        return $comments;
+        $this->output->writeln('Creating articles');
+        $this->dispatchCommands($queue);
     }
 
     protected function synchronizeReferences()
@@ -166,7 +162,7 @@ class InternalsSynchronizer
         $withReferences = Comment::whereNotNull('reference')->whereNull('comment_id')->get();
         $withReferences = $this->output->progressIterator($withReferences);
         foreach ($withReferences as $comment) {
-            $reference = $this->getCommentFromReference($comment->reference);
+            $reference = $this->getCommentFromReference($comment->references);
             if (!$reference) {
                 continue;
             }
@@ -182,9 +178,6 @@ class InternalsSynchronizer
     //////////////////////////////////////////////////////////////////////
 
     /**
-     * Get a queue of CreateComment commands
-     * we need to handle for this group.
-     *
      * @param Group $group
      *
      * @return CreateCommentCommand[]
@@ -193,62 +186,18 @@ class InternalsSynchronizer
     {
         $to = (int) $group->high ?: self::CHUNK;
         $from = $this->size ? $to - $this->size : $group->low;
-        $chunkSize = min($to, self::CHUNK);
-        $totalSize = $to - $from;
 
         $queue = [];
-        $this->output->progressStart($totalSize);
-        for ($i = $from; $i <= $to; $i += $chunkSize) {
-            $currentChunk = $i + ($chunkSize - 1);
-
-            // Process this chunk of articles
-            try {
-                $articles = $this->internals->getArticles($i, $currentChunk);
-
-                foreach ($articles as $article) {
-                    if ($command = $this->createCommandFromArticle($article, $group->name)) {
-                        $queue[] = $command;
-                    }
-                }
-            } catch (RuntimeException $exception) {
-                // No articles in this range
+        for ($i = $from; $i <= $to; $i += 1) {
+            $xref = $group->name.':'.$i;
+            if (in_array($xref, $this->parsed)) {
+                continue;
             }
 
-            $this->output->progressAdvance($chunkSize);
+            $queue[] = new CreateCommentCommand($group->name, $i);
         }
-
-        $this->output->progressFinish();
 
         return $queue;
-    }
-
-    /**
-     * @param array|null $article
-     * @param string     $group
-     *
-     * @return CreateCommentCommand
-     */
-    protected function createCommandFromArticle($article, string $group)
-    {
-        if (!$article || !isset($article['from'])) {
-            return;
-        }
-
-        // If we already synchronized this one, skip it
-        if (in_array($article['xref'], $this->parsed, true)) {
-            return;
-        }
-
-        $command = new CreateCommentCommand();
-        $command->group = $group;
-        $command->xref = $article['xref'];
-        $command->subject = $article['subject'];
-        $command->reference = $article['references'];
-        $command->from = $article['from'];
-        $command->number = $article['number'];
-        $command->date = $article['date'];
-
-        return $command;
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -256,21 +205,19 @@ class InternalsSynchronizer
     //////////////////////////////////////////////////////////////////////
 
     /**
-     * @param string $references
+     * @param string[] $references
      *
      * @return int|null
      */
-    protected function getCommentFromReference(string $references)
+    protected function getCommentFromReference(array $references)
     {
         // Just get the last reference cause
-        $references = array_filter(explode('>', $references));
-        $reference = last($references);
-        $reference = $reference ? trim($reference).'>' : null;
-        if (!$reference) {
+        if (!$references) {
             return;
         }
 
         // Try to retrieve the comment the reference's about
+        $reference = last($references);
         $reference = $this->internals->findArticleFromReference($reference);
         $comment = $reference && in_array($reference, $this->parsed, true)
             ? array_search($reference, $this->parsed, true)

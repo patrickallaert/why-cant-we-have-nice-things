@@ -7,37 +7,22 @@ use History\CommandBus\CommandInterface;
 class CreateCommentCommand implements CommandInterface
 {
     /**
+     * @var int
+     */
+    public $articleNumber;
+    
+    /**
      * @var string
      */
     public $group;
 
     /**
-     * @var string
+     * @param string $group
+     * @param int    $articleNumber
      */
-    public $xref;
-
-    /**
-     * @var string
-     */
-    public $subject;
-
-    /**
-     * @var string
-     */
-    public $reference;
-
-    /**
-     * @var string
-     */
-    public $from;
-
-    /**
-     * @var string
-     */
-    public $number;
-
-    /**
-     * @var string
-     */
-    public $date;
+    public function __construct(string $group, int $articleNumber)
+    {
+        $this->articleNumber = $articleNumber;
+        $this->group = $group;
+    }
 }

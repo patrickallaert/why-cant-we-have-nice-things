@@ -14,9 +14,9 @@ class MailingListArticleCleanerTest extends TestCase
      */
     public function testCanCleanupMessages($before, $after)
     {
-        /** @var MailingListArticleCleaner $cleaner */
-        $cleaner = $this->container->get(MailingListArticleCleaner::class);
-        $cleaned = $cleaner->cleanup($before);
+        /** @var ArticleParser $cleaner */
+        $cleaner = $this->container->get(ArticleParser::class);
+        $cleaned = $cleaner->parse($before);
 
         $this->assertEquals($after, $cleaned.PHP_EOL);
     }

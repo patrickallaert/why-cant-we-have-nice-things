@@ -38,7 +38,7 @@ class CommentSynchronizer extends AbstractSynchronizer
     {
         return [
             'xref' => $this->informations->get('xref'),
-            'reference' => $this->informations->get('reference'),
+            'references' => $this->informations->get('references'),
             'name' => $this->informations->get('subject'),
             'contents' => $this->informations->get('contents'),
             'thread_id' => $this->informations->get('thread_id'),

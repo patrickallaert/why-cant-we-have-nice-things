@@ -15,7 +15,7 @@ class InternalsServiceProvider extends AbstractServiceProvider
     protected $provides = [
         Internals::class,
         Client::class,
-        MailingListArticleCleaner::class,
+        ArticleParser::class,
     ];
 
     /**
@@ -25,8 +25,8 @@ class InternalsServiceProvider extends AbstractServiceProvider
      */
     public function register()
     {
-        $this->container->share(MailingListArticleCleaner::class, function () {
-            return new MailingListArticleCleaner();
+        $this->container->share(ArticleParser::class, function () {
+            return new ArticleParser();
         });
 
         $this->container->share(Client::class, function () {
@@ -40,7 +40,7 @@ class InternalsServiceProvider extends AbstractServiceProvider
             return new Internals(
                 $this->container->get(Repository::class),
                 $this->container->get(Client::class),
-                $this->container->get(MailingListArticleCleaner::class)
+                $this->container->get(ArticleParser::class)
             );
         });
     }
