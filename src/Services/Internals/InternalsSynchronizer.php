@@ -126,7 +126,7 @@ class InternalsSynchronizer
             $group->fill($attributes);
             $group->saveIfDirty();
 
-            $groups[$group->name] = $group;
+            $groups[$key] = $group;
         }
 
         return $this->group ? [$groups[$this->group]] : $groups;
@@ -185,7 +185,7 @@ class InternalsSynchronizer
     protected function getArticlesQueue(Group $group): array
     {
         $to = (int) $group->high ?: self::CHUNK;
-        $from = $this->size ? $to - $this->size : $group->low;
+        $from = $this->size ? max(1, $to - $this->size) : $group->low;
 
         $queue = [];
         for ($i = $from; $i <= $to; $i += 1) {
