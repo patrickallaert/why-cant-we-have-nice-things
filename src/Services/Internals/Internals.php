@@ -78,8 +78,10 @@ class Internals
      */
     public function setGroup(string $group)
     {
-        $this->connectIfNeeded();
-        $this->group = $this->client->group($group)->getResult();
+        if (!$this->group || $this->group['name'] !== $group) {
+            $this->connectIfNeeded();
+            $this->group = $this->client->group($group)->getResult();
+        }
 
         return $this;
     }
