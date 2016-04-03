@@ -1,0 +1,21 @@
+Hello!
+
+The PHP development team announces the immediate availability of PHP 5.6.20.
+Several security related issues were fixed in this release. All
+PHP 5.6 users are encouraged to upgrade to this version.
+
+For source downloads of PHP 5.6.20 please visit our downloads page:
+http://www.php.net/downloads.php
+
+ Windows binaries can be found on http://windows.php.net/download/.
+
+The list of changes is recorded in the ChangeLog:
+http://www.php.net/ChangeLog-5.php#5.6.20
+
+To verify the downloads, you can use the following information:
+
+php-5.6.20.tar.bz2
+SHA256 hash:
+5ac7bf7caec7a79b18cf458e786fd1609ad2da771224b80bc15cc6f01b22bf1f
+
+Julien Pauli & Ferenc Kovacs

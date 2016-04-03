@@ -1,59 +1,36 @@
 Hi Larry,
 
-> That wouldn't help either, I think.  Then you'd need a separate
-partialLeft(callable:int $cb), partialLeft(callable:string $cb),
-> partialLeft(callable:float $cb), and partialLeft(callable:void $db).
-And likely others. That seems exactly like what Anthony
+> That wouldn't help either, I think. Then you'd need a separate partialLeft(callable:int $cb), partialLeft(callable:string $cb),
+> partialLeft(callable:float $cb), and partialLeft(callable:void $db). And likely others. That seems exactly like what Anthony
 > wants to avoid (rightly).
 >
-> Indirect calls to arbitrary functions does mean that they need to be
-able to behave consistently when referred to
-> abstractly.  Vis, any approach that involves:
+> Indirect calls to arbitrary functions does mean that they need to be able to behave consistently when referred to
+> abstractly. Vis, any approach that involves:
 >
 > function foo() : void {}
 > $a = foo();
 >
-> triggering an error condition would make life drastically more
-difficult for higher order function operations like partials or
-> memoization.  That seems doubleplusungood.
+> triggering an error condition would make life drastically more difficult for higher order function operations like partials or
+> memoization. That seems doubleplusungood.
 >
-> One way around that would be to only trigger that behavior on a static
-call, not a call to a variable function, but I have no
-> idea if that's at all feasible in the engine.  I suspect it's more
-feasible than detecting the function wrapping and only erroring
+> One way around that would be to only trigger that behavior on a static call, not a call to a variable function, but I have no
+> idea if that's at all feasible in the engine. I suspect it's more feasible than detecting the function wrapping and only erroring
 > at the top level caller, but now I'm just talking out of my butt. :-)
 >
-> That leaves "documentation of intent for the developer" (which is a
-valid argument) and "slap someone's hand for
-> returning non-null inside the function itself" (which is valid, but
-leaves the question of whether return null should error).
+> That leaves "documentation of intent for the developer" (which is a valid argument) and "slap someone's hand for
+> returning non-null inside the function itself" (which is valid, but leaves the question of whether return null should error).
 >
 > --Larry Garfield
 >
 > --
 
-Well, it really depends on the use case. I would probably not write such
-a generic partial function, especially not allowing functions which
-return a value and others which don't. I could imagine to use
-callable:mixed to allow values of arbitrary types to be returned. Yet,
-that would still not include a function which does not return a value.
-IMO we do not really proceed further with this RFC when discussing this
-special case - callable:int, callable:mixed etc is not supported by PHP
-now, so we should focus on the essential now.
+Well, it really depends on the use case. I would probably not write such a generic partial function, especially not allowing functions which return a value and others which don't. I could imagine to use callable:mixed to allow values of arbitrary types to be returned. Yet, that would still not include a function which does not return a value. IMO we do not really proceed further with this RFC when discussing this special case - callable:int, callable:mixed etc is not supported by PHP now, so we should focus on the essential now.
 
-IMO we should get an agreement what void means in PHP, I see the
-following options:
+IMO we should get an agreement what void means in PHP, I see the following options:
 
-1 void is a type with a value set containing null (ergo corresponds to
-the set { null }) and hence it is perfectly fine to return null from a
-function with return type void (naming it void is controversial among
-the list -- others prefer null -- but that can be discussed further
-afterwards)
-2 void is a type with an empty value set (a special value respectively)
-and hence one cannot return null from a function with return type void
-and
+1 void is a type with a value set containing null (ergo corresponds to the set { null }) and hence it is perfectly fine to return null from a function with return type void (naming it void is controversial among the list -- others prefer null -- but that can be discussed further afterwards)
+2 void is a type with an empty value set (a special value respectively) and hence one cannot return null from a function with return type void and
 a) such a function returns null implicitly nonetheless
-b) such a function returns a special value which triggers a fatal
-error when it is accessed
+b) such a function returns a special value which triggers a fatal error when it is accessed
 
 IMO 2a is inconsistent and I would only consider 1 or 2b

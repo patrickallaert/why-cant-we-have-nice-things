@@ -1,0 +1,226 @@
+Newsgroups: php.announce
+Path: news.php.net
+Xref: news.php.net php.announce:180
+Return-Path: <tyra3l@gmail.com>
+Mailing-List: contact php-announce-help@lists.php.net; run by ezmlm
+Delivered-To: mailing list php-announce@lists.php.net
+Delivered-To: moderator for php-announce@lists.php.net
+Received: (qmail 14318 invoked from network); 31 Mar 2016 23:35:21 -0000
+Received: from unknown (HELO lists.php.net) (127.0.0.1)
+  by localhost with SMTP; 31 Mar 2016 23:35:21 -0000
+Authentication-Results: pb1.pair.com smtp.mail=tyra3l@gmail.com; spf=pass; sender-id=pass
+Authentication-Results: pb1.pair.com header.from=tyra3l@gmail.com; sender-id=pass
+Received-SPF: pass (pb1.pair.com: domain gmail.com designates 209.85.217.174 as permitted sender)
+X-PHP-List-Original-Sender: tyra3l@gmail.com
+X-Host-Fingerprint: 209.85.217.174 mail-lb0-f174.google.com
+Received: from [209.85.217.174] ([209.85.217.174:34986] helo=mail-lb0-f174.google.com)
+\tby pb1.pair.com (ecelerity 2.1.1.9-wez r(12769M)) with ESMTP
+\tid 17/B4-15473-834BDF65 for <php-announce@lists.php.net>; Thu, 31 Mar 2016 18:35:21 -0500
+Received: by mail-lb0-f174.google.com with SMTP id bc4so61718177lbc.2
+        for <php-announce@lists.php.net>; Thu, 31 Mar 2016 16:35:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:date:message-id:subject:from:to;
+        bh=8FyC8olYDGi6tIifbbdJrN3Jl9glPgIG7hpzpUp9Nbo=;
+        b=CER9Gwj6dsRehduxqZ5x1waGiWRES2orgVLXKLpoveHz0GeLDM7oMz2DVt8twbZ4OY
+         7EzxCcL86wasNw2Nwa9xm3gIVkvhSf9+5RpDKEh/5gmoswxV2p2kA5brAQ0/ywiUKS3/
+         Bt9SXUnr0ROpB9E+boEIIa0S91UwJwtBgbHe7dgDjkcIQ6usu69pCvwG+on/D912eTQN
+         eSpbrKXTNipwW3Cq8wrWy3uSFL2RXc15b0GUZUapGR0bp5Ynvy125qAOBSEQ2EkhFiEd
+         BonKAlqJIB1mXNvnNn7K7m13v48YHwtxKrScmBnjYUNO3SzgRPqyTzp5cFlZVFlBTKGf
+         pMGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:date:message-id:subject:from
+         :to;
+        bh=8FyC8olYDGi6tIifbbdJrN3Jl9glPgIG7hpzpUp9Nbo=;
+        b=jPZFOowpZX/3lGOF0iTm1eShRNXK/yafkxiPUgMQEFJMFPnuGbE7hv1HWFAw+Ns0gF
+         okLGM8DOTEDfRBd/mrEMCWsjfJYhVTveAe7IujnfXN7wz2MEWkqEbq3pVB+B18N54N7H
+         5J0gNNuSaWDujTVK+lmU/hBf1VLdqr0V7V1stmPu2Y0ItWCaWiMnyBoqdUIurGE9/NYm
+         QTR3iROyHzRK/sXGLQ10ifwa06ltTvNiFwwI8IsVoaQ6Kvn3exJBObA72P2F2POpawxj
+         Bg7nZ2VSd+tlJ4P0JXuvpwJZK2KIgtzuTCB0RMK5qucDMP55UWmNswQDonMISmHE9ndf
+         n+Og==
+X-Gm-Message-State: AD7BkJLVorpaRj4qi5uCOZx5szogANgfVlTAjs4cpNiUzTO63xvT5Z6SN75k7IA2ztK6fs6lgEy6dUFG8H3KzQ==
+MIME-Version: 1.0
+X-Received: by 10.112.14.102 with SMTP id o6mr543207lbc.87.1459467317396; Thu,
+ 31 Mar 2016 16:35:17 -0700 (PDT)
+Sender: tyra3l@gmail.com
+Received: by 10.25.15.196 with HTTP; Thu, 31 Mar 2016 16:35:17 -0700 (PDT)
+Date: Fri, 1 Apr 2016 01:35:17 +0200
+X-Google-Sender-Auth: ZwbwGLTHXGX20Oufh72sFgHoRF4
+Message-ID: <CAH-PCH5JL=d7t4qEiTM8pFWsTWwn6YvOex7LqWhzyXKBaAEDew@mail.gmail.com>
+To: php-announce@lists.php.net
+Content-Type: multipart/alternative; boundary=001a11c37aba03ca8d052f60b701
+Subject: PHP 5.6.20 is available
+From: tyrael@php.net (Ferenc Kovacs)
+
+--001a11c37aba03ca8d052f60b701
+Content-Type: text/plain; charset=UTF-8
+
+Hello!
+
+The PHP development team announces the immediate availability of PHP 5.6.20.
+Several security related issues were fixed in this release. All
+PHP 5.6 users are encouraged to upgrade to this version.
+
+For source downloads of PHP 5.6.20 please visit our downloads page:
+http://www.php.net/downloads.php
+
+ Windows binaries can be found on http://windows.php.net/download/.
+
+The list of changes is recorded in the ChangeLog:
+http://www.php.net/ChangeLog-5.php#5.6.20
+
+To verify the downloads, you can use the following information:
+
+php-5.6.20.tar.bz2
+SHA256 hash:
+5ac7bf7caec7a79b18cf458e786fd1609ad2da771224b80bc15cc6f01b22bf1f
+PGP signature:
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQEcBAABAgAGBQJW/Gv8AAoJEMK/C8Qzz8izl3oIAMmSbWOdtIqL0n1siQAvPFCQ
+zvV7UhO3z3LKZnMCzFpIz9l1Sa078gWwaJ1IpRWazhsIhZNfnBw23a64jsNc0RTt
+bsirevyleOH2jRXISkKlMbVMPkvWtHyptQONAtO/wlGYNHqjCUeA1WOMEzpVtCQb
+WbSVRgv8UOdvERYaPdnpWbm347ME1nLSeGeHX342bAsQzoQhy/CfALra12VyQ2Z8
+9E30+5jCwKKC4dqWDNWzVqqL/2tcYpCYrx1fC97Wc8lfambGDltfisqputdh94/Y
+j1Bi2KsR4YtkqxocSOrUb+EDJmAUoywt+TUZ4Ik48Eez+/oAd7vleF08184iTbU=
+=q+Nh
+-----END PGP SIGNATURE-----
+
+php-5.6.20.tar.gz
+SHA256 hash:
+9a7ec6e1080ee93dcbe7df3e49ea1c3c3da5fc2258aff763f39ab3786baf8d56
+PGP signature:
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQEcBAABAgAGBQJW/GwCAAoJEMK/C8Qzz8izxAoIANxMhkIfMPmyixVnEu329g5z
+oPVh383mzEyLuWjEvB9kPiZFhFh6F1RnWusS+oQ1d2i1h1dw6YUp5vdPsAC28b7o
+fIHfmQ6q4bgpGTmElkCRpBFdHgSOaI3HSB7eZtMFifBJWrZwTcmKII/M+r+46Iiu
+JsNmG401uQQwO+Cbl6PZKpQ/84I+WwZT/fDWTLFaAVprw2Ygc4AsHliGHxr89Flv
+ecg1gt+KACjCUG85yhuYf0DANtN2vzrCkr3xzLq5DOk15nctut7a5ewOSRugMNSj
+TKs+7IfplO6/CV/YmBnh8Pfdm8rvfrqaXohLf1oppsFblwnJI3h5tDSiFlVUJTc=
+=kiPW
+-----END PGP SIGNATURE-----
+
+php-5.6.20.tar.xz
+SHA256 hash:
+2b87d40213361112af49157a435e0d4cdfd334c9b7c731c8b844932b1f444e7a
+PGP signature:
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQEcBAABAgAGBQJW/GwHAAoJEMK/C8Qzz8izX84IAN+mTg973KfUcfvByxMAR7wR
+HXNYVWdnjvyiQGDGxaLzjhuUE+u3jpwBv8gDH6rZk488AM8BeQDCrJWO/011r6wZ
+gOLuCRCdKfwSJ2A3+TpeRha0WE2fDjpbWU9I2RbFBqrb7KHQp9XsHxivHj8NPhxA
+sitP7PfT/a0t65E7ThoVIn1RvDykEx/TrnxBgdnAsVrmIsLz/WnwyPhzfoNFHoYy
+HeMiA+lDdL8Duwo9fgEh0sMhY9+pqR0ALKu9kscRQuLkRoaZE+Eo+9OEsGOqEl3g
++XS/TRpYP5bWx96wIJc4+AGsBx1LuXaFitaaAodR29kRaIJQQBluIIklW4dbwkY=
+=ynp7
+-----END PGP SIGNATURE-----
+
+Julien Pauli & Ferenc Kovacs
+
+--001a11c37aba03ca8d052f60b701
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><span style=3D"font-size:12.8px">Hello!</span><br style=3D=
+"font-size:12.8px"><br style=3D"font-size:12.8px"><span style=3D"font-size:=
+12.8px">The=C2=A0<span class=3D"">PHP</span>=C2=A0development team announce=
+s the immediate availability of=C2=A0<span class=3D"">PHP</span>=C2=A0<span=
+ class=3D"">5.6</span>.20. Several</span><span style=3D"font-size:12.8px">=
+=C2=A0security related issues were fixed in this release. All</span><br sty=
+le=3D"font-size:12.8px"><span style=3D"font-size:12.8px"><span class=3D"">P=
+HP</span>=C2=A0</span><span style=3D"font-size:12.8px">5.6</span><span styl=
+e=3D"font-size:12.8px">=C2=A0users are encouraged to upgrade to this versio=
+n.</span><br style=3D"font-size:12.8px"><br style=3D"font-size:12.8px"><spa=
+n style=3D"font-size:12.8px">For source downloads of=C2=A0<span class=3D"">=
+PHP</span>=C2=A0</span><span style=3D"font-size:12.8px">5.6</span><span sty=
+le=3D"font-size:12.8px">.20</span><span style=3D"font-size:12.8px">=C2=A0pl=
+ease visit our downloads page:</span><div><a href=3D"http://www.php.net/dow=
+nloads.php" target=3D"_blank" style=3D"font-size:12.8px">http://www.<span c=
+lass=3D"">php</span>.net/downloads.<span class=3D"">php</span></a><div styl=
+e=3D"font-size:12.8px"><br></div><div style=3D"font-size:12.8px">=C2=A0Wind=
+ows binaries can be found on=C2=A0<a href=3D"http://windows.php.net/downloa=
+d/" target=3D"_blank">http://windows.<span class=3D"">php</span>.net/downlo=
+ad/</a>.</div><div style=3D"font-size:12.8px"><br></div><div><span style=3D=
+"font-size:12.8px">The list of changes=C2=A0<span class=3D"">is</span>=C2=
+=A0recorded in the ChangeLog:</span><div><a href=3D"http://www.php.net/Chan=
+geLog-5.php#5.6.20" target=3D"_blank" style=3D"font-size:12.8px">http://www=
+..php.net/ChangeLog-5.php#5.6.20</a><br><div style=3D"font-size:12.8px"><spa=
+n style=3D"font-size:12.8px"><br></span></div><div style=3D"font-size:12.8p=
+x"><span style=3D"font-size:12.8px">To verify the downloads, you can use th=
+ 170/180 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░]  94% 6 secs/6 secs 8.0 MiBe following information:</span><br style=3D"font-size:12.8px"></div><div st=
+yle=3D"font-size:12.8px"><span style=3D"font-size:12.8px"><br></span></div>=
+<div><div style=3D"font-size:12.8px"><span class=3D"">php</span>-<span clas=
+s=3D"">5.6</span>.20.tar.bz2<br></div><div><span style=3D"font-size:12.8px"=
+>SHA256</span><span style=3D"font-size:12.8px">=C2=A0hash:</span><br><span =
+style=3D"font-size:12.8px">5ac7bf7caec7a79b18cf458e786fd1609ad2da771224b80b=
+c15cc6f01b22bf1f</span><br></div><div><span style=3D"font-size:12.8px">PGP =
+signature:</span><br><div><div><span style=3D"font-size:12.8px">-----BEGIN =
+PGP SIGNATURE-----</span></div><div><span style=3D"font-size:12.8px">Versio=
+n: GnuPG v1</span></div><div><span style=3D"font-size:12.8px"><br></span></=
+div><div><span style=3D"font-size:12.8px">iQEcBAABAgAGBQJW/Gv8AAoJEMK/C8Qzz=
+8izl3oIAMmSbWOdtIqL0n1siQAvPFCQ</span></div><div><span style=3D"font-size:1=
+2.8px">zvV7UhO3z3LKZnMCzFpIz9l1Sa078gWwaJ1IpRWazhsIhZNfnBw23a64jsNc0RTt</sp=
+an></div><div><span style=3D"font-size:12.8px">bsirevyleOH2jRXISkKlMbVMPkvW=
+tHyptQONAtO/wlGYNHqjCUeA1WOMEzpVtCQb</span></div><div><span style=3D"font-s=
+ize:12.8px">WbSVRgv8UOdvERYaPdnpWbm347ME1nLSeGeHX342bAsQzoQhy/CfALra12VyQ2Z=
+8</span></div><div><span style=3D"font-size:12.8px">9E30+5jCwKKC4dqWDNWzVqq=
+L/2tcYpCYrx1fC97Wc8lfambGDltfisqputdh94/Y</span></div><div><span style=3D"f=
+ont-size:12.8px">j1Bi2KsR4YtkqxocSOrUb+EDJmAUoywt+TUZ4Ik48Eez+/oAd7vleF0818=
+4iTbU=3D</span></div><div><span style=3D"font-size:12.8px">=3Dq+Nh</span></=
+div><div><span style=3D"font-size:12.8px">-----END PGP SIGNATURE-----</span=
+></div><div><span style=3D"font-size:12.8px"><br></span></div></div><span s=
+tyle=3D"font-size:12.8px"><span class=3D"">php</span>-<span class=3D"">5.6<=
+/span>.20.tar.gz</span><br></div><div><span style=3D"font-size:12.8px">SHA2=
+56</span><span style=3D"font-size:12.8px">=C2=A0hash:</span><br><span style=
+=3D"font-size:12.8px">9a7ec6e1080ee93dcbe7df3e49ea1c3c3da5fc2258aff763f39ab=
+3786baf8d56</span><br><span style=3D"font-size:12.8px">PGP signature:</span=
+><br></div><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"l=
+tr"><div dir=3D"ltr"><div dir=3D"ltr"><span style=3D"font-size:12.8px">----=
+-BEGIN PGP SIGNATURE-----</span></div><div dir=3D"ltr"><span style=3D"font-=
+size:12.8px">Version: GnuPG v1</span></div><div dir=3D"ltr"><span style=3D"=
+font-size:12.8px"><br></span></div><div dir=3D"ltr"><span style=3D"font-siz=
+e:12.8px">iQEcBAABAgAGBQJW/GwCAAoJEMK/C8Qzz8izxAoIANxMhkIfMPmyixVnEu329g5z<=
+/span></div><div dir=3D"ltr"><span style=3D"font-size:12.8px">oPVh383mzEyLu=
+WjEvB9kPiZFhFh6F1RnWusS+oQ1d2i1h1dw6YUp5vdPsAC28b7o</span></div><div dir=3D=
+"ltr"><span style=3D"font-size:12.8px">fIHfmQ6q4bgpGTmElkCRpBFdHgSOaI3HSB7e=
+ZtMFifBJWrZwTcmKII/M+r+46Iiu</span></div><div dir=3D"ltr"><span style=3D"fo=
+nt-size:12.8px">JsNmG401uQQwO+Cbl6PZKpQ/84I+WwZT/fDWTLFaAVprw2Ygc4AsHliGHxr=
+89Flv</span></div><div dir=3D"ltr"><span style=3D"font-size:12.8px">ecg1gt+=
+KACjCUG85yhuYf0DANtN2vzrCkr3xzLq5DOk15nctut7a5ewOSRugMNSj</span></div><div =
+dir=3D"ltr"><span style=3D"font-size:12.8px">TKs+7IfplO6/CV/YmBnh8Pfdm8rvfr=
+qaXohLf1oppsFblwnJI3h5tDSiFlVUJTc=3D</span></div><div dir=3D"ltr"><span sty=
+le=3D"font-size:12.8px">=3DkiPW</span></div><div dir=3D"ltr"><span style=3D=
+"font-size:12.8px">-----END PGP SIGNATURE-----</span></div></div></div></di=
+v></div><br><span style=3D"font-size:12.8px"><span class=3D"">php</span>-<s=
+pan class=3D"">5.6</span>.20.tar.xz</span><br><span style=3D"font-size:12.8=
+px">SHA256</span><span style=3D"font-size:12.8px">=C2=A0hash:</span><br><sp=
+an style=3D"font-size:12.8px">2b87d40213361112af49157a435e0d4cdfd334c9b7c73=
+1c8b844932b1f444e7a</span><br><span style=3D"font-size:12.8px">PGP signatur=
+e:</span><br><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D=
+"ltr"><div dir=3D"ltr"><span style=3D"font-size:12.8px">-----BEGIN PGP SIGN=
+ATURE-----</span></div><div dir=3D"ltr"><span style=3D"font-size:12.8px">Ve=
+rsion: GnuPG v1</span></div><div dir=3D"ltr"><span style=3D"font-size:12.8p=
+x"><br></span></div><div dir=3D"ltr"><span style=3D"font-size:12.8px">iQEcB=
+AABAgAGBQJW/GwHAAoJEMK/C8Qzz8izX84IAN+mTg973KfUcfvByxMAR7wR</span></div><di=
+v dir=3D"ltr"><span style=3D"font-size:12.8px">HXNYVWdnjvyiQGDGxaLzjhuUE+u3=
+jpwBv8gDH6rZk488AM8BeQDCrJWO/011r6wZ</span></div><div dir=3D"ltr"><span sty=
+le=3D"font-size:12.8px">gOLuCRCdKfwSJ2A3+TpeRha0WE2fDjpbWU9I2RbFBqrb7KHQp9X=
+sHxivHj8NPhxA</span></div><div dir=3D"ltr"><span style=3D"font-size:12.8px"=
+>sitP7PfT/a0t65E7ThoVIn1RvDykEx/TrnxBgdnAsVrmIsLz/WnwyPhzfoNFHoYy</span></d=
+iv><div dir=3D"ltr"><span style=3D"font-size:12.8px">HeMiA+lDdL8Duwo9fgEh0s=
+MhY9+pqR0ALKu9kscRQuLkRoaZE+Eo+9OEsGOqEl3g</span></div><div dir=3D"ltr"><sp=
+an style=3D"font-size:12.8px">+XS/TRpYP5bWx96wIJc4+AGsBx1LuXaFitaaAodR29kRa=
+IJQQBluIIklW4dbwkY=3D</span></div><div dir=3D"ltr"><span style=3D"font-size=
+:12.8px">=3Dynp7</span></div><div dir=3D"ltr"><span style=3D"font-size:12.8=
+px">-----END PGP SIGNATURE-----</span></div></div></div></div></div></div><=
+/div><div style=3D"font-size:12.8px"><span style=3D"font-size:12.8px"><br><=
+/span></div><div style=3D"font-size:12.8px"><span style=3D"font-size:12.8px=
+">Julien Pauli &amp;=C2=A0</span><span style=3D"font-size:12.8px">Ferenc Ko=
+vacs</span></div></div></div></div></div>
+
+--001a11c37aba03ca8d052f60b701--

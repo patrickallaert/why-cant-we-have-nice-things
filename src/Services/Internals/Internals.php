@@ -28,15 +28,22 @@ class Internals
     private $cache;
 
     /**
+     * @var MailingListArticleCleaner
+     */
+    private $cleaner;
+
+    /**
      * Internals constructor.
      *
-     * @param Repository      $cache
-     * @param ClientInterface $client
+     * @param Repository                $cache
+     * @param ClientInterface           $client
+     * @param MailingListArticleCleaner $cleaner
      */
-    public function __construct(Repository $cache, ClientInterface $client)
+    public function __construct(Repository $cache, ClientInterface $client, MailingListArticleCleaner $cleaner)
     {
         $this->cache = $cache;
         $this->client = $client;
+        $this->cleaner = $cleaner;
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -60,6 +67,8 @@ class Internals
     {
         $this->connectIfNeeded();
         $this->group = $this->client->group($group)->getResult();
+
+        return $this;
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -95,24 +104,23 @@ class Internals
     }
 
     /**
-     * @param int $article
+     * @param int $articleNumber
      *
      * @return string
      */
-    public function getArticleBody(int $article): string
+    public function getArticleBody(int $articleNumber): string
     {
-        $cleaner = new MailingListArticleCleaner();
-        $article = $this->cacheRequest('body:'.$article, function () use ($article) {
+        $article = $this->cacheRequest('body:'.$articleNumber, function () use ($articleNumber) {
             return $this->client
-                ->sendCommand(new ArticleCommand($article))
+                ->sendCommand(new ArticleCommand($articleNumber))
                 ->getResult();
         });
 
-        if (!is_array($article)) {
-            $article = explode("\r\n", $article);
+        if (is_array($article)) {
+            $article = implode("\r\n", $article);
         }
 
-        return $cleaner->cleanup($article);
+        return $this->cleaner->cleanup($article);
     }
 
     /**

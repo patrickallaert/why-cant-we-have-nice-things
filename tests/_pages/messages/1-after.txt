@@ -18,9 +18,9 @@ On Wed, Nov 19, 2014 at 12:11 AM, Levi Morrison <levim@php.net> wrote:
 > Levi Morrison
 >
 >
->   [1]: https://wiki.php.net/rfc/remove_php4_constructors
->   [2]: https://github.com/TazeTSchnitzel/PHP4_Constructor_Finder
->   [3]:
+> [1]: https://wiki.php.net/rfc/remove_php4_constructors
+> [2]: https://github.com/TazeTSchnitzel/PHP4_Constructor_Finder
+> [3]:
 > http://phpmd.org/rules/naming.html#constructorwithnameasenclosingclass
 >
 > --
@@ -28,4 +28,8 @@ On Wed, Nov 19, 2014 at 12:11 AM, Levi Morrison <levim@php.net> wrote:
 > To unsubscribe, visit: http://www.php.net/unsub.php
 >
 >
-+1 from me
++1 from me.
+
+--
+Ferenc Kovács
+@Tyr43l - http://tyrael.hu

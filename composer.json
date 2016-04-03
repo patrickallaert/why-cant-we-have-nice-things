@@ -32,6 +32,7 @@
         "mrclay/minify": "^2.3",
         "mtdowling/cron-expression": "^1.1",
         "oscarotero/psr7-middlewares": "^3.14",
+        "php-mime-mail-parser/php-mime-mail-parser": "^2.2",
         "relay/relay": "^1.1",
         "robmorgan/phinx": "^0.5.3",
         "rvdv/nntp": "1.0.*@dev",
@@ -80,6 +81,10 @@
     "prefer-stable": true,
     "config": {
         "sort-packages": true,
-        "preferred-install": "dist"
+        "preferred-install": "dist",
+        "platform": {
+            "php": "7.0.5",
+            "ext-mailparse": "3.0.0"
+        }
     }
 }

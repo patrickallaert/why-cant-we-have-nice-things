@@ -6,6 +6,8 @@ use History\TestCase;
 
 class MailingListArticleCleanerTest extends TestCase
 {
+
+
     /**
      * @dataProvider provideMessages
      *
@@ -14,8 +16,9 @@ class MailingListArticleCleanerTest extends TestCase
      */
     public function testCanCleanupMessages($before, $after)
     {
-        $cleaner = new MailingListArticleCleaner();
-        $cleaned = $cleaner->cleanup(explode(PHP_EOL, $before));
+        /** @var MailingListArticleCleaner $cleaner */
+        $cleaner = $this->container->get(MailingListArticleCleaner::class);
+        $cleaned = $cleaner->cleanup($before);
 
         $this->assertEquals($after, $cleaned.PHP_EOL);
     }
@@ -30,6 +33,7 @@ class MailingListArticleCleanerTest extends TestCase
             $this->getMessage(1),
             $this->getMessage(2),
             $this->getMessage(3),
+            $this->getMessage(4),
         ];
     }
 }
