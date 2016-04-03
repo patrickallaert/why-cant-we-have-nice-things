@@ -66,6 +66,7 @@ $fm->define(Request::class)->setDefinitions([
 
 $fm->define(Thread::class)->setDefinitions([
     'name' => $faker->sentence(),
+    'user_id' => random(User::class),
     'request_id' => random(Request::class),
     'created_at' => $faker->dateTimeThisDecade(),
     'updated_at' => $faker->dateTimeThisDecade(),

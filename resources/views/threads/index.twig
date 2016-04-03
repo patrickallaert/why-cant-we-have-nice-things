@@ -12,12 +12,12 @@
         </tr>
         </thead>
         <tbody>
-            {% for comment in comments %}
+            {% for thread in threads %}
                 <tr>
-                    <td>{{ comment.name }}</td>
-                    <td>{{ comment.user.name }}</td>
-                    <td>{{ comment.children().count() }}</td>
-                    <td>{{ comment.created_at.diffForHumans() }}</td>
+                    <td>{{ thread.name }}</td>
+                    <td>{{ thread.user.name }}</td>
+                    <td>{{ thread.comments().count() }}</td>
+                    <td>{{ thread.created_at.diffForHumans() }}</td>
                 </tr>
             {% endfor %}
         </tbody>

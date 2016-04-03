@@ -66,7 +66,7 @@ class CreateCommentHandler extends AbstractHandler
         $user = $this->getRelatedUser();
 
         // If the article has references, find them
-        $thread = $this->getParentThread($request);
+        $thread = $this->getParentThread($request, $user);
         $comment = $this->getCommentFromReference($this->command->references);
 
         // Grab the message contents and insert into database
@@ -99,14 +99,21 @@ class CreateCommentHandler extends AbstractHandler
 
     /**
      * @param int $request
+     * @param int $user
      *
      * @return Thread
      */
-    protected function getParentThread(int $request): Thread
+    protected function getParentThread(int $request, int $user): Thread
     {
         $thread = Thread::firstOrNew(['name' => $this->command->subject]);
-        $thread->request_id = $request;
-        $thread->save();
+
+        // Add additional attributes if we just
+        // created the thread
+        if (!$thread->exists) {
+            $thread->request_id = $request;
+            $thread->user_id = $user;
+            $thread->save();
+        }
 
         return $thread;
     }

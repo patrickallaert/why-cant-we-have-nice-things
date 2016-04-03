@@ -25,9 +25,11 @@ class CreateThreadsTable extends AbstractMigration
         $this->table('threads')
             ->addColumn('name', 'string')
             ->addColumn('request_id', 'integer', ['null' => true])
-            ->addForeignKey('request_id', 'requests', 'id', ['delete' => 'CASCADE'])
+            ->addColumn('user_id', 'integer')
             ->addColumn('created_at', 'datetime')
             ->addColumn('updated_at', 'datetime')
+            ->addForeignKey('request_id', 'requests', 'id', ['delete' => 'CASCADE'])
+            ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE'])
             ->create();
     }
 }
