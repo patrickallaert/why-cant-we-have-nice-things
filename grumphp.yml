@@ -4,6 +4,7 @@ parameters:
     tasks:
         composer: ~
         phpunit: ~
+        phpcsfixer: ~
         phpcs:
             standard: "phpcs.xml"
         securitychecker: ~

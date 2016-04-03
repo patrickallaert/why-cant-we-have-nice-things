@@ -13,7 +13,7 @@ class InternalsSynchronizerTest extends TestCase
     public function testCanFetchArticles()
     {
         $request = Request::create(['name' => 'foobar']);
-        $thread = Thread::seed(['name' => 'foobar']);
+        $thread = Thread::seed(['name' => 'foobar', 'request_id' => $request->id]);
         $user = User::create(['full_name' => 'Maxime Fabre']);
         $created = $this->mockSynchronization([
             ['xref' => 1, 'subject' => 'foobar'],
@@ -54,12 +54,13 @@ class InternalsSynchronizerTest extends TestCase
             'updated_at' => '2011-01-01 01:01:01',
             'id' => $created[0]['id'],
         ], $created[0]->toArray());
+        $this->assertEquals($request->id, $created[0]->thread->request->id);
     }
 
     public function testIsAbleToMatchRequestsEventIfTitleIsntIdentical()
     {
         $request = Request::firstOrCreate(['name' => 'Trailing Commas In List Syntax']);
-        $thread = Thread::seed(['name' => 'Trailing commas in all list syntax']);
+        $thread = Thread::seed(['name' => 'Trailing commas in all list syntax', 'request_id' => $request->id]);
         $user = User::create(['full_name' => 'Maxime Fabre']);
         $created = $this->mockSynchronization([
             ['xref' => 1, 'subject' => 'foobar'],
@@ -92,6 +93,7 @@ class InternalsSynchronizerTest extends TestCase
             'updated_at' => '2011-01-01 01:01:01',
             'id' => $created[0]['id'],
         ], $created[0]->toArray());
+        $this->assertEquals($request->id, $created[0]->thread->request->id);
     }
 
     /**

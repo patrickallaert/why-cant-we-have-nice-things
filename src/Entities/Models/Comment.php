@@ -3,6 +3,8 @@
 namespace History\Entities\Models;
 
 use History\Entities\Traits\HasEventsTrait;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use League\CommonMark\CommonMarkConverter;
 use LogicException;
 
@@ -41,7 +43,7 @@ class Comment extends AbstractModel
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -51,9 +53,9 @@ class Comment extends AbstractModel
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function request()
+    public function thread(): BelongsTo
     {
-        return $this->belongsTo(Request::class);
+        return $this->belongsTo(Thread::class);
     }
 
     /**
@@ -61,7 +63,7 @@ class Comment extends AbstractModel
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function children()
+    public function children(): HasMany
     {
         return $this->hasMany(self::class);
     }
