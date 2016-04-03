@@ -6,6 +6,7 @@ use History\CommandBus\Commands\CreateCommentCommand;
 use History\Console\HistoryStyle;
 use History\Entities\Models\Threads\Comment;
 use History\Entities\Models\Threads\Group;
+use History\Services\Threading\HasAsyncCapabilitiesTrait;
 use History\Services\Threading\Jobs\CommandBusJob;
 use History\Services\Threading\OutputPool;
 use League\Tactician\CommandBus;
@@ -13,6 +14,8 @@ use Rvdv\Nntp\Exception\RuntimeException;
 
 class InternalsSynchronizer
 {
+    use HasAsyncCapabilitiesTrait;
+
     /**
      * @var int
      */
@@ -27,11 +30,6 @@ class InternalsSynchronizer
      * @var int
      */
     protected $size;
-
-    /**
-     * @var CommandBus
-     */
-    private $bus;
 
     /**
      * @var Internals
@@ -130,12 +128,7 @@ class InternalsSynchronizer
         $queue = $this->getArticlesQueue($group);
 
         $this->output->writeln('Creating comments');
-        $pool = new OutputPool($this->output);
-        foreach ($queue as $command) {
-            $pool->submit(new CommandBusJob($command));
-        }
-
-        return $pool->process();
+        return $this->dispatchCommands($queue);
     }
 
     /**

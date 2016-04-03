@@ -6,6 +6,7 @@ use History\CommandBus\Commands\CreateRequestCommand;
 use History\Console\HistoryStyle;
 use History\Entities\Models\Request;
 use History\Services\RequestsGatherer\Extractors\RequestsExtractor;
+use History\Services\Threading\HasAsyncCapabilitiesTrait;
 use History\Services\Threading\OutputPool;
 use Illuminate\Contracts\Cache\Repository;
 use League\Tactician\CommandBus;
@@ -13,6 +14,8 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class RequestsGatherer
 {
+    use HasAsyncCapabilitiesTrait;
+    
     /**
      * @var string
      */
@@ -24,19 +27,9 @@ class RequestsGatherer
     protected $cache;
 
     /**
-     * @var CommandBus
-     */
-    protected $bus;
-
-    /**
      * @var HistoryStyle
      */
     protected $output;
-
-    /**
-     * @var bool
-     */
-    protected $async = true;
 
     /**
      * @param Repository $cache
@@ -47,14 +40,6 @@ class RequestsGatherer
         $this->cache = $cache;
         $this->output = new HistoryStyle();
         $this->bus = $bus;
-    }
-
-    /**
-     * @param bool $async
-     */
-    public function setAsync($async)
-    {
-        $this->async = $async;
     }
 
     /**
@@ -86,20 +71,7 @@ class RequestsGatherer
             return new CreateRequestCommand(static::DOMAIN.$request);
         }, $requests);
 
-        if (!$this->async) {
-            foreach ($commands as &$command) {
-                $command = $this->bus->handle($command);
-            }
-
-            return $commands;
-        } else {
-            $pool = new OutputPool($this->output);
-            foreach ($commands as $command) {
-                $pool->submitCommand($command);
-            }
-
-            return $pool->process();
-        }
+        return $this->dispatchCommands($commands);
     }
 
     /**
