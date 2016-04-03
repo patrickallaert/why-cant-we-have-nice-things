@@ -13,7 +13,7 @@ class InternalsSynchronizerTest extends TestCase
     public function testCanFetchArticles()
     {
         $request = Request::create(['name' => 'foobar']);
-        $thread = Thread::seed(['name' => 'foobar', 'request_id' => $request->id]);
+        $thread = Thread::seed(['name' => 'foobar']);
         $user = User::create(['full_name' => 'Maxime Fabre']);
         $created = $this->mockSynchronization([
             ['xref' => 1, 'subject' => 'foobar'],
@@ -59,7 +59,7 @@ class InternalsSynchronizerTest extends TestCase
     public function testIsAbleToMatchRequestsEventIfTitleIsntIdentical()
     {
         $request = Request::firstOrCreate(['name' => 'Trailing Commas In List Syntax']);
-        $thread = Thread::seed(['name' => 'Trailing commas in all list syntax', 'request_id' => $request->id]);
+        $thread = Thread::seed(['name' => 'Trailing commas in all list syntax']);
         $user = User::create(['full_name' => 'Maxime Fabre']);
         $created = $this->mockSynchronization([
             ['xref' => 1, 'subject' => 'foobar'],
