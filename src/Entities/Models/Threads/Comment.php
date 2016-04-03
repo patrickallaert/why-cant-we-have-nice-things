@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use League\CommonMark\CommonMarkConverter;
 use LogicException;
+use Misd\Linkify\Linkify;
 
 /**
  * @property string name
@@ -82,9 +83,13 @@ class Comment extends AbstractModel
     public function getParsedContentsAttribute(CommonMarkConverter $converter = null)
     {
         $converter = $converter ?: new CommonMarkConverter();
+        $linkify = new Linkify();
 
         try {
-            return $converter->convertToHtml($this->contents);
+            $converted = $converter->convertToHtml($this->contents);
+            $converted = $linkify->process($converted);
+
+            return $converted;
         } catch (LogicException $exception) {
             return $this->contents;
         }
