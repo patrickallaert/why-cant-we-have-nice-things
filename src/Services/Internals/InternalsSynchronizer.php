@@ -2,14 +2,13 @@
 
 namespace History\Services\Internals;
 
+use Carbon\Carbon;
 use History\CommandBus\Commands\CreateCommentCommand;
 use History\Console\HistoryStyle;
 use History\Entities\Models\Threads\Comment;
 use History\Entities\Models\Threads\Group;
 use History\Services\Traits\HasAsyncCapabilitiesTrait;
-use Illuminate\Database\Capsule\Manager;
 use League\Tactician\CommandBus;
-use Rvdv\Nntp\Exception\RuntimeException;
 
 class InternalsSynchronizer
 {
@@ -178,17 +177,27 @@ class InternalsSynchronizer
     //////////////////////////////////////////////////////////////////////
 
     /**
+     * Get a list of articles to process
+     * from this group
+     *
      * @param Group $group
      *
      * @return CreateCommentCommand[]
      */
     protected function getArticlesQueue(Group $group): array
     {
-        $to = (int) $group->high ?: self::CHUNK;
-        $from = $this->size ? max(1, $to - $this->size) : $group->low;
+        $to = (int) $group->high;
+        $from = (int) $group->low;
+
+        // Cutoff
+        $date = null;
+        $cutoff = 5;
 
         $queue = [];
-        for ($i = $from; $i <= $to; $i += 1) {
+        for ($i = $to; $i >= $from; $i--) {
+
+            // Check if we've already parsed that
+            // article, if yes skip it
             $xref = $group->name.':'.$i;
             foreach ($this->parsed as $references) {
                 if (strpos($references, $xref) !== false) {
@@ -196,7 +205,22 @@ class InternalsSynchronizer
                 }
             }
 
+            // Check if the group has articles
+            // during the last X years
+            if (!$date) {
+                $comment = $this->internals->getArticle($i);
+                $date = Carbon::instance($comment['date']);
+                if ($date->diffInYears() > $cutoff) {
+                    $this->output->error('No articles in the last '.$cutoff.' years');
+                    break;
+                }
+            }
+
+            // If we have enough commands, stop here, else queue it
             $queue[] = new CreateCommentCommand($group->name, $i);
+            if ($this->size && count($queue) >= $this->size) {
+                return $queue;
+            }
         }
 
         return $queue;

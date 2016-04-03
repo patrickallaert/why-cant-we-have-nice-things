@@ -31,7 +31,6 @@ class CommandBusJob extends AbstractJob
         try {
             $results = $bus->handle($this->command);
         } catch (Exception $e) {
-            var_dump($e->getMessage());
             $results = null;
         }
 
