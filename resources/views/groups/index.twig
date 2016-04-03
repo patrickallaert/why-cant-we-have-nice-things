@@ -5,8 +5,13 @@
     <div class="list-group">
         {% for group in groups %}
             <a class="list-group-item" href="{{ url('groups.show', group.slug) }}">
-                <span class="badge">{{ group.threads.count() }} threads</span>
+                {% if group.threads.count() %}
+                    <span class="badge">{{ group.threads.count() }} threads</span>
+                {% endif %}
                 <span class="list-group-item-heading">{{ group.name }}</span>
+                {% if group.threads.count() %}
+                    <span class="small">Last activity: {{ group.threads.first().created_at.diffForHumans() }}</span>
+                {% endif %}
             </a>
         {% endfor %}
     </div>

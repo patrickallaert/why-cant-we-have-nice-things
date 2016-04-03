@@ -11,7 +11,12 @@ class GroupsController extends AbstractController
      */
     public function index()
     {
-        $groups = Group::all();
+        $groups = Group::with('threads')->get();
+        $groups = $groups->sortByDesc(function (Group $group) {
+           return $group->threads->count()
+               ? $group->threads->first()->created_at->toDateTimeString()
+               : null;
+        });
 
         return $this->render('groups/index.twig', [
             'groups' => $groups,
