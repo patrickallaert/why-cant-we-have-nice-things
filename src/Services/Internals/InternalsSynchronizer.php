@@ -116,7 +116,7 @@ class InternalsSynchronizer
      */
     protected function synchronizeGroups(): array
     {
-        $groups = !$this->group ? $this->internals->getGroups() : [['name' => $this->group]];
+        $groups = $this->internals->getGroups();
         foreach ($this->output->progressIterator($groups) as $key => $group) {
             $attributes = array_except($group, ['status']);
 
@@ -125,10 +125,10 @@ class InternalsSynchronizer
             $group->fill($attributes);
             $group->saveIfDirty();
 
-            $groups[$key] = $group;
+            $groups[$group->name] = $group;
         }
 
-        return $groups;
+        return $this->group ? [$groups[$this->group]] : $groups;
     }
 
     /**
