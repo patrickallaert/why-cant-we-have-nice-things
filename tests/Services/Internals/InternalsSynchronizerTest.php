@@ -3,6 +3,7 @@
 namespace History\Services\Internals;
 
 use History\Entities\Models\Request;
+use History\Entities\Models\Threads\Group;
 use History\Entities\Models\Threads\Thread;
 use History\Entities\Models\User;
 use History\TestCase;
@@ -43,6 +44,7 @@ class InternalsSynchronizerTest extends TestCase
             ],
         ], 3);
 
+        $article = $created[0];
         $this->assertEquals([
             'xref' => 'php.internals:2321321',
             'name' => 'foobar',
@@ -52,9 +54,9 @@ class InternalsSynchronizerTest extends TestCase
             'user_id' => $user->id,
             'created_at' => '2011-01-01 01:01:01',
             'updated_at' => '2011-01-01 01:01:01',
-            'id' => $created[0]['id'],
-        ], $created[0]->toArray());
-        $this->assertEquals($request->id, $created[0]->thread->request->id);
+            'id' => $article['id'],
+        ], $article->toArray());
+        $this->assertEquals($request->id, $article->thread->request->id);
     }
 
     public function testIsAbleToMatchRequestsEventIfTitleIsntIdentical()
@@ -80,8 +82,9 @@ class InternalsSynchronizerTest extends TestCase
                 'references' => '',
                 'date' => '2011-01-01 01:01:01',
             ],
-        ], 1);
+        ], 2);
 
+        $article = $created[0];
         $this->assertEquals([
             'xref' => 'php.internals:2321321',
             'name' => 'Trailing commas in all list syntax',
@@ -91,9 +94,9 @@ class InternalsSynchronizerTest extends TestCase
             'user_id' => $user->id,
             'created_at' => '2011-01-01 01:01:01',
             'updated_at' => '2011-01-01 01:01:01',
-            'id' => $created[0]['id'],
-        ], $created[0]->toArray());
-        $this->assertEquals($request->id, $created[0]->thread->request->id);
+            'id' => $article['id'],
+        ], $article->toArray());
+        $this->assertEquals($request->id, $article->thread->request->id);
     }
 
     /**
@@ -104,20 +107,26 @@ class InternalsSynchronizerTest extends TestCase
      */
     protected function mockSynchronization(array $messages, $matched = 1)
     {
-        $lastArticle = 40000;
-        $numberArticles = ($lastArticle - 40000) / InternalsSynchronizer::CHUNK;
+        $numberArticles = count($messages);
+        Group::create(['name' => 'php.internals', 'high' => $numberArticles, 'low' => 1]);
+
         $internals = Mockery::mock(Internals::class);
-        $internals->shouldReceive('getTotalNumberArticles')->once()->andReturn($lastArticle);
+        $internals->shouldReceive('getGroups')->once()->andReturn([
+            ['name' => 'php.internals', 'high' => $numberArticles, 'low' => 1],
+        ]);
+        $internals->shouldReceive('setGroup')->times($numberArticles)->with('php.internals');
         $internals->shouldReceive('getArticleBody')->times($matched)->andReturn('foobar');
         $internals->shouldReceive('findArticleFromReference')->never()->andReturn();
-        $internals->shouldReceive('getArticles')->times($numberArticles + 1)->andReturn($messages);
+        $internals->shouldReceive('getArticles')->times(1)->andReturn($messages);
 
         $this->container->add(Internals::class, $internals);
 
+        /** @var InternalsSynchronizer $sync */
         $sync = $this->container->get(InternalsSynchronizer::class);
+        $sync->setAsync(false);
         $created = $sync->synchronize();
-        $this->assertCount($matched, $created);
+        $this->assertCount($matched, $created['php.internals']);
 
-        return $created;
+        return $created['php.internals'];
     }
 }

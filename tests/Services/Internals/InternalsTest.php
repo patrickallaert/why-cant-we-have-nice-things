@@ -17,7 +17,7 @@ class InternalsTest extends TestCase
         $internals->getTotalNumberArticles();
         $total = $internals->getTotalNumberArticles();
 
-        $this->assertEquals(25, $total);
+        $this->assertEquals(90000, $total);
     }
 
     public function testCanGetArticles()
@@ -50,6 +50,6 @@ class InternalsTest extends TestCase
             $callback($client);
         }
 
-        return new Internals($cache, $client);
+        return new Internals($cache, $client, new MailingListArticleCleaner());
     }
 }

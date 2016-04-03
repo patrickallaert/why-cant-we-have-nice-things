@@ -7,8 +7,6 @@ use History\Console\HistoryStyle;
 use History\Entities\Models\Threads\Comment;
 use History\Entities\Models\Threads\Group;
 use History\Services\Threading\HasAsyncCapabilitiesTrait;
-use History\Services\Threading\Jobs\CommandBusJob;
-use History\Services\Threading\OutputPool;
 use League\Tactician\CommandBus;
 use Rvdv\Nntp\Exception\RuntimeException;
 
@@ -104,6 +102,8 @@ class InternalsSynchronizer
         $groups = $this->internals->getGroups();
         foreach ($this->output->progressIterator($groups) as $key => $group) {
             $attributes = array_except($group, ['status']);
+
+            /** @var Group $group */
             $group = Group::firstOrCreate(['name' => $attributes['name']]);
             $group->fill($attributes);
             $group->saveIfDirty();
@@ -128,7 +128,9 @@ class InternalsSynchronizer
         $queue = $this->getArticlesQueue($group);
 
         $this->output->writeln('Creating comments');
-        return $this->dispatchCommands($queue);
+        $comments = $this->dispatchCommands($queue);
+
+        return $comments;
     }
 
     /**
@@ -176,7 +178,7 @@ class InternalsSynchronizer
      */
     protected function processArticle($article, string $group)
     {
-        if (!$article) {
+        if (!$article || !isset($article['from'])) {
             return;
         }
 

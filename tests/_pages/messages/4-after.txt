@@ -18,4 +18,6 @@ php-5.6.20.tar.bz2
 SHA256 hash:
 5ac7bf7caec7a79b18cf458e786fd1609ad2da771224b80bc15cc6f01b22bf1f
 
+--------
+
 Julien Pauli & Ferenc Kovacs

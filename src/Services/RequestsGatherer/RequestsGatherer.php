@@ -7,7 +7,6 @@ use History\Console\HistoryStyle;
 use History\Entities\Models\Request;
 use History\Services\RequestsGatherer\Extractors\RequestsExtractor;
 use History\Services\Threading\HasAsyncCapabilitiesTrait;
-use History\Services\Threading\OutputPool;
 use Illuminate\Contracts\Cache\Repository;
 use League\Tactician\CommandBus;
 use Symfony\Component\DomCrawler\Crawler;
@@ -15,7 +14,7 @@ use Symfony\Component\DomCrawler\Crawler;
 class RequestsGatherer
 {
     use HasAsyncCapabilitiesTrait;
-    
+
     /**
      * @var string
      */
