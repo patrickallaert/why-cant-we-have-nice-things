@@ -68,17 +68,10 @@ class ArticleParser
     protected function getSubject(): string
     {
         $subject = $this->parser->getHeader('subject');
-        $subject = trim(strtr($subject, [
-            'RE' => null,
-            'Re:' => null,
-            'RFC' => null,
-            '[RFC]' => null,
-            '[DISCUSSION]' => null,
-            '[PHP-DEV]' => null,
-            '[VOTE]' => null,
-        ]), ' :');
+        $subject = preg_replace('/\[.+\](.+)/i', '$1', $subject);
+        $subject = preg_replace('/Re:?(.+)/i', '$1', $subject);
 
-        return ucfirst(strtolower($subject));
+        return trim($subject, ' :');
     }
 
     /**
