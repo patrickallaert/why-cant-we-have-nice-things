@@ -10,7 +10,7 @@
 
 {% block content %}
     <ul class="list-group">
-        {% for thread in group.threads %}
+        {% for thread in group.threads if thread.rootComments().count() %}
             <li class="list-group-item">
                 <span class="badge">{{ thread.comments().count() }} replies</span>
                 <div class="media">

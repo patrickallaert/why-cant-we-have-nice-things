@@ -7,7 +7,6 @@ use History\Console\HistoryStyle;
 use History\Entities\Models\Threads\Comment;
 use History\Entities\Models\Threads\Group;
 use History\Services\Traits\HasAsyncCapabilitiesTrait;
-use Illuminate\Support\Str;
 use League\Tactician\CommandBus;
 
 class InternalsSynchronizer
@@ -131,7 +130,7 @@ class InternalsSynchronizer
             $attributes = array_except($group, ['status']);
 
             // Only get articles from approved groups
-            if (!in_array($attributes['name'], static::GROUPS_WHITELIST)) {
+            if (!in_array($attributes['name'], static::GROUPS_WHITELIST, true)) {
                 continue;
             }
 
