@@ -130,7 +130,12 @@ class CreateCommentHandler extends AbstractHandler
     {
         // Get user email
         $extractor = new IdentityExtractor($this->article->from);
-        $user = head($extractor->extract());
+        $users = $extractor->extract();
+        if (!$users) {
+            return;
+        }
+        
+        $user = head($users);
         $synchronizer = new UserSynchronizer($user);
 
         return $synchronizer->persist()->id;
