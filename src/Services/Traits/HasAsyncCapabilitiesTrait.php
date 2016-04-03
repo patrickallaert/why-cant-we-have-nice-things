@@ -4,14 +4,13 @@ namespace History\Services\Traits;
 
 use Exception;
 use History\CommandBus\CommandInterface;
-use History\Services\Threading\bool;
 use History\Services\Threading\OutputPool;
 use League\Tactician\CommandBus;
 
 trait HasAsyncCapabilitiesTrait
 {
     use HasOutputTrait;
-    
+
     /**
      * @var CommandBus
      */
