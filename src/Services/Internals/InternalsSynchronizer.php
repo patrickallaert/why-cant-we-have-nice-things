@@ -191,13 +191,13 @@ class InternalsSynchronizer
      */
     protected function getArticlesQueue(Group $group): array
     {
-        $from = $group->low;
-        $to = $group->high ?: self::CHUNK;
-        $to = $this->size ? min($this->size, $to) : $to;
+        $to = (int) $group->high ?: self::CHUNK;
+        $from = $this->size ? $to - $this->size : $group->low;
         $chunkSize = min($to, self::CHUNK);
+        $totalSize = $to - $from;
 
         $queue = [];
-        $this->output->progressStart($to);
+        $this->output->progressStart($totalSize);
         for ($i = $from; $i <= $to; $i += $chunkSize) {
             $currentChunk = $i + ($chunkSize - 1);
 
