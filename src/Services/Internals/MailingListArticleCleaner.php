@@ -24,8 +24,9 @@ class MailingListArticleCleaner
     /**
      * @param string $message
      *
-     * @return string
      * @throws \Exception
+     *
+     * @return string
      */
     public function cleanup(string $message): string
     {

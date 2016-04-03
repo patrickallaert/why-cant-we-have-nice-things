@@ -3,7 +3,6 @@
 namespace History\Services\Internals;
 
 use History\Services\Internals\Commands\Body;
-use History\Services\Internals\Commands\Xpath;
 use Illuminate\Contracts\Cache\Repository;
 use Rvdv\Nntp\ClientInterface;
 use Rvdv\Nntp\Command\ArticleCommand;

@@ -104,6 +104,7 @@ class CreateCommentHandler extends AbstractHandler
         $timezones = [
             'Eastern Daylight Time' => 'EDT',
             'Eastern Standard Time' => 'EST',
+            'MET DST' => 'MET',
         ];
 
         // Try to change timezone to one PHP understands
@@ -121,7 +122,7 @@ class CreateCommentHandler extends AbstractHandler
     }
 
     /**
-     * @param int $user
+     * @param int      $user
      * @param int|null $request
      *
      * @return Thread

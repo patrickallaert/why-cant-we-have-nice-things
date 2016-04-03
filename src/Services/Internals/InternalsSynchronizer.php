@@ -2,7 +2,6 @@
 
 namespace History\Services\Internals;
 
-use History\Collection;
 use History\CommandBus\Commands\CreateCommentCommand;
 use History\Console\HistoryStyle;
 use History\Entities\Models\Threads\Comment;
@@ -11,7 +10,6 @@ use History\Services\Threading\Jobs\CommandBusJob;
 use History\Services\Threading\OutputPool;
 use League\Tactician\CommandBus;
 use Rvdv\Nntp\Exception\RuntimeException;
-use Rvdv\Nntp\Response\Response;
 
 class InternalsSynchronizer
 {
