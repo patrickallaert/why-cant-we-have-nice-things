@@ -35,7 +35,7 @@ class ConsoleServiceProvider extends AbstractServiceProvider
 
             // Register synchronization commands
             $app->command('sync:requests', RequestsCommand::class)->descriptions('Sync the RFCs from the wiki');
-            $app->command('sync:internals [--size=]', [InternalsCommand::class, 'run'])->descriptions('Sync the mailing list');
+            $app->command('sync:internals [--size=] [--group=]', [InternalsCommand::class, 'run'])->descriptions('Sync the mailing list');
             $app->command('sync:stats', StatsCommand::class)->descriptions('Sync the entities statistics');
             $app->command('sync:metadata', MetadataCommand::class)->descriptions('Sync additional metadata');
             $app->command('sync:slugs', SlugsCommand::class)->descriptions('Refresh entities slugs');

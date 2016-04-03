@@ -25,9 +25,10 @@ class InternalsCommand extends AbstractCommand
      * Run the command.
      *
      * @param int             $size
+     * @param string          $group
      * @param OutputInterface $output
      */
-    public function run($size, OutputInterface $output)
+    public function run($size, $group, OutputInterface $output)
     {
         $this->wrapOutput($output);
         $this->output->title('Refreshing internal comments');
@@ -35,6 +36,10 @@ class InternalsCommand extends AbstractCommand
         // Set how many messages to sync
         if ($size) {
             $this->internals->setSize($size);
+        }
+
+        if ($group) {
+            $this->internals->setGroup($group);
         }
 
         $this->internals->setOutput($this->output);

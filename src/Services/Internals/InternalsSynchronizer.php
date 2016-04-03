@@ -17,11 +17,6 @@ class InternalsSynchronizer
     /**
      * @var int
      */
-    const FIRST_RFC = 40000;
-
-    /**
-     * @var int
-     */
     const CHUNK = 500;
 
     /**
@@ -45,6 +40,11 @@ class InternalsSynchronizer
     protected $parsed;
 
     /**
+     * @var string
+     */
+    protected $group;
+
+    /**
      * InternalsSynchronizer constructor.
      *
      * @param CommandBus $bus
@@ -56,6 +56,10 @@ class InternalsSynchronizer
         $this->output = new HistoryStyle();
         $this->bus = $bus;
     }
+
+    //////////////////////////////////////////////////////////////////////
+    ////////////////////////////// OPTIONS ///////////////////////////////
+    //////////////////////////////////////////////////////////////////////
 
     /**
      * @param HistoryStyle $output
@@ -74,7 +78,19 @@ class InternalsSynchronizer
     }
 
     /**
-     * Synchronize the php.internals mailing list
+     * @param string $group
+     */
+    public function setGroup($group)
+    {
+        $this->group = $group;
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    /////////////////////////// SYNCHRONIZATION //////////////////////////
+    //////////////////////////////////////////////////////////////////////
+
+    /**
+     * Synchronize the mailing list
      * to a fucking usable format.
      *
      * @return Comment[]
@@ -99,7 +115,7 @@ class InternalsSynchronizer
      */
     protected function synchronizeGroups()
     {
-        $groups = $this->internals->getGroups();
+        $groups = !$this->group ? $this->internals->getGroups() : [['name' => $this->group]];
         foreach ($this->output->progressIterator($groups) as $key => $group) {
             $attributes = array_except($group, ['status']);
 
