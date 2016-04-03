@@ -37,6 +37,7 @@ class CreateUsersTable extends AbstractMigration
              ->addColumn('github_avatar', 'string', ['null' => true])
              ->addColumn('github_id', 'string', ['null' => true])
              ->addColumn('company_id', 'integer', ['null' => true])
+             ->addColumn('refreshed_at', 'datetime', ['null' => true])
              ->addColumn('created_at', 'datetime')
              ->addColumn('updated_at', 'datetime')
              ->addForeignKey('company_id', 'companies', 'id', ['delete' => 'CASCADE'])

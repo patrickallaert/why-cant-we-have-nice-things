@@ -30,6 +30,7 @@ class CreateRequestsTable extends AbstractMigration
              ->addColumn('pull_request', 'string', ['null' => true])
              ->addColumn('condition', 'text', ['null' => true])
              ->addColumn('approval', 'float', ['default' => 0])
+             ->addColumn('target', 'string', ['null' => true])
              ->addColumn('status', 'integer', ['default' => 0])
              ->addColumn('created_at', 'datetime')
              ->addColumn('updated_at', 'datetime')

@@ -7,6 +7,7 @@ use DateTime;
 use Exception;
 use History\Entities\Models\Comment;
 use History\Entities\Models\Request;
+use History\Entities\Models\Thread;
 use History\Entities\Synchronizers\CommentSynchronizer;
 use History\Entities\Synchronizers\UserSynchronizer;
 use History\Services\IdentityExtractor;
@@ -29,6 +30,11 @@ class CreateCommentHandler extends AbstractHandler
      * @var array
      */
     protected $parsed;
+
+    /**
+     * @var Thread
+     */
+    protected $thread;
 
     /**
      * CreateCommentHandler constructor.
@@ -60,10 +66,11 @@ class CreateCommentHandler extends AbstractHandler
         $user = $this->getRelatedUser();
 
         // If the article has references, find them
+        $thread = $this->getParentThread($request);
         $comment = $this->getCommentFromReference($this->command->references);
 
         // Grab the message contents and insert into database
-        return $this->createCommentFromArticle($request, $user, $comment);
+        return $this->createCommentFromArticle($thread->id, $user, $comment);
     }
 
     //////////////////////////////////////////////////////////////////////
@@ -88,6 +95,20 @@ class CreateCommentHandler extends AbstractHandler
             '[PHP-DEV]' => null,
             '[VOTE]' => null,
         ]), ' :');
+    }
+
+    /**
+     * @param int $request
+     *
+     * @return Thread
+     */
+    protected function getParentThread(int $request): Thread
+    {
+        $thread = Thread::firstOrNew(['name' => $this->command->subject]);
+        $thread->request_id = $request;
+        $thread->save();
+
+        return $thread;
     }
 
     /**
@@ -155,13 +176,13 @@ class CreateCommentHandler extends AbstractHandler
     /**
      * Create a comment from a NNTP article.
      *
-     * @param int      $request
+     * @param int      $thread
      * @param int      $user
      * @param int|null $comment
      *
      * @return Comment
      */
-    protected function createCommentFromArticle($request, $user, $comment = null)
+    protected function createCommentFromArticle(int $thread, int $user, int $comment = null)
     {
         try {
             $contents = $this->internals->getArticleBody($this->command->number);
@@ -180,7 +201,7 @@ class CreateCommentHandler extends AbstractHandler
         $synchronizer = new CommentSynchronizer(array_merge((array) $this->command, [
             'contents' => $contents,
             'comment_id' => $comment,
-            'request_id' => $request,
+            'thread_id' => $thread,
             'user_id' => $user,
             'timestamps' => $datetime,
         ]));

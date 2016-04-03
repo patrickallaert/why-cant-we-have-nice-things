@@ -20,7 +20,7 @@ class CommentSynchronizerTest extends TestCase
             'xref' => '123',
             'name' => 'foobar',
             'contents' => 'foobar',
-            'request_id' => null,
+            'thread_id' => null,
             'comment_id' => null,
             'user_id' => 1,
             'created_at' => '2011-01-01 01:01:01',

@@ -27,11 +27,11 @@ class CreateCommentsTable extends AbstractMigration
              ->addColumn('contents', 'text')
              ->addColumn('xref', 'string')
              ->addColumn('user_id', 'integer')
-             ->addColumn('request_id', 'integer')
+             ->addColumn('thread_id', 'integer')
              ->addColumn('comment_id', 'integer', ['null' => true])
              ->addColumn('created_at', 'datetime')
              ->addColumn('updated_at', 'datetime')
-             ->addForeignKey('request_id', 'requests', 'id', ['delete' => 'CASCADE'])
+             ->addForeignKey('thread_id', 'threads', 'id', ['delete' => 'CASCADE'])
              ->addForeignKey('user_id', 'users', 'id', ['delete' => 'CASCADE'])
              ->create();
     }

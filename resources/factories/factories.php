@@ -4,6 +4,7 @@ use History\Entities\Models\Comment;
 use History\Entities\Models\Company;
 use History\Entities\Models\Question;
 use History\Entities\Models\Request;
+use History\Entities\Models\Thread;
 use History\Entities\Models\User;
 use History\Entities\Models\Vote;
 use League\FactoryMuffin\FactoryMuffin;
@@ -63,6 +64,13 @@ $fm->define(Request::class)->setDefinitions([
     $request->authors()->sync($users->all());
 });
 
+$fm->define(Thread::class)->setDefinitions([
+    'name' => $faker->sentence(),
+    'request_id' => random(Request::class),
+    'created_at' => $faker->dateTimeThisDecade(),
+    'updated_at' => $faker->dateTimeThisDecade(),
+]);
+
 $fm->define(Comment::class)->setDefinitions([
     'name' => $faker->sentence(),
     'contents' => $faker->paragraph(),
@@ -70,7 +78,7 @@ $fm->define(Comment::class)->setDefinitions([
     'created_at' => $faker->dateTimeThisYear(),
     'updated_at' => $faker->dateTimeThisYear(),
     'user_id' => random(User::class),
-    'request_id' => random(Request::class),
+    'thread_id' => random(Thread::class),
 ]);
 
 $fm->define(Question::class)->setDefinitions([

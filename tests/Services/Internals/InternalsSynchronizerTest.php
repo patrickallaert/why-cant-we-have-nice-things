@@ -3,6 +3,7 @@
 namespace History\Services\Internals;
 
 use History\Entities\Models\Request;
+use History\Entities\Models\Thread;
 use History\Entities\Models\User;
 use History\TestCase;
 use Mockery;
@@ -12,6 +13,7 @@ class InternalsSynchronizerTest extends TestCase
     public function testCanFetchArticles()
     {
         $request = Request::create(['name' => 'foobar']);
+        $thread = Thread::create(['name' => 'foobar', 'request_id' => $request->id]);
         $user = User::create(['full_name' => 'Maxime Fabre']);
         $created = $this->mockSynchronization([
             ['xref' => 1, 'subject' => 'foobar'],
@@ -45,7 +47,7 @@ class InternalsSynchronizerTest extends TestCase
             'xref' => 'php.internals:2321321',
             'name' => 'foobar',
             'contents' => 'foobar',
-            'request_id' => $request->id,
+            'thread_id' => $thread->id,
             'comment_id' => null,
             'user_id' => $user->id,
             'created_at' => '2011-01-01 01:01:01',
@@ -57,6 +59,7 @@ class InternalsSynchronizerTest extends TestCase
     public function testIsAbleToMatchRequestsEventIfTitleIsntIdentical()
     {
         $request = Request::firstOrCreate(['name' => 'Trailing Commas In List Syntax']);
+        $thread = Thread::create(['name' => 'Trailing commas in all list syntax', 'request_id' => $request->id]);
         $user = User::create(['full_name' => 'Maxime Fabre']);
         $created = $this->mockSynchronization([
             ['xref' => 1, 'subject' => 'foobar'],
@@ -82,7 +85,7 @@ class InternalsSynchronizerTest extends TestCase
             'xref' => 'php.internals:2321321',
             'name' => 'Trailing commas in all list syntax',
             'contents' => 'foobar',
-            'request_id' => $request->id,
+            'thread_id' => $thread->id,
             'comment_id' => null,
             'user_id' => $user->id,
             'created_at' => '2011-01-01 01:01:01',
