@@ -2,6 +2,7 @@
 
 namespace History\Entities\Models;
 
+use History\Entities\Models\Threads\Comment;
 use History\TestCase;
 use League\CommonMark\CommonMarkConverter;
 use LogicException;

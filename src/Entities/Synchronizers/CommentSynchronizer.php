@@ -3,7 +3,7 @@
 namespace History\Entities\Synchronizers;
 
 use History\Entities\Models\AbstractModel;
-use History\Entities\Models\Comment;
+use History\Entities\Models\Threads\Comment;
 
 class CommentSynchronizer extends AbstractSynchronizer
 {

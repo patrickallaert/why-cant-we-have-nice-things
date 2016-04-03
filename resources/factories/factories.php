@@ -1,10 +1,10 @@
 <?php
 
-use History\Entities\Models\Comment;
 use History\Entities\Models\Company;
 use History\Entities\Models\Question;
 use History\Entities\Models\Request;
-use History\Entities\Models\Thread;
+use History\Entities\Models\Threads\Comment;
+use History\Entities\Models\Threads\Thread;
 use History\Entities\Models\User;
 use History\Entities\Models\Vote;
 use League\FactoryMuffin\FactoryMuffin;

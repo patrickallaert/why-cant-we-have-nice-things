@@ -4,7 +4,7 @@ namespace History\Services\Internals;
 
 use History\CommandBus\Commands\CreateCommentCommand;
 use History\Console\HistoryStyle;
-use History\Entities\Models\Comment;
+use History\Entities\Models\Threads\Comment;
 use League\Tactician\CommandBus;
 
 class InternalsSynchronizer

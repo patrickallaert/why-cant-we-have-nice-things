@@ -2,7 +2,7 @@
 
 namespace History\Entities\Observers;
 
-use History\Entities\Models\Thread;
+use History\Entities\Models\Threads\Thread;
 
 class ThreadObserver
 {

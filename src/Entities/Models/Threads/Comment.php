@@ -1,7 +1,9 @@
 <?php
 
-namespace History\Entities\Models;
+namespace History\Entities\Models\Threads;
 
+use History\Entities\Models\AbstractModel;
+use History\Entities\Models\User;
 use History\Entities\Traits\HasEventsTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;

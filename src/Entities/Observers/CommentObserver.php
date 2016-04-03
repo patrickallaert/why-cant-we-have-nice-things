@@ -2,7 +2,7 @@
 
 namespace History\Entities\Observers;
 
-use History\Entities\Models\Comment;
+use History\Entities\Models\Threads\Comment;
 
 class CommentObserver
 {

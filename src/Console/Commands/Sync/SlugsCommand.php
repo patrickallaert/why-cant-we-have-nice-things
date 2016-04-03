@@ -5,7 +5,7 @@ namespace History\Console\Commands\Sync;
 use History\Console\Commands\AbstractCommand;
 use History\Entities\Models\Company;
 use History\Entities\Models\Request;
-use History\Entities\Models\Thread;
+use History\Entities\Models\Threads\Thread;
 use History\Entities\Models\User;
 
 class SlugsCommand extends AbstractCommand

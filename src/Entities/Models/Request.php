@@ -3,6 +3,7 @@
 namespace History\Entities\Models;
 
 use History\Collection;
+use History\Entities\Models\Threads\Thread;
 use History\Entities\Traits\HasEventsTrait;
 use History\Entities\Traits\HasSlugTrait;
 use Illuminate\Database\Eloquent\Relations\HasOne;

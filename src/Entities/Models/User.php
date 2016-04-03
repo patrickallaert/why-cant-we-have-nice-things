@@ -3,6 +3,7 @@
 namespace History\Entities\Models;
 
 use History\Collection;
+use History\Entities\Models\Threads\Comment;
 use History\Entities\Traits\HasSlugTrait;
 use thomaswelton\GravatarLib\Gravatar;
 

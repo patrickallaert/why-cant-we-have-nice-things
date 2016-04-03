@@ -2,9 +2,9 @@
 
 namespace History\Providers;
 
-use History\Entities\Models\Comment;
 use History\Entities\Models\Company;
 use History\Entities\Models\Request;
+use History\Entities\Models\Threads\Comment;
 use History\Entities\Models\User;
 use History\Entities\Models\Version;
 use History\Entities\Models\Vote;

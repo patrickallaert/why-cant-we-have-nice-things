@@ -1,7 +1,7 @@
 <?php
 
 use History\Application;
-use History\Entities\Models\Comment;
+use History\Entities\Models\Threads\Comment;
 use Phinx\Seed\AbstractSeed;
 
 class Comments extends AbstractSeed

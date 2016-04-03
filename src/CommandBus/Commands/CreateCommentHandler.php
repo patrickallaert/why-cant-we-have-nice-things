@@ -5,9 +5,9 @@ namespace History\CommandBus\Commands;
 use Carbon\Carbon;
 use DateTime;
 use Exception;
-use History\Entities\Models\Comment;
 use History\Entities\Models\Request;
-use History\Entities\Models\Thread;
+use History\Entities\Models\Threads\Comment;
+use History\Entities\Models\Threads\Thread;
 use History\Entities\Synchronizers\CommentSynchronizer;
 use History\Entities\Synchronizers\UserSynchronizer;
 use History\Services\IdentityExtractor;
@@ -210,7 +210,7 @@ class CreateCommentHandler extends AbstractHandler
      * @param int      $user
      * @param int|null $comment
      *
-     * @return Comment
+     * @return \History\Entities\Models\Threads\Comment
      */
     protected function createCommentFromArticle(int $thread, int $user, int $comment = null)
     {

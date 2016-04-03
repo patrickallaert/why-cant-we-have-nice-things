@@ -2,7 +2,7 @@
 
 namespace History\Http\Controllers;
 
-use History\Entities\Models\Thread;
+use History\Entities\Models\Threads\Thread;
 use Psr\Http\Message\ServerRequestInterface;
 
 class ThreadsController extends AbstractController

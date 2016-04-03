@@ -3,7 +3,7 @@
 namespace History\Services\Internals;
 
 use History\Entities\Models\Request;
-use History\Entities\Models\Thread;
+use History\Entities\Models\Threads\Thread;
 use History\Entities\Models\User;
 use History\TestCase;
 use Mockery;
