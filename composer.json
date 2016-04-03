@@ -52,7 +52,7 @@
         "franzl/whoops-middleware": "^0.3.1",
         "league/factory-muffin": "^3.0",
         "league/factory-muffin-faker": "^1.0",
-        "mockery/mockery": "^0.9.4",
+        "mockery/mockery": "1.0.x@dev",
         "php-middleware/php-debug-bar": "^1.1",
         "phpro/grumphp": "^0.8.0",
         "phpunit/phpunit": "^5.3",
