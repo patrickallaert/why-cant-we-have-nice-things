@@ -9,6 +9,11 @@ class CreateCommentCommand implements CommandInterface
     /**
      * @var string
      */
+    public $group;
+    
+    /**
+     * @var string
+     */
     public $xref;
 
     /**

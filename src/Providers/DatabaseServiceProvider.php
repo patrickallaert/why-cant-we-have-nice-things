@@ -5,12 +5,16 @@ namespace History\Providers;
 use History\Entities\Models\Company;
 use History\Entities\Models\Request;
 use History\Entities\Models\Threads\Comment;
+use History\Entities\Models\Threads\Group;
+use History\Entities\Models\Threads\Thread;
 use History\Entities\Models\User;
 use History\Entities\Models\Version;
 use History\Entities\Models\Vote;
 use History\Entities\Observers\CommentObserver;
 use History\Entities\Observers\CompanyObserver;
+use History\Entities\Observers\GroupObserver;
 use History\Entities\Observers\RequestObserver;
+use History\Entities\Observers\ThreadObserver;
 use History\Entities\Observers\UserObserver;
 use History\Entities\Observers\VersionObserver;
 use History\Entities\Observers\VoteObserver;
@@ -41,7 +45,9 @@ class DatabaseServiceProvider extends AbstractServiceProvider
             // Configure observers
             Comment::observe(new CommentObserver());
             Company::observe(new CompanyObserver());
+            Group::observe(new GroupObserver());
             Request::observe(new RequestObserver());
+            Thread::observe(new ThreadObserver());
             User::observe(new UserObserver());
             Version::observe(new VersionObserver());
             Vote::observe(new VoteObserver());

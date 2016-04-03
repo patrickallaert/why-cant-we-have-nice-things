@@ -13,7 +13,12 @@ class Group extends AbstractModel
     /**
      * @var array
      */
-    protected $fillable = ['name', 'slug'];
+    protected $fillable = [
+        'name',
+        'slug',
+        'low',
+        'high',
+    ];
 
     //////////////////////////////////////////////////////////////////////
     //////////////////////////// RELATIONSHIPS ///////////////////////////
@@ -24,6 +29,6 @@ class Group extends AbstractModel
      */
     public function threads(): HasMany
     {
-        return $this->hasMany(Thread::class);
+        return $this->hasMany(Thread::class)->latest();
     }
 }

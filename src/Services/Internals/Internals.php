@@ -39,6 +39,33 @@ class Internals
         $this->client = $client;
     }
 
+    //////////////////////////////////////////////////////////////////////
+    /////////////////////////////// GROUPS ///////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+
+    /**
+     * @return \Rvdv\Nntp\Command\GroupCommand
+     */
+    public function getGroups()
+    {
+        $this->client->connect();
+
+        return $this->client->listGroups()->getResult();
+    }
+
+    /**
+     * @param string $group
+     */
+    public function setGroup(string $group)
+    {
+        $this->connectIfNeeded();
+        $this->group = $this->client->group($group)->getResult();
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    ////////////////////////////// ARTICLES //////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+
     /**
      * @return int
      */
@@ -59,7 +86,7 @@ class Internals
      */
     public function getArticles($from, $to)
     {
-        return $this->cacheRequest('internals:xover:'.$from.'-'.$to, function () use ($from, $to) {
+        return $this->cacheRequest('xover:'.$from.'-'.$to, function () use ($from, $to) {
             $format = $this->client->overviewFormat()->getResult();
             $command = $this->client->xover($from, $to, $format);
 
@@ -72,10 +99,10 @@ class Internals
      *
      * @return string
      */
-    public function getArticleBody($article)
+    public function getArticleBody(int $article): string
     {
         $cleaner = new MailingListArticleCleaner();
-        $article = $this->cacheRequest('internals:body:'.$article, function () use ($article) {
+        $article = $this->cacheRequest('body:'.$article, function () use ($article) {
             return $this->client
                 ->sendCommand(new ArticleCommand($article))
                 ->getResult();
@@ -95,7 +122,7 @@ class Internals
      */
     public function findArticleFromReference($xpath)
     {
-        $reference = $this->cacheRequest('internals:xpath:'.$xpath, function () use ($xpath) {
+        $reference = $this->cacheRequest($xpath, function () use ($xpath) {
             return $this->client->sendCommand(new XpathCommand($xpath))->getResult();
         });
 
@@ -107,6 +134,20 @@ class Internals
     //////////////////////////////////////////////////////////////////////
 
     /**
+     * @param string $hash
+     *
+     * @return string
+     */
+    protected function getHash(string $hash): string
+    {
+        if (!$this->group) {
+            return 'internals:'.$hash;
+        }
+
+        return sprintf('internals:%s:%s', $this->group['name'], $hash);
+    }
+
+    /**
      * Execute a request and cache it.
      *
      * @param string   $key
@@ -116,9 +157,9 @@ class Internals
      */
     protected function cacheRequest($key, callable $callback)
     {
-        $tag = strpos($key, 'xover') !== false ? 'php' : 'internals';
+        $key = $this->getHash($key);
 
-        return $this->cache->tags($tag)->rememberForever($key, function () use ($callback) {
+        return $this->cache->tags('internals')->rememberForever($key, function () use ($callback) {
             $this->connectIfNeeded();
 
             return $callback();
@@ -136,6 +177,5 @@ class Internals
 
         // Get php.internals group
         $this->client->connect();
-        $this->group = $this->client->group('php.internals')->getResult();
     }
 }

@@ -2,10 +2,16 @@
 
 namespace History\Services\Internals;
 
+use History\Collection;
 use History\CommandBus\Commands\CreateCommentCommand;
 use History\Console\HistoryStyle;
 use History\Entities\Models\Threads\Comment;
+use History\Entities\Models\Threads\Group;
+use History\Services\Threading\Jobs\CommandBusJob;
+use History\Services\Threading\OutputPool;
 use League\Tactician\CommandBus;
+use Rvdv\Nntp\Exception\RuntimeException;
+use Rvdv\Nntp\Response\Response;
 
 class InternalsSynchronizer
 {
@@ -83,41 +89,87 @@ class InternalsSynchronizer
     {
         $this->parsed = Comment::lists('xref')->all();
 
-        $this->output->writeln('Getting messages');
-        $queue = $this->getArticlesQueue();
+        $this->output->writeln('Getting groups');
+        $groups = $this->synchronizeGroups();
 
         $created = [];
-        $this->output->writeln('Creating comments');
-        foreach ($this->output->progressIterator($queue) as $command) {
-            $created[] = $this->bus->handle($command);
+        foreach ($groups as $group) {
+            $created[$group->name] = $this->synchronizeArticlesForGroup($group);
         }
 
         return $created;
     }
 
     /**
+     * @return Group[]
+     */
+    protected function synchronizeGroups()
+    {
+        $groups = $this->internals->getGroups();
+        foreach ($this->output->progressIterator($groups) as $key => $group) {
+            $attributes = array_except($group, ['status']);
+            $group = Group::firstOrCreate(['name' => $attributes['name']]);
+            $group->fill($attributes);
+            $group->saveIfDirty();
+
+            $groups[$key] = $group;
+        }
+
+        return $groups;
+    }
+
+    /**
+     * @param Group $group
+     *
      * @return array
      */
-    protected function getArticlesQueue()
+    protected function synchronizeArticlesForGroup(Group $group)
+    {
+        $this->output->section($group->name);
+        $this->internals->setGroup($group->name);
+
+        $this->output->writeln('Getting messages informations');
+        $queue = $this->getArticlesQueue($group);
+
+        $this->output->writeln('Creating comments');
+        $pool = new OutputPool($this->output);
+        foreach ($queue as $command) {
+            $pool->submit(new CommandBusJob($command));
+        }
+
+        return $pool->process();
+    }
+
+    /**
+     * @param Group $group
+     *
+     * @return array
+     */
+    protected function getArticlesQueue(Group $group)
     {
         // Start at the last comment we parsed
-        $count = $this->internals->getTotalNumberArticles();
-        $from = $this->size ? $count - $this->size : self::FIRST_RFC;
+        $from = $group->low;
+        $chunk = min(self::CHUNK, $group->high);
 
         $queue = [];
-        $this->output->progressStart($count - $this->size);
-        for ($i = $from; $i <= $count; $i += self::CHUNK) {
-            $to = $i + (self::CHUNK - 1);
+        $this->output->progressStart($group->high);
+        for ($i = $from; $i <= $group->high; $i += $chunk) {
+            $to = $i + ($chunk - 1);
 
             // Process this chunk of articles
-            $articles = $this->internals->getArticles($i, $to);
-            foreach ($articles as $article) {
-                if ($command = $this->processArticle($article)) {
-                    $queue[] = $command;
+            try {
+                $articles = $this->internals->getArticles($i, $to);
+
+                foreach ($articles as $article) {
+                    if ($command = $this->processArticle($article, $group->name)) {
+                        $queue[] = $command;
+                    }
                 }
+            } catch (RuntimeException $exception) {
+                // No articles in this range
             }
 
-            $this->output->progressAdvance(self::CHUNK);
+            $this->output->progressAdvance($chunk);
         }
 
         $this->output->progressFinish();
@@ -127,10 +179,11 @@ class InternalsSynchronizer
 
     /**
      * @param array|null $article
+     * @param string     $group
      *
      * @return CreateCommentCommand
      */
-    protected function processArticle($article)
+    protected function processArticle($article, string $group)
     {
         if (!$article) {
             return;
@@ -141,12 +194,8 @@ class InternalsSynchronizer
             return;
         }
 
-        // If the article is not about RFCs, fuck off
-        if (!preg_match('/(RFC|VOTE)/i', $article['subject'])) {
-            return;
-        }
-
         $command = new CreateCommentCommand();
+        $command->group = $group;
         $command->xref = $article['xref'];
         $command->subject = $article['subject'];
         $command->references = $article['references'];

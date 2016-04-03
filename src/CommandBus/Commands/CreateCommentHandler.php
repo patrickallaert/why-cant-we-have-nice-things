@@ -59,15 +59,13 @@ class CreateCommentHandler extends AbstractHandler
 
         // Get the RFC the message relates to
         $this->command->subject = $this->cleanupSubject($this->command->subject);
-        if (!$request = $this->getRelatedRequest()) {
-            return;
-        }
+        $request = $this->getRelatedRequest();
 
         // Get the user that posted the message
         $user = $this->getRelatedUser();
 
         // If the article has references, find them
-        $thread = $this->getParentThread($request, $user);
+        $thread = $this->getParentThread($user, $request);
         $comment = $this->getCommentFromReference($this->command->references);
 
         // Grab the message contents and insert into database
@@ -103,11 +101,17 @@ class CreateCommentHandler extends AbstractHandler
      */
     protected function getDatetime(): DateTime
     {
+        $timezones = [
+            'Eastern Daylight Time' => 'EDT',
+            'Eastern Standard Time' => 'EST',
+        ];
+
         // Normalize date
         try {
-            $datetime = str_replace('(GMT Daylight Time)', '', $this->command->date);
-            $datetime = new DateTime($datetime);
+            $date = strtr($this->command->date, $timezones);
+            $datetime = new DateTime($date);
         } catch (Exception $exception) {
+            dump($exception->getMessage(), $this->command->date);
             $datetime = Carbon::now();
         }
 
@@ -115,12 +119,12 @@ class CreateCommentHandler extends AbstractHandler
     }
 
     /**
-     * @param int $request
      * @param int $user
+     * @param int|null $request
      *
      * @return Thread
      */
-    protected function getParentThread(int $request, int $user): Thread
+    protected function getParentThread(int $user, int $request = null): Thread
     {
         $thread = Thread::firstOrNew(['name' => $this->command->subject]);
         $datetime = $this->getDatetime();
@@ -221,6 +225,8 @@ class CreateCommentHandler extends AbstractHandler
     protected function createCommentFromArticle(int $thread, int $user, int $comment = null)
     {
         try {
+            $group = $this->command->group;
+            $this->internals->setGroup($group);
             $contents = $this->internals->getArticleBody($this->command->number);
         } catch (InvalidArgumentException $exception) {
             return;

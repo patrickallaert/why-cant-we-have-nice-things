@@ -25,6 +25,8 @@ class CreateGroupsTable extends AbstractMigration
         $this->table('groups')
              ->addColumn('name', 'string')
              ->addColumn('slug', 'string', ['null' => true])
+             ->addColumn('low', 'integer', ['default' => 0])
+             ->addColumn('high', 'integer', ['null' => true])
              ->addColumn('created_at', 'datetime')
              ->addColumn('updated_at', 'datetime')
              ->create();
