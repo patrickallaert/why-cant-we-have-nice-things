@@ -28,6 +28,7 @@ class ArticleParser
      * @param string $message
      *
      * @throws Exception
+     *
      * @return array
      */
     public function parse(string $message): array
@@ -96,7 +97,7 @@ class ArticleParser
         $date = preg_replace('/(.+)\(.+\)$/', '$1', $date);
 
         try {
-            $datetime = new DateTime($date);
+            $datetime = new Carbon($date);
         } catch (Exception $exception) {
             $datetime = Carbon::createFromDate(1970, 01, 01);
         }
@@ -117,8 +118,9 @@ class ArticleParser
     }
 
     /**
-     * @return false|mixed|string
      * @throws Exception
+     *
+     * @return false|mixed|string
      */
     protected function getContents()
     {

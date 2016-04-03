@@ -2,12 +2,12 @@
 
 namespace History\Services\Internals;
 
-use Carbon\Carbon;
 use History\CommandBus\Commands\CreateCommentCommand;
 use History\Console\HistoryStyle;
 use History\Entities\Models\Threads\Comment;
 use History\Entities\Models\Threads\Group;
 use History\Services\Traits\HasAsyncCapabilitiesTrait;
+use Illuminate\Support\Str;
 use League\Tactician\CommandBus;
 
 class InternalsSynchronizer
@@ -15,9 +15,18 @@ class InternalsSynchronizer
     use HasAsyncCapabilitiesTrait;
 
     /**
+     * @var string[]
+     */
+    const GROUPS_WHITELIST = [
+        'php.announce',
+        'php.internals',
+        'php.general',
+    ];
+
+    /**
      * @var int
      */
-    const CHUNK = 500;
+    const CUTOFF_DATE = 3;
 
     /**
      * @var int
@@ -116,19 +125,25 @@ class InternalsSynchronizer
      */
     protected function synchronizeGroups(): array
     {
-        $groups = $this->internals->getGroups();
-        foreach ($this->output->progressIterator($groups) as $key => $group) {
+        $groups = [];
+        $available = $this->internals->getGroups();
+        foreach ($this->output->progressIterator($available) as $key => $group) {
             $attributes = array_except($group, ['status']);
+
+            // Only get articles from approved groups
+            if (!in_array($attributes['name'], static::GROUPS_WHITELIST)) {
+                continue;
+            }
 
             /** @var Group $group */
             $group = Group::firstOrCreate(['name' => $attributes['name']]);
             $group->fill($attributes);
             $group->saveIfDirty();
 
-            $groups[$key] = $group;
+            $groups[] = $group;
         }
 
-        return $this->group ? [$groups[$this->group]] : $groups;
+        return $this->group ? [$available[$this->group]] : $groups;
     }
 
     /**
@@ -146,19 +161,22 @@ class InternalsSynchronizer
         // Prepare main loop variables
         $queue = $this->getArticlesQueue($group);
         if (!$queue) {
-            return $this->output->writeln('<info>No new articles</info>');
+            return;
         }
 
         $this->output->writeln('Creating articles');
         $this->dispatchCommands($queue);
     }
 
+    /**
+     * Thread comments and create structure.
+     */
     protected function synchronizeReferences()
     {
         $this->refreshParsedList();
 
         /** @var Comment[] $withReferences */
-        $withReferences = Comment::whereNotNull('reference')->whereNull('comment_id')->get();
+        $withReferences = Comment::whereNotNull('references')->whereNull('comment_id')->get();
         $withReferences = $this->output->progressIterator($withReferences);
         foreach ($withReferences as $comment) {
             $reference = $this->getCommentFromReference($comment->references);
@@ -178,7 +196,7 @@ class InternalsSynchronizer
 
     /**
      * Get a list of articles to process
-     * from this group
+     * from this group.
      *
      * @param Group $group
      *
@@ -191,10 +209,9 @@ class InternalsSynchronizer
 
         // Cutoff
         $date = null;
-        $cutoff = 5;
 
         $queue = [];
-        for ($i = $to; $i >= $from; $i--) {
+        for ($i = $to; $i >= $from; --$i) {
 
             // Check if we've already parsed that
             // article, if yes skip it
@@ -209,10 +226,11 @@ class InternalsSynchronizer
             // during the last X years
             if (!$date) {
                 $comment = $this->internals->getArticle($i);
-                $date = Carbon::instance($comment['date']);
-                if ($date->diffInYears() > $cutoff) {
-                    $this->output->error('No articles in the last '.$cutoff.' years');
-                    break;
+                $date = $comment['date'];
+                if ($date->diffInYears() > static::CUTOFF_DATE) {
+                    $this->output->error('No articles in the last '.static::CUTOFF_DATE.' years');
+
+                    return [];
                 }
             }
 
@@ -221,6 +239,10 @@ class InternalsSynchronizer
             if ($this->size && count($queue) >= $this->size) {
                 return $queue;
             }
+        }
+
+        if (!$queue) {
+            $this->output->writeln('<info>No new articles</info>');
         }
 
         return $queue;

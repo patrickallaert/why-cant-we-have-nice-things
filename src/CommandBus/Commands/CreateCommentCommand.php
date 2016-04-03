@@ -10,7 +10,7 @@ class CreateCommentCommand implements CommandInterface
      * @var int
      */
     public $articleNumber;
-    
+
     /**
      * @var string
      */

@@ -2,13 +2,11 @@
 
 namespace History\Services\Internals;
 
-use History\Services\Internals\Commands\Body;
 use Illuminate\Contracts\Cache\Repository;
 use Rvdv\Nntp\ClientInterface;
 use Rvdv\Nntp\Command\ArticleCommand;
 use Rvdv\Nntp\Command\XpathCommand;
 use Rvdv\Nntp\Exception\InvalidArgumentException;
-use SplFixedArray;
 
 class Internals
 {
@@ -93,7 +91,7 @@ class Internals
     //////////////////////////////////////////////////////////////////////
 
     /**
-     * Get informations about an article
+     * Get informations about an article.
      *
      * @param int $articleNumber
      *

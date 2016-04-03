@@ -2,9 +2,6 @@
 
 namespace History\CommandBus\Commands;
 
-use Carbon\Carbon;
-use DateTime;
-use Exception;
 use History\Entities\Models\Request;
 use History\Entities\Models\Threads\Comment;
 use History\Entities\Models\Threads\Group;
@@ -14,7 +11,6 @@ use History\Entities\Synchronizers\UserSynchronizer;
 use History\Services\IdentityExtractor;
 use History\Services\Internals\Internals;
 use Illuminate\Support\Fluent;
-use Rvdv\Nntp\Exception\InvalidArgumentException;
 
 class CreateCommentHandler extends AbstractHandler
 {
@@ -51,6 +47,16 @@ class CreateCommentHandler extends AbstractHandler
         $this->internals->setGroup($command->group, true);
         $article = $this->internals->getArticle($command->articleNumber);
         $this->article = new Fluent($article);
+
+        // If we're missing some vital informations, skip comment
+        if (
+            !$this->article->from ||
+            !$this->article->contents ||
+            !$this->article->subject ||
+            $this->article->date->isFuture()
+        ) {
+            return;
+        }
 
         // Get the RFC the message relates to
         $request = $this->getRelatedRequest();
@@ -134,7 +140,7 @@ class CreateCommentHandler extends AbstractHandler
         if (!$users) {
             return;
         }
-        
+
         $user = head($users);
         $synchronizer = new UserSynchronizer($user);
 
