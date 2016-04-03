@@ -147,7 +147,7 @@ class InternalsSynchronizer
         // Prepare main loop variables
         $queue = $this->getArticlesQueue($group);
         if (!$queue) {
-            return $this->output->writeln('No new articles');
+            return $this->output->writeln('<info>No new articles</info>');
         }
 
         $this->output->writeln('Creating articles');
@@ -190,8 +190,10 @@ class InternalsSynchronizer
         $queue = [];
         for ($i = $from; $i <= $to; $i += 1) {
             $xref = $group->name.':'.$i;
-            if (in_array($xref, $this->parsed)) {
-                continue;
+            foreach ($this->parsed as $references) {
+                if (strpos($references, $xref) !== false) {
+                    continue 2;
+                }
             }
 
             $queue[] = new CreateCommentCommand($group->name, $i);
