@@ -44,7 +44,6 @@ class UsersController extends AbstractController
             'votes.question.request',
             'votes.question.votes',
             'requests.versions',
-            'requests.comments',
             'requests.votes',
         ];
 

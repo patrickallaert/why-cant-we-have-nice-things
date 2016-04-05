@@ -9,7 +9,7 @@
 {% block content %}
     <ul class="list-unstyled lead text-center">
         <li>
-            Commented <strong>{{ user.comments.count() }}</strong> times
+            Commented <strong>{{ user.comments().count() }}</strong> times
         </li>
         <li>
             {% if user.requests.count() %}

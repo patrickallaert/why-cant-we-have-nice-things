@@ -17,7 +17,8 @@ class ThreadsController extends AbstractController
      */
     public function show(Group $group, Thread $thread, ServerRequestInterface $request)
     {
-        $comments = $this->paginate($thread->rootComments(), $request, 25);
+        $comments = $thread->rootComments();
+        $comments = $this->paginate($comments, $request, 25);
 
         return $this->render('threads/show.twig', [
             'group' => $group,

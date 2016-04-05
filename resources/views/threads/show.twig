@@ -10,5 +10,5 @@
 {% endblock %}
 
 {% block content %}
-    {% include 'requests/partials/comments.twig' with {hide_title: true, comments_count: thread.comments.count()} %}
+    {% include 'requests/partials/comments.twig' with {hide_title: true, comments_count: thread.comments().count()} %}
 {% endblock %}
