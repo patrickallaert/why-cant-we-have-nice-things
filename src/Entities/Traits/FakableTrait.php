@@ -19,6 +19,19 @@ trait FakableTrait
     }
 
     /**
+     * @throws \League\FactoryMuffin\Exceptions\DirectoryNotFoundException
+     *
+     * @return FactoryMuffin
+     */
+    protected static function getFactoryMuffin()
+    {
+        $muffin = new FactoryMuffin();
+        $muffin->loadFactories(realpath(__DIR__.'/../../../resources/factories'));
+
+        return $muffin;
+    }
+
+    /**
      * Seed a fake instance of the model.
      *
      * @param int|array ...$args
@@ -32,18 +45,5 @@ trait FakableTrait
         }
 
         return static::getFactoryMuffin()->create(static::class, ...$args);
-    }
-
-    /**
-     * @throws \League\FactoryMuffin\Exceptions\DirectoryNotFoundException
-     *
-     * @return FactoryMuffin
-     */
-    protected static function getFactoryMuffin()
-    {
-        $muffin = new FactoryMuffin();
-        $muffin->loadFactories(realpath(__DIR__.'/../../../resources/factories'));
-
-        return $muffin;
     }
 }

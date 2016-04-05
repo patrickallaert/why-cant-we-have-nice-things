@@ -8,16 +8,6 @@ use History\Entities\Models\Event;
 trait HasEventsTrait
 {
     /**
-     * @codeCoverageIgnore
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function events()
-    {
-        return $this->morphMany(Event::class, 'eventable')->latest();
-    }
-
-    /**
      * Register an event.
      *
      * @param string $type
@@ -39,5 +29,15 @@ trait HasEventsTrait
         }
 
         $this->events()->create($attributes);
+    }
+
+    /**
+     * @codeCoverageIgnore
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function events()
+    {
+        return $this->morphMany(Event::class, 'eventable')->latest();
     }
 }

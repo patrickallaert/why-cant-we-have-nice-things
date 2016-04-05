@@ -42,7 +42,7 @@ class Comment extends AbstractModel
      * @var array
      */
     protected $casts = [
-      'references' => 'array',
+        'references' => 'array',
     ];
 
     //////////////////////////////////////////////////////////////////////

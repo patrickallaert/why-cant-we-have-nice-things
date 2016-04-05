@@ -26,6 +26,23 @@ class TargetExtractor extends AbstractExtractor
     }
 
     /**
+     * Normalize some things in the text
+     * and unify .next to .x.
+     *
+     * @param string $text
+     *
+     * @return string
+     */
+    protected function normalizeText(string $text): string
+    {
+        $text = $this->cleanWhitespace($text);
+        $text = str_replace('.next', '.x', $text);
+        $text = strtolower(trim($text, '.'));
+
+        return $text;
+    }
+
+    /**
      * Get a direct match from the text (ie a clear definitive version).
      *
      * @param string $text
@@ -38,6 +55,10 @@ class TargetExtractor extends AbstractExtractor
 
         return $target !== $text ? $target : null;
     }
+
+    //////////////////////////////////////////////////////////////////////
+    ///////////////////////////// NORMALIZERS ////////////////////////////
+    //////////////////////////////////////////////////////////////////////
 
     /**
      * Get an indirect match (ie. something that sorta look like a version).
@@ -61,26 +82,20 @@ class TargetExtractor extends AbstractExtractor
         return $target;
     }
 
-    //////////////////////////////////////////////////////////////////////
-    ///////////////////////////// NORMALIZERS ////////////////////////////
-    //////////////////////////////////////////////////////////////////////
-
     /**
-     * Normalize some things in the text
-     * and unify .next to .x.
-     *
      * @param string $text
+     * @param int    $size
      *
      * @return string
      */
-    protected function normalizeText(string $text): string
+    protected function matchVersionOfSize(string $text, int $size): string
     {
-        $text = $this->cleanWhitespace($text);
-        $text = str_replace('.next', '.x', $text);
-        $text = strtolower(trim($text, '.'));
-
-        return $text;
+        return preg_replace('/.*([0-9x\.]{'.$size.'}).*/', '$1', $text);
     }
+
+    //////////////////////////////////////////////////////////////////////
+    ////////////////////////////// HELPERS ///////////////////////////////
+    //////////////////////////////////////////////////////////////////////
 
     /**
      * Cleanup and normalize version to X.X(.X).
@@ -98,20 +113,5 @@ class TargetExtractor extends AbstractExtractor
         }
 
         return trim($target, '.');
-    }
-
-    //////////////////////////////////////////////////////////////////////
-    ////////////////////////////// HELPERS ///////////////////////////////
-    //////////////////////////////////////////////////////////////////////
-
-    /**
-     * @param string $text
-     * @param int    $size
-     *
-     * @return string
-     */
-    protected function matchVersionOfSize(string $text, int $size): string
-    {
-        return preg_replace('/.*([0-9x\.]{'.$size.'}).*/', '$1', $text);
     }
 }

@@ -7,8 +7,8 @@
     <rule ref="vendor/escapestudios/symfony2-coding-standard/Symfony2">
         <exclude name="Symfony2.Commenting.ClassComment.Missing"/>
         <exclude name="Zend.NamingConventions.ValidVariableName.NotCamelCaps"/>
-        <exclude name="PEAR.Functions.FunctionCallSignature.Indent"/>
-        <exclude name="PEAR.Functions.FunctionCallSignature.EmptyLine"/>
+        <exclude name="Squiz.WhiteSpace.ControlStructureSpacing.SpacingAfterOpen" />
+        <exclude name="Squiz.WhiteSpace.ControlStructureSpacing.SpacingAfterOpenBrace" />
         <exclude name="PSR2.ControlStructures.ControlStructureSpacing.SpacingAfterOpenBrace"/>
     </rule>
 </ruleset>

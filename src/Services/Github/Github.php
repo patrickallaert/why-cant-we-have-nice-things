@@ -40,7 +40,7 @@ class Github
         // Search by email, then full name, then username
         $criterias = array_filter([$user->email, $user->full_name, $user->name]);
         foreach ($criterias as $criteria) {
-            $results = $this->cache->tags('github')->rememberForever('github:search:'.$criteria, function () use ($criteria) {
+            $results = $this->cacheRequest('search:'.$criteria, function () use ($criteria) {
                 return $this->client->search()->users($criteria.' type:user');
             });
 
@@ -57,8 +57,19 @@ class Github
      */
     public function getUserInformations($username)
     {
-        return $this->cache->tags('github')->rememberForever('github:user:'.$username, function () use ($username) {
+        return $this->cacheRequest('user:'.$username, function () use ($username) {
             return $this->client->user()->show($username);
         });
+    }
+
+    /**
+     * @param string   $key
+     * @param callable $callback
+     *
+     * @return mixed
+     */
+    protected function cacheRequest(string $key, callable $callback)
+    {
+        return $this->cache->tags('github')->rememberForever('github:'.$key, $callback);
     }
 }

@@ -26,7 +26,7 @@ class CompaniesController extends AbstractController
     public function show(Company $company)
     {
         return $this->render('companies/show.twig', [
-           'company' => $company->load('users'),
+            'company' => $company->load('users'),
         ]);
     }
 }

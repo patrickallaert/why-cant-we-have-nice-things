@@ -15,19 +15,6 @@ class CompanySynchronizer extends AbstractSynchronizer
     /**
      * {@inheritdoc}
      */
-    protected function sanitize(array $informations)
-    {
-        $informations = parent::sanitize($informations);
-        $informations->name = strtr($informations->name, [
-            ' - The PHP Consulting Company' => '',
-        ]);
-
-        return $informations;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function getMatchers()
     {
         return [
@@ -43,5 +30,18 @@ class CompanySynchronizer extends AbstractSynchronizer
         return [
             'name' => $this->informations->get('name'),
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function sanitize(array $informations)
+    {
+        $informations = parent::sanitize($informations);
+        $informations->name = strtr($informations->name, [
+            ' - The PHP Consulting Company' => '',
+        ]);
+
+        return $informations;
     }
 }

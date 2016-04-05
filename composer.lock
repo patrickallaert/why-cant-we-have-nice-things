@@ -3193,12 +3193,12 @@
             "version": "2.9.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/escapestudios/Symfony2-coding-standard.git",
+                "url": "https://github.com/djoos/Symfony2-coding-standard.git",
                 "reference": "03bd93ece3dc004fd49e766bf546f8cf58c64cb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/escapestudios/Symfony2-coding-standard/zipball/03bd93ece3dc004fd49e766bf546f8cf58c64cb8",
+                "url": "https://api.github.com/repos/djoos/Symfony2-coding-standard/zipball/03bd93ece3dc004fd49e766bf546f8cf58c64cb8",
                 "reference": "03bd93ece3dc004fd49e766bf546f8cf58c64cb8",
                 "shasum": ""
             },
@@ -3240,12 +3240,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "17ad6b79eeb2a8fa3a50d1d9df91ae6fd6be6012"
+                "reference": "8c3f29998f200cc9fc59c823aeb1eb0f26ba6b76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/17ad6b79eeb2a8fa3a50d1d9df91ae6fd6be6012",
-                "reference": "17ad6b79eeb2a8fa3a50d1d9df91ae6fd6be6012",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/8c3f29998f200cc9fc59c823aeb1eb0f26ba6b76",
+                "reference": "8c3f29998f200cc9fc59c823aeb1eb0f26ba6b76",
                 "shasum": ""
             },
             "require": {
@@ -3292,7 +3292,7 @@
                 }
             ],
             "description": "A tool to automatically fix PHP code style",
-            "time": "2016-03-31 17:59:23"
+            "time": "2016-04-05 07:15:34"
         },
         {
             "name": "filp/whoops",
@@ -3803,12 +3803,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/padraic/mockery.git",
-                "reference": "f9c911059ec3d9216758fbaa6b8983a71e07a64e"
+                "reference": "590b1e1711d4d813d3ae164487050ac4626b3bba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/padraic/mockery/zipball/f9c911059ec3d9216758fbaa6b8983a71e07a64e",
-                "reference": "f9c911059ec3d9216758fbaa6b8983a71e07a64e",
+                "url": "https://api.github.com/repos/padraic/mockery/zipball/590b1e1711d4d813d3ae164487050ac4626b3bba",
+                "reference": "590b1e1711d4d813d3ae164487050ac4626b3bba",
                 "shasum": ""
             },
             "require": {
@@ -3860,7 +3860,7 @@
                 "test double",
                 "testing"
             ],
-            "time": "2016-04-01 13:59:40"
+            "time": "2016-04-05 11:55:59"
         },
         {
             "name": "myclabs/deep-copy",
@@ -5350,19 +5350,20 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "2.5.1",
+            "version": "2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "6731851d6aaf1d0d6c58feff1065227b7fda3ba8"
+                "reference": "1bcdf03b068a530ac1962ce671dead356eeba43b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/6731851d6aaf1d0d6c58feff1065227b7fda3ba8",
-                "reference": "6731851d6aaf1d0d6c58feff1065227b7fda3ba8",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/1bcdf03b068a530ac1962ce671dead356eeba43b",
+                "reference": "1bcdf03b068a530ac1962ce671dead356eeba43b",
                 "shasum": ""
             },
             "require": {
+                "ext-simplexml": "*",
                 "ext-tokenizer": "*",
                 "ext-xmlwriter": "*",
                 "php": ">=5.1.2"
@@ -5423,7 +5424,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2016-01-19 23:39:10"
+            "time": "2016-04-03 22:58:34"
         },
         {
             "name": "symfony/options-resolver",

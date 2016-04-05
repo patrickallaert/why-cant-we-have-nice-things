@@ -86,6 +86,16 @@ class IdentityExtractor
     }
 
     /**
+     * @param string $string
+     *
+     * @return string
+     */
+    protected function trimCharacters($string)
+    {
+        return trim($string, ' /"=');
+    }
+
+    /**
      * @param string $names
      */
     protected function extractNames($names)
@@ -109,15 +119,5 @@ class IdentityExtractor
 
             $this->names[$key] = $name;
         }
-    }
-
-    /**
-     * @param string $string
-     *
-     * @return string
-     */
-    protected function trimCharacters($string)
-    {
-        return trim($string, ' /"=');
     }
 }
