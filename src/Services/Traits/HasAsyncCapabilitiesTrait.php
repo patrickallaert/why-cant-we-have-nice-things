@@ -19,7 +19,7 @@ trait HasAsyncCapabilitiesTrait
     /**
      * @var bool
      */
-    protected $async = false;
+    protected $async = true;
 
     /**
      * @param bool $async

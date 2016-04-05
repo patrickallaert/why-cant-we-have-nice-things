@@ -18,6 +18,7 @@ class InternalsSynchronizer
      */
     const GROUPS_WHITELIST = [
         'php.announce',
+        'php.beta',
         'php.internals',
         'php.general',
     ];
