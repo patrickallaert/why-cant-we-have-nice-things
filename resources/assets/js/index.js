@@ -1,16 +1,19 @@
 import 'bootstrap.native/lib/collapse-native';
-import 'font-awesome/css/font-awesome.css';
+import 'font-awesome/scss/font-awesome.scss';
 import '../sass/flatly.scss';
 import '../sass/styles.scss';
 
 import './components/tables';
 import './components/tooltips';
 
-if (document.querySelector('.request')) {
+if (document.querySelector('.request, .comment__header')) {
     require.ensure([], () => {
-        require('./components/highlight');
-        require('./components/requestNavigation');
         require('./components/commentsFolding');
+
+        if (document.querySelector('.request')) {
+            require('./components/requestNavigation');
+            require('./components/highlight');
+        }
     });
 }
 
