@@ -9,9 +9,21 @@ use History\Entities\Models\Question;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
 use History\Services\Threading\OutputPool;
+use History\Services\Traits\HasAsyncCapabilitiesTrait;
+use League\Tactician\CommandBus;
 
 class StatsCommand extends AbstractCommand
 {
+    use HasAsyncCapabilitiesTrait;
+
+    /**
+     * @param CommandBus $bus
+     */
+    public function __construct(CommandBus $bus)
+    {
+        $this->bus = $bus;
+    }
+
     /**
      * Run the command.
      */
@@ -26,14 +38,13 @@ class StatsCommand extends AbstractCommand
             Company::with('users'),
         ];
 
-        $pool = new OutputPool($this->output);
         foreach ($queries as $query) {
-            $entities = $query->get();
-            foreach ($entities as $entity) {
-                $pool->submitCommand(new ComputeStatisticsCommand($entity));
+            $queue = $query->get()->all();
+            foreach ($queue as &$entity) {
+                $entity = new ComputeStatisticsCommand($entity);
             }
-        }
 
-        $pool->process();
+            $this->dispatchCommands($queue);
+        }
     }
 }
