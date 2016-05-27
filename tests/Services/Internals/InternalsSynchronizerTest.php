@@ -118,7 +118,7 @@ class InternalsSynchronizerTest extends TestCase
             $message = $messages[$i - 1];
             $message['contents'] = 'foobar';
             $message['references'] = [];
-            $message['date'] = new Carbon(array_get($message, 'date', new Carbon));
+            $message['date'] = new Carbon(array_get($message, 'date', new Carbon()));
 
             return $message;
         });

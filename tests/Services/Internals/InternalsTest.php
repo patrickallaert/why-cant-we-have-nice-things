@@ -7,7 +7,6 @@ use Mockery;
 use Mockery\MockInterface;
 use Rvdv\Nntp\ClientInterface;
 use Rvdv\Nntp\Command\ArticleCommand;
-use Rvdv\Nntp\Command\XoverCommand;
 
 class InternalsTest extends TestCase
 {
