@@ -62,12 +62,6 @@
         "squizlabs/php_codesniffer": "^2.6",
         "symfony/var-dumper": "^3.0"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@github.com:Anahkiasen/pthreads-polyfill.git"
-        }
-    ],
     "autoload": {
         "psr-4": {
             "History\\": "src"

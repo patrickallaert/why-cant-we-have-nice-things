@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e11911ab0c9cbef6c51b62c9d74582ff",
-    "content-hash": "e1a997a6b96bcb53b30d58ce2260fdaf",
+    "hash": "e1d454720a292c321280de93957ef683",
+    "content-hash": "b9439fefd27191c51bbfc445c8a41f1d",
     "packages": [
         {
             "name": "adoy/fastcgi-client",
@@ -962,13 +962,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Anahkiasen/pthreads-polyfill.git",
-                "reference": "6a54d5ce9bb1f49aaea6194e802d9b6943e2c950"
+                "url": "https://github.com/krakjoe/pthreads-polyfill.git",
+                "reference": "fd9d2ac7947e4a2be0979beceb2816876daf48d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Anahkiasen/pthreads-polyfill/zipball/6a54d5ce9bb1f49aaea6194e802d9b6943e2c950",
-                "reference": "6a54d5ce9bb1f49aaea6194e802d9b6943e2c950",
+                "url": "https://api.github.com/repos/krakjoe/pthreads-polyfill/zipball/fd9d2ac7947e4a2be0979beceb2816876daf48d3",
+                "reference": "fd9d2ac7947e4a2be0979beceb2816876daf48d3",
                 "shasum": ""
             },
             "require-dev": {
@@ -985,6 +985,7 @@
                     "src/Pool.php"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "PHP"
             ],
@@ -1000,10 +1001,7 @@
                 "polyfill",
                 "pthreads"
             ],
-            "support": {
-                "source": "https://github.com/Anahkiasen/pthreads-polyfill/tree/master"
-            },
-            "time": "2016-04-02 12:29:26"
+            "time": "2016-05-27 12:56:59"
         },
         {
             "name": "league/commonmark",
