@@ -84,9 +84,7 @@ $fm->define(Comment::class)->setDefinitions([
 
 $fm->define(Question::class)->setDefinitions([
     'name' => $faker->sentence(),
-    'choices' => function () {
-        return ['Yes', 'No'];
-    },
+    'choices' => ['Yes', 'No'],
     'approval' => $faker->randomFloat(null, 0, 1),
     'passed' => $faker->boolean(),
     'request_id' => random(Request::class),
@@ -95,7 +93,7 @@ $fm->define(Question::class)->setDefinitions([
 ]);
 
 $fm->define(Vote::class)->setDefinitions([
-    'choice' => $faker->numberBetween(1, 3),
+    'choice' => $faker->numberBetween(1, 2),
     'question_id' => random(Question::class),
     'user_id' => random(User::class),
     'created_at' => $faker->dateTimeThisYear(),
