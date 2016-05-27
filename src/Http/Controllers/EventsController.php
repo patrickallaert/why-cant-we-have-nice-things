@@ -16,23 +16,38 @@ class EventsController extends AbstractController
      */
     public function index(ServerRequestInterface $request)
     {
-        // Get which types of events to show
         $parameters = new Fluent($request->getQueryParams());
         $types = (array) $parameters->get('types');
 
-        // Get the events we're interested in
-        $events = Event::with('eventable.question.request', 'eventable.user')->latest();
-        if ($types) {
-            $events = $events->whereIn('type', $types);
-        }
-
-        // Get the RFCs currently in voting
+        // Get the RFCs and events
+        $events = $this->getEvents($request, $types);
         $voting = Request::where('status', Request::VOTING)->get();
 
         return $this->render('events/index.twig', [
             'filter' => $types,
             'voting' => $voting,
-            'events' => $this->paginate($events, $request),
+            'events' => $events,
         ]);
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @param array                  $types
+     *
+     * @return array
+     */
+    protected function getEvents(ServerRequestInterface $request, array $types)
+    {
+        // Get the events we're interested in
+        $events = Event::with('eventable.user', 'eventable.request')
+            ->where('type', '!=', Event::TYPES[0])
+            ->latest();
+        if ($types) {
+            $events = $events->whereIn('type', $types);
+        }
+
+        $events = $this->paginate($events, $request);
+
+        return $events;
     }
 }
