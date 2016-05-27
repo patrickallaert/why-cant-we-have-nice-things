@@ -212,7 +212,6 @@ class InternalsSynchronizer
 
         $queue = [];
         for ($i = $to; $i >= $from; --$i) {
-
             // Check if we've already parsed that
             // article, if yes skip it
             $xref = $group->name.':'.$i;
