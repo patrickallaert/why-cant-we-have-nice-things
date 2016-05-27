@@ -26,7 +26,7 @@ class CreateCommentsTable extends AbstractMigration
              ->addColumn('name', 'string')
              ->addColumn('contents', 'text')
              ->addColumn('xref', 'string')
-             ->addColumn('references', 'json', ['null' => true])
+             ->addColumn('references', 'text')
              ->addColumn('user_id', 'integer')
              ->addColumn('thread_id', 'integer')
              ->addColumn('comment_id', 'integer', ['null' => true])

@@ -49,8 +49,9 @@ class GraphicsGeneratorTest extends TestCase
             ],
             'datasets' => [
                 [
-                    'fillColor' => '#33cc73',
-                    'strokeColor' => '#279B57',
+                    'label' => '',
+                    'backgroundColor' => '#33cc73',
+                    'borderColor' => '#279B57',
                     'data' => [
                         1 / 1,
                         2 / 3,
