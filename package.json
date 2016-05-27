@@ -5,19 +5,19 @@
     "bootstrap-sass": "^3.3.6",
     "bootstrap.native": "^1.0.2",
     "bootswatch": "^3.3.6",
-    "chart.js": "^1.0.2",
-    "font-awesome": "^4.5.0",
-    "highlight.js": "^9.2.0",
-    "madewithlove-webpack-config": "^3.0.9",
-    "webpack": "^1.12.14"
+    "chart.js": "^2.1.4",
+    "font-awesome": "^4.6.3",
+    "highlight.js": "^9.4.0",
+    "madewithlove-webpack-config": "^4.0.1",
+    "webpack": "^1.13.1"
   },
   "devDependencies": {
-    "eslint": "^2.5.3",
-    "eslint-config-madewithlove": "^3.0.0",
+    "eslint": "^2.10.2",
+    "eslint-config-madewithlove": "^3.3.1",
     "webpack-dev-server": "^1.14.1"
   },
   "scripts": {
-    "build": "webpack --progress",
+    "build": "webpack --progress --bail",
     "build:production": "APP_ENV=production npm run build",
     "migrate": "vendor/bin/phinx migrate",
     "test": "vendor/bin/phpunit",

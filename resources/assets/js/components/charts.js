@@ -1,18 +1,26 @@
 /* globals chartData */
 import Chart from 'chart.js';
 
-Chart.defaults.global = {
-    ...Chart.defaults.global, ...{
-        responsive:       true,
-        scaleBeginAtZero: true,
+const chart = new Chart(document.getElementById('chart'), {
+    type: 'line',
+    data: chartData,
+    options: {
+        pointDot: false,
+        datasetStrokeWidth: 5,
+        scales: {
+            xAxes: [{
+                gridLines: {
+                    display: false,
+                },
+            }],
+            yAxes: [{
+                gridLines: {
+                    display: false,
+                },
+                ticks: {
+                    beginAtZero: true,
+                },
+            }],
+        },
     },
-};
-
-const context = document.getElementById('chart').getContext('2d');
-const options = {
-    pointDot:           false,
-    scaleShowGridLines: false,
-    datasetStrokeWidth: 5,
-};
-
-new Chart(context).Line(chartData, options);
+});

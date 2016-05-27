@@ -3,8 +3,8 @@ import {each, nodelistToArray} from './helpers';
 export default class TablesHandler {
 
     cellIndex = 0;
-    th        = '';
-    order     = null;
+    th = '';
+    order = null;
 
     /**
      * @param {Node} table
@@ -45,7 +45,7 @@ export default class TablesHandler {
      */
     search(event) {
         each('tbody tr', row => {
-            const text    = row.textContent || row.innerText;
+            const text = row.textContent || row.innerText;
             const matches = text.match(new RegExp(event.target.value, 'i'));
             row.classList.toggle('filtered', !matches);
         });
@@ -108,9 +108,9 @@ export default class TablesHandler {
         }
 
         // Assign current header and its index
-        this.th        = event.currentTarget;
+        this.th = event.currentTarget;
         this.cellIndex = this.th.cellIndex;
-        const tbody    = this.th.offsetParent.querySelector('tbody');
+        const tbody = this.th.offsetParent.querySelector('tbody');
 
         let rows = nodelistToArray(tbody.rows);
         if (rows) {

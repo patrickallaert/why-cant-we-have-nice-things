@@ -56,8 +56,6 @@ trait HasAsyncCapabilitiesTrait
             try {
                 $results[] = $this->bus->handle($command);
             } catch (Exception $exception) {
-                throw $exception;
-                //dump($exception->getMessage());
                 // Will get caught next sync
             }
         }

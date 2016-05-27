@@ -2,7 +2,6 @@
     "extends": "madewithlove",
     "rules": {
         "babel/new-cap": [2, {"capIsNewExceptions": ["Line"]}],
-        "id-length": [2, {"exceptions": ["i", "a","b"]}],
         "max-statements": [2, 15],
         "no-magic-numbers": 0,
         "no-new": 0

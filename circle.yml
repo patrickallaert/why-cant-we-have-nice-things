@@ -27,7 +27,7 @@ database:
 
 test:
   override:
-    - npm run build -- --bail
+    - npm run build
     - npm test
     - npm run lint:js
     - npm run lint:php
