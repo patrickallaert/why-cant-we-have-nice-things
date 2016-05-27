@@ -21,13 +21,10 @@ class StatisticsComputer
         switch (true) {
             case $entity instanceof User:
                 return $this->forUser($entity);
-
             case $entity instanceof Company:
                 return $this->forCompany($entity);
-
             case $entity instanceof Request:
                 return $this->forRequest($entity);
-
             case $entity instanceof Question:
                 return $this->forQuestion($entity);
         }

@@ -64,8 +64,7 @@ class GraphicsGenerator
         $every = ceil(count($labels) * 0.1);
         foreach ($labels as $key => $value) {
             if ($key % $every !== 0) {
-                unset($labels[$key]);
-                unset($values[$key]);
+                unset($labels[$key], $values[$key]);
             }
         }
 

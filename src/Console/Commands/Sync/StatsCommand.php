@@ -8,7 +8,6 @@ use History\Entities\Models\Company;
 use History\Entities\Models\Question;
 use History\Entities\Models\Request;
 use History\Entities\Models\User;
-use History\Services\Threading\OutputPool;
 use History\Services\Traits\HasAsyncCapabilitiesTrait;
 use League\Tactician\CommandBus;
 

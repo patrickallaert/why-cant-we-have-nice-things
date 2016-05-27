@@ -47,7 +47,7 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "^2.2",
         "escapestudios/symfony2-coding-standard": "^2.9",
-        "fabpot/php-cs-fixer": "2.0.*@dev",
+        "friendsofphp/php-cs-fixer": "2.0.*@dev",
         "filp/whoops": "^2.1",
         "franzl/whoops-middleware": "^0.4.1",
         "league/factory-muffin": "^3.0",
