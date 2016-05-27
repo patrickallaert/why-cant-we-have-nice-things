@@ -15,8 +15,8 @@ dependencies:
   pre:
     - echo "memory_limit = 1024M" > ~/.phpenv/versions/$(phpenv global)/etc/conf.d/memory.ini
     - echo "always_populate_raw_post_data = -1" > ~/.phpenv/versions/$(phpenv global)/etc/conf.d/post.ini
-    - pecl install mailparse
-    - sed -i 's/^;//' ~/.phpenv/versions/$(phpenv global)/etc/conf.d/mailparse.ini
+    - pecl install mailparse --force
+    - echo "extension=mailparse.so" > ~/.phpenv/versions/$(phpenv global)/etc/conf.d/mailparse.ini
   override:
     - npm install
     - composer install --prefer-source --no-interaction
