@@ -2,6 +2,7 @@
 
 namespace History\Services\Internals;
 
+use Carbon\Carbon;
 use History\Entities\Models\Request;
 use History\Entities\Models\Threads\Group;
 use History\Entities\Models\Threads\Thread;
@@ -21,33 +22,29 @@ class InternalsSynchronizerTest extends TestCase
             [
                 'xref' => 'php.internals:2321321',
                 'number' => 2,
-                'subject' => '[VOTE] foobar RFC',
+                'subject' => 'foobar',
                 'from' => 'Maxime Fabre (foo@bar.com)',
-                'references' => '',
                 'date' => '2011-01-01 01:01:01',
             ],
             [
                 'xref' => 'php.internals:2321322',
                 'number' => 3,
-                'subject' => 'foobar RFC',
+                'subject' => 'foobar',
                 'from' => 'Maxime Fabre (foo@bar.com)',
-                'references' => '',
                 'date' => '2011-01-01 01:01:01',
             ],
             [
                 'xref' => 'php.internals:2321324',
                 'number' => 1,
-                'subject' => '[RFC] foobar',
+                'subject' => 'foobar',
                 'from' => 'Maxime Fabre (foo@bar.com)',
-                'references' => '',
                 'date' => '2011-01-01 01:01:01',
             ],
         ], 3);
 
-        $article = $created[0];
-        $this->assertEquals([
+        $article = $created[2];
+        $this->assertEqualsPartially([
             'xref' => 'php.internals:2321321',
-            'name' => 'foobar',
             'contents' => 'foobar',
             'thread_id' => $thread->id,
             'comment_id' => null,
@@ -61,17 +58,18 @@ class InternalsSynchronizerTest extends TestCase
 
     public function testIsAbleToMatchRequestsEventIfTitleIsntIdentical()
     {
+        $threadName = 'RE: [RFC][DISCUSSION]: Trailing commas in all list syntax';
+
         $request = Request::firstOrCreate(['name' => 'Trailing Commas In List Syntax']);
-        $thread = Thread::seed(['name' => 'Trailing commas in all list syntax', 'request_id' => $request->id]);
+        $thread = Thread::seed(['name' => $threadName, 'request_id' => $request->id]);
         $user = User::create(['full_name' => 'Maxime Fabre']);
         $created = $this->mockSynchronization([
             ['xref' => 1, 'subject' => 'foobar'],
             [
                 'xref' => 'php.internals:2321321',
                 'number' => 2,
-                'subject' => 'RE: [RFC][DISCUSSION]: Trailing commas in all list syntax',
+                'subject' => $threadName,
                 'from' => 'Maxime Fabre (foo@bar.com)',
-                'references' => '',
                 'date' => '2011-01-01 01:01:01',
             ],
             [
@@ -79,16 +77,15 @@ class InternalsSynchronizerTest extends TestCase
                 'number' => 3,
                 'subject' => 'Re: Re: Make sessions use php_random_bytes in 7.1',
                 'from' => 'Maxime Fabre (foo@bar.com)',
-                'references' => '',
                 'date' => '2011-01-01 01:01:01',
             ],
         ], 2);
 
-        $article = $created[0];
-        $this->assertEquals([
+        $article = $created[1];
+        $this->assertEqualsPartially([
             'xref' => 'php.internals:2321321',
-            'name' => 'Trailing commas in all list syntax',
             'contents' => 'foobar',
+            'references' => [],
             'thread_id' => $thread->id,
             'comment_id' => null,
             'user_id' => $user->id,
@@ -114,10 +111,17 @@ class InternalsSynchronizerTest extends TestCase
         $internals->shouldReceive('getGroups')->once()->andReturn([
             ['name' => 'php.internals', 'high' => $numberArticles, 'low' => 1],
         ]);
-        $internals->shouldReceive('setGroup')->times($numberArticles)->with('php.internals');
-        $internals->shouldReceive('getArticleBody')->times($matched)->andReturn('foobar');
+        $internals->shouldReceive('setGroup')->times(1)->with('php.internals');
+        $internals->shouldReceive('setGroup')->times($numberArticles)->with('php.internals', true);
         $internals->shouldReceive('findArticleFromReference')->never()->andReturn();
-        $internals->shouldReceive('getArticles')->times(1)->andReturn($messages);
+        $internals->shouldReceive('getArticle')->andReturnUsing(function ($i) use ($messages) {
+            $message = $messages[$i - 1];
+            $message['contents'] = 'foobar';
+            $message['references'] = [];
+            $message['date'] = new Carbon(array_get($message, 'date', new Carbon));
+
+            return $message;
+        });
 
         $this->container->add(Internals::class, $internals);
 

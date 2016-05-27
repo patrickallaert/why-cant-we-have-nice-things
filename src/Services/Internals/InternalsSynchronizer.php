@@ -108,7 +108,7 @@ class InternalsSynchronizer
 
         $created = [];
         foreach ($groups as $group) {
-            $this->synchronizeArticlesForGroup($group);
+            $created[$group->name] = array_filter($this->synchronizeArticlesForGroup($group));
         }
 
         $this->output->writeln('Binding references');
@@ -161,11 +161,13 @@ class InternalsSynchronizer
         // Prepare main loop variables
         $queue = $this->getArticlesQueue($group);
         if (!$queue) {
-            return;
+            return [];
         }
 
         $this->output->writeln('Creating articles');
-        $this->dispatchCommands($queue);
+        $created = $this->dispatchCommands($queue);
+
+        return $created;
     }
 
     /**

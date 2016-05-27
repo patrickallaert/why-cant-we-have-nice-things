@@ -4,7 +4,7 @@ namespace History\Services\Internals;
 
 use History\TestCase;
 
-class MailingListArticleCleanerTest extends TestCase
+class ArticleParserTest extends TestCase
 {
     /**
      * @dataProvider provideMessages
@@ -18,7 +18,7 @@ class MailingListArticleCleanerTest extends TestCase
         $cleaner = $this->container->get(ArticleParser::class);
         $cleaned = $cleaner->parse($before);
 
-        $this->assertEquals($after, $cleaned.PHP_EOL);
+        $this->assertEquals($after, $cleaned['contents'].PHP_EOL);
     }
 
     /**

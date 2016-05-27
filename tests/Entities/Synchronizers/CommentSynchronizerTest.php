@@ -18,6 +18,7 @@ class CommentSynchronizerTest extends TestCase
         $comment = $sync->synchronize();
         $this->assertEquals([
             'xref' => '123',
+            'references' => null,
             'name' => 'foobar',
             'contents' => 'foobar',
             'thread_id' => null,
