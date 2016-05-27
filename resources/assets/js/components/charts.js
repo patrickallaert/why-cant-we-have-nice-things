@@ -1,7 +1,7 @@
 /* globals chartData */
 import Chart from 'chart.js';
 
-const chart = new Chart(document.getElementById('chart'), {
+new Chart(document.getElementById('chart'), {
     type: 'line',
     data: chartData,
     options: {
