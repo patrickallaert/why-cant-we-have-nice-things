@@ -147,6 +147,7 @@ class User extends AbstractModel
         $gravatar = new Gravatar();
         $gravatar->setAvatarSize($size);
         $gravatar->setDefaultImage($this->github_avatar ?: 'retro');
+        $gravatar->enableSecureImages();
 
         return $gravatar->buildGravatarURL($this->email);
     }
